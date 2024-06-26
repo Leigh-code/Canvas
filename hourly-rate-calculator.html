@@ -28,7 +28,7 @@
         }
         .calculator-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: 1fr 2fr;
             gap: 10px;
         }
         .section {
@@ -43,8 +43,16 @@
             font-weight: bold;
             font-size: 14px;
         }
+        .input-with-dollar {
+            display: flex;
+            align-items: center;
+        }
+        .input-with-dollar span {
+            margin-right: 5px;
+            font-size: 14px;
+        }
         input[type="number"], input[type="text"] {
-            width: calc(100% - 10px);
+            width: 100%;
             padding: 6px;
             margin-bottom: 10px;
             border: 1px solid #ddd;
@@ -65,15 +73,15 @@
             background-color: #000000;
         }
         #results {
-            background-color: #E61E2A;
+            background-color: #f8f8f8;
             padding: 10px;
             border-radius: 8px;
             margin-top: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            color: white;
+            color: #333;
         }
         #results h2 {
-            color: #FFFFFF;
+            color: #222160;
             margin-top: 0;
             font-size: 18px;
         }
@@ -82,8 +90,12 @@
             font-size: 14px;
         }
         #results strong {
-            color: #FFFFFF;
+            color: #E61E2A;
             font-size: 24px;
+        }
+        .highlight {
+            color: #E61E2A;
+            font-size: 20px;
         }
         .print-button {
             background-color: #4CAF50;
@@ -149,43 +161,71 @@
                 <input type="number" id="adminTime" value="25">
             </div>
             
-            <div class="section">
+            <div class="section" style="grid-column: span 2;">
                 <h2>Expenses</h2>
-                <label for="targetSalary">Target salary (after tax):</label>
-                <input type="number" id="targetSalary" value="75000">
+                <div class="calculator-grid" style="grid-template-columns: 1fr 1fr;">
+                    <div>
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="targetSalary" value="75000" placeholder="Target salary (after tax)">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="internet" value="1000" placeholder="Internet connection">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="stationery" value="100" placeholder="Stationery">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="phone" value="1400" placeholder="Phone">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="workspace" value="4200" placeholder="Workspace">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="marketing" value="1200" placeholder="Marketing">
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="software" value="700" placeholder="Software">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="computer" value="600" placeholder="Computer">
+                        </div>
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="accountant" value="1000" placeholder="Accountant">
+                        </div>
+                        
+                        <label for="superannuation">Superannuation (%):</label>
+                        <input type="number" id="superannuation" value="15">
+                        
+                        <label for="tax">Tax (%):</label>
+                        <input type="number" id="tax" value="25">
+                        
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="otherExpenses" value="0" placeholder="Other expenses">
+                        </div>
+                    </div>
+                </div>
                 
-                <label for="internet">Internet connection:</label>
-                <input type="number" id="internet" value="1000">
-                
-                <label for="stationery">Stationery:</label>
-                <input type="number" id="stationery" value="100">
-                
-                <label for="phone">Phone:</label>
-                <input type="number" id="phone" value="1400">
-                
-                <label for="workspace">Workspace:</label>
-                <input type="number" id="workspace" value="4200">
-                
-                <label for="marketing">Marketing:</label>
-                <input type="number" id="marketing" value="1200">
-                
-                <label for="software">Software:</label>
-                <input type="number" id="software" value="700">
-                
-                <label for="computer">Computer:</label>
-                <input type="number" id="computer" value="600">
-                
-                <label for="accountant">Accountant:</label>
-                <input type="number" id="accountant" value="1000">
-                
-                <label for="superannuation">Superannuation (%):</label>
-                <input type="number" id="superannuation" value="15">
-                
-                <label for="tax">Tax (%):</label>
-                <input type="number" id="tax" value="25">
-                
-                <label for="otherExpenses">Other expenses:</label>
-                <input type="number" id="otherExpenses" value="0">
+                <p>Total Expenses: <strong id="totalExpensesDisplay">$0</strong></p>
             </div>
         </div>
         
@@ -197,7 +237,7 @@
         <p>Total available working time: <strong><span id="totalWorkingTime"></span> hours</strong></p>
         <p>Total working time: <strong><span id="actualWorkingTime"></span> hours</strong></p>
         <p>Total expenses: <strong>$<span id="totalExpenses"></span></strong></p>
-        <p style="font-size: 24px; color: #FFFFFF;">Hourly rate: <strong>$<span id="hourlyRate"></span></strong></p>
+        <p class="highlight">Hourly rate: <strong>$<span id="hourlyRate"></span></strong></p>
         
         <h2>Comparison with Typical Base Salary</h2>
         <p>Typical base salary: <strong>$58000</strong></p>
@@ -214,6 +254,7 @@
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
+        document.getElementById('hourlyRateForm').addEventListener('input', updateTotalExpenses);
         document.getElementById('hourlyRateForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
@@ -296,6 +337,29 @@
                 }
             });
         });
+
+        function updateTotalExpenses() {
+            const targetSalary = parseFloat(document.getElementById('targetSalary').value) || 0;
+            const internet = parseFloat(document.getElementById('internet').value) || 0;
+            const stationery = parseFloat(document.getElementById('stationery').value) || 0;
+            const phone = parseFloat(document.getElementById('phone').value) || 0;
+            const workspace = parseFloat(document.getElementById('workspace').value) || 0;
+            const marketing = parseFloat(document.getElementById('marketing').value) || 0;
+            const software = parseFloat(document.getElementById('software').value) || 0;
+            const computer = parseFloat(document.getElementById('computer').value) || 0;
+            const accountant = parseFloat(document.getElementById('accountant').value) || 0;
+            const superannuationPercent = parseFloat(document.getElementById('superannuation').value) || 0;
+            const taxPercent = parseFloat(document.getElementById('tax').value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
+
+            const superannuation = targetSalary * (superannuationPercent / 100);
+            const tax = targetSalary * (taxPercent / 100);
+
+            const totalExpenses = targetSalary + internet + stationery + phone + workspace + marketing + 
+                                  software + computer + accountant + superannuation + tax + otherExpenses;
+
+            document.getElementById('totalExpensesDisplay').textContent = `$${totalExpenses.toFixed(2)}`;
+        }
     </script>
 </body>
 </html>
