@@ -75,12 +75,13 @@
         .result-button {
             background-color: #E61E2A;
             color: white;
-            padding: 10px;
+            padding: 15px;
             margin-top: 10px;
             border: none;
-            border-radius: 4px;
-            font-size: 18px;
+            border-radius: 8px;
+            font-size: 20px;
             cursor: pointer;
+            text-align: center;
         }
         #results {
             background-color: #f8f8f8;
@@ -113,6 +114,24 @@
         #comparisonChart {
             margin-top: 10px;
         }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 8px;
+        }
+        th {
+            background-color: #222160;
+            color: white;
+        }
+        .small-text {
+            font-size: 12px;
+            color: #666;
+        }
         @media print {
             body {
                 padding: 0;
@@ -136,108 +155,136 @@
     <h1>Interactive Hourly Rate Calculator</h1>
     
     <form id="hourlyRateForm">
+        <div class="section">
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+            
+            <label for="studentNumber">Student number:</label>
+            <input type="text" id="studentNumber" required>
+            
+            <label for="targetSalary" style="font-weight: bold;">Target salary (after tax):</label>
+            <div class="input-with-dollar">
+                <span>$</span>
+                <input type="number" id="targetSalary" value="65000">
+            </div>
+            <p class="small-text">This is the annual salary you aim to earn as a freelancer after taxes.</p>
+        </div>
+        
         <div class="calculator-grid">
             <div class="section">
                 <h2>Working Time</h2>
                 <label for="availableHours">Available working hours:</label>
                 <input type="number" id="availableHours" value="2080">
+                <p class="small-text">Based on a standard full-time schedule of 40 hours per week for 52 weeks a year.</p>
                 
-                <label for="publicHolidays">Public holidays (hours):</label>
+                <label for="publicHolidays">Public holidays (hours) <span style="color: red;">(-)</span>:</label>
                 <input type="number" id="publicHolidays" value="56">
+                <p class="small-text">Total hours for public holidays per year.</p>
                 
-                <label for="sickDays">Sick days (hours):</label>
+                <label for="sickDays">Sick days (hours) <span style="color: red;">(-)</span>:</label>
                 <input type="number" id="sickDays" value="40">
+                <p class="small-text">Total hours expected for sick days per year.</p>
                 
-                <label for="holidays">Holidays (hours):</label>
+                <label for="holidays">Holidays (hours) <span style="color: red;">(-)</span>:</label>
                 <input type="number" id="holidays" value="120">
+                <p class="small-text">Total hours for personal holidays per year.</p>
                 
-                <label for="otherNonWorking">Other scheduled non-working time (hours):</label>
+                <label for="otherNonWorking">Other scheduled non-working time (hours) <span style="color: red;">(-)</span>:</label>
                 <input type="number" id="otherNonWorking" value="0">
+                <p class="small-text">Any other non-working hours scheduled per year.</p>
                 
                 <label for="adminTime">Administration time (%):</label>
                 <input type="number" id="adminTime" value="25">
+                <p class="small-text">Percentage of time spent on non-billable tasks such as administration.</p>
+                
+                <p>Total working time will be calculated by subtracting the non-working times from the available working hours.</p>
             </div>
             
             <div class="section">
                 <h2>Expenses</h2>
-                <label for="targetSalary">Target salary (after tax):</label>
-                <div class="input-with-dollar">
-                    <span>$</span>
-                    <input type="number" id="targetSalary" value="75000">
-                </div>
-                
                 <label for="internet">Internet connection:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="internet" value="1000">
                 </div>
+                <p class="small-text">Annual cost for internet connection.</p>
                 
                 <label for="stationery">Stationery:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="stationery" value="100">
                 </div>
+                <p class="small-text">Annual cost for office supplies.</p>
                 
                 <label for="phone">Phone:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="phone" value="1400">
                 </div>
+                <p class="small-text">Annual cost for phone services.</p>
                 
                 <label for="workspace">Workspace:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="workspace" value="4200">
                 </div>
+                <p class="small-text">Annual cost for workspace, including rent and utilities.</p>
                 
                 <label for="marketing">Marketing:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="marketing" value="1200">
                 </div>
+                <p class="small-text">Annual cost for marketing and promotions.</p>
                 
                 <label for="software">Software:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="software" value="700">
                 </div>
+                <p class="small-text">Annual cost for necessary software.</p>
                 
                 <label for="computer">Computer:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="computer" value="600">
                 </div>
+                <p class="small-text">Annual cost for computer equipment.</p>
                 
                 <label for="accountant">Accountant:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="accountant" value="1000">
                 </div>
+                <p class="small-text">Annual cost for accounting services.</p>
                 
                 <label for="superannuation">Superannuation (%):</label>
                 <input type="number" id="superannuation" value="15">
+                <p class="small-text">Percentage of income set aside for superannuation.</p>
                 
                 <label for="tax">Tax (%):</label>
                 <input type="number" id="tax" value="25">
+                <p class="small-text">Percentage of income set aside for tax.</p>
                 
                 <label for="otherExpenses">Other expenses:</label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="otherExpenses" value="0">
                 </div>
+                <p class="small-text">Any other annual expenses.</p>
+                
+                <p>These expenses will be added to the take-home wage and will increase the hourly rate.</p>
             </div>
             
             <div class="section">
                 <h2>Results</h2>
-                <button type="button" class="result-button" id="resultsButton">
-                    Total expenses: $<span id="totalExpensesDisplay">0</span><br>
+                <div class="result-button" id="resultsButton">
                     Hourly rate: $<span id="hourlyRate">0</span>
-                </button>
+                </div>
                 
-                <p>Typical base salary: <strong>$58000</strong></p>
+                <p>Total expenses: $<span id="totalExpensesDisplay">0</span></p>
+                
                 <p>Your calculated hourly rate: <strong>$<span id="hourlyRateComparison">0</span></strong></p>
-                
-                <p>Note: The comparison to the base salary is based on a freelance rate, which is much higher. A junior graphic designer in a full-time position typically earns around AUD$58000 annually. However, freelance rates need to account for additional expenses, taxes, and non-billable hours, making the hourly rate higher.</p>
                 
                 <p>Take-home pay after expenses for freelancers: <strong>$<span id="takeHomePay">0</span></strong></p>
                 
@@ -247,39 +294,59 @@
             </div>
         </div>
     </form>
+
+    <div class="section">
+        <h2>Rate Comparison</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Worker received (p/h)</th>
+                    <th>Company charged (p/h)</th>
+                    <th>Freelancer received (p/h)</th>
+                    <th>Freelancer charged (p/h)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>$<span id="workerReceivedRate"></span></td>
+                    <td>$<span id="companyChargedRate"></span></td>
+                    <td>$<span id="freelancerReceivedRate"></span></td>
+                    <td>$<span id="freelancerChargedRate"></span></td>
+                </tr>
+            </tbody>
+        </table>
+        <p class="small-text">A junior graphic designer in a full-time position typically earns around AUD$58,000 annually. However, the company charges the client a significantly higher rate, often similar to what a freelancer charges. This difference is mainly due to the employer's profit margin, with overhead costs being a smaller part of the total. Consequently, the worker receives less than what the client is billed.</p>
+    </div>
     
     <button onclick="window.print()" class="print-button">Save as PDF / Print</button>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        document.getElementById('hourlyRateForm').addEventListener('input', updateTotalExpenses);
-        document.getElementById('hourlyRateForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            
+        function updateCalculations() {
             // Calculate working time
-            const availableHours = parseFloat(document.getElementById('availableHours').value);
-            const publicHolidays = parseFloat(document.getElementById('publicHolidays').value);
-            const sickDays = parseFloat(document.getElementById('sickDays').value);
-            const holidays = parseFloat(document.getElementById('holidays').value);
-            const otherNonWorking = parseFloat(document.getElementById('otherNonWorking').value);
-            const adminTimePercent = parseFloat(document.getElementById('adminTime').value);
+            const availableHours = parseFloat(document.getElementById('availableHours').value) || 0;
+            const publicHolidays = parseFloat(document.getElementById('publicHolidays').value) || 0;
+            const sickDays = parseFloat(document.getElementById('sickDays').value) || 0;
+            const holidays = parseFloat(document.getElementById('holidays').value) || 0;
+            const otherNonWorking = parseFloat(document.getElementById('otherNonWorking').value) || 0;
+            const adminTimePercent = parseFloat(document.getElementById('adminTime').value) || 0;
 
             const totalWorkingTime = availableHours - publicHolidays - sickDays - holidays - otherNonWorking;
             const actualWorkingTime = totalWorkingTime * (1 - adminTimePercent / 100);
 
             // Calculate expenses
-            const targetSalary = parseFloat(document.getElementById('targetSalary').value);
-            const internet = parseFloat(document.getElementById('internet').value);
-            const stationery = parseFloat(document.getElementById('stationery').value);
-            const phone = parseFloat(document.getElementById('phone').value);
-            const workspace = parseFloat(document.getElementById('workspace').value);
-            const marketing = parseFloat(document.getElementById('marketing').value);
-            const software = parseFloat(document.getElementById('software').value);
-            const computer = parseFloat(document.getElementById('computer').value);
-            const accountant = parseFloat(document.getElementById('accountant').value);
-            const superannuationPercent = parseFloat(document.getElementById('superannuation').value);
-            const taxPercent = parseFloat(document.getElementById('tax').value);
-            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value);
+            const targetSalary = parseFloat(document.getElementById('targetSalary').value) || 0;
+            const internet = parseFloat(document.getElementById('internet').value) || 0;
+            const stationery = parseFloat(document.getElementById('stationery').value) || 0;
+            const phone = parseFloat(document.getElementById('phone').value) || 0;
+            const workspace = parseFloat(document.getElementById('workspace').value) || 0;
+            const marketing = parseFloat(document.getElementById('marketing').value) || 0;
+            const software = parseFloat(document.getElementById('software').value) || 0;
+            const computer = parseFloat(document.getElementById('computer').value) || 0;
+            const accountant = parseFloat(document.getElementById('accountant').value) || 0;
+            const superannuationPercent = parseFloat(document.getElementById('superannuation').value) || 0;
+            const taxPercent = parseFloat(document.getElementById('tax').value) || 0;
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
 
             const superannuation = targetSalary * (superannuationPercent / 100);
             const tax = targetSalary * (taxPercent / 100);
@@ -291,18 +358,27 @@
             const hourlyRate = totalExpenses / actualWorkingTime;
             
             // Calculate take-home pay
-            const takeHomePay = totalExpenses - superannuation - tax;
+            const takeHomePay = targetSalary; // Take-home pay should be the same as target salary
 
-            // Display results
-            document.getElementById('totalExpensesDisplay').textContent = totalExpenses.toFixed(2);
-            document.getElementById('hourlyRate').textContent = hourlyRate.toFixed(2);
-            document.getElementById('hourlyRateComparison').textContent = hourlyRate.toFixed(2);
-            document.getElementById('takeHomePay').textContent = takeHomePay.toFixed(2);
+            // Calculate rates
+            const workerReceivedRate = (58000 / 2080).toFixed(2); // Actual wage rate
+            const companyChargedRate = (100).toFixed(2); // Company charges $100 per hour
+            const freelancerReceivedRate = (hourlyRate).toFixed(2); // Freelancer received rate is the calculated hourly rate
+            const freelancerChargedRate = (hourlyRate * 1.25).toFixed(2); // Assume freelancers charge 25% more than received
+
+            // Display results with comma thousands separators
+            document.getElementById('totalExpensesDisplay').textContent = totalExpenses.toLocaleString('en-US');
+            document.getElementById('hourlyRate').textContent = hourlyRate.toLocaleString('en-US');
+            document.getElementById('hourlyRateComparison').textContent = hourlyRate.toLocaleString('en-US');
+            document.getElementById('takeHomePay').textContent = takeHomePay.toLocaleString('en-US');
+            document.getElementById('workerReceivedRate').textContent = parseFloat(workerReceivedRate).toLocaleString('en-US');
+            document.getElementById('companyChargedRate').textContent = parseFloat(companyChargedRate).toLocaleString('en-US');
+            document.getElementById('freelancerReceivedRate').textContent = parseFloat(freelancerReceivedRate).toLocaleString('en-US');
+            document.getElementById('freelancerChargedRate').textContent = parseFloat(freelancerChargedRate).toLocaleString('en-US');
             
             // Update button
             document.getElementById('resultsButton').innerHTML = `
-                Total expenses: $${totalExpenses.toFixed(2)}<br>
-                Hourly rate: $${hourlyRate.toFixed(2)}
+                Hourly rate: $${hourlyRate.toLocaleString('en-US')}
             `;
 
             // Update chart
@@ -310,12 +386,12 @@
             new Chart(ctx, {
                 type: 'bar',
                 data: {
-                    labels: ['Typical Base Salary', 'Your Calculation'],
+                    labels: ['Worker Received', 'Company Charged', 'Freelancer Received', 'Freelancer Charged'],
                     datasets: [{
                         label: 'Hourly Rate Comparison',
-                        data: [58000 / 2080, hourlyRate],
-                        backgroundColor: ['rgba(230, 30, 42, 0.2)', 'rgba(34, 34, 96, 0.2)'],
-                        borderColor: ['rgba(230, 30, 42, 1)', 'rgba(34, 34, 96, 1)'],
+                        data: [parseFloat(workerReceivedRate), parseFloat(companyChargedRate), parseFloat(freelancerReceivedRate), parseFloat(freelancerChargedRate)],
+                        backgroundColor: ['rgba(34, 34, 96, 0.2)', 'rgba(230, 30, 42, 0.2)', 'rgba(34, 34, 96, 0.2)', 'rgba(230, 30, 42, 0.2)'],
+                        borderColor: ['rgba(34, 34, 96, 1)', 'rgba(230, 30, 42, 1)', 'rgba(34, 34, 96, 1)', 'rgba(230, 30, 42, 1)'],
                         borderWidth: 1
                     }]
                 },
@@ -340,30 +416,13 @@
                     }
                 }
             });
+        }
+
+        document.querySelectorAll('input[type="number"], input[type="text"]').forEach(input => {
+            input.addEventListener('input', updateCalculations);
         });
 
-        function updateTotalExpenses() {
-            const targetSalary = parseFloat(document.getElementById('targetSalary').value) || 0;
-            const internet = parseFloat(document.getElementById('internet').value) || 0;
-            const stationery = parseFloat(document.getElementById('stationery').value) || 0;
-            const phone = parseFloat(document.getElementById('phone').value) || 0;
-            const workspace = parseFloat(document.getElementById('workspace').value) || 0;
-            const marketing = parseFloat(document.getElementById('marketing').value) || 0;
-            const software = parseFloat(document.getElementById('software').value) || 0;
-            const computer = parseFloat(document.getElementById('computer').value) || 0;
-            const accountant = parseFloat(document.getElementById('accountant').value) || 0;
-            const superannuationPercent = parseFloat(document.getElementById('superannuation').value) || 0;
-            const taxPercent = parseFloat(document.getElementById('tax').value) || 0;
-            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value) || 0;
-
-            const superannuation = targetSalary * (superannuationPercent / 100);
-            const tax = targetSalary * (taxPercent / 100);
-
-            const totalExpenses = targetSalary + internet + stationery + phone + workspace + marketing + 
-                                  software + computer + accountant + superannuation + tax + otherExpenses;
-
-            document.getElementById('totalExpensesDisplay').textContent = totalExpenses.toFixed(2);
-        }
+        updateCalculations(); // Initial calculation on page load
     </script>
 </body>
 </html>
