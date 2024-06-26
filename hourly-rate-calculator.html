@@ -59,6 +59,20 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        .target-salary-input {
+            background-color: #FAC800;
+            color: black;
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            font-size: 18px;
+            text-align: center;
+            width: 100%;
+            margin-top: 20px;
+            -webkit-appearance: none;
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
         .result-button {
             background-color: #E61E2A;
             color: white;
@@ -72,7 +86,7 @@
         .tooltip {
             display: none;
             background-color: #c2e0f4;
-            color: white;
+            color: black;
             border: 1px solid #ddd;
             padding: 5px;
             border-radius: 4px;
@@ -81,6 +95,9 @@
             z-index: 10;
             max-width: 200px;
             font-size: 12px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-bottom: 10px;
         }
         .info-button {
             background-color: #c2e0f4;
@@ -151,11 +168,13 @@
     </style>
 </head>
 <body>
-    <h1>Interactive Hourly Rate Calculator</h1>
+    <h1>Hourly Rate Calculator</h1>
     
     <form id="hourlyRateForm">
         <div class="calculator-grid">
             <div class="section">
+                <button onclick="window.print()" class="print-button">Save as PDF / Print</button>
+                <p> </p>
                 <h2>Personal Information</h2>
                 <label for="name">Name:</label>
                 <input type="text" id="name" required>
@@ -166,7 +185,7 @@
                 <label for="targetSalary">Target salary (after tax):</label>
                 <div class="input-with-dollar">
                     <span>$</span>
-                    <input type="number" id="targetSalary" value="65000">
+                    <input type="number" id="targetSalary" class="target-salary-input" value="65000">
                 </div>
             </div>
             
@@ -347,8 +366,6 @@
         </div>
     </form>
 
-    <button onclick="window.print()" class="print-button">Save as PDF / Print</button>
-
     <script>
         const form = document.getElementById('hourlyRateForm');
         const inputs = form.querySelectorAll('input');
@@ -376,26 +393,19 @@
             const billableTime = actualWorkingTime * (1 - adminTime / 100);
 
             const hourlyRate = (totalExpenses + targetSalary) / billableTime;
-            const takeHomePay = targetSalary - tax;
-
-            // Calculate comparison rates
-            const typicalBaseSalary = 58000;
-            const workerReceivedRate = (typicalBaseSalary / 2080).toFixed(2);
-            const companyChargedRate = 100;
-            const freelancerReceivedRate = hourlyRate.toFixed(2);
-            const freelancerChargedRate = (hourlyRate * 1.25).toFixed(2);
+            const takeHomePay = targetSalary;
 
             // Update display
             document.getElementById('hourlyRateDisplay').textContent = `Hourly rate: $${hourlyRate.toFixed(2)}`;
             document.getElementById('totalExpensesDisplay').textContent = totalExpenses.toFixed(2);
             document.getElementById('takeHomePayDisplay').textContent = takeHomePay.toFixed(2);
-            document.getElementById('workerReceivedRate').textContent = workerReceivedRate;
-            document.getElementById('companyChargedRate').textContent = companyChargedRate;
-            document.getElementById('freelancerReceivedRate').textContent = freelancerReceivedRate;
-            document.getElementById('freelancerChargedRate').textContent = freelancerChargedRate;
+            document.getElementById('workerReceivedRate').textContent = (58000 / 2080).toFixed(2);
+            document.getElementById('companyChargedRate').textContent = '100';
+            document.getElementById('freelancerReceivedRate').textContent = hourlyRate.toFixed(2);
+            document.getElementById('freelancerChargedRate').textContent = (hourlyRate * 1.25).toFixed(2);
 
             // Update chart
-            updateChart(freelancerReceivedRate, companyChargedRate, workerReceivedRate);
+            updateChart(hourlyRate.toFixed(2), 100, (58000 / 2080).toFixed(2));
         }
 
         function updateChart(freelanceRate, clientChargedRate, wagedWorkerRate) {
