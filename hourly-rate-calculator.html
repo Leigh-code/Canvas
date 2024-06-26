@@ -71,19 +71,28 @@
         }
         .tooltip {
             display: none;
-            background-color: #fff;
-            color: #333;
+            background-color: #c2e0f4;
+            color: white;
             border: 1px solid #ddd;
             padding: 5px;
             border-radius: 4px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             position: absolute;
-            top: 20px;
-            right: 10px;
             z-index: 10;
             max-width: 200px;
+            font-size: 12px;
         }
-        .section:hover .tooltip {
+        .info-button {
+            background-color: #c2e0f4;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 5px;
+            margin-left: 5px;
+            cursor: pointer;
+            font-size: 12px;
+        }
+        .info-button:hover + .tooltip, .tooltip:hover {
             display: block;
         }
         #results, #comparison {
@@ -163,105 +172,139 @@
             
             <div class="section">
                 <h2>Working Time</h2>
-                <label for="availableHours">Available working hours:</label>
+                <label for="availableHours">Available working hours:
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">8 hours a day, 5 days a week, 52 weeks a year.</span>
+                </label>
                 <input type="number" id="availableHours" value="2080">
-                <span class="small-text">Based on a standard full-time schedule of 40 hours per week for 52 weeks a year.</span>
                 
-                <label for="publicHolidays">Public holidays (hours):</label>
+                <label for="publicHolidays">Public holidays (hours):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Total hours for public holidays per year.</span>
+                </label>
                 <input type="number" id="publicHolidays" value="56">
-                <span class="small-text">Total hours for public holidays per year.</span>
                 
-                <label for="sickDays">Sick days (hours):</label>
+                <label for="sickDays">Sick days (hours):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Total hours expected for sick days per year.</span>
+                </label>
                 <input type="number" id="sickDays" value="40">
-                <span class="small-text">Total hours expected for sick days per year.</span>
                 
-                <label for="holidays">Holidays (hours):</label>
+                <label for="holidays">Holidays (hours):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Total hours for personal holidays per year.</span>
+                </label>
                 <input type="number" id="holidays" value="120">
-                <span class="small-text">Total hours for personal holidays per year.</span>
                 
-                <label for="otherNonWorking">Other non-working time (hours):</label>
+                <label for="otherNonWorking">Other non-working time (hours):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Any other non-working hours scheduled per year.</span>
+                </label>
                 <input type="number" id="otherNonWorking" value="0">
-                <span class="small-text">Any other non-working hours scheduled per year.</span>
                 
-                <label for="adminTime">Administration time (%):</label>
+                <label for="adminTime">Administration time (%):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Percentage of time spent on non-billable tasks such as administration.</span>
+                </label>
                 <input type="number" id="adminTime" value="25">
-                <span class="small-text">Percentage of time spent on non-billable tasks such as administration.</span>
                 
                 <p>Total working time will be calculated by subtracting the non-working times from the available working hours.</p>
             </div>
             
             <div class="section">
                 <h2>Expenses</h2>
-                <label for="internet">Internet connection ($):</label>
+                <label for="internet">Internet connection ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for internet connection.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="internet" value="1000">
                 </div>
-                <span class="small-text">Annual cost for internet connection.</span>
                 
-                <label for="stationery">Stationery ($):</label>
+                <label for="stationery">Stationery ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for office supplies.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="stationery" value="100">
                 </div>
-                <span class="small-text">Annual cost for office supplies.</span>
                 
-                <label for="phone">Phone ($):</label>
+                <label for="phone">Phone ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for phone services.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="phone" value="1400">
                 </div>
-                <span class="small-text">Annual cost for phone services.</span>
                 
-                <label for="workspace">Workspace ($):</label>
+                <label for="workspace">Workspace ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for workspace, including rent and utilities.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="workspace" value="4200">
                 </div>
-                <span class="small-text">Annual cost for workspace, including rent and utilities.</span>
                 
-                <label for="marketing">Marketing ($):</label>
+                <label for="marketing">Marketing ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for marketing and promotions.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="marketing" value="1200">
                 </div>
-                <span class="small-text">Annual cost for marketing and promotions.</span>
                 
-                <label for="software">Software ($):</label>
+                <label for="software">Software ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for necessary software.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="software" value="700">
                 </div>
-                <span class="small-text">Annual cost for necessary software.</span>
                 
-                <label for="computer">Computer ($):</label>
+                <label for="computer">Computer ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">The cost of the computer divided by the number of years it will be used.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="computer" value="600">
                 </div>
-                <span class="small-text">Annual cost for computer equipment. Divide the cost of the computer by the number of years it will be used to get an annual cost.</span>
                 
-                <label for="accountant">Accountant ($):</label>
+                <label for="accountant">Accountant ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Annual cost for accounting services.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="accountant" value="1000">
                 </div>
-                <span class="small-text">Annual cost for accounting services.</span>
                 
-                <label for="superannuation">Superannuation (%):</label>
+                <label for="superannuation">Superannuation (%):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Percentage of income set aside for superannuation.</span>
+                </label>
                 <input type="number" id="superannuation" value="15">
-                <span class="small-text">Percentage of income set aside for superannuation.</span>
                 
-                <label for="tax">Tax (%):</label>
+                <label for="tax">Tax (%):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Percentage of income set aside for tax.</span>
+                </label>
                 <input type="number" id="tax" value="25">
-                <span class="small-text">Percentage of income set aside for tax.</span>
                 
-                <label for="otherExpenses">Other expenses ($):</label>
+                <label for="otherExpenses">Other expenses ($):
+                    <button type="button" class="info-button">More Info</button>
+                    <span class="tooltip">Any other annual expenses.</span>
+                </label>
                 <div class="input-with-dollar">
                     <span>$</span>
                     <input type="number" id="otherExpenses" value="0">
                 </div>
-                <span class="small-text">Any other annual expenses.</span>
                 
                 <p>These expenses will be added to the total annual expenses, which will then be divided by the total working hours to calculate the hourly rate.</p>
             </div>
@@ -280,7 +323,7 @@
                     <table>
                         <thead>
                             <tr>
-                                <th>Worker received (p/h)</th>
+                                <th>Wage (p/h)</th>
                                 <th>Company charged (p/h)</th>
                                 <th>Freelancer received (p/h)</th>
                                 <th>Freelancer charged (p/h)</th>
