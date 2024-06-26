@@ -11,23 +11,24 @@
             margin: 0;
             padding: 10px;
             color: #333;
+            background-color: #FFFFFF;
         }
         h1 {
-            background-color: #000080;
+            background-color: #222160;
             color: white;
             padding: 10px;
             margin: -10px -10px 10px -10px;
             text-align: center;
         }
         h2 {
-            color: #000080;
-            border-bottom: 2px solid #000080;
+            color: #222160;
+            border-bottom: 2px solid #222160;
             padding-bottom: 5px;
             font-size: 18px;
         }
         .calculator-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 10px;
         }
         .section {
@@ -51,7 +52,7 @@
             font-size: 14px;
         }
         button {
-            background-color: #000080;
+            background-color: #222160;
             color: white;
             padding: 10px;
             border: none;
@@ -61,17 +62,18 @@
             transition: background-color 0.3s;
         }
         button:hover {
-            background-color: #000050;
+            background-color: #000000;
         }
         #results {
-            background-color: #e6f3ff;
+            background-color: #E61E2A;
             padding: 10px;
             border-radius: 8px;
             margin-top: 10px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            color: white;
         }
         #results h2 {
-            color: #000080;
+            color: #FFFFFF;
             margin-top: 0;
             font-size: 18px;
         }
@@ -80,7 +82,8 @@
             font-size: 14px;
         }
         #results strong {
-            color: #000080;
+            color: #FFFFFF;
+            font-size: 24px;
         }
         .print-button {
             background-color: #4CAF50;
@@ -194,7 +197,7 @@
         <p>Total available working time: <strong><span id="totalWorkingTime"></span> hours</strong></p>
         <p>Total working time: <strong><span id="actualWorkingTime"></span> hours</strong></p>
         <p>Total expenses: <strong>$<span id="totalExpenses"></span></strong></p>
-        <p>Hourly rate: <strong>$<span id="hourlyRate"></span></strong></p>
+        <p style="font-size: 24px; color: #FFFFFF;">Hourly rate: <strong>$<span id="hourlyRate"></span></strong></p>
         
         <h2>Comparison with Typical Base Salary</h2>
         <p>Typical base salary: <strong>$58000</strong></p>
@@ -203,7 +206,7 @@
         <p>Note: The comparison to the base salary is based on a freelance rate, which is much higher. A junior graphic designer in a full-time position typically earns around AUD$58000 annually. However, freelance rates need to account for additional expenses, taxes, and non-billable hours, making the hourly rate higher.</p>
         
         <div id="comparisonChart">
-            <canvas id="myChart"></canvas>
+            <canvas id="myChart" width="200" height="200"></canvas>
         </div>
     </div>
 
@@ -266,12 +269,16 @@
                     datasets: [{
                         label: 'Hourly Rate Comparison',
                         data: [58000 / 2080, hourlyRate],
-                        backgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(0, 0, 128, 0.2)'],
-                        borderColor: ['rgba(0, 128, 0, 1)', 'rgba(0, 0, 128, 1)'],
+                        backgroundColor: ['rgba(230, 30, 42, 0.2)', 'rgba(34, 34, 96, 0.2)'],
+                        borderColor: ['rgba(230, 30, 42, 1)', 'rgba(34, 34, 96, 1)'],
                         borderWidth: 1
                     }]
                 },
                 options: {
+                    animation: {
+                        duration: 1000,
+                        easing: 'easeOutBounce'
+                    },
                     scales: {
                         y: {
                             beginAtZero: true,
