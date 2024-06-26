@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Hourly Rate Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            background-color: #000080;
+            color: white;
+            padding: 20px;
+            margin: -20px -20px 20px -20px;
+            text-align: center;
+        }
+        h2 {
+            color: #000080;
+            border-bottom: 2px solid #000080;
+            padding-bottom: 5px;
+        }
+        .calculator-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .section {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="number"], input[type="text"] {
+            width: calc(100% - 10px);
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #000080;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #000050;
+        }
+        #results {
+            background-color: #e6f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        #results h2 {
+            color: #000080;
+            margin-top: 0;
+        }
+        #results p {
+            margin: 10px 0;
+        }
+        #results strong {
+            color: #000080;
+        }
+        .print-button {
+            background-color: #4CAF50;
+            margin-top: 20px;
+        }
+        .print-button:hover {
+            background-color: #45a049;
+        }
+        @media print {
+            body {
+                padding: 0;
+            }
+            button {
+                display: none;
+            }
+            .section, #results {
+                box-shadow: none;
+                border: 1px solid #ddd;
+            }
+            input[type="number"] {
+                border: none;
+                background: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Interactive Hourly Rate Calculator</h1>
+    
+    <form id="hourlyRateForm">
+        <div class="section">
+            <h2>Personal Information</h2>
+            <label for="name">Name:</label>
+            <input type="text" id="name" required>
+            
+            <label for="studentNumber">Student number:</label>
+            <input type="text" id="studentNumber" required>
+        </div>
+        
+        <div class="calculator-grid">
+            <div class="section">
+                <h2>Working Time</h2>
+                <label for="availableHours">Available working hours:</label>
+                <input type="number" id="availableHours" value="2080">
+                
+                <label for="publicHolidays">Public holidays (hours):</label>
+                <input type="number" id="publicHolidays" value="56">
+                
+                <label for="sickDays">Sick days (hours):</label>
+                <input type="number" id="sickDays" value="40">
+                
+                <label for="holidays">Holidays (hours):</label>
+                <input type="number" id="holidays" value="120">
+                
+                <label for="otherNonWorking">Other scheduled non-working time (hours):</label>
+                <input type="number" id="otherNonWorking" value="0">
+                
+                <label for="adminTime">Administration time (%):</label>
+                <input type="number" id="adminTime" value="25">
+            </div>
+            
+            <div class="section">
+                <h2>Expenses</h2>
+                <label for="targetSalary">Target salary (after tax):</label>
+                <input type="number" id="targetSalary" value="75000">
+                
+                <label for="internet">Internet connection:</label>
+                <input type="number" id="internet" value="1000">
+                
+                <label for="stationery">Stationery:</label>
+                <input type="number" id="stationery" value="100">
+                
+                <label for="phone">Phone:</label>
+                <input type="number" id="phone" value="1400">
+                
+                <label for="workspace">Workspace:</label>
+                <input type="number" id="workspace" value="4200">
+                
+                <label for="marketing">Marketing:</label>
+                <input type="number" id="marketing" value="1200">
+                
+                <label for="software">Software:</label>
+                <input type="number" id="software" value="700">
+                
+                <label for="computer">Computer:</label>
+                <input type="number" id="computer" value="600">
+                
+                <label for="accountant">Accountant:</label>
+                <input type="number" id="accountant" value="1000">
+                
+                <label for="superannuation">Superannuation (%):</label>
+                <input type="number" id="superannuation" value="15">
+                
+                <label for="tax">Tax (%):</label>
+                <input type="number" id="tax" value="25">
+                
+                <label for="otherExpenses">Other expenses:</label>
+                <input type="number" id="otherExpenses" value="0">
+            </div>
+        </div>
+        
+        <button type="submit">Calculate Hourly Rate</button>
+    </form>
+    
+    <div id="results" style="display:none;">
+        <h2>Results</h2>
+        <p>Total available working time: <strong><span id="totalWorkingTime"></span> hours</strong></p>
+        <p>Total working time: <strong><span id="actualWorkingTime"></span> hours</strong></p>
+        <p>Total expenses: <strong>$<span id="totalExpenses"></span></strong></p>
+        <p>Hourly rate: <strong>$<span id="hourlyRate"></span></strong></p>
+    </div>
+
+    <button onclick="window.print()" class="print-button">Save as PDF / Print</button>
+
+    <script>
+        document.getElementById('hourlyRateForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Calculate working time
+            const availableHours = parseFloat(document.getElementById('availableHours').value);
+            const publicHolidays = parseFloat(document.getElementById('publicHolidays').value);
+            const sickDays = parseFloat(document.getElementById('sickDays').value);
+            const holidays = parseFloat(document.getElementById('holidays').value);
+            const otherNonWorking = parseFloat(document.getElementById('otherNonWorking').value);
+            const adminTimePercent = parseFloat(document.getElementById('adminTime').value);
+
+            const totalWorkingTime = availableHours - publicHolidays - sickDays - holidays - otherNonWorking;
+            const actualWorkingTime = totalWorkingTime * (1 - adminTimePercent / 100);
+
+            // Calculate expenses
+            const targetSalary = parseFloat(document.getElementById('targetSalary').value);
+            const internet = parseFloat(document.getElementById('internet').value);
+            const stationery = parseFloat(document.getElementById('stationery').value);
+            const phone = parseFloat(document.getElementById('phone').value);
+            const workspace = parseFloat(document.getElementById('workspace').value);
+            const marketing = parseFloat(document.getElementById('marketing').value);
+            const software = parseFloat(document.getElementById('software').value);
+            const computer = parseFloat(document.getElementById('computer').value);
+            const accountant = parseFloat(document.getElementById('accountant').value);
+            const superannuationPercent = parseFloat(document.getElementById('superannuation').value);
+            const taxPercent = parseFloat(document.getElementById('tax').value);
+            const otherExpenses = parseFloat(document.getElementById('otherExpenses').value);
+
+            const superannuation = targetSalary * (superannuationPercent / 100);
+            const tax = targetSalary * (taxPercent / 100);
+
+            const totalExpenses = targetSalary + internet + stationery + phone + workspace + marketing + 
+                                  software + computer + accountant + superannuation + tax + otherExpenses;
+
+            // Calculate hourly rate
+            const hourlyRate = totalExpenses / actualWorkingTime;
+
+            // Display results
+            document.getElementById('totalWorkingTime').textContent = totalWorkingTime.toFixed(2);
+            document.getElementById('actualWorkingTime').textContent = actualWorkingTime.toFixed(2);
+            document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
+            document.getElementById('hourlyRate').textContent = hourlyRate.toFixed(2);
+            
+            document.getElementById('results').style.display = 'block';
+        });
+    </script>
+</body>
+</html>
