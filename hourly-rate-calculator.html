@@ -47,6 +47,9 @@
             border: 1px solid #ddd;
             border-radius: 4px;
         }
+        input[type="number"]::before {
+            content: '$';
+        }
         button {
             background-color: #000080;
             color: white;
@@ -83,6 +86,9 @@
         }
         .print-button:hover {
             background-color: #45a049;
+        }
+        #comparisonChart {
+            margin-top: 20px;
         }
         @media print {
             body {
@@ -186,10 +192,19 @@
         <p>Total working time: <strong><span id="actualWorkingTime"></span> hours</strong></p>
         <p>Total expenses: <strong>$<span id="totalExpenses"></span></strong></p>
         <p>Hourly rate: <strong>$<span id="hourlyRate"></span></strong></p>
+        
+        <h2>Comparison with Typical Base Salary</h2>
+        <p>Typical base salary: <strong>$58000</strong></p>
+        <p>Your calculated hourly rate: <strong>$<span id="hourlyRateComparison"></span></strong></p>
+        
+        <div id="comparisonChart">
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
 
     <button onclick="window.print()" class="print-button">Save as PDF / Print</button>
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
         document.getElementById('hourlyRateForm').addEventListener('submit', function(e) {
             e.preventDefault();
@@ -233,8 +248,41 @@
             document.getElementById('actualWorkingTime').textContent = actualWorkingTime.toFixed(2);
             document.getElementById('totalExpenses').textContent = totalExpenses.toFixed(2);
             document.getElementById('hourlyRate').textContent = hourlyRate.toFixed(2);
+            document.getElementById('hourlyRateComparison').textContent = hourlyRate.toFixed(2);
             
             document.getElementById('results').style.display = 'block';
+            
+            // Comparison chart
+            const ctx = document.getElementById('myChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Typical Base Salary', 'Your Calculation'],
+                    datasets: [{
+                        label: 'Hourly Rate Comparison',
+                        data: [58000 / 2080, hourlyRate],
+                        backgroundColor: ['rgba(0, 128, 0, 0.2)', 'rgba(0, 0, 128, 0.2)'],
+                        borderColor: ['rgba(0, 128, 0, 1)', 'rgba(0, 0, 128, 1)'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Hourly Rate (AUD$)'
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
         });
     </script>
 </body>
