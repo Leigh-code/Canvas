@@ -28,7 +28,7 @@
         }
         .calculator-grid {
             display: grid;
-            grid-template-columns: 1fr 2fr;
+            grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
         }
         .section {
@@ -130,16 +130,16 @@
     <h1>Interactive Hourly Rate Calculator</h1>
     
     <form id="hourlyRateForm">
-        <div class="section">
-            <h2>Personal Information</h2>
-            <label for="name">Name:</label>
-            <input type="text" id="name" required>
-            
-            <label for="studentNumber">Student number:</label>
-            <input type="text" id="studentNumber" required>
-        </div>
-        
         <div class="calculator-grid">
+            <div class="section">
+                <h2>Personal Information</h2>
+                <label for="name">Name:</label>
+                <input type="text" id="name" required>
+                
+                <label for="studentNumber">Student number:</label>
+                <input type="text" id="studentNumber" required>
+            </div>
+            
             <div class="section">
                 <h2>Working Time</h2>
                 <label for="availableHours">Available working hours:</label>
@@ -161,7 +161,7 @@
                 <input type="number" id="adminTime" value="25">
             </div>
             
-            <div class="section" style="grid-column: span 2;">
+            <div class="section">
                 <h2>Expenses</h2>
                 <div class="calculator-grid" style="grid-template-columns: 1fr 1fr;">
                     <div>
