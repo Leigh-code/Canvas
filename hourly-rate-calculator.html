@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Interactive Hourly Rate Calculator</title>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -79,7 +78,7 @@
             padding: 15px;
             border: none;
             border-radius: 8px;
-            font-size: 24px;
+            font-size: 36px;
             text-align: center;
             margin-top: 20px;
         }
@@ -132,26 +131,36 @@
         .print-button:hover {
             background-color: #9190b0;
         }
-        #comparisonChart {
-            margin-top: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
+        .progress-bar-container {
+            background-color: #e0e0e0;
+            border-radius: 8px;
+            overflow: hidden;
             margin-top: 10px;
         }
-        table, th, td {
-            border: 1px solid #ddd;
+        .progress-bar {
+            height: 24px;
+            background-color: #E61E2A;
             text-align: center;
-            padding: 8px;
-        }
-        th {
-            background-color: #222160;
             color: white;
+            line-height: 24px;
+            border-radius: 8px;
         }
-        .small-text {
-            font-size: 12px;
-            color: #666;
+        .expandable-section {
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        .expandable-content {
+            display: none;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-top: 10px;
+        }
+        .expandable-section h3 {
+            margin: 0;
+        }
+        .expandable-section.expanded .expandable-content {
+            display: block;
         }
         @media print {
             body {
@@ -337,30 +346,25 @@
                     <p>Total expenses: $<span id="totalExpensesDisplay">0</span></p>
                     <p>Take-home pay: $<span id="takeHomePayDisplay">0</span></p>
                 </div>
-                <div id="comparison">
-                    <h3>Rate Comparison</h3>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Wage (p/h)</th>
-                                <th>Company charged (p/h)</th>
-                                <th>Freelancer received (p/h)</th>
-                                <th>Freelancer charged (p/h)</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>$<span id="workerReceivedRate">0</span></td>
-                                <td>$<span id="companyChargedRate">0</span></td>
-                                <td>$<span id="freelancerReceivedRate">0</span></td>
-                                <td>$<span id="freelancerChargedRate">0</span></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <p class="small-text">A junior graphic designer in a full-time position typically earns around AUD$58,000 annually. However, the company charges the client a significantly higher rate, often similar to what a freelancer charges. This difference is mainly due to the employer's profit margin, with overhead costs being a smaller part of the total. Consequently, the worker receives less than what the client is billed.</p>
+                
+                <div class="expandable-section" onclick="toggleSection(this)">
+                    <h3>How this rate was calculated</h3>
+                    <div class="expandable-content">
+                        <p>Target Salary: $<span id="targetSalaryValue">0</span></p>
+                        <p>Total Expenses: $<span id="totalExpensesValue">0</span></p>
+                        <p>Total Billable Hours: <span id="billableHoursValue">0</span></p>
+                        <p>Calculation: ($<span id="calcTargetSalary">0</span> + $<span id="calcTotalExpenses">0</span>) / <span id="calcBillableHours">0</span> = $<span id="calcHourlyRate">0</span>/hr</p>
+                    </div>
                 </div>
-                <div id="comparisonChart">
-                    <canvas id="myChart"></canvas>
+                
+                <div class="expandable-section" onclick="toggleSection(this)">
+                    <h3>Break-Even Analysis</h3>
+                    <div class="expandable-content">
+                        <p>Hours needed to cover costs: <span id="breakEvenHours">0</span></p>
+                        <div class="progress-bar-container">
+                            <div id="progressBar" class="progress-bar" style="width: 0%;">0%</div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -369,7 +373,6 @@
     <script>
         const form = document.getElementById('hourlyRateForm');
         const inputs = form.querySelectorAll('input');
-        let chart;
 
         function calculateHourlyRate() {
             const targetSalary = parseFloat(document.getElementById('targetSalary').value) || 0;
@@ -395,59 +398,31 @@
             const hourlyRate = (totalExpenses + targetSalary) / billableTime;
             const takeHomePay = targetSalary;
 
+            const breakEvenHours = Math.ceil(totalExpenses / hourlyRate);
+
             // Update display
             document.getElementById('hourlyRateDisplay').textContent = `Hourly rate: $${hourlyRate.toFixed(2)}`;
             document.getElementById('totalExpensesDisplay').textContent = totalExpenses.toFixed(2);
             document.getElementById('takeHomePayDisplay').textContent = takeHomePay.toFixed(2);
-            document.getElementById('workerReceivedRate').textContent = (58000 / 2080).toFixed(2);
-            document.getElementById('companyChargedRate').textContent = '100';
-            document.getElementById('freelancerReceivedRate').textContent = hourlyRate.toFixed(2);
-            document.getElementById('freelancerChargedRate').textContent = (hourlyRate * 1.25).toFixed(2);
 
-            // Update chart
-            updateChart(hourlyRate.toFixed(2), 100, (58000 / 2080).toFixed(2));
+            // Update calculation breakdown
+            document.getElementById('targetSalaryValue').textContent = targetSalary.toFixed(2);
+            document.getElementById('totalExpensesValue').textContent = totalExpenses.toFixed(2);
+            document.getElementById('billableHoursValue').textContent = billableTime.toFixed(2);
+            document.getElementById('calcTargetSalary').textContent = targetSalary.toFixed(2);
+            document.getElementById('calcTotalExpenses').textContent = totalExpenses.toFixed(2);
+            document.getElementById('calcBillableHours').textContent = billableTime.toFixed(2);
+            document.getElementById('calcHourlyRate').textContent = hourlyRate.toFixed(2);
+
+            // Update break-even analysis
+            document.getElementById('breakEvenHours').textContent = breakEvenHours;
+            const progress = Math.min((billableTime / breakEvenHours) * 100, 100).toFixed(2);
+            document.getElementById('progressBar').style.width = `${progress}%`;
+            document.getElementById('progressBar').textContent = `${progress}%`;
         }
 
-        function updateChart(freelanceRate, clientChargedRate, wagedWorkerRate) {
-            const ctx = document.getElementById('myChart').getContext('2d');
-            
-            if (chart) {
-                chart.destroy();
-            }
-
-            chart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Your Freelance Rate', 'Company Charged Rate', 'Waged Worker Rate'],
-                    datasets: [{
-                        label: 'Hourly Rate Comparison (AUD$)',
-                        data: [freelanceRate, clientChargedRate, wagedWorkerRate],
-                        backgroundColor: [
-                            'rgba(34, 33, 96, 0.7)',
-                            'rgba(230, 30, 42, 0.7)',
-                            'rgba(75, 192, 192, 0.7)'
-                        ],
-                        borderColor: [
-                            'rgba(34, 33, 96, 1)',
-                            'rgba(230, 30, 42, 1)',
-                            'rgba(75, 192, 192, 1)'
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: 'Hourly Rate (AUD$)'
-                            }
-                        }
-                    }
-                }
-            });
+        function toggleSection(element) {
+            element.classList.toggle('expanded');
         }
 
         inputs.forEach(input => {
