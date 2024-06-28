@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halftone Screen Ruling</title>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #FFFFFF;
+            color: #000000;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 500px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #FAC800;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .halftone-container {
+            background-color: #FFFFFF;
+            padding: 20px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .slider-container {
+            background-color: #E61E2A;
+            padding: 20px;
+        }
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
+        .label-container {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+        .lpi-display {
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+            margin-top: 10px;
+            color: #FFFFFF;
+        }
+        .instructions {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const HalftoneDemo = () => {
+            const [spacing, setSpacing] = React.useState(3);
+            const size = 400;
+            const angle = 45;
+            const maxRadius = spacing / 2;
+
+            const circularGradient = (x, y) => {
+                const centerX = size / 2;
+                const centerY = size / 2;
+                const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
+                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+                return 1 - (distance / maxDistance);
+            }
+
+            const dots = [];
+            for (let x = 0; x < size; x += spacing) {
+                for (let y = 0; y < size; y += spacing) {
+                    const centerX = x + spacing / 2;
+                    const centerY = y + spacing / 2;
+                    
+                    const rotatedX = (centerX - size/2) * Math.cos(angle * Math.PI / 180) - (centerY - size/2) * Math.sin(angle * Math.PI / 180) + size/2;
+                    const rotatedY = (centerX - size/2) * Math.sin(angle * Math.PI / 180) + (centerY - size/2) * Math.cos(angle * Math.PI / 180) + size/2;
+                    
+                    const gradientValue = circularGradient(rotatedX, rotatedY);
+                    const radius = maxRadius * gradientValue;
+                    
+                    dots.push(
+                        <circle
+                            key={`${x}-${y}`}
+                            cx={centerX}
+                            cy={centerY}
+                            r={radius}
+                            fill="#000000"
+                        />
+                    );
+                }
+            }
+
+            const handleSpacingChange = (event) => {
+                setSpacing(Number(event.target.value));
+            };
+
+            const lpi = Math.round(2540 / spacing);
+
+            return (
+                <div className="container">
+                    <div className="halftone-container">
+                        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+                            {dots}
+                        </svg>
+                    </div>
+                    <div className="slider-container">
+                        <div className="label-container">
+                            <span>Fine</span>
+                            <span>Coarse</span>
+                        </div>
+                        <input
+                            type="range"
+                            min="3"
+                            max="15"
+                            step="1"
+                            value={spacing}
+                            onChange={handleSpacingChange}
+                            className="slider"
+                        />
+                        <div className="lpi-display">
+                            {lpi} LPI
+                        </div>
+                    </div>
+                    <p className="instructions">
+                        Adjust the slider to see how screen ruling affects the halftone pattern.
+                    </p>
+                </div>
+            );
+        };
+
+        ReactDOM.render(<HalftoneDemo />, document.getElementById('root'));
+    </script>
+</body>
+</html>
