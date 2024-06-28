@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moiré Pattern Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+
+  <script>
+    const { useState } = React;
+
+    const MoirePattern = () => {
+      const [angle, setAngle] = useState(0);
+      const [lineWidth, setLineWidth] = useState(50);
+      const [screenRuling, setScreenRuling] = useState(40);
+
+      return (
+        React.createElement("div", { className: "flex flex-col items-center space-y-8 p-8 bg-white" },
+          React.createElement("svg", { viewBox: "0 0 400 400", className: "w-full max-w-lg" },
+            React.createElement("defs", null,
+              React.createElement("pattern", { id: "pattern1", width: screenRuling, height: screenRuling, patternUnits: "userSpaceOnUse" },
+                React.createElement("line", { x1: "0", y1: screenRuling / 2, x2: screenRuling, y2: screenRuling / 2, stroke: "black", strokeWidth: lineWidth / 100 * screenRuling })
+              ),
+              React.createElement("pattern", { id: "pattern2", width: screenRuling, height: screenRuling, patternUnits: "userSpaceOnUse", patternTransform: `rotate(${angle} ${screenRuling / 2} ${screenRuling / 2})` },
+                React.createElement("line", { x1: "0", y1: screenRuling / 2, x2: screenRuling, y2: screenRuling / 2, stroke: "black", strokeWidth: lineWidth / 100 * screenRuling })
+              )
+            ),
+            React.createElement("rect", { width: "100%", height: "100%", fill: "url(#pattern1)" }),
+            React.createElement("rect", { width: "100%", height: "100%", fill: "url(#pattern2)" })
+          ),
+          React.createElement("div", { className: "flex items-center space-x-4" },
+            React.createElement("label", { htmlFor: "angleSlider", className: "text-black text-sm font-bold" }, "Angle:"),
+            React.createElement("input", {
+              id: "angleSlider",
+              type: "range",
+              min: "0",
+              max: "90",
+              value: angle,
+              onChange: e => setAngle(Number(e.target.value)),
+              className: "w-48"
+            })
+          ),
+          React.createElement("div", { className: "flex items-center space-x-4" },
+            React.createElement("label", { htmlFor: "lineWidthSlider", className: "text-black text-sm font-bold" }, "Line Width:"),
+            React.createElement("input", {
+              id: "lineWidthSlider",
+              type: "range",
+              min: "0",
+              max: "100",
+              value: lineWidth,
+              onChange: e => setLineWidth(Number(e.target.value)),
+              className: "w-48"
+            })
+          ),
+          React.createElement("div", { className: "flex items-center space-x-4" },
+            React.createElement("label", { htmlFor: "screenRulingSlider", className: "text-black text-sm font-bold" }, "Screen Ruling:"),
+            React.createElement("input", {
+              id: "screenRulingSlider",
+              type: "range",
+              min: "20",
+              max: "80",
+              value: screenRuling,
+              onChange: e => setScreenRuling(Number(e.target.value)),
+              className: "w-48"
+            })
+          ),
+          React.createElement("p", { className: "text-black text-sm font-bold" }, "Adjust the sliders to see the moiré interference pattern.")
+        )
+      );
+    };
+
+    ReactDOM.render(React.createElement(MoirePattern), document.getElementById('root'));
+  </script>
+</body>
+</html>
