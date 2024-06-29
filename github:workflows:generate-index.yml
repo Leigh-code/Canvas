@@ -1,0 +1,44 @@
+name: Generate Index
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'docs/**'
+
+jobs:
+  generate-index:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Generate Index
+        run: |
+          cd docs
+          echo "<!DOCTYPE html>" > index.html
+          echo "<html>" >> index.html
+          echo "<head>" >> index.html
+          echo "  <title>My GitHub Pages Site</title>" >> index.html
+          echo "</head>" >> index.html
+          echo "<body>" >> index.html
+          echo "  <h1>Welcome to my GitHub Pages site!</h1>" >> index.html
+          echo "  <h2>Pages:</h2>" >> index.html
+          echo "  <ul>" >> index.html
+          for file in *.html; do
+            if [ "$file" != "index.html" ]; then
+              echo "    <li><a href=\"$file\">$file</a></li>" >> index.html
+            fi
+          done
+          echo "  </ul>" >> index.html
+          echo "</body>" >> index.html
+          echo "</html>" >> index.html
+
+      - name: Commit Changes
+        run: |
+          git config --global user.name 'GitHub Actions'
+          git config --global user.email 'actions@github.com'
+          git add docs/index.html
+          git commit -m 'Update index.html'
+          git push
