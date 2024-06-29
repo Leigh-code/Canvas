@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive CMYK Color Model (Coated FOGRA39)</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css">
+  <style>
+    @font-face {
+      font-family: 'Chicago';
+      src: url('https://fonts.cdnfonts.com/s/14889/Chicago.woff') format('woff');
+    }
+    body {
+      font-family: "Chicago", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #c0c0c0;
+    }
+    .window {
+      width: 450px;
+      background-color: #fff;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .color-model {
+      position: relative;
+      width: 300px;
+      height: 300px;
+      margin-bottom: 20px;
+      background-color: white;
+    }
+    .circle {
+      width: 210px;
+      height: 210px;
+      border-radius: 50%;
+      position: absolute;
+      mix-blend-mode: multiply;
+    }
+    #circle-c { left: 10px; top: 45px; }
+    #circle-m { right: 10px; top: 45px; }
+    #circle-y { left: 45px; bottom: 10px; }
+    #circle-k { left: 45px; top: 15px; }
+    .slider-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+      width: 100%;
+    }
+    .slider {
+      display: flex;
+      align-items: center;
+      color: #000;
+      width: calc(50% - 10px);
+    }
+    .slider span {
+      width: 60px;
+      text-align: right;
+      padding-right: 10px;
+    }
+    .nouislider { flex-grow: 1; }
+    .noUi-target {
+      border: none;
+      box-shadow: none;
+      background: #e0e0e0;
+      height: 8px;
+    }
+    .noUi-handle {
+      border: none;
+      border-radius: 50%;
+      background: #808080;
+      box-shadow: none;
+      width: 16px !important;
+      height: 16px !important;
+      right: -8px !important;
+      top: -5px !important;
+    }
+    .noUi-handle::before, .noUi-handle::after { display: none; }
+    .noUi-connects { overflow: visible; }
+    .noUi-connect { background: #808080; }
+    .cmyk-values {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      background-color: #f0f0f0;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .cmyk-value {
+      width: 40px;
+      text-align: center;
+      font-family: "Chicago", Arial, sans-serif;
+      font-size: 18px;
+      padding: 5px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+      -moz-appearance: textfield;
+    }
+    .cmyk-value::-webkit-inner-spin-button, 
+    .cmyk-value::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    .separator {
+      font-size: 18px;
+      color: #808080;
+      margin: 0 2px;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="color-model">
+      <div id="circle-c" class="circle"></div>
+      <div id="circle-m" class="circle"></div>
+      <div id="circle-y" class="circle"></div>
+      <div id="circle-k" class="circle"></div>
+    </div>
+    <div class="slider-container">
+      <div class="slider">
+        <span>Cyan</span>
+        <div id="slider-c" class="nouislider"></div>
+      </div>
+      <div class="slider">
+        <span>Magenta</span>
+        <div id="slider-m" class="nouislider"></div>
+      </div>
+      <div class="slider">
+        <span>Yellow</span>
+        <div id="slider-y" class="nouislider"></div>
+      </div>
+      <div class="slider">
+        <span>Black</span>
+        <div id="slider-k" class="nouislider"></div>
+      </div>
+    </div>
+    <div class="cmyk-values">
+      <input type="number" id="value-c" class="cmyk-value" min="0" max="100" step="1">
+      <span class="separator">/</span>
+      <input type="number" id="value-m" class="cmyk-value" min="0" max="100" step="1">
+      <span class="separator">/</span>
+      <input type="number" id="value-y" class="cmyk-value" min="0" max="100" step="1">
+      <span class="separator">/</span>
+      <input type="number" id="value-k" class="cmyk-value" min="0" max="85" step="1">
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
+  <script>
+    const sliderC = document.getElementById('slider-c');
+    const sliderM = document.getElementById('slider-m');
+    const sliderY = document.getElementById('slider-y');
+    const sliderK = document.getElementById('slider-k');
+
+    const circleC = document.getElementById('circle-c');
+    const circleM = document.getElementById('circle-m');
+    const circleY = document.getElementById('circle-y');
+    const circleK = document.getElementById('circle-k');
+
+    const valueC = document.getElementById('value-c');
+    const valueM = document.getElementById('value-m');
+    const valueY = document.getElementById('value-y');
+    const valueK = document.getElementById('value-k');
+
+    // Refined Coated FOGRA39 approximation
+    const processCyan = [0, 170, 230];
+    const processMagenta = [230, 0, 126];
+    const processYellow = [255, 240, 0];
+
+    function updateColor() {
+      let c = parseInt(valueC.value);
+      let m = parseInt(valueM.value);
+      let y = parseInt(valueY.value);
+      let k = parseInt(valueK.value);
+
+      circleC.style.backgroundColor = `rgba(${processCyan[0]}, ${processCyan[1]}, ${processCyan[2]}, ${c / 100})`;
+      circleM.style.backgroundColor = `rgba(${processMagenta[0]}, ${processMagenta[1]}, ${processMagenta[2]}, ${m / 100})`;
+      circleY.style.backgroundColor = `rgba(${processYellow[0]}, ${processYellow[1]}, ${processYellow[2]}, ${y / 100})`;
+      circleK.style.backgroundColor = `rgba(0, 0, 0, ${k / 100})`;
+
+      valueC.style.color = `rgb(${processCyan[0]}, ${processCyan[1]}, ${processCyan[2]})`;
+      valueM.style.color = `rgb(${processMagenta[0]}, ${processMagenta[1]}, ${processMagenta[2]})`;
+      valueY.style.color = `rgb(180, 170, 0)`;
+      valueK.style.color = 'black';
+    }
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+    function createSlider(slider, value, min, max) {
+      const initialValue = randomInt(min, max);
+      noUiSlider.create(slider, {
+        start: initialValue,
+        range: { 'min': 0, 'max': max },
+        step: 1,
+        tooltips: false
+      });
+      value.value = initialValue;
+      slider.noUiSlider.on('update', (values, handle) => {
+        value.value = Math.round(values[handle]);
+        updateColor();
+      });
+    }
+
+    createSlider(sliderC, valueC, 15, 100);
+    createSlider(sliderM, valueM, 15, 100);
+    createSlider(sliderY, valueY, 15, 100);
+    createSlider(sliderK, valueK, 0, 85);
+
+    [valueC, valueM, valueY, valueK].forEach((value, index) => {
+      value.addEventListener('change', () => {
+        const max = index === 3 ? 85 : 100;
+        const newValue = Math.min(Math.max(parseInt(value.value) || 0, 0), max);
+        value.value = newValue;
+        const sliders = [sliderC, sliderM, sliderY, sliderK];
+        sliders[index].noUiSlider.set(newValue);
+        updateColor();
+      });
+    });
+
+    // Initialize with the randomized values
+    updateColor();
+  </script>
+</body>
+</html>
