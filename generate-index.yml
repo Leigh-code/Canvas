@@ -25,7 +25,7 @@ jobs:
           echo "  <h2>Index of Files</h2>" >> index.html
           echo "  <ul id=\"file-list\">" >> index.html
           for file in $(ls *.html | grep -v "index.html"); do
-            echo "    <li><a href=\"$file\">$file</a></li>" >> index.html
+            echo "    <li><a href=\"https://leigh-code.github.io/Canvas/$file\">$file</a></li>" >> index.html
           done
           echo "  </ul>" >> index.html
           echo "</body>" >> index.html
