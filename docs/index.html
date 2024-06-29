@@ -37,7 +37,16 @@
     <script>
         const owner = 'leigh-code';
         const repo = 'Canvas';
-        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/`;
+        const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/docs`;
+
+        function createListItem(name) {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = `https://${owner}.github.io/${repo}/${name}`;
+            a.textContent = name;
+            li.appendChild(a);
+            return li;
+        }
 
         fetch(apiUrl)
             .then(response => response.json())
@@ -45,16 +54,25 @@
                 const fileList = document.getElementById('file-list');
                 data.forEach(item => {
                     if (item.type === 'file' && item.name.endsWith('.html') && item.name !== 'index.html') {
-                        const li = document.createElement('li');
-                        const a = document.createElement('a');
-                        a.href = `https://${owner}.github.io/${repo}/${item.name}`;
-                        a.textContent = item.name;
-                        li.appendChild(a);
-                        fileList.appendChild(li);
+                        fileList.appendChild(createListItem(item.name));
                     }
                 });
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => {
+                console.error('Error:', error);
+                // If fetching from /docs fails, try fetching from the root
+                fetch(`https://api.github.com/repos/${owner}/${repo}/contents/`)
+                    .then(response => response.json())
+                    .then(data => {
+                        const fileList = document.getElementById('file-list');
+                        data.forEach(item => {
+                            if (item.type === 'file' && item.name.endsWith('.html') && item.name !== 'index.html') {
+                                fileList.appendChild(createListItem(item.name));
+                            }
+                        });
+                    })
+                    .catch(error => console.error('Error:', error));
+            });
     </script>
 </body>
 </html>
