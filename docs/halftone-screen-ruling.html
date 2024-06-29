@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halftone Screen Ruling</title>
+    <title>Halftone Screen Ruling with Dot Gain</title>
     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
@@ -24,39 +24,67 @@
         }
         .halftone-container {
             background-color: #FFFFFF;
-            padding: 20px;
-            margin-bottom: 20px;
+            padding: 10px;
+            margin-bottom: 10px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         .slider-container {
-            background-color: #E61E2A;
-            padding: 20px;
+            padding: 10px;
+            margin-bottom: 10px;
         }
         .slider {
             width: 100%;
-            margin: 10px 0;
+            margin: 5px 0;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #ddd;
+            outline: none;
+            opacity: 0.8;
+            -webkit-transition: .2s;
+            transition: opacity .2s;
+        }
+        .slider:hover {
+            opacity: 1;
+        }
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #E61E2A;
+            cursor: pointer;
+        }
+        .slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #E61E2A;
+            cursor: pointer;
         }
         .label-container {
             display: flex;
             justify-content: space-between;
             font-weight: bold;
-            color: #FFFFFF;
+            font-size: 14px;
+            color: #000000;
         }
-        .lpi-display {
+        .lpi-display, .dot-gain-display {
             text-align: center;
-            font-size: 28px;
+            font-size: 18px;
             font-weight: bold;
-            margin-top: 10px;
-            color: #FFFFFF;
+            margin-top: 5px;
+            color: #000000;
         }
         .instructions {
             text-align: center;
-            margin-top: 20px;
+            margin-top: 10px;
             font-weight: bold;
-            font-size: 16px;
-            line-height: 1.5.
+            font-size: 14px;
+            line-height: 1.5;
         }
     </style>
 </head>
@@ -65,10 +93,10 @@
 
     <script type="text/babel">
         const HalftoneDemo = () => {
-            const [spacing, setSpacing] = React.useState(254); // Initial value for coarsest LPI
+            const [spacing, setSpacing] = React.useState(127); // Initial value for coarsest LPI
+            const [dotGain, setDotGain] = React.useState(0); // Initial dot gain
             const size = 400;
             const angle = 45;
-            const maxRadius = spacing / 2;
 
             const circularGradient = (x, y) => {
                 const centerX = size / 2;
@@ -84,11 +112,11 @@
                     const centerX = x + spacing / 2;
                     const centerY = y + spacing / 2;
 
-                    const rotatedX = (centerX - size/2) * Math.cos(angle * Math.PI / 180) - (centerY - size/2) * Math.sin(angle * Math.PI / 180) + size/2;
-                    const rotatedY = (centerX - size/2) * Math.sin(angle * Math.PI / 180) + (centerY - size/2) * Math.cos(angle * Math.PI / 180) + size/2;
+                    const rotatedX = (centerX - size / 2) * Math.cos(angle * Math.PI / 180) - (centerY - size / 2) * Math.sin(angle * Math.PI / 180) + size / 2;
+                    const rotatedY = (centerX - size / 2) * Math.sin(angle * Math.PI / 180) + (centerY - size / 2) * Math.cos(angle * Math.PI / 180) + size / 2;
 
                     const gradientValue = circularGradient(rotatedX, rotatedY);
-                    const radius = maxRadius * gradientValue;
+                    const radius = (spacing / 2) * gradientValue * (1 + dotGain / 100); // Adjust radius with dot gain
 
                     dots.push(
                         <circle
@@ -104,6 +132,10 @@
 
             const handleSpacingChange = (event) => {
                 setSpacing(Number(event.target.value));
+            };
+
+            const handleDotGainChange = (event) => {
+                setDotGain(Number(event.target.value));
             };
 
             const lpi = Math.round(2540 / spacing);
@@ -123,7 +155,7 @@
                         <input
                             type="range"
                             min="4"
-                            max="254"
+                            max="127"
                             step="1"
                             value={spacing}
                             onChange={handleSpacingChange}
@@ -133,8 +165,26 @@
                             {lpi} LPI
                         </div>
                     </div>
+                    <div className="slider-container">
+                        <div className="label-container">
+                            <span>0%</span>
+                            <span>50%</span>
+                        </div>
+                        <input
+                            type="range"
+                            min="0"
+                            max="50"
+                            step="1"
+                            value={dotGain}
+                            onChange={handleDotGainChange}
+                            className="slider"
+                        />
+                        <div className="dot-gain-display">
+                            {dotGain}% Dot Gain
+                        </div>
+                    </div>
                     <p className="instructions">
-                        Adjust the slider to see how screen ruling affects the halftone pattern.
+                        Adjust the sliders to see how screen ruling and dot gain affect the halftone pattern.
                     </p>
                 </div>
             );
