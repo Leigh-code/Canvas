@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Interactive RGB Color Model</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.css">
   <style>
     @font-face {
       font-family: 'Chicago';
@@ -30,80 +31,135 @@
     }
     .color-model {
       position: relative;
-      width: 200px;
-      height: 200px;
+      width: 300px;
+      height: 300px;
       margin-bottom: 60px;
       display: flex;
       justify-content: center;
       align-items: center;
     }
     .circle {
-      width: 150px;
-      height: 150px;
+      width: 210px;
+      height: 210px;
       border-radius: 50%;
       position: absolute;
       mix-blend-mode: screen;
     }
-    #circle-r {
-      background-color: rgb(255, 0, 0);
-    }
-    #circle-g {
-      background-color: rgb(0, 255, 0);
-    }
-    #circle-b {
-      background-color: rgb(0, 0, 255);
-    }
+    #circle-r { left: 10px; top: 45px; }
+    #circle-g { right: 10px; top: 45px; }
+    #circle-b { left: 45px; bottom: 10px; }
     .slider-container {
       display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: 20px;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 15px;
+      width: 100%;
       margin-bottom: 30px;
     }
     .slider {
       display: flex;
-      flex-direction: column;
       align-items: center;
       color: #fff;
+      width: 100%;
     }
-    input[type="range"] {
-      width: 120px;
+    .slider span {
+      width: 60px;
+      text-align: right;
+      padding-right: 10px;
     }
+    .nouislider { flex-grow: 1; }
+    .noUi-target {
+      border: none;
+      box-shadow: none;
+      background: #e0e0e0;
+      height: 8px;
+    }
+    .noUi-handle {
+      border: none;
+      border-radius: 50%;
+      background: #808080;
+      box-shadow: none;
+      width: 16px !important;
+      height: 16px !important;
+      right: -8px !important;
+      top: -5px !important;
+    }
+    .noUi-handle::before, .noUi-handle::after { display: none; }
+    .noUi-connects { overflow: visible; }
+    .noUi-connect { background: #808080; }
     .result {
       font-size: 16px;
       font-weight: bold;
       text-align: center;
       color: #fff;
     }
+    .rgb-values {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-top: 20px;
+      background-color: #333;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    .rgb-value {
+      width: 40px;
+      text-align: center;
+      font-family: "Chicago", Arial, sans-serif;
+      font-size: 18px;
+      padding: 5px;
+      border: none;
+      background-color: transparent;
+      color: #fff;
+      cursor: pointer;
+      -moz-appearance: textfield;
+    }
+    .rgb-value::-webkit-inner-spin-button, 
+    .rgb-value::-webkit-outer-spin-button { 
+      -webkit-appearance: none; 
+      margin: 0; 
+    }
+    .separator {
+      font-size: 18px;
+      color: #808080;
+      margin: 0 2px;
+    }
   </style>
 </head>
 <body>
   <div class="window">
     <div class="color-model">
-      <div id="circle-r" class="circle" style="left: 0; top: 25px;"></div>
-      <div id="circle-g" class="circle" style="left: 50px; top: 25px;"></div>
-      <div id="circle-b" class="circle" style="left: 25px; top: 75px;"></div>
+      <div id="circle-r" class="circle"></div>
+      <div id="circle-g" class="circle"></div>
+      <div id="circle-b" class="circle"></div>
     </div>
     <div class="slider-container">
       <div class="slider">
-        <label for="slider-r">Red (<span id="value-r">255</span>)</label>
-        <input type="range" id="slider-r" min="0" max="255" value="255">
+        <span>Red</span>
+        <div id="slider-r" class="nouislider"></div>
       </div>
       <div class="slider">
-        <label for="slider-g">Green (<span id="value-g">0</span>)</label>
-        <input type="range" id="slider-g" min="0" max="255" value="0">
+        <span>Green</span>
+        <div id="slider-g" class="nouislider"></div>
       </div>
       <div class="slider">
-        <label for="slider-b">Blue (<span id="value-b">255</span>)</label>
-        <input type="range" id="slider-b" min="0" max="255" value="255">
+        <span>Blue</span>
+        <div id="slider-b" class="nouislider"></div>
       </div>
     </div>
+    <div class="rgb-values">
+      <input type="number" id="value-r" class="rgb-value" min="0" max="255" step="1">
+      <span class="separator">/</span>
+      <input type="number" id="value-g" class="rgb-value" min="0" max="255" step="1">
+      <span class="separator">/</span>
+      <input type="number" id="value-b" class="rgb-value" min="0" max="255" step="1">
+    </div>
     <div class="result">
-      RGB: <span id="rgb-value">rgb(255, 0, 255)</span><br>
       HEX: <span id="hex-value">#FF00FF</span>
     </div>
   </div>
 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.6.1/nouislider.min.js"></script>
   <script>
     const sliderR = document.getElementById('slider-r');
     const sliderG = document.getElementById('slider-g');
@@ -117,29 +173,47 @@
     const circleG = document.getElementById('circle-g');
     const circleB = document.getElementById('circle-b');
 
-    const rgbValue = document.getElementById('rgb-value');
     const hexValue = document.getElementById('hex-value');
 
     function updateColor() {
-      const r = parseInt(sliderR.value);
-      const g = parseInt(sliderG.value);
-      const b = parseInt(sliderB.value);
-
-      valueR.textContent = r;
-      valueG.textContent = g;
-      valueB.textContent = b;
+      const r = parseInt(valueR.value);
+      const g = parseInt(valueG.value);
+      const b = parseInt(valueB.value);
 
       circleR.style.backgroundColor = `rgb(${r}, 0, 0)`;
       circleG.style.backgroundColor = `rgb(0, ${g}, 0)`;
       circleB.style.backgroundColor = `rgb(0, 0, ${b})`;
 
-      rgbValue.textContent = `rgb(${r}, ${g}, ${b})`;
       hexValue.textContent = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`.toUpperCase();
     }
 
-    sliderR.addEventListener('input', updateColor);
-    sliderG.addEventListener('input', updateColor);
-    sliderB.addEventListener('input', updateColor);
+    function createSlider(slider, value, initialValue) {
+      noUiSlider.create(slider, {
+        start: initialValue,
+        range: { 'min': 0, 'max': 255 },
+        step: 1,
+        tooltips: false
+      });
+      value.value = initialValue;
+      slider.noUiSlider.on('update', (values, handle) => {
+        value.value = Math.round(values[handle]);
+        updateColor();
+      });
+    }
+
+    createSlider(sliderR, valueR, 255);
+    createSlider(sliderG, valueG, 0);
+    createSlider(sliderB, valueB, 255);
+
+    [valueR, valueG, valueB].forEach((value, index) => {
+      value.addEventListener('change', () => {
+        const newValue = Math.min(Math.max(parseInt(value.value) || 0, 0), 255);
+        value.value = newValue;
+        const sliders = [sliderR, sliderG, sliderB];
+        sliders[index].noUiSlider.set(newValue);
+        updateColor();
+      });
+    });
 
     updateColor();
   </script>
