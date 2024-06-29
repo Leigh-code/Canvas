@@ -18,12 +18,12 @@ fetch('https://api.github.com/repos/Leigh-code/Canvas/contents/docs')
     .then(data => {
         console.log('Data fetched:', data);
         const fileList = document.getElementById('file-list');
-        const baseUrl = 'https://Leigh-code.github.io/Canvas/';
+        const baseUrl = 'https://leigh-code.github.io/Canvas/docs/';
         data.forEach(file => {
             if (file.name.endsWith('.html')) {
                 const listItem = document.createElement('li');
                 const link = document.createElement('a');
-                link.href = `${baseUrl}docs/${file.name}`;
+                link.href = `${baseUrl}${file.name}`;
                 console.log('Link URL:', link.href); // Log the URL
                 link.textContent = file.name;
                 listItem.appendChild(link);
