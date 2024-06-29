@@ -56,7 +56,7 @@
             margin-top: 20px;
             font-weight: bold;
             font-size: 16px;
-            line-height: 1.5;
+            line-height: 1.5.
         }
     </style>
 </head>
@@ -65,7 +65,7 @@
 
     <script type="text/babel">
         const HalftoneDemo = () => {
-            const [spacing, setSpacing] = React.useState(3);
+            const [spacing, setSpacing] = React.useState(254); // Initial value for coarsest LPI
             const size = 400;
             const angle = 45;
             const maxRadius = spacing / 2;
@@ -76,20 +76,20 @@
                 const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
                 const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
                 return 1 - (distance / maxDistance);
-            }
+            };
 
             const dots = [];
             for (let x = 0; x < size; x += spacing) {
                 for (let y = 0; y < size; y += spacing) {
                     const centerX = x + spacing / 2;
                     const centerY = y + spacing / 2;
-                    
+
                     const rotatedX = (centerX - size/2) * Math.cos(angle * Math.PI / 180) - (centerY - size/2) * Math.sin(angle * Math.PI / 180) + size/2;
                     const rotatedY = (centerX - size/2) * Math.sin(angle * Math.PI / 180) + (centerY - size/2) * Math.cos(angle * Math.PI / 180) + size/2;
-                    
+
                     const gradientValue = circularGradient(rotatedX, rotatedY);
                     const radius = maxRadius * gradientValue;
-                    
+
                     dots.push(
                         <circle
                             key={`${x}-${y}`}
@@ -122,8 +122,8 @@
                         </div>
                         <input
                             type="range"
-                            min="3"
-                            max="15"
+                            min="4"
+                            max="254"
                             step="1"
                             value={spacing}
                             onChange={handleSpacingChange}
