@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Repository Structure Diagnosis</title>
+</head>
+<body>
+    <h1>Repository Structure Diagnosis</h1>
+    <pre id="output"></pre>
+
+    <script>
+        const owner = 'leigh-code';
+        const repo = 'Canvas';
+        const output = document.getElementById('output');
+
+        async function checkPath(path) {
+            const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+            try {
+                const response = await fetch(apiUrl);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                output.textContent += `Contents of /${path}:\n`;
+                data.forEach(item => {
+                    output.textContent += `  ${item.type}: ${item.name}\n`;
+                });
+            } catch (error) {
+                output.textContent += `Error fetching /${path}: ${error.message}\n`;
+            }
+            output.textContent += '\n';
+        }
+
+        async function diagnose() {
+            output.textContent = 'Diagnosing repository structure...\n\n';
+            
+            await checkPath('');
+            await checkPath('docs');
+            
+            output.textContent += 'Diagnosis complete. Please share this output for further assistance.';
+        }
+
+        diagnose();
+    </script>
+</body>
+</html>
