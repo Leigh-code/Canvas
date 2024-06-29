@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive RGB Color Model</title>
+  <style>
+    @font-face {
+      font-family: 'Chicago';
+      src: url('https://fonts.cdnfonts.com/s/14889/Chicago.woff') format('woff');
+    }
+    body {
+      font-family: "Chicago", Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+      background-color: #c0c0c0;
+    }
+    .window {
+      width: 400px;
+      background-color: #000;
+      border: 2px outset #fff;
+      border-radius: 0;
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .color-model {
+      position: relative;
+      width: 200px;
+      height: 200px;
+      margin-bottom: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .circle {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      position: absolute;
+      mix-blend-mode: screen;
+    }
+    #circle-r {
+      background-color: rgb(255, 0, 0);
+    }
+    #circle-g {
+      background-color: rgb(0, 255, 0);
+    }
+    #circle-b {
+      background-color: rgb(0, 0, 255);
+    }
+    .slider-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    .slider {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: #fff;
+    }
+    input[type="range"] {
+      width: 120px;
+    }
+    .result {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <div class="window">
+    <div class="color-model">
+      <div id="circle-r" class="circle" style="left: 0; top: 25px;"></div>
+      <div id="circle-g" class="circle" style="left: 50px; top: 25px;"></div>
+      <div id="circle-b" class="circle" style="left: 25px; top: 75px;"></div>
+    </div>
+    <div class="slider-container">
+      <div class="slider">
+        <label for="slider-r">Red (<span id="value-r">255</span>)</label>
+        <input type="range" id="slider-r" min="0" max="255" value="255">
+      </div>
+      <div class="slider">
+        <label for="slider-g">Green (<span id="value-g">0</span>)</label>
+        <input type="range" id="slider-g" min="0" max="255" value="0">
+      </div>
+      <div class="slider">
+        <label for="slider-b">Blue (<span id="value-b">255</span>)</label>
+        <input type="range" id="slider-b" min="0" max="255" value="255">
+      </div>
+    </div>
+    <div class="result">
+      RGB: <span id="rgb-value">rgb(255, 0, 255)</span><br>
+      HEX: <span id="hex-value">#FF00FF</span>
+    </div>
+  </div>
+
+  <script>
+    const sliderR = document.getElementById('slider-r');
+    const sliderG = document.getElementById('slider-g');
+    const sliderB = document.getElementById('slider-b');
+
+    const valueR = document.getElementById('value-r');
+    const valueG = document.getElementById('value-g');
+    const valueB = document.getElementById('value-b');
+
+    const circleR = document.getElementById('circle-r');
+    const circleG = document.getElementById('circle-g');
+    const circleB = document.getElementById('circle-b');
+
+    const rgbValue = document.getElementById('rgb-value');
+    const hexValue = document.getElementById('hex-value');
+
+    function updateColor() {
+      const r = parseInt(sliderR.value);
+      const g = parseInt(sliderG.value);
+      const b = parseInt(sliderB.value);
+
+      valueR.textContent = r;
+      valueG.textContent = g;
+      valueB.textContent = b;
+
+      circleR.style.backgroundColor = `rgb(${r}, 0, 0)`;
+      circleG.style.backgroundColor = `rgb(0, ${g}, 0)`;
+      circleB.style.backgroundColor = `rgb(0, 0, ${b})`;
+
+      rgbValue.textContent = `rgb(${r}, ${g}, ${b})`;
+      hexValue.textContent = `#${r.toString(16).padStart(2, '0')}${g.toString(16).padStart(2, '0')}${b.toString(16).padStart(2, '0')}`.toUpperCase();
+    }
+
+    sliderR.addEventListener('input', updateColor);
+    sliderG.addEventListener('input', updateColor);
+    sliderB.addEventListener('input', updateColor);
+
+    updateColor();
+  </script>
+</body>
+</html>
