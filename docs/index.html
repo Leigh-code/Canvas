@@ -23,6 +23,7 @@ fetch('https://api.github.com/repos/Leigh-code/Canvas/contents/docs')
                 const listItem = document.createElement('li');
                 const link = document.createElement('a');
                 link.href = `docs/${file.name}`;
+                console.log('Link URL:', link.href); // Log the URL
                 link.textContent = file.name;
                 listItem.appendChild(link);
                 fileList.appendChild(listItem);
