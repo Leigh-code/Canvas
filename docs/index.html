@@ -28,11 +28,35 @@
         a:hover {
             text-decoration: underline;
         }
+        .controls {
+            margin-bottom: 20px;
+        }
+        .slider {
+            width: 100%;
+            margin: 10px 0;
+        }
     </style>
 </head>
 <body>
     <h1>Canvas Project Files</h1>
     <ul id="file-list"></ul>
+
+    <h1>3D Sphere with Shadow</h1>
+    <div id="3d-container" style="height: 400px;"></div>
+    <div class="controls">
+        <label class="slider">
+            Light X:
+            <input id="lightX" type="range" min="-10" max="10" step="0.1" value="5">
+        </label>
+        <label class="slider">
+            Light Y:
+            <input id="lightY" type="range" min="-10" max="10" step="0.1" value="5">
+        </label>
+        <label class="slider">
+            Light Z:
+            <input id="lightZ" type="range" min="-10" max="10" step="0.1" value="5">
+        </label>
+    </div>
 
     <script>
         const owner = 'leigh-code';
@@ -73,6 +97,61 @@
                     })
                     .catch(error => console.error('Error:', error));
             });
+
+        // Three.js and React Three Fiber code
+        const { createRoot } = ReactDOM;
+        const { Canvas, useFrame } = ReactThreeFiber;
+        const { OrbitControls, Sphere, Plane, SpotLight } = Drei;
+
+        const SphereWithShadow = () => {
+            const lightRef = React.useRef();
+            const [lightX, setLightX] = React.useState(5);
+            const [lightY, setLightY] = React.useState(5);
+            const [lightZ, setLightZ] = React.useState(5);
+
+            useFrame(() => {
+                lightRef.current.position.set(lightX, lightY, lightZ);
+            });
+
+            React.useEffect(() => {
+                const handleSliderChange = (e) => {
+                    const { id, value } = e.target;
+                    if (id === 'lightX') setLightX(Number(value));
+                    if (id === 'lightY') setLightY(Number(value));
+                    if (id === 'lightZ') setLightZ(Number(value));
+                };
+                document.getElementById('lightX').addEventListener('input', handleSliderChange);
+                document.getElementById('lightY').addEventListener('input', handleSliderChange);
+                document.getElementById('lightZ').addEventListener('input', handleSliderChange);
+
+                return () => {
+                    document.getElementById('lightX').removeEventListener('input', handleSliderChange);
+                    document.getElementById('lightY').removeEventListener('input', handleSliderChange);
+                    document.getElementById('lightZ').removeEventListener('input', handleSliderChange);
+                };
+            }, []);
+
+            return (
+                <>
+                    <ambientLight intensity={0.2} />
+                    <SpotLight ref={lightRef} position={[lightX, lightY, lightZ]} angle={0.3} penumbra={1} castShadow />
+                    <Sphere args={[1, 32, 32]} castShadow receiveShadow>
+                        <meshStandardMaterial attach="material" color="orange" />
+                    </Sphere>
+                    <Plane args={[10, 10]} rotation-x={-Math.PI / 2} position={[0, -1, 0]} receiveShadow>
+                        <meshStandardMaterial attach="material" color="gray" />
+                    </Plane>
+                    <OrbitControls />
+                </>
+            );
+        };
+
+        const root = createRoot(document.getElementById('3d-container'));
+        root.render(
+            <Canvas shadows camera={{ position: [3, 3, 3], fov: 50 }}>
+                <SphereWithShadow />
+            </Canvas>
+        );
     </script>
 </body>
 </html>
