@@ -35,6 +35,10 @@
             width: 100%;
             margin: 10px 0;
         }
+        #3d-container {
+            width: 100%;
+            height: 400px;
+        }
     </style>
 </head>
 <body>
@@ -42,7 +46,7 @@
     <ul id="file-list"></ul>
 
     <h1>3D Sphere with Shadow</h1>
-    <div id="3d-container" style="height: 400px;"></div>
+    <div id="3d-container"></div>
     <div class="controls">
         <label class="slider">
             Light X:
@@ -58,7 +62,72 @@
         </label>
     </div>
 
-    <script>
+    <script src="https://unpkg.com/three@0.128.0/build/three.min.js"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@react-three/fiber@6.0.20/dist/react-three-fiber.umd.js"></script>
+    <script src="https://unpkg.com/@react-three/drei@4.0.3/dist/react-three-drei.umd.js"></script>
+    <script type="text/babel">
+        // Your Sphere class code here
+        class Sphere {
+            // ... Sphere class code from your previous input ...
+        }
+
+        const { createRoot } = ReactDOM;
+        const { Canvas, useFrame } = ReactThreeFiber;
+        const { OrbitControls, Plane, SpotLight } = Drei;
+
+        const SphereWithShadow = () => {
+            const lightRef = React.useRef();
+            const [lightX, setLightX] = React.useState(5);
+            const [lightY, setLightY] = React.useState(5);
+            const [lightZ, setLightZ] = React.useState(5);
+
+            useFrame(() => {
+                lightRef.current.position.set(lightX, lightY, lightZ);
+            });
+
+            React.useEffect(() => {
+                const handleSliderChange = (e) => {
+                    const { id, value } = e.target;
+                    if (id === 'lightX') setLightX(Number(value));
+                    if (id === 'lightY') setLightY(Number(value));
+                    if (id === 'lightZ') setLightZ(Number(value));
+                };
+                document.getElementById('lightX').addEventListener('input', handleSliderChange);
+                document.getElementById('lightY').addEventListener('input', handleSliderChange);
+                document.getElementById('lightZ').addEventListener('input', handleSliderChange);
+
+                return () => {
+                    document.getElementById('lightX').removeEventListener('input', handleSliderChange);
+                    document.getElementById('lightY').removeEventListener('input', handleSliderChange);
+                    document.getElementById('lightZ').removeEventListener('input', handleSliderChange);
+                };
+            }, []);
+
+            return (
+                <>
+                    <ambientLight intensity={0.2} />
+                    <SpotLight ref={lightRef} position={[lightX, lightY, lightZ]} angle={0.3} penumbra={1} castShadow />
+                    <mesh castShadow receiveShadow>
+                        <sphereBufferGeometry args={[1, 32, 32]} />
+                        <meshStandardMaterial color="orange" />
+                    </mesh>
+                    <Plane args={[10, 10]} rotation-x={-Math.PI / 2} position={[0, -1, 0]} receiveShadow>
+                        <meshStandardMaterial attach="material" color="gray" />
+                    </Plane>
+                    <OrbitControls />
+                </>
+            );
+        };
+
+        const root = createRoot(document.getElementById('3d-container'));
+        root.render(
+            <Canvas shadows camera={{ position: [3, 3, 3], fov: 50 }}>
+                <SphereWithShadow />
+            </Canvas>
+        );
+
         const owner = 'leigh-code';
         const repo = 'Canvas';
         const apiUrl = `https://api.github.com/repos/${owner}/${repo}/contents/docs`;
@@ -97,61 +166,6 @@
                     })
                     .catch(error => console.error('Error:', error));
             });
-
-        // Three.js and React Three Fiber code
-        const { createRoot } = ReactDOM;
-        const { Canvas, useFrame } = ReactThreeFiber;
-        const { OrbitControls, Sphere, Plane, SpotLight } = Drei;
-
-        const SphereWithShadow = () => {
-            const lightRef = React.useRef();
-            const [lightX, setLightX] = React.useState(5);
-            const [lightY, setLightY] = React.useState(5);
-            const [lightZ, setLightZ] = React.useState(5);
-
-            useFrame(() => {
-                lightRef.current.position.set(lightX, lightY, lightZ);
-            });
-
-            React.useEffect(() => {
-                const handleSliderChange = (e) => {
-                    const { id, value } = e.target;
-                    if (id === 'lightX') setLightX(Number(value));
-                    if (id === 'lightY') setLightY(Number(value));
-                    if (id === 'lightZ') setLightZ(Number(value));
-                };
-                document.getElementById('lightX').addEventListener('input', handleSliderChange);
-                document.getElementById('lightY').addEventListener('input', handleSliderChange);
-                document.getElementById('lightZ').addEventListener('input', handleSliderChange);
-
-                return () => {
-                    document.getElementById('lightX').removeEventListener('input', handleSliderChange);
-                    document.getElementById('lightY').removeEventListener('input', handleSliderChange);
-                    document.getElementById('lightZ').removeEventListener('input', handleSliderChange);
-                };
-            }, []);
-
-            return (
-                <>
-                    <ambientLight intensity={0.2} />
-                    <SpotLight ref={lightRef} position={[lightX, lightY, lightZ]} angle={0.3} penumbra={1} castShadow />
-                    <Sphere args={[1, 32, 32]} castShadow receiveShadow>
-                        <meshStandardMaterial attach="material" color="orange" />
-                    </Sphere>
-                    <Plane args={[10, 10]} rotation-x={-Math.PI / 2} position={[0, -1, 0]} receiveShadow>
-                        <meshStandardMaterial attach="material" color="gray" />
-                    </Plane>
-                    <OrbitControls />
-                </>
-            );
-        };
-
-        const root = createRoot(document.getElementById('3d-container'));
-        root.render(
-            <Canvas shadows camera={{ position: [3, 3, 3], fov: 50 }}>
-                <SphereWithShadow />
-            </Canvas>
-        );
     </script>
 </body>
 </html>
