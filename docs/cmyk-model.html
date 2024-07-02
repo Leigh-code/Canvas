@@ -182,7 +182,7 @@
       <span class="separator">/</span>
       <input type="number" id="value-y" class="cmyk-value" min="0" max="100" step="1">
       <span class="separator">/</span>
-      <input type="number" id="value-k" class="cmyk-value" min="0" max="85" step="1">
+      <input type="number" id="value-k" class="cmyk-value" min="0" max="100" step="1">
     </div>
   </div>
 
@@ -217,7 +217,7 @@
       circleC.style.backgroundColor = `rgba(${processCyan[0]}, ${processCyan[1]}, ${processCyan[2]}, ${c / 100})`;
       circleM.style.backgroundColor = `rgba(${processMagenta[0]}, ${processMagenta[1]}, ${processMagenta[2]}, ${m / 100})`;
       circleY.style.backgroundColor = `rgba(${processYellow[0]}, ${processYellow[1]}, ${processYellow[2]}, ${y / 100})`;
-      circleK.style.backgroundColor = `rgba(0, 0, 0, ${k / 100})`;
+      circleK.style.backgroundColor = `rgba(0, 0, 0, ${k / 90})`;
 
       valueC.style.color = `rgb(${processCyan[0]}, ${processCyan[1]}, ${processCyan[2]})`;
       valueM.style.color = `rgb(${processMagenta[0]}, ${processMagenta[1]}, ${processMagenta[2]})`;
