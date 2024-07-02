@@ -251,7 +251,7 @@
 
     [valueC, valueM, valueY, valueK].forEach((value, index) => {
       value.addEventListener('change', () => {
-        const max = index === 3 ? 85 : 100;
+        const max = index === 3 ? 100 : 85;
         const newValue = Math.min(Math.max(parseInt(value.value) || 0, 0), max);
         value.value = newValue;
         const sliders = [sliderC, sliderM, sliderY, sliderK];
