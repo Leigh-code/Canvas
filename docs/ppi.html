@@ -220,12 +220,14 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.15);
             width: 90%;
             max-width: 480px;
-            height: 180px;
+            aspect-ratio: 8/3; /* This maintains the 480:180 ratio */
+            overflow: hidden;
         }
         
         .pixel-grid canvas {
             width: 100%;
             height: 100%;
+            display: block;
             image-rendering: pixelated;
             image-rendering: -moz-crisp-edges;
             image-rendering: crisp-edges;
@@ -404,13 +406,8 @@
         }
 
         function drawHighQuality(ctx) {
-            // Smooth gradient background
-            const gradient = ctx.createLinearGradient(0, 0, 480, 0);
-            gradient.addColorStop(0, '#3b82f6');   // Blue
-            gradient.addColorStop(0.5, '#8b5cf6'); // Purple
-            gradient.addColorStop(1, '#ec4899');   // Pink
-            
-            ctx.fillStyle = gradient;
+            // Simple solid background that will also pixelate
+            ctx.fillStyle = '#3b82f6'; // Blue background
             ctx.fillRect(0, 0, 480, 180);
             
             // Large smooth white text
@@ -448,12 +445,7 @@
             offCtx.imageSmoothingEnabled = false;
             
             // Draw gradient at low resolution
-            const gradient = offCtx.createLinearGradient(0, 0, lowResWidth, 0);
-            gradient.addColorStop(0, '#3b82f6');   // Blue
-            gradient.addColorStop(0.5, '#8b5cf6'); // Purple  
-            gradient.addColorStop(1, '#ec4899');   // Pink
-            
-            offCtx.fillStyle = gradient;
+            offCtx.fillStyle = '#3b82f6'; // Simple blue background
             offCtx.fillRect(0, 0, lowResWidth, lowResHeight);
             
             // Draw text with fixed size relative to target canvas, not low-res version
