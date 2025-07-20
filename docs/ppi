@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixel Density Calculator</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 550px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #1e3a8a, #2563eb);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 1.5em;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            opacity: 0.9;
+            font-size: 0.9em;
+        }
+        
+        .content {
+            padding: 30px 25px 25px 25px;
+        }
+        
+        .controls {
+            margin-bottom: 25px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #374151;
+            font-weight: 500;
+            font-size: 0.95em;
+        }
+        
+        .slider-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .slider {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #e5e7eb;
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        
+        .slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .slider-value {
+            background: #f3f4f6;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-weight: 600;
+            color: #1f2937;
+            min-width: 80px;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        
+        .presets {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(85px, 1fr));
+            gap: 8px;
+            margin-top: 12px;
+        }
+        
+        .preset-btn {
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 8px 6px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.8em;
+            text-align: center;
+        }
+        
+        .preset-btn:hover {
+            background: #e2e8f0;
+            border-color: #94a3b8;
+        }
+        
+        .preset-btn.active {
+            background: #dbeafe;
+            border-color: #2563eb;
+            color: #1e3a8a;
+        }
+        
+        .ppi-display {
+            background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+            border: 2px solid #bae6fd;
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .ppi-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 5px;
+        }
+        
+        .quality-indicator {
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.9em;
+            margin-top: 10px;
+        }
+        
+        .quality-low {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #dc2626;
+        }
+        
+        .quality-medium {
+            background: #fffbeb;
+            border: 1px solid #fbbf24;
+            color: #d97706;
+        }
+        
+        .quality-high {
+            background: #f0fdf4;
+            border: 1px solid #4ade80;
+            color: #16a34a;
+        }
+        
+        .visualisation {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .visualisation h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        
+        .reference-note {
+            background: #fef3c7;
+            border: 1px solid #fbbf24;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 20px;
+            font-size: 0.85em;
+            color: #92400e;
+        }
+        
+        .demo-container {
+            margin: 20px 0;
+        }
+        
+        .pixel-grid {
+            border: 3px solid #475569;
+            margin: 0 auto 15px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            width: 90%;
+            max-width: 480px;
+            height: 180px;
+        }
+        
+        .pixel-grid canvas {
+            width: 100%;
+            height: 100%;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+        
+        .screen-label {
+            font-size: 1em;
+            color: #475569;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        
+        .ppi-label {
+            font-size: 0.9em;
+            color: #64748b;
+            background: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        
+        .render-note {
+            margin-top: 8px;
+            font-size: 0.8em;
+            color: #64748b;
+            font-style: italic;
+        }
+        
+        .explanation {
+            background: #e0f2fe;
+            border: 1px solid #38bdf8;
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            font-size: 0.9em;
+            color: #0c4a6e;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="content">
+            <div class="visualisation">
+                <div class="demo-container">
+                    <div class="screen-label" id="currentDensityLabel">Current Pixel Density</div>
+                    <div class="pixel-grid">
+                        <canvas id="mainCanvas" width="480" height="180"></canvas>
+                    </div>
+                    <div class="ppi-label" id="currentPpiLabel">326 PPI</div>
+                    <div class="render-note">Simulating small text rendering</div>
+                </div>
+            </div>
+
+            <div class="ppi-display">
+                <div class="ppi-number" id="ppiDisplay">326 PPI</div>
+                <div class="quality-indicator" id="qualityIndicator">
+                    Excellent detail level - text and images appear very sharp
+                </div>
+            </div>
+            
+            <div class="controls">
+                <div class="control-group">
+                    <label for="ppiSlider">Pixel Density (PPI)</label>
+                    <div class="slider-container">
+                        <input type="range" id="ppiSlider" class="slider" min="42" max="460" value="150" step="1">
+                        <div class="slider-value" id="ppiValue">150 PPI</div>
+                    </div>
+                </div>
+                
+                <div class="presets">
+                    <div class="preset-btn" data-ppi="42">Old VGA</div>
+                    <div class="preset-btn" data-ppi="72">Basic Monitor</div>
+                    <div class="preset-btn" data-ppi="110">Laptop</div>
+                    <div class="preset-btn" data-ppi="150">Good Monitor</div>
+                    <div class="preset-btn" data-ppi="220">High-end Laptop</div>
+                    <div class="preset-btn" data-ppi="326">iPhone</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Device presets with PPI values
+        const devicePresets = {
+            'Old VGA': { ppi: 42 },
+            'Basic Monitor': { ppi: 72 },
+            'Laptop': { ppi: 110 },
+            'Good Monitor': { ppi: 150 },
+            'High-end Laptop': { ppi: 220 },
+            'iPhone': { ppi: 326 }
+        };
+
+        // Get DOM elements
+        const ppiSlider = document.getElementById('ppiSlider');
+        const ppiValue = document.getElementById('ppiValue');
+        const ppiDisplay = document.getElementById('ppiDisplay');
+        const qualityIndicator = document.getElementById('qualityIndicator');
+        const presetBtns = document.querySelectorAll('.preset-btn');
+
+        // Create single dynamic detail visualisation
+        function createPixelVisualisation() {
+            const currentPPI = parseInt(ppiSlider.value);
+
+            // Get canvas element
+            const canvas = document.getElementById('mainCanvas');
+            const ctx = canvas.getContext('2d');
+
+            // Update labels
+            const currentPpiLabel = document.getElementById('currentPpiLabel');
+            const currentDensityLabel = document.getElementById('currentDensityLabel');
+            
+            currentPpiLabel.textContent = currentPPI + ' PPI';
+            
+            // Update quality description in label with more realistic thresholds
+            if (currentPPI < 40) {
+                currentDensityLabel.textContent = 'Very Low Detail - Text Chunky';
+                currentDensityLabel.style.color = '#dc2626';
+            } else if (currentPPI < 60) {
+                currentDensityLabel.textContent = 'Low Detail - Text Readable but Pixelated';
+                currentDensityLabel.style.color = '#ea580c';
+            } else if (currentPPI < 90) {
+                currentDensityLabel.textContent = 'Fair Detail - Some Pixelation Visible';
+                currentDensityLabel.style.color = '#d97706';
+            } else if (currentPPI < 120) {
+                currentDensityLabel.textContent = 'Good Detail - Text Clear and Sharp';
+                currentDensityLabel.style.color = '#ca8a04';
+            } else if (currentPPI < 160) {
+                currentDensityLabel.textContent = 'High Detail - Very Sharp Text';
+                currentDensityLabel.style.color = '#16a34a';
+            } else {
+                currentDensityLabel.textContent = 'Excellent Detail - Extremely Sharp';
+                currentDensityLabel.style.color = '#15803d';
+            }
+
+            // Clear canvas
+            ctx.clearRect(0, 0, 480, 180);
+
+            // Determine detail level based on PPI with realistic legibility thresholds
+            let pixelSize, useSmoothing;
+            
+            if (currentPPI < 40) {
+                pixelSize = 16; // Extremely chunky - very poor quality
+                useSmoothing = false;
+            } else if (currentPPI < 60) {
+                pixelSize = 12; // Chunky but readable
+                useSmoothing = false;
+            } else if (currentPPI < 90) {
+                pixelSize = 8;  // Some pixelation - like how 75 PPI should look
+                useSmoothing = false;
+            } else if (currentPPI < 120) {
+                pixelSize = 6;  // Light pixelation - decent quality
+                useSmoothing = false;
+            } else if (currentPPI < 160) {
+                pixelSize = 4;  // Very light pixelation - good quality
+                useSmoothing = false;
+            } else if (currentPPI < 200) {
+                pixelSize = 3;  // Minimal pixelation - high quality
+                useSmoothing = false;
+            } else if (currentPPI < 250) {
+                pixelSize = 2;  // Nearly smooth - very high quality
+                useSmoothing = false;
+            } else {
+                pixelSize = 2;  // Smooth - excellent quality
+                useSmoothing = true;
+            }
+
+            // Draw the visualization based on current PPI
+            if (useSmoothing) {
+                // High quality version - smooth gradients and text
+                drawHighQuality(ctx);
+            } else {
+                // Low quality version - pixelated
+                drawPixelated(ctx, pixelSize);
+            }
+        }
+
+        function drawHighQuality(ctx) {
+            // Smooth gradient background
+            const gradient = ctx.createLinearGradient(0, 0, 480, 0);
+            gradient.addColorStop(0, '#3b82f6');   // Blue
+            gradient.addColorStop(0.5, '#8b5cf6'); // Purple
+            gradient.addColorStop(1, '#ec4899');   // Pink
+            
+            ctx.fillStyle = gradient;
+            ctx.fillRect(0, 0, 480, 180);
+            
+            // Large smooth white text
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 72px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.imageSmoothingEnabled = true;
+            
+            ctx.fillText('abc123', 240, 90);
+            
+            // Add a larger smooth circle
+            ctx.fillStyle = '#ffffff';
+            ctx.globalAlpha = 0.8;
+            ctx.beginPath();
+            ctx.arc(120, 45, 35, 0, 2 * Math.PI);
+            ctx.fill();
+            ctx.globalAlpha = 1;
+        }
+
+        function drawPixelated(ctx, pixelSize) {
+            // Create a much more dramatic pixelated effect
+            // First, draw everything at very low resolution, then scale up
+            
+            const lowResWidth = Math.floor(480 / pixelSize);
+            const lowResHeight = Math.floor(180 / pixelSize);
+            
+            // Create an off-screen canvas at low resolution
+            const offCanvas = document.createElement('canvas');
+            offCanvas.width = lowResWidth;
+            offCanvas.height = lowResHeight;
+            const offCtx = offCanvas.getContext('2d');
+            
+            // Disable smoothing for maximum pixelation
+            offCtx.imageSmoothingEnabled = false;
+            
+            // Draw gradient at low resolution
+            const gradient = offCtx.createLinearGradient(0, 0, lowResWidth, 0);
+            gradient.addColorStop(0, '#3b82f6');   // Blue
+            gradient.addColorStop(0.5, '#8b5cf6'); // Purple  
+            gradient.addColorStop(1, '#ec4899');   // Pink
+            
+            offCtx.fillStyle = gradient;
+            offCtx.fillRect(0, 0, lowResWidth, lowResHeight);
+            
+            // Draw text with fixed size relative to target canvas, not low-res version
+            offCtx.fillStyle = '#ffffff';
+            // Calculate font size to be consistent when scaled up (target ~72px)
+            const targetFontSize = 72; // Same as high-quality version
+            const fontSize = Math.max(4, Math.round(targetFontSize / pixelSize));
+            offCtx.font = `bold ${fontSize}px Arial`;
+            offCtx.textAlign = 'center';
+            offCtx.textBaseline = 'middle';
+            // Use consistent position (240, 90 in target canvas)
+            const textX = Math.round(240 / pixelSize);
+            const textY = Math.round(90 / pixelSize);
+            offCtx.fillText('abc123', textX, textY);
+            
+            // Draw circle with fixed size relative to the target canvas, not the low-res version
+            offCtx.fillStyle = '#ffffff';
+            offCtx.globalAlpha = 0.8;
+            offCtx.beginPath();
+            // Calculate circle size to be consistent when scaled up (target ~35px radius)
+            const targetCircleRadius = 35; // Same as high-quality version
+            const circleRadius = Math.round(targetCircleRadius / pixelSize);
+            const circleX = Math.round(120 / pixelSize); // Same position as high-quality
+            const circleY = Math.round(45 / pixelSize);
+            offCtx.arc(circleX, circleY, Math.max(1, circleRadius), 0, 2 * Math.PI);
+            offCtx.fill();
+            offCtx.globalAlpha = 1;
+            
+            // Now scale up the low-res image to create blocky pixels
+            ctx.imageSmoothingEnabled = false;
+            ctx.drawImage(offCanvas, 0, 0, lowResWidth, lowResHeight, 0, 0, 480, 180);
+        }
+
+        // Get quality description with realistic legibility thresholds
+        function getQualityDescription(ppi) {
+            if (ppi < 40) {
+                return {
+                    text: "Low resolution - text chunky but readable, like early computer monitors",
+                    class: "quality-low"
+                };
+            } else if (ppi < 60) {
+                return {
+                    text: "Some pixelation visible - text readable but edges noticeable",
+                    class: "quality-low"
+                };
+            } else if (ppi < 90) {
+                return {
+                    text: "Fair quality - light pixelation, perfectly usable for most tasks",
+                    class: "quality-medium"
+                };
+            } else if (ppi < 120) {
+                return {
+                    text: "Good detail level - text clear and sharp, suitable for extended use",
+                    class: "quality-medium"
+                };
+            } else {
+                return {
+                    text: "Excellent detail level - text and images appear very sharp",
+                    class: "quality-high"
+                };
+            }
+        }
+
+        // Update all displays
+        function updateDisplay() {
+            const ppi = parseInt(ppiSlider.value);
+            
+            // Update slider value
+            ppiValue.textContent = ppi + ' PPI';
+            
+            // Update PPI display
+            ppiDisplay.textContent = ppi + ' PPI';
+            
+            // Update quality indicator
+            const quality = getQualityDescription(ppi);
+            qualityIndicator.textContent = quality.text;
+            qualityIndicator.className = 'quality-indicator ' + quality.class;
+            
+            // Update visualisation
+            createPixelVisualisation();
+            
+            // Clear active preset
+            presetBtns.forEach(btn => btn.classList.remove('active'));
+        }
+
+        // Preset button handlers
+        presetBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const ppi = parseInt(btn.dataset.ppi);
+                
+                ppiSlider.value = ppi;
+                
+                // Mark as active
+                presetBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+                
+                updateDisplay();
+            });
+        });
+
+        // Slider event listeners
+        ppiSlider.addEventListener('input', updateDisplay);
+
+        // Initial update
+        updateDisplay();
+    </script>
+</body>
+</html>
