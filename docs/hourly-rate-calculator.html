@@ -636,17 +636,37 @@
             <p>Consider your experience, specialization, and portfolio quality when setting your final rate.</p>
         </div>
         
-        <div class="expandable" onclick="toggleExpandable(this)">
+        <div class="expandable expanded" onclick="toggleExpandable(this)">
             <button class="expandable-header">
-                How This Was Calculated
+                How This Rate Was Calculated (Show Working)
                 <span class="expandable-icon">▼</span>
             </button>
             <div class="expandable-content">
-                <p><strong>Formula:</strong> (Target Salary + Total Expenses) ÷ Billable Hours</p>
-                <p>Target Salary: $<span id="calcTargetSalary">0</span></p>
-                <p>Total Expenses: $<span id="calcTotalExpenses">0</span></p>
-                <p>Billable Hours: <span id="calcBillableHours">0</span></p>
-                <p><strong>Result:</strong> $<span id="calcHourlyRate">0</span>/hour</p>
+                <div style="background: #f8f8f8; padding: 24px; margin-bottom: 20px; border-left: 4px solid #000;">
+                    <h4 style="margin: 0 0 16px 0; font-weight: 700;">Step-by-Step Calculation</h4>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin: 0 0 8px 0; font-weight: 600;">1. Total Revenue Required:</p>
+                        <p style="margin: 0 0 4px 0; padding-left: 20px;">Target Take-Home Pay: $<span id="calcTargetSalary">0</span></p>
+                        <p style="margin: 0 0 4px 0; padding-left: 20px;">+ Business Expenses: $<span id="calcTotalExpenses">0</span></p>
+                        <p style="margin: 0 0 0 0; padding-left: 20px; font-weight: 600; border-top: 1px solid #ccc; padding-top: 8px;">= Total Revenue: $<span id="calcTotalRevenue">0</span></p>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <p style="margin: 0 0 8px 0; font-weight: 600;">2. Available Billable Hours:</p>
+                        <p style="margin: 0 0 0 0; padding-left: 20px;"><span id="calcBillableHours">0</span> hours per year</p>
+                        <p style="margin: 0 0 0 0; padding-left: 20px; font-size: 0.9rem; color: #666; font-style: italic;">(After holidays, sick days, and admin time)</p>
+                    </div>
+                    
+                    <div style="background: #000; color: #fff; padding: 16px; text-align: center; font-weight: 600;">
+                        <p style="margin: 0 0 8px 0;">Final Calculation:</p>
+                        <p style="margin: 0; font-size: 1.1rem;">$<span id="calcTotalRevenue2">0</span> ÷ <span id="calcBillableHours2">0</span> hours = $<span id="calcHourlyRate">0</span>/hour</p>
+                    </div>
+                </div>
+                
+                <div style="background: #fff3cd; border: 1px solid #ffeaa7; padding: 16px; border-radius: 4px;">
+                    <p style="margin: 0; font-weight: 500; color: #856404;"><strong>Why this method?</strong> This calculation ensures you cover all business costs AND achieve your target take-home pay, while accounting for realistic working hours including time off and administrative tasks.</p>
+                </div>
             </div>
         </div>
         
@@ -737,11 +757,15 @@
                 document.getElementById('billableHoursDisplay').textContent = formatNumber(billableTime);
                 document.getElementById('yourRateComparison').textContent = formatCurrency(hourlyRate);
                 
-                // Calculation breakdown
+                // Calculation breakdown - update all calculation displays
+                const totalRevenue = targetSalary + totalExpenses;
                 document.getElementById('calcTargetSalary').textContent = formatNumber(targetSalary);
                 document.getElementById('calcTotalExpenses').textContent = formatNumber(totalExpenses);
                 document.getElementById('calcBillableHours').textContent = formatNumber(billableTime);
                 document.getElementById('calcHourlyRate').textContent = hourlyRate.toFixed(2);
+                document.getElementById('calcTotalRevenue').textContent = formatNumber(totalRevenue);
+                document.getElementById('calcTotalRevenue2').textContent = formatNumber(totalRevenue);
+                document.getElementById('calcBillableHours2').textContent = formatNumber(billableTime);
                 
                 // Break-even analysis
                 const breakEvenHours = Math.ceil(totalExpenses / hourlyRate);
