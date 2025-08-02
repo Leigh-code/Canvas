@@ -8,96 +8,76 @@
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             margin: 0;
-            padding: 20px;
+            padding: 15px;
             background: #f8f9fa;
             color: #333;
+            font-size: 14px;
         }
         
         .container {
             background: white;
             border: 2px solid #e9ecef;
             border-radius: 8px;
-            padding: 25px;
+            padding: 20px;
             margin: 0 auto;
-            max-width: 400px;
+            max-width: 420px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         }
 
         .header {
             text-align: center;
-            margin-bottom: 25px;
-            padding-bottom: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
             border-bottom: 2px solid #e9ecef;
         }
 
         .header h1 {
             margin: 0;
-            font-size: 1.8em;
+            font-size: 1.4em;
             font-weight: 600;
             color: #495057;
         }
 
-        .control-section {
+        .main-layout {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .profile-section {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
             border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 20px;
+            padding: 12px;
         }
 
-        .grey-slider {
-            width: 100%;
-            height: 8px;
-            border-radius: 4px;
-            background: #e9ecef;
-            outline: none;
-            margin: 10px 0;
-            -webkit-appearance: none;
-        }
-
-        .grey-slider::-webkit-slider-thumb {
-            appearance: none;
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007bff;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
-        }
-
-        .grey-slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: #007bff;
-            cursor: pointer;
-            border: 2px solid white;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+        .profile-section h4 {
+            margin: 0 0 10px 0;
+            font-size: 0.9em;
+            color: #495057;
         }
 
         .profile-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin: 15px 0;
+            gap: 6px;
         }
 
         .profile-card {
             background: white;
             border: 2px solid #e9ecef;
-            border-radius: 6px;
-            padding: 12px;
+            border-radius: 4px;
+            padding: 8px;
             cursor: pointer;
             transition: all 0.3s ease;
             text-align: center;
-            font-size: 0.85em;
+            font-size: 0.75em;
         }
 
         .profile-card:hover {
             border-color: #007bff;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+            transform: translateY(-1px);
         }
 
         .profile-card.active {
@@ -105,25 +85,34 @@
             background: #f0f7ff;
         }
 
-        .swatch-container {
-            text-align: center;
+        .profile-card strong {
+            display: block;
+            font-size: 0.8em;
+        }
+
+        .profile-card small {
+            font-size: 0.7em;
+            color: #666;
+        }
+
+        .rgb-section {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
             border-radius: 6px;
-            padding: 15px;
-            margin-bottom: 15px;
+            padding: 12px;
+            text-align: center;
         }
 
-        .swatch-container h4 {
-            margin: 0 0 15px 0;
+        .rgb-section h4 {
+            margin: 0 0 10px 0;
+            font-size: 0.9em;
             color: #495057;
-            font-size: 1.1em;
         }
 
         .colour-swatch {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto 15px;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
             border-radius: 6px;
             border: 1px solid #ccc;
             display: flex;
@@ -132,10 +121,149 @@
             color: white;
             font-weight: bold;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            font-size: 0.8em;
         }
 
-        @media (max-width: 768px) {
-            .profile-grid {
+        .curves-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+
+        .curves-section h4 {
+            margin: 0 0 15px 0;
+            font-size: 0.9em;
+            color: #495057;
+            text-align: center;
+        }
+
+        .slider-section {
+            margin-top: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 4px;
+            border: 1px solid #dee2e6;
+        }
+
+        .slider-container {
+            position: relative;
+            margin: 10px 0;
+        }
+
+        .grey-slider {
+            width: 100%;
+            height: 20px;
+            border-radius: 10px;
+            background: linear-gradient(to right, #ffffff, #000000);
+            outline: none;
+            -webkit-appearance: none;
+            border: 1px solid #ccc;
+        }
+
+        .grey-slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff0000;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .grey-slider::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #ff0000;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        .current-values {
+            text-align: center;
+            font-size: 0.85em;
+            margin: 10px 0;
+        }
+
+        .profile-name {
+            text-align: center;
+            font-weight: bold;
+            font-size: 0.85em;
+            color: #495057;
+            margin-top: 10px;
+        }
+
+        .chart-container {
+            width: 100%;
+            height: 250px;
+            border: 1px solid #ccc;
+            margin-bottom: 15px;
+            position: relative;
+            background: white;
+            padding: 10px;
+            display: flex;
+            align-items: end;
+            justify-content: space-around;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 60px;
+        }
+
+        .bar {
+            width: 40px;
+            transition: height 0.3s ease;
+            margin-bottom: 5px;
+            border-radius: 3px 3px 0 0;
+            position: relative;
+            display: flex;
+            align-items: end;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 0.8em;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .bar-label {
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .cyan-bar {
+            background: linear-gradient(to top, #006ba8, #0099cc);
+        }
+
+        .magenta-bar {
+            background: linear-gradient(to top, #a0005a, #cc0066);
+        }
+
+        .yellow-bar {
+            background: linear-gradient(to top, #cc7700, #ff9900);
+        }
+
+        .black-bar {
+            background: linear-gradient(to top, #111111, #333333);
+        }
+
+        @media (max-width: 450px) {
+            .main-layout {
                 grid-template-columns: 1fr;
             }
             
@@ -143,10 +271,11 @@
                 margin: 0;
                 border-radius: 0;
                 max-width: none;
+                padding: 15px;
             }
             
             body {
-                padding: 10px;
+                padding: 5px;
             }
         }
     </style>
@@ -157,170 +286,158 @@
             <h1>Creating Grey in CMYK</h1>
         </div>
 
-        <div class="control-section">
-            <label for="greySlider"><strong>Target Grey Level:</strong> <span id="greyDisplay">50%</span></label>
-            <input type="range" id="greySlider" class="grey-slider" min="10" max="90" value="50" step="5">
-            
-            <div style="margin-top: 15px;">
-                <label><strong>ICC Profile:</strong></label>
+        <div class="main-layout">
+            <div class="profile-section">
+                <h4>ICC Profile</h4>
                 <div class="profile-grid">
                     <div class="profile-card active" data-profile="fogra39">
-                        <strong>FOGRA39</strong><br>
-                        <small>EU coated</small>
+                        <strong>FOGRA39</strong>
+                        <small>Coated 330%</small>
                     </div>
-                    <div class="profile-card" data-profile="swop">
-                        <strong>SWOP v2</strong><br>
-                        <small>US web</small>
-                    </div>
-                    <div class="profile-card" data-profile="iso">
-                        <strong>ISO v2</strong><br>
-                        <small>International</small>
+                    <div class="profile-card" data-profile="newsprint">
+                        <strong>Newsprint</strong>
+                        <small>News 240%</small>
                     </div>
                     <div class="profile-card" data-profile="uncoated">
-                        <strong>FOGRA29</strong><br>
-                        <small>EU uncoated</small>
+                        <strong>FOGRA29</strong>
+                        <small>Uncoated 280%</small>
+                    </div>
+                    <div class="profile-card" data-profile="sheetfed">
+                        <strong>Sheetfed</strong>
+                        <small>Premium 400%</small>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <div class="swatch-container">
-            <h4>RGB Target</h4>
-            <div class="colour-swatch" id="rgbSwatch">RGB Neutral</div>
-            <div id="rgbValues" style="font-size: 0.9em;">R: 128, G: 128, B: 128</div>
+            <div class="rgb-section">
+                <h4>RGB Target</h4>
+                <div class="colour-swatch" id="rgbSwatch">RGB</div>
+                <div id="rgbValues" style="font-size: 0.8em;">R: 128, G: 128, B: 128</div>
+            </div>
         </div>
         
-        <div class="swatch-container">
+        <div class="curves-section">
             <h4>CMYK Separation Curves</h4>
-            <div id="greyRampContainer" style="position: relative; width: 100%; height: 160px; border: 1px solid #ccc; border-radius: 6px; margin: 15px 0;">
-                <canvas id="separationCurves" width="300" height="160" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></canvas>
+            <div class="chart-container">
+                <div class="bar-group">
+                    <div id="cyanBar" class="bar cyan-bar" style="height: 90px;">50%</div>
+                    <div class="bar-label" style="color: #0099cc;">Cyan</div>
+                </div>
+                <div class="bar-group">
+                    <div id="magentaBar" class="bar magenta-bar" style="height: 72px;">40%</div>
+                    <div class="bar-label" style="color: #cc0066;">Magenta</div>
+                </div>
+                <div class="bar-group">
+                    <div id="yellowBar" class="bar yellow-bar" style="height: 63px;">35%</div>
+                    <div class="bar-label" style="color: #ff9900;">Yellow</div>
+                </div>
+                <div class="bar-group">
+                    <div id="blackBar" class="bar black-bar" style="height: 180px;">100%</div>
+                    <div class="bar-label" style="color: #333333;">Black</div>
+                </div>
             </div>
-            <div id="currentValues" style="margin-top: 10px; font-size: 0.85em;">
+            
+            <div class="slider-section">
+                <label style="font-size: 0.85em; font-weight: bold; color: #495057;">Target Grey Level: <span id="greyDisplay">50%</span></label>
+                <div class="slider-container">
+                    <input type="range" id="greySlider" class="grey-slider" min="0" max="100" value="50" step="1">
+                    <div class="slider-labels">
+                        <span>0% (White)</span>
+                        <span>100% (Black)</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="current-values">
                 <span style="color: #0099cc;">■</span> C: <span id="cyanPercent">18%</span> &nbsp;
                 <span style="color: #cc0066;">■</span> M: <span id="magentaPercent">10%</span> &nbsp;
                 <span style="color: #ff9900;">■</span> Y: <span id="yellowPercent">10%</span> &nbsp;
                 <span style="color: #333333;">■</span> K: <span id="blackPercent">30%</span>
+                <br><br>
+                <strong>Total ink limit (TIL): <span id="totalInk">68%</span> / <span id="inkLimit">330%</span></strong>
             </div>
-            <div id="profileName" style="font-weight: bold; margin: 10px 0; font-size: 0.9em;">Coated FOGRA39</div>
+            
+            <div class="profile-name" id="profileName">Coated FOGRA39</div>
         </div>
     </div>
 
     <script>
-        // ICC Profile data with realistic CMYK recipes for neutral greys
+        // Realistic CMYK data with proper ink limits and cyan dominance
         const profiles = {
             fogra39: {
                 name: "Coated FOGRA39 (PSO)",
-                description: "European standard for coated papers",
                 inkLimit: 330,
-                greyRecipes: {
-                    10: { c: 3, m: 2, y: 2, k: 6 },
-                    15: { c: 5, m: 3, y: 3, k: 9 },
-                    20: { c: 6, m: 4, y: 4, k: 12 },
-                    25: { c: 8, m: 5, y: 5, k: 15 },
-                    30: { c: 10, m: 6, y: 6, k: 18 },
-                    35: { c: 12, m: 7, y: 7, k: 21 },
-                    40: { c: 14, m: 8, y: 8, k: 24 },
-                    45: { c: 16, m: 9, y: 9, k: 27 },
-                    50: { c: 18, m: 10, y: 10, k: 30 },
-                    55: { c: 20, m: 11, y: 11, k: 33 },
-                    60: { c: 22, m: 12, y: 12, k: 36 },
-                    65: { c: 24, m: 13, y: 13, k: 39 },
-                    70: { c: 26, m: 14, y: 14, k: 42 },
-                    75: { c: 28, m: 15, y: 15, k: 45 },
-                    80: { c: 30, m: 16, y: 16, k: 48 },
-                    85: { c: 32, m: 17, y: 17, k: 51 },
-                    90: { c: 34, m: 18, y: 18, k: 54 }
-                },
-                explanation: "FOGRA39 requires cyan dominance to compensate for typical press characteristics and achieve neutral greys."
+                getCMYK: function(grey) {
+                    const t = grey / 100;
+                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
+                    if (grey === 100) return { c: 85, m: 75, y: 70, k: 100 }; // Total: 330%
+                    
+                    // Scale linearly to rich black with cyan dominance
+                    return {
+                        c: Math.round(85 * t),  // Highest to compensate for ink impurities
+                        m: Math.round(75 * t),
+                        y: Math.round(70 * t),  // Lowest
+                        k: Math.round(100 * t)
+                    };
+                }
             },
-            swop: {
-                name: "U.S. Web Coated (SWOP) v2",
-                description: "American standard for web offset printing",
-                inkLimit: 300,
-                greyRecipes: {
-                    10: { c: 3, m: 2, y: 2, k: 7 },
-                    15: { c: 5, m: 3, y: 3, k: 11 },
-                    20: { c: 6, m: 4, y: 4, k: 15 },
-                    25: { c: 8, m: 6, y: 6, k: 19 },
-                    30: { c: 9, m: 7, y: 7, k: 22 },
-                    35: { c: 11, m: 8, y: 8, k: 26 },
-                    40: { c: 12, m: 9, y: 9, k: 30 },
-                    45: { c: 14, m: 11, y: 11, k: 34 },
-                    50: { c: 15, m: 12, y: 12, k: 37 },
-                    55: { c: 17, m: 13, y: 13, k: 41 },
-                    60: { c: 18, m: 15, y: 15, k: 45 },
-                    65: { c: 20, m: 16, y: 16, k: 49 },
-                    70: { c: 21, m: 18, y: 18, k: 52 },
-                    75: { c: 23, m: 19, y: 19, k: 56 },
-                    80: { c: 24, m: 21, y: 21, k: 60 },
-                    85: { c: 26, m: 22, y: 22, k: 64 },
-                    90: { c: 27, m: 24, y: 24, k: 67 }
-                },
-                explanation: "SWOP requires higher CMY compensation due to web press characteristics and American paper standards, with more cyan to counteract typical press conditions."
-            },
-            iso: {
-                name: "ISO Coated v2 (ECI)",
-                description: "International sheet-fed standard",
-                inkLimit: 350,
-                greyRecipes: {
-                    10: { c: 2, m: 2, y: 1, k: 8 },
-                    15: { c: 4, m: 3, y: 2, k: 12 },
-                    20: { c: 5, m: 3, y: 3, k: 16 },
-                    25: { c: 6, m: 4, y: 4, k: 20 },
-                    30: { c: 7, m: 5, y: 5, k: 24 },
-                    35: { c: 8, m: 6, y: 6, k: 28 },
-                    40: { c: 9, m: 7, y: 7, k: 32 },
-                    45: { c: 11, m: 8, y: 8, k: 36 },
-                    50: { c: 12, m: 9, y: 9, k: 40 },
-                    55: { c: 13, m: 10, y: 10, k: 44 },
-                    60: { c: 14, m: 11, y: 11, k: 48 },
-                    65: { c: 15, m: 12, y: 12, k: 52 },
-                    70: { c: 16, m: 13, y: 13, k: 56 },
-                    75: { c: 17, m: 14, y: 14, k: 60 },
-                    80: { c: 18, m: 15, y: 15, k: 64 },
-                    85: { c: 19, m: 16, y: 16, k: 68 },
-                    90: { c: 20, m: 17, y: 17, k: 72 }
-                },
-                explanation: "ISO Coated v2 balances international printing requirements with moderate CMY correction for consistent results across different regions."
+            newsprint: {
+                name: "Newsprint Standard",
+                inkLimit: 240,
+                getCMYK: function(grey) {
+                    const t = grey / 100;
+                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
+                    if (grey === 100) return { c: 55, m: 45, y: 40, k: 100 }; // Total: 240%
+                    
+                    return {
+                        c: Math.round(55 * t),  // Higher cyan for neutrality
+                        m: Math.round(45 * t),
+                        y: Math.round(40 * t),  // Lower yellow
+                        k: Math.round(100 * t)
+                    };
+                }
             },
             uncoated: {
                 name: "Uncoated FOGRA29 (PSO)",
-                description: "European uncoated paper standard",
-                inkLimit: 260,
-                greyRecipes: {
-                    10: { c: 4, m: 3, y: 3, k: 6 },
-                    15: { c: 6, m: 5, y: 5, k: 10 },
-                    20: { c: 8, m: 6, y: 6, k: 13 },
-                    25: { c: 10, m: 8, y: 8, k: 16 },
-                    30: { c: 12, m: 10, y: 10, k: 19 },
-                    35: { c: 14, m: 11, y: 11, k: 23 },
-                    40: { c: 16, m: 13, y: 13, k: 26 },
-                    45: { c: 18, m: 15, y: 15, k: 29 },
-                    50: { c: 20, m: 16, y: 16, k: 32 },
-                    55: { c: 22, m: 18, y: 18, k: 36 },
-                    60: { c: 24, m: 19, y: 19, k: 39 },
-                    65: { c: 26, m: 21, y: 21, k: 42 },
-                    70: { c: 28, m: 22, y: 22, k: 45 },
-                    75: { c: 30, m: 24, y: 24, k: 49 },
-                    80: { c: 32, m: 25, y: 25, k: 52 },
-                    85: { c: 34, m: 27, y: 27, k: 55 },
-                    90: { c: 36, m: 28, y: 28, k: 58 }
-                },
-                explanation: "Uncoated papers require significant CMY correction due to high dot gain and ink absorption, with lower ink limits to prevent show-through."
+                inkLimit: 280,
+                getCMYK: function(grey) {
+                    const t = grey / 100;
+                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
+                    if (grey === 100) return { c: 70, m: 55, y: 55, k: 100 }; // Total: 280%
+                    
+                    return {
+                        c: Math.round(70 * t),  // Highest cyan for uncoated neutrality
+                        m: Math.round(55 * t),
+                        y: Math.round(55 * t),
+                        k: Math.round(100 * t)
+                    };
+                }
+            },
+            sheetfed: {
+                name: "Sheetfed Premium",
+                inkLimit: 400,
+                getCMYK: function(grey) {
+                    const t = grey / 100;
+                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
+                    if (grey === 100) return { c: 85, m: 65, y: 60, k: 100 }; // Total: 310%
+                    
+                    return {
+                        c: Math.round(85 * t),  // Highest cyan even in premium conditions
+                        m: Math.round(65 * t),
+                        y: Math.round(60 * t),  // Lowest
+                        k: Math.round(100 * t)
+                    };
+                }
             }
         };
 
         let currentProfile = 'fogra39';
         let currentGrey = 50;
 
-        function getCmykValues(profile, greyLevel) {
-            return profiles[profile].greyRecipes[greyLevel] || profiles[profile].greyRecipes[50];
-        }
-
         function updateDisplay() {
             const rgbValue = Math.round(255 * (100 - currentGrey) / 100);
-            const cmykValues = getCmykValues(currentProfile, currentGrey);
-            const profileData = profiles[currentProfile];
+            const cmykValues = profiles[currentProfile].getCMYK(currentGrey);
+            const totalInk = cmykValues.c + cmykValues.m + cmykValues.y + cmykValues.k;
             
             // Update grey level display
             document.getElementById('greyDisplay').textContent = `${currentGrey}%`;
@@ -335,106 +452,32 @@
             document.getElementById('yellowPercent').textContent = `${cmykValues.y}%`;
             document.getElementById('blackPercent').textContent = `${cmykValues.k}%`;
             
-            // Update profile name
-            document.getElementById('profileName').textContent = profileData.name;
+            // Update total ink coverage display
+            document.getElementById('totalInk').textContent = `${totalInk}%`;
+            document.getElementById('inkLimit').textContent = `${profiles[currentProfile].inkLimit}%`;
             
-            // Draw separation curves
-            drawSeparationCurves();
+            // Update bar chart
+            updateBarChart(cmykValues);
+            
+            // Update profile name
+            document.getElementById('profileName').textContent = profiles[currentProfile].name;
         }
 
-        function drawSeparationCurves() {
-            const canvas = document.getElementById('separationCurves');
-            const ctx = canvas.getContext('2d');
-            const profileData = profiles[currentProfile];
+        function updateBarChart(cmykValues) {
+            const maxHeight = 180; // Maximum bar height in pixels
             
-            // Clear canvas
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            // Update bar heights and text (scale to max height)
+            document.getElementById('cyanBar').style.height = `${(cmykValues.c / 100) * maxHeight}px`;
+            document.getElementById('cyanBar').textContent = `${cmykValues.c}%`;
             
-            // Canvas dimensions
-            const width = canvas.width;
-            const height = canvas.height;
-            const greyBarHeight = 20; // Height for the grey gradient bar at bottom
-            const curveHeight = height - greyBarHeight;
+            document.getElementById('magentaBar').style.height = `${(cmykValues.m / 100) * maxHeight}px`;
+            document.getElementById('magentaBar').textContent = `${cmykValues.m}%`;
             
-            // Draw grey gradient bar at bottom
-            const gradient = ctx.createLinearGradient(0, height - greyBarHeight, width, height - greyBarHeight);
-            gradient.addColorStop(0, '#ffffff');
-            gradient.addColorStop(1, '#000000');
-            ctx.fillStyle = gradient;
-            ctx.fillRect(0, height - greyBarHeight, width, greyBarHeight);
+            document.getElementById('yellowBar').style.height = `${(cmykValues.y / 100) * maxHeight}px`;
+            document.getElementById('yellowBar').textContent = `${cmykValues.y}%`;
             
-            // Draw separator line
-            ctx.strokeStyle = '#ccc';
-            ctx.lineWidth = 1;
-            ctx.beginPath();
-            ctx.moveTo(0, height - greyBarHeight);
-            ctx.lineTo(width, height - greyBarHeight);
-            ctx.stroke();
-            
-            // Draw grid lines for curve area only
-            ctx.strokeStyle = '#eee';
-            ctx.lineWidth = 0.5;
-            
-            // Horizontal grid lines (percentage markers)
-            for (let i = 0; i <= 10; i++) {
-                const y = (i / 10) * curveHeight;
-                ctx.beginPath();
-                ctx.moveTo(0, y);
-                ctx.lineTo(width, y);
-                ctx.stroke();
-            }
-            
-            // Vertical grid lines (grey level markers)
-            for (let i = 0; i <= 10; i++) {
-                const x = (i / 10) * width;
-                ctx.beginPath();
-                ctx.moveTo(x, 0);
-                ctx.lineTo(x, curveHeight);
-                ctx.stroke();
-            }
-            
-            // Draw curves for each color - using more contrasting colors and exaggerating Y/M difference
-            const colors = [
-                { name: 'cyan', color: '#0099cc', recipes: profileData.greyRecipes, key: 'c' },
-                { name: 'magenta', color: '#cc0066', recipes: profileData.greyRecipes, key: 'm', offset: 2 }, // Darker magenta with slight offset
-                { name: 'yellow', color: '#ff9900', recipes: profileData.greyRecipes, key: 'y', offset: -2 }, // Orange-yellow with opposite offset
-                { name: 'black', color: '#333333', recipes: profileData.greyRecipes, key: 'k' }
-            ];
-            
-            colors.forEach(colorData => {
-                ctx.beginPath();
-                ctx.strokeStyle = colorData.color;
-                ctx.lineWidth = 3; // Thicker lines for better visibility
-                
-                const greyLevels = Object.keys(colorData.recipes).map(Number).sort((a, b) => a - b);
-                
-                greyLevels.forEach((greyLevel, index) => {
-                    const x = (greyLevel / 100) * width;
-                    const percentage = colorData.recipes[greyLevel][colorData.key];
-                    // Add slight offset to separate M and Y curves for better visibility
-                    const offsetPercentage = percentage + (colorData.offset || 0);
-                    const y = curveHeight - (offsetPercentage / 100) * curveHeight;
-                    
-                    if (index === 0) {
-                        ctx.moveTo(x, y);
-                    } else {
-                        ctx.lineTo(x, y);
-                    }
-                });
-                
-                ctx.stroke();
-            });
-            
-            // Draw current position indicator
-            const currentX = (currentGrey / 100) * width;
-            ctx.beginPath();
-            ctx.strokeStyle = '#ff0000';
-            ctx.lineWidth = 2;
-            ctx.setLineDash([3, 3]);
-            ctx.moveTo(currentX, 0);
-            ctx.lineTo(currentX, height);
-            ctx.stroke();
-            ctx.setLineDash([]);
+            document.getElementById('blackBar').style.height = `${(cmykValues.k / 100) * maxHeight}px`;
+            document.getElementById('blackBar').textContent = `${cmykValues.k}%`;
         }
 
         // Event listeners
