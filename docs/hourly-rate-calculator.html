@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Australian Freelance Rate Calculator for Designers</title>
+    <title>Freelance Rate Calculator</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { box-sizing: border-box; }
@@ -363,7 +363,7 @@
                         <option value="junior">Junior Designer (1-2 years)</option>
                         <option value="mid">Mid-level Designer (3-5 years)</option>
                         <option value="senior">Senior Designer (5+ years)</option>
-                        <option value="specialist">Specialist/Expert (10+ years)</option>
+                        <option value="specialist">Senior/Specialist/Expert (10+ years)</option>
                     </select>
                 </div>
 
@@ -385,12 +385,12 @@
                     Junior: $50-75/hr<br>
                     Mid-level: $70-100/hr<br>
                     Senior: $100-150/hr<br>
-                    Specialist: $150+/hr
+                    Senior/Specialist: $150+/hr
                 </div>
 
                 <div class="form-group">
                     <label for="superannuation">Superannuation %:</label>
-                    <input type="number" id="superannuation" value="11.5" step="0.5" min="11.5" max="20">
+                    <input type="number" id="superannuation" value="11" step="0.5" min="10" max="25">
                 </div>
 
                 <h2>Time & Lifestyle</h2>
@@ -399,19 +399,19 @@
                     <div class="lifestyle-options">
                         <div class="lifestyle-option" data-style="standard">Standard<br>(4 weeks holiday, 5 sick days)</div>
                         <div class="lifestyle-option active" data-style="balanced">Balanced<br>(6 weeks holiday, 5 sick days)</div>
-                        <div class="lifestyle-option" data-style="creative">Creative<br>(8 weeks holiday, 10 sick days)</div>
-                        <div class="lifestyle-option" data-style="flexible">Ultra-Flexible<br>(12 weeks, 10 sick days)</div>
+                        <div class="lifestyle-option" data-style="creative">Travleler<br>(8 weeks holiday, 10 sick days)</div>
+                        <div class="lifestyle-option" data-style="flexible">Avoid work<br>(12 weeks, 10 sick days)</div>
                     </div>
                 </div>
 
                 <div class="compact-grid">
                     <div class="form-group">
-                        <label for="adminTime">Admin & Non-Design Time %:</label>
+                        <label for="adminTime">Admin & non-design time %:</label>
                         <input type="number" id="adminTime" value="25" min="15" max="40">
-                        <small style="color: #666; font-size: 11px;">Admin, pitching, learning, business tasks</small>
+                        <small style="color: #666; font-size: 11px;">Admin, pitching, learning</small>
                     </div>
                     <div class="form-group">
-                        <label for="availableHours">Available Hours:</label>
+                        <label for="availableHours">Available hours:</label>
                         <input type="number" id="availableHours" value="2080">
                         <small style="color: #666; font-size: 11px;"><span id="hoursCalculation">40 hrs/week × 52 weeks</span></small>
                     </div>
@@ -424,45 +424,45 @@
                 <h2>Business Expenses</h2>
                 <div class="compact-grid">
                 <div class="form-group">
-                    <label for="workspaceType">Workspace Type:</label>
+                    <label for="workspaceType">Workspace type:</label>
                     <select id="workspaceType">
                         <option value="home">Home Office</option>
                         <option value="part-time-2">Part-time Co-working (2 days)</option>
                         <option value="part-time-3">Part-time Co-working (3 days)</option>
-                        <option value="full-time" selected>Full-time Dedicated Desk</option>
+                        <option value="full-time" selected>Full-time co-working (5 days)</option>
                     </select>
                 </div>
                 <div class="form-group">
-                    <label for="workspace">Annual Workspace Cost:</label>
+                    <label for="workspace">Annual workspace cost:</label>
                     <div class="input-with-dollar">
                         <span>$</span>
                         <input type="number" id="workspace" value="7260" style="width: 150%;">
                     </div>
                 </div>
-                <small style="color: #666; font-size: 11px; display: block; margin-bottom: 10px;" id="workspaceDescription">$550+GST/month, Brunswick rates</small>
+                <small style="color: #666; font-size: 11px; display: block; margin-bottom: 10px;" id="workspaceDescription">Full-time is around $450–550+GST/month.</small>
                     <div class="form-group">
-                        <label for="software">Software:</label>
+                        <label for="software">Annual software:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="software" value="1200">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="computer">Equipment:</label>
+                        <label for="computer">Annual equipment:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="computer" value="1000">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="marketing">Marketing:</label>
+                        <label for="marketing">Annual marketing:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="marketing" value="1500">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="insurance">Insurance:</label>
+                        <label for="insurance">Annual insurance:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="insurance" value="800">
@@ -476,14 +476,14 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="internet">Internet:</label>
+                        <label for="internet">Annual internet:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="internet" value="1000">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="phone">Phone:</label>
+                        <label for="phone">Annual phone:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="phone" value="1200">
@@ -493,23 +493,23 @@
                         <label for="development">Prof. Development:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
-                            <input type="number" id="development" value="1000">
+                            <input type="number" id="development" value="500">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="stationery">Supplies:</label>
+                        <label for="stationery">Annual supplies:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="stationery" value="300">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="otherExpenses">Other:</label>
+                        <label for="otherExpenses">Other costs:</label>
                         <div class="input-with-dollar">
                             <span>$</span>
                             <input type="number" id="otherExpenses" value="0">
                         </div>
-                        <small style="color: #666; font-size: 11px;">AGDA, AIGA memberships, etc.</small>
+                        <small style="color: #666; font-size: 11px;">AGDA, printing, subscriptions, etc.</small>
                     </div>
                 </div>
             </div>
@@ -549,15 +549,15 @@
                         <span>▼</span>
                     </div>
                     <div class="expandable-content">
-                        <h4>Calculation Formula:</h4>
+                        <h4>Calculation formula:</h4>
                         <p>(Gross Income + Expenses + Super) ÷ Billable Hours</p>
                         <p>($<span id="calcGross">0</span> + $<span id="calcExpenses">0</span> + $<span id="calcSuper">0</span>) ÷ <span id="calcHours">0</span></p>
                         <p><strong>= $<span id="calcResult">0</span>/hour</strong></p>
                         
-                        <h4>Working Hours:</h4>
+                        <h4>Working hours:</h4>
                         <p>Available: <span id="detailAvailable">2080</span>h</p>
                         <p>Holidays: <span id="detailHolidays">0</span>h</p>
-                        <p>Admin time: <span id="detailAdmin">0</span>h</p>
+                        <p>Admin: <span id="detailAdmin">0</span>h</p>
                         <p>Billable: <span id="detailBillable">0</span>h</p>
                     </div>
                 </div>
