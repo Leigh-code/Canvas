@@ -79,7 +79,7 @@
             display: block;
             margin-bottom: 4px;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 18px;
             color: #555;
         }
         .input-with-dollar {
@@ -102,7 +102,7 @@
             padding: 8px 10px;
             border: 1px solid #ddd;
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 18px;
         }
         .input-with-dollar input {
             border: none;
@@ -245,6 +245,19 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border: 1px solid #e9ecef;
+            transition: all 0.2s;
+        }
+        .expandable-header:hover {
+            background: #e9ecef;
+        }
+        .expandable-header .chevron {
+            font-size: 12px;
+            transition: transform 0.2s;
+            color: #666;
+        }
+        .expandable.expanded .expandable-header .chevron {
+            transform: rotate(180deg);
         }
         .expandable-content {
             display: none;
@@ -495,7 +508,7 @@
                             <input type="number" id="availableHours" value="1920">
                             <small style="color: #666; font-size: 11px;"><span id="hoursCalculation">Default based on balanced lifestyle</span></small></div>
                     </div>
-                    <p style="font-size: 12px; color: #666;">Billable hours: <strong><span id="billableHoursPreview">0</span></strong></p>
+                    
                 </div>
 
                 <!-- Right Column: Expenses -->
@@ -670,7 +683,7 @@
                 <div class="expandable">
                     <div class="expandable-header" onclick="toggleExpandable(this)">
                         <span>Detailed breakdown</span>
-                        <span>▼</span>
+                        <span class="chevron">▼</span>
                     </div>
                     <div class="expandable-content">
                         <h4>Calculation formula:</h4>
@@ -870,7 +883,6 @@
             document.getElementById('hourlyRateDisplay').textContent = hourlyRate.toFixed(0);
             document.getElementById('totalExpensesDisplay').textContent = businessExpenses.toLocaleString();
             document.getElementById('billableHoursDisplay').textContent = billableTime.toFixed(0);
-            document.getElementById('billableHoursPreview').textContent = billableTime.toFixed(0);
             document.getElementById('takeHomePayDisplay').textContent = targetSalary.toLocaleString();
 
             // Update print-specific displays
@@ -886,24 +898,24 @@
             // Update hours calculation display
             updateHoursCalculation();
 
-            // Detailed breakdown
-            document.getElementById('calcGross').textContent = grossIncome.toLocaleString();
-            document.getElementById('calcExpenses').textContent = businessExpenses.toLocaleString();
-            document.getElementById('calcSuper').textContent = superannuation.toLocaleString();
+            // Detailed breakdown - Fixed calculation values
+            document.getElementById('calcGross').textContent = grossIncome.toFixed(0);
+            document.getElementById('calcExpenses').textContent = businessExpenses.toFixed(0);
+            document.getElementById('calcSuper').textContent = superannuation.toFixed(0);
             document.getElementById('calcHours').textContent = billableTime.toFixed(0);
-            document.getElementById('calcResult').textContent = hourlyRate.toFixed(2);
-            document.getElementById('detailAvailable').textContent = availableHours;
-            document.getElementById('detailHolidays').textContent = totalNonWorking;
+            document.getElementById('calcResult').textContent = hourlyRate.toFixed(0);
+            document.getElementById('detailAvailable').textContent = availableHours.toFixed(0);
+            document.getElementById('detailHolidays').textContent = totalNonWorking.toFixed(0);
             document.getElementById('detailAdmin').textContent = (actualWorkingTime * (adminTime / 100)).toFixed(0);
             document.getElementById('detailBillable').textContent = billableTime.toFixed(0);
         }
 
         function toggleExpandable(header) {
             const expandable = header.parentElement;
-            const arrow = header.querySelector('span:last-child');
+            const chevron = header.querySelector('.chevron');
             
             expandable.classList.toggle('expanded');
-            arrow.textContent = expandable.classList.contains('expanded') ? '▲' : '▼';
+            // Chevron rotation is handled by CSS transition
         }
 
         // Event Listeners
