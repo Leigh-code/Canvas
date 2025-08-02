@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Freelance Rate Calculator</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         * { box-sizing: border-box; }
         body {
@@ -43,17 +42,27 @@
         }
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 350px;
+            grid-template-columns: 1fr 300px;
             gap: 0;
             min-height: 70vh;
         }
-        .section {
-            padding: 20px;
+        .left-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0;
+        }
+        .left-content .section {
             border-right: 1px solid #e9ecef;
         }
-        .section:last-child {
+        .left-content .section:last-child {
             border-right: none;
+        }
+        .right-sidebar {
             background: #f8f9fa;
+            border-left: 1px solid #e9ecef;
+        }
+        .section {
+            padding: 20px;
         }
         h2 {
             color: #222160;
@@ -99,23 +108,6 @@
             border: none;
             flex: 1;
         }
-        .target-salary-container {
-            background: linear-gradient(135deg, #FAC800 0%, #f39c12 100%);
-            padding: 15px;
-            border-radius: 8px;
-            margin: 15px 0;
-        }
-        .target-salary-input {
-            background: white;
-            color: #333;
-            padding: 12px;
-            border: none;
-            border-radius: 6px;
-            font-size: 20px;
-            font-weight: bold;
-            text-align: center;
-            width: 100%;
-        }
         .slider-container {
             margin: 15px 0;
             padding: 15px;
@@ -149,7 +141,7 @@
         .slider-labels {
             display: flex;
             justify-content: space-between;
-            font-size: 11px;
+            font-size: 14px;
             color: #666;
             margin-top: 5px;
         }
@@ -165,7 +157,7 @@
             border-radius: 4px;
             text-align: center;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
             transition: all 0.2s;
         }
         .lifestyle-option.active {
@@ -175,32 +167,6 @@
         }
         .lifestyle-option:hover {
             border-color: #222160;
-        }
-        .work-capacity-container {
-            background: #e8f5e8;
-            padding: 12px;
-            border-radius: 6px;
-            margin: 10px 0;
-        }
-        .capacity-options {
-            display: flex;
-            gap: 8px;
-            margin-top: 8px;
-        }
-        .capacity-option {
-            flex: 1;
-            padding: 6px;
-            border: 1px solid #4caf50;
-            border-radius: 4px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 11px;
-            background: white;
-            transition: all 0.2s;
-        }
-        .capacity-option.active {
-            background: #4caf50;
-            color: white;
         }
         .compact-grid {
             display: grid;
@@ -216,7 +182,7 @@
             margin-bottom: 20px;
         }
         .result-rate {
-            font-size: 32px;
+            font-size: 50px;
             font-weight: bold;
             margin-bottom: 5px;
         }
@@ -229,7 +195,7 @@
             justify-content: space-between;
             padding: 8px 0;
             border-bottom: 1px solid #e9ecef;
-            font-size: 13px;
+            font-size: 21px;
         }
         .summary-item:last-child {
             border-bottom: none;
@@ -243,40 +209,28 @@
             border: 1px solid #90caf9;
             padding: 12px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 21px;
             margin: 10px 0;
         }
         .tax-rate-display {
             font-weight: bold;
             color: #1565c0;
         }
-        .export-buttons {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
         .btn {
             padding: 10px 15px;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 21px;
             font-weight: 500;
             transition: all 0.2s;
         }
         .btn-primary {
-            background: #E61E2A;
-            color: white;
+            background: #98f5c5;
+            color: black;
         }
         .btn-primary:hover {
             background: #c51821;
-        }
-        .btn-secondary {
-            background: #6c757d;
-            color: white;
-        }
-        .btn-secondary:hover {
-            background: #545b62;
         }
         .expandable {
             margin-top: 15px;
@@ -287,7 +241,7 @@
             border-radius: 6px;
             cursor: pointer;
             font-weight: 500;
-            font-size: 13px;
+            font-size: 14px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -309,26 +263,168 @@
             border: 1px solid #c5e1a5;
             padding: 10px;
             border-radius: 6px;
-            font-size: 12px;
+            font-size: 14px;
             margin-top: 10px;
+        }
+        .print-financial-summary {
+            display: none;
         }
         @media (max-width: 1024px) {
             .main-grid {
                 grid-template-columns: 1fr;
                 gap: 20px;
             }
-            .section {
+            .left-content {
+                grid-template-columns: 1fr;
+            }
+            .left-content .section {
                 border-right: none;
                 border-bottom: 1px solid #e9ecef;
+            }
+            .right-sidebar {
+                border-left: none;
+                border-top: 1px solid #e9ecef;
             }
             body {
                 padding: 10px;
             }
         }
         @media print {
-            body { background: white; padding: 0; }
-            .container { box-shadow: none; }
-            .btn { display: none; }
+            body { 
+                background: white; 
+                padding: 0; 
+                font-size: 12px;
+                line-height: 1.3;
+            }
+            .container { 
+                box-shadow: none; 
+                border-radius: 0;
+                max-width: none;
+            }
+            .btn { 
+                display: none; 
+            }
+            .main-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+            .left-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 30px;
+            }
+            .left-content .section {
+                border-right: none;
+            }
+            .section:last-child {
+                background: white;
+                border: 1px solid #ddd;
+                border-radius: 8px;
+                padding: 20px;
+            }
+            h1 {
+                font-size: 24px;
+                padding: 15px;
+                page-break-after: avoid;
+            }
+            h2 {
+                font-size: 16px;
+                margin: 15px 0 10px 0;
+                page-break-after: avoid;
+            }
+            .result-display {
+                font-size: 18px;
+                padding: 15px;
+                margin-bottom: 15px;
+                page-break-inside: avoid;
+            }
+            .result-rate {
+                font-size: 28px;
+            }
+            .tax-info-box {
+                padding: 15px;
+                font-size: 13px;
+                page-break-inside: avoid;
+            }
+            .tax-rate-display {
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .form-group {
+                margin-bottom: 8px;
+                page-break-inside: avoid;
+            }
+            label {
+                font-size: 14px;
+                font-weight: 600;
+            }
+            input, select {
+                font-size: 12px;
+                padding: 6px 8px;
+            }
+            .compact-grid {
+                gap: 15px;
+            }
+            .lifestyle-options {
+                gap: 8px;
+            }
+            .lifestyle-option {
+                font-size: 10px;
+                padding: 6px;
+            }
+            .slider-container {
+                padding: 12px;
+                margin: 10px 0;
+            }
+            .benchmark {
+                font-size: 11px;
+                padding: 8px;
+                line-height: 1.4;
+            }
+            .summary-item {
+                font-size: 12px;
+                padding: 6px 0;
+            }
+            .summary-item:last-child {
+                font-size: 14px;
+                font-weight: bold;
+            }
+            .expandable {
+                page-break-inside: avoid;
+            }
+            .expandable-content {
+                display: block !important;
+                font-size: 11px;
+                padding: 10px;
+            }
+            .expandable-header {
+                display: none;
+            }
+            .print-financial-summary {
+                display: block;
+                background: #f8f9fa;
+                border: 2px solid #222160;
+                padding: 15px;
+                margin: 15px 0;
+                border-radius: 8px;
+                page-break-inside: avoid;
+            }
+            .print-financial-summary h3 {
+                margin: 0 0 10px 0;
+                color: #222160;
+                font-size: 16px;
+            }
+            .print-financial-row {
+                display: flex;
+                justify-content: space-between;
+                margin: 8px 0;
+                font-size: 13px;
+            }
+            .print-financial-row.highlight {
+                font-weight: bold;
+                font-size: 14px;
+                border-top: 1px solid #ddd;
+                padding-top: 8px;
+            }
         }
     </style>
 </head>
@@ -338,214 +434,242 @@
         <div class="subtitle">For creative freelancers</div>
         
         <div class="main-grid">
-            <!-- Left Column: Rate & Income -->
-            <div class="section">
+            <!-- Left Content: Two Column Layout -->
+            <div class="left-content">
+                <!-- Left Column: Rate & Income -->
+                <div class="section">
+                    <h2>Personal details</h2>
+                    <div class="form-group">
+                        <label for="name">Your name:</label>
+                        <input type="text" id="name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="designerLevel">Experience level:</label>
+                        <select id="designerLevel">
+                            <option value="emerging">Emerging</option>
+                            <option value="junior">Junior (1-4 years)</option>
+                            <option value="mid">Midweight (5-10 years)</option>
+                            <option value="senior">Senior (10+ years)</option>
+                            <option value="specialist">Studio manager/Expert (10+ years)</option>
+                        </select>
+                    </div>
+
+                    <h2>Income goals</h2>
+                    <div class="slider-container">
+                        <label>Annual take-home salary <strong>(after tax)</strong>: <strong>$<span id="salaryDisplay">60,000</span></strong></label>
+                        <input type="range" id="salarySlider" class="slider" min="35000" max="120000" step="5000" value="60000">
+                        <div class="slider-labels">
+                            <span>$35k</span>
+                            <span>$60k</span>
+                            <span>$85k</span>
+                            <span>$120k</span>
+                        </div>
+                    </div>
+
+                    <div class="benchmark">
+                        <strong>Industry benchmark:</strong><br>
+                        Emerging: $40-65/hr<br>
+                        Junior: $50-75/hr<br>
+                        Mid-weight: $70-100/hr<br>
+                        Senior: $100-150/hr<br>
+                        Senior/Specialist: $150+/hr
+                    </div>
+
+                    <div class="form-group">
+                        <label for="superannuation">Superannuation %:</label>
+                        <input type="number" id="superannuation" value="11" step="0.5" min="10" max="25">
+                    </div>
+
+                    <h2>Time & lifestyle</h2>
+                    <div class="form-group">
+                        <label>Choose your lifestyle:</label>
+                        <div class="lifestyle-options">
+                            <div class="lifestyle-option" data-style="standard">Standard<br>(4 weeks leave, 5 sick days)</div>
+                            <div class="lifestyle-option active" data-style="balanced">Balanced<br>(6 weeks leave, 5 sick days)</div>
+                            <div class="lifestyle-option" data-style="creative">Traveller<br>(8 weeks leave, 10 sick days)</div>
+                            <div class="lifestyle-option" data-style="flexible">Avoid work<br>(12 weeks leave, 10 sick days)</div>
+                        </div>
+                    </div>
+
+                    <div class="compact-grid">
+                        <div class="form-group">
+                            <label for="adminTime">Admin & non-design time %:</label>
+                            <input type="number" id="adminTime" value="20" min="10" max="40">
+                            <small style="color: #666; font-size: 11px;">Admin, pitching, learning</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="availableHours">Available hours:</label>
+                            <input type="number" id="availableHours" value="1920">
+                            <small style="color: #666; font-size: 11px;"><span id="hoursCalculation">Default based on balanced lifestyle</span></small>                        </div>
+                    </div>
+                    <p style="font-size: 12px; color: #666;">Billable hours: <strong><span id="billableHoursPreview">0</span></strong></p>
+                </div>
+
+                <!-- Right Column: Expenses -->
+                <div class="section">
+                    <h2>Business expenses (annual)</h2>
+                    <div class="compact-grid">
+                    <div class="form-group">
+                        <label for="workspaceType">Workspace type:</label>
+                        <select id="workspaceType">
+                            <option value="home">Home </option>
+                            <option value="part-time-2">Part-time (2 days)</option>
+                            <option value="part-time-3">Part-time (3 days)</option>
+                            <option value="full-time" selected>Full-time (5 days)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="workspace">Workspace cost:</label>
+                        <div class="input-with-dollar">
+                            <span>$</span>
+                            <input type="number" id="workspace" value="7260" style="width: 150%;">
+                        </div>
+                    <small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">Full-time workspace est. $450–550+GST/month.</small>
+                    </div>
+                        <div class="form-group">
+                            <label for="software">Software:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="software" value="1191.60">
+                            </div>
+<small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">e.g. Adobe annual subscription.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="computer">Equipment (e.g. computer):</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="computer" value="1000">
+                            </div>
+<small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">Cost ÷ years used.</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="marketing">Marketing:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="marketing" value="1200">
+                            </div>
+                    <small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">$0, or $100+ per month.</small>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="insurance">Insurance:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="insurance" value="800">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="accountant">Accounting:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="accountant" value="250">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="internet">Internet:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="internet" value="1000">
+                            </div>
+                    <small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">Depends if working at home.</small>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="phone" value="1200">
+                            </div>
+                    <small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">Cost ÷ years used + access per year.</small>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="development">Professional development:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="development" value="500">
+                            </div>
+                    <small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">Conferences, online courses, workshops.</small>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="stationery">Supplies:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="stationery" value="300">
+                            </div>
+                    <small style="color: #666; font-size: 11px; display: block; margin-bottom: 5px;" id="workspaceDescription">Stationery, office supplies.</small>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="otherExpenses">Other costs:</label>
+                            <div class="input-with-dollar">
+                                <span>$</span>
+                                <input type="number" id="otherExpenses" value="0">
+                            </div>
+                            <small style="color: #666; font-size: 11px;">AGDA, printing, subscriptions, etc.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Sidebar: Results -->
+            <div class="section right-sidebar">
                 <div class="result-display">
                     <div class="result-rate">$<span id="hourlyRateDisplay">0</span></div>
-                    <div class="result-subtitle">Per Hour</div>
+                    <div class="result-subtitle">Hourly rate</div>
                 </div>
 
                 <div class="tax-info-box">
-                    <div class="tax-rate-display">Tax Rate: <span id="effectiveTaxRate">0</span>% ($<span id="taxDollarAmount">0</span>) | Gross Income: $<span id="grossIncomeRequired">0</span></div>
-                    <div style="margin-top: 5px; font-size: 11px;">Based on 2025-26 Australian tax rates</div>
+                    <div class="tax-rate-display">Tax rate: <span id="effectiveTaxRate">0</span>% $<span id="taxDollarAmount">0</span><br>Gross income: $<span id="grossIncomeRequired">0</span><br>Take-home pay: $<span id="takeHomePayBox">0</span></div>
+                    <div style="margin-top: 5px; font-size: 11px;">Based on 2025-26 Australian tax rates. <br>Check for current rates.</div>
                 </div>
 
-                <h2>Personal Details</h2>
-                <div class="form-group">
-                    <label for="name">Your Name:</label>
-                    <input type="text" id="name">
-                </div>
-                
-                <div class="form-group">
-                    <label for="designerLevel">Experience Level:</label>
-                    <select id="designerLevel">
-                        <option value="emerging">Emerging Designer</option>
-                        <option value="junior">Junior Designer (1-2 years)</option>
-                        <option value="mid">Mid-level Designer (3-5 years)</option>
-                        <option value="senior">Senior Designer (5+ years)</option>
-                        <option value="specialist">Senior/Specialist/Expert (10+ years)</option>
-                    </select>
-                </div>
+                <button class="btn btn-primary" onclick="window.print()" style="width: 100%; margin-bottom: 20px;">Print (PDF)</button>
 
-                <h2>Income Goals</h2>
-                <div class="slider-container">
-                    <label>Annual Take-Home Salary <strong>(after tax)</strong>: <strong>$<span id="salaryDisplay">60,000</span></strong></label>
-                    <input type="range" id="salarySlider" class="slider" min="35000" max="120000" step="5000" value="60000">
-                    <div class="slider-labels">
-                        <span>$35k</span>
-                        <span>$60k</span>
-                        <span>$85k</span>
-                        <span>$120k</span>
+                <!-- Print-only financial summary -->
+                <div class="print-financial-summary">
+                    <h3>Financial overview</h3>
+                    <div class="print-financial-row">
+                        <span>Target take-home salary:</span>
+                        <span>$<span class="print-salary">60,000</span></span>
                     </div>
-                </div>
-
-                <div class="benchmark">
-                    <strong>Industry Benchmark:</strong><br>
-                    Emerging: $40-65/hr<br>
-                    Junior: $50-75/hr<br>
-                    Mid-weight: $70-100/hr<br>
-                    Senior: $100-150/hr<br>
-                    Senior/Specialist: $150+/hr
-                </div>
-
-                <div class="form-group">
-                    <label for="superannuation">Superannuation %:</label>
-                    <input type="number" id="superannuation" value="11" step="0.5" min="10" max="25">
-                </div>
-
-                <h2>Time & Lifestyle</h2>
-                <div class="form-group">
-                    <label>Choose Your Lifestyle:</label>
-                    <div class="lifestyle-options">
-                        <div class="lifestyle-option" data-style="standard">Standard<br>(4 weeks holiday, 5 sick days)</div>
-                        <div class="lifestyle-option active" data-style="balanced">Balanced<br>(6 weeks holiday, 5 sick days)</div>
-                        <div class="lifestyle-option" data-style="creative">Travleler<br>(8 weeks holiday, 10 sick days)</div>
-                        <div class="lifestyle-option" data-style="flexible">Avoid work<br>(12 weeks, 10 sick days)</div>
+                    <div class="print-financial-row">
+                        <span>Gross income required:</span>
+                        <span>$<span class="print-gross">0</span></span>
                     </div>
-                </div>
-
-                <div class="compact-grid">
-                    <div class="form-group">
-                        <label for="adminTime">Admin & non-design time %:</label>
-                        <input type="number" id="adminTime" value="25" min="15" max="40">
-                        <small style="color: #666; font-size: 11px;">Admin, pitching, learning</small>
+                    <div class="print-financial-row">
+                        <span>Effective tax rate:</span>
+                        <span><span class="print-tax-rate">0</span>% ($<span class="print-tax-amount">0</span>)</span>
                     </div>
-                    <div class="form-group">
-                        <label for="availableHours">Available hours:</label>
-                        <input type="number" id="availableHours" value="2080">
-                        <small style="color: #666; font-size: 11px;"><span id="hoursCalculation">40 hrs/week × 52 weeks</span></small>
+                    <div class="print-financial-row">
+                        <span>Business expenses:</span>
+                        <span>$<span class="print-expenses">0</span></span>
                     </div>
-                </div>
-                <p style="font-size: 12px; color: #666;">Billable hours: <strong><span id="billableHoursPreview">0</span></strong></p>
-            </div>
-
-            <!-- Middle Column: Expenses -->
-            <div class="section">
-                <h2>Business Expenses</h2>
-                <div class="compact-grid">
-                <div class="form-group">
-                    <label for="workspaceType">Workspace type:</label>
-                    <select id="workspaceType">
-                        <option value="home">Home </option>
-                        <option value="part-time-2">Part-time (2 days)</option>
-                        <option value="part-time-3">Part-time (3 days)</option>
-                        <option value="full-time" selected>Full-time (5 days)</option>
-                    </select>
-                </div>
-                <div class="form-group">
-                    <label for="workspace">Annual workspace cost:</label>
-                    <div class="input-with-dollar">
-                        <span>$</span>
-                        <input type="number" id="workspace" value="7260" style="width: 150%;">
+                    <div class="print-financial-row highlight">
+                        <span>Required hourly rate:</span>
+                        <span>$<span class="print-hourly-rate">0</span></span>
                     </div>
-                </div>
-                <small style="color: #666; font-size: 11px; display: block; margin-bottom: 10px;" id="workspaceDescription">Full-time is around $450–550+GST/month.</small>
-                    <div class="form-group">
-                        <label for="software">Annual software:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="software" value="1200">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="computer">Annual equipment:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="computer" value="1000">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="marketing">Annual marketing:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="marketing" value="1500">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="insurance">Annual insurance:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="insurance" value="800">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="accountant">Accounting:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="accountant" value="1500">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="internet">Annual internet:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="internet" value="1000">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Annual phone:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="phone" value="1200">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="development">Prof. Development:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="development" value="500">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="stationery">Annual supplies:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="stationery" value="300">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="otherExpenses">Other costs:</label>
-                        <div class="input-with-dollar">
-                            <span>$</span>
-                            <input type="number" id="otherExpenses" value="0">
-                        </div>
-                        <small style="color: #666; font-size: 11px;">AGDA, printing, subscriptions, etc.</small>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Right Column: Results -->
-            <div class="section">
-                <div class="export-buttons">
-                    <button class="btn btn-primary" onclick="exportToPDF()">Export PDF</button>
-                    <button class="btn btn-secondary" onclick="window.print()">Print</button>
                 </div>
 
                 <h2>Summary</h2>
                 <div class="summary-item">
-                    <span>Gross Income Required:</span>
-                    <span>$<span id="grossIncomeDisplay">0</span></span>
-                </div>
-                <div class="summary-item">
-                    <span>Business Expenses:</span>
+                    <span>Business expenses:</span>
                     <span>$<span id="totalExpensesDisplay">0</span></span>
                 </div>
                 <div class="summary-item">
-                    <span>Income Tax:</span>
-                    <span>$<span id="totalTaxDisplay">0</span></span>
-                </div>
-                <div class="summary-item">
-                    <span>Billable Hours:</span>
+                    <span>Billable hours:</span>
                     <span><span id="billableHoursDisplay">0</span></span>
                 </div>
                 <div class="summary-item">
-                    <span>Take-Home Pay:</span>
+                    <span>Take-home pay:</span>
                     <span>$<span id="takeHomePayDisplay">0</span></span>
                 </div>
 
                 <div class="expandable">
                     <div class="expandable-header" onclick="toggleExpandable(this)">
-                        <span>Detailed Breakdown</span>
+                        <span>Detailed breakdown</span>
                         <span>▼</span>
                     </div>
                     <div class="expandable-content">
@@ -555,7 +679,7 @@
                         <p><strong>= $<span id="calcResult">0</span>/hour</strong></p>
                         
                         <h4>Working hours:</h4>
-                        <p>Available: <span id="detailAvailable">2080</span>h</p>
+                        <p>Available: <span id="detailAvailable">1920</span>h</p>
                         <p>Holidays: <span id="detailHolidays">0</span>h</p>
                         <p>Admin: <span id="detailAdmin">0</span>h</p>
                         <p>Billable: <span id="detailBillable">0</span>h</p>
@@ -597,7 +721,7 @@
             },
             'full-time': { 
                 cost: 7260, 
-                description: '$550+GST/month, Brunswick rates'
+                description: '$550+GST/month (5 days)'
             }
         };
 
@@ -671,6 +795,14 @@
                 el.classList.remove('active');
             });
             document.querySelector(`[data-style="${style}"]`).classList.add('active');
+            
+            // Update available hours based on lifestyle
+            const lifestyle = lifestyleSettings[style];
+            const totalTimeOff = 88 + lifestyle.holidays + lifestyle.sick + lifestyle.other; // 88 = public holidays
+            const availableHours = 2080 - totalTimeOff; // Start from full year, subtract time off
+            document.getElementById('availableHours').value = availableHours;
+            
+            updateHoursCalculation();
             calculateRate();
         }
 
@@ -684,10 +816,20 @@
         }
 
         function updateHoursCalculation() {
-            const hours = parseFloat(document.getElementById('availableHours').value) || 2080;
-            const weeksPerYear = 52;
-            const hoursPerWeek = Math.round(hours / weeksPerYear);
-            document.getElementById('hoursCalculation').textContent = `${hoursPerWeek} hrs/week × ${weeksPerYear} weeks`;
+            const hours = parseFloat(document.getElementById('availableHours').value) || 1920;
+            const lifestyle = lifestyleSettings[currentLifestyle];
+            
+            // Calculate total time off in hours (assuming 8-hour days)
+            const publicHolidayWeeks = 88 / 40; // 88 hours = 2.2 weeks
+            const holidayWeeks = lifestyle.holidays / 40;
+            const sickWeeks = lifestyle.sick / 40;
+            const otherWeeks = lifestyle.other / 40;
+            
+            const totalWeeksOff = publicHolidayWeeks + holidayWeeks + sickWeeks + otherWeeks;
+            const workingWeeks = 52 - totalWeeksOff;
+            const hoursPerWeek = Math.round(hours / workingWeeks);
+            
+            document.getElementById('hoursCalculation').textContent = `${hoursPerWeek} hrs/week × ${workingWeeks.toFixed(1)} weeks (${currentLifestyle} lifestyle)`;
         }
 
         function calculateRate() {
@@ -724,13 +866,22 @@
             document.getElementById('grossIncomeRequired').textContent = grossIncome.toLocaleString();
             document.getElementById('effectiveTaxRate').textContent = effectiveTaxRate.toFixed(1);
             document.getElementById('taxDollarAmount').textContent = totalTax.toLocaleString();
+            document.getElementById('takeHomePayBox').textContent = targetSalary.toLocaleString();
             document.getElementById('hourlyRateDisplay').textContent = hourlyRate.toFixed(0);
-            document.getElementById('grossIncomeDisplay').textContent = grossIncome.toLocaleString();
             document.getElementById('totalExpensesDisplay').textContent = businessExpenses.toLocaleString();
-            document.getElementById('totalTaxDisplay').textContent = totalTax.toLocaleString();
             document.getElementById('billableHoursDisplay').textContent = billableTime.toFixed(0);
             document.getElementById('billableHoursPreview').textContent = billableTime.toFixed(0);
             document.getElementById('takeHomePayDisplay').textContent = targetSalary.toLocaleString();
+
+            // Update print-specific displays
+            if (document.querySelector('.print-salary')) {
+                document.querySelector('.print-salary').textContent = targetSalary.toLocaleString();
+                document.querySelector('.print-gross').textContent = grossIncome.toLocaleString();
+                document.querySelector('.print-tax-rate').textContent = effectiveTaxRate.toFixed(1);
+                document.querySelector('.print-tax-amount').textContent = totalTax.toLocaleString();
+                document.querySelector('.print-expenses').textContent = businessExpenses.toLocaleString();
+                document.querySelector('.print-hourly-rate').textContent = hourlyRate.toFixed(0);
+            }
 
             // Update hours calculation display
             updateHoursCalculation();
@@ -753,200 +904,6 @@
             
             expandable.classList.toggle('expanded');
             arrow.textContent = expandable.classList.contains('expanded') ? '▲' : '▼';
-        }
-
-        function exportToPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-            
-            const name = document.getElementById('name').value || '[Name not provided]';
-            const targetSalary = document.getElementById('salarySlider').value;
-            const hourlyRate = document.getElementById('hourlyRateDisplay').textContent;
-            const grossIncome = document.getElementById('grossIncomeDisplay').textContent;
-            const totalExpenses = document.getElementById('totalExpensesDisplay').textContent;
-            const billableHours = document.getElementById('billableHoursDisplay').textContent;
-            const totalTax = document.getElementById('totalTaxDisplay').textContent;
-            const residencyStatus = 'resident'; // Default to Australian resident
-            const level = document.getElementById('designerLevel').value;
-            const effectiveTaxRate = document.getElementById('effectiveTaxRate').textContent;
-            
-            // Header
-            doc.setFontSize(20);
-            doc.setTextColor(34, 33, 96);
-            doc.text('Australian Freelance Rate Calculator', 105, 20, { align: 'center' });
-            
-            // Personal Information
-            doc.setFontSize(12);
-            doc.setTextColor(0, 0, 0);
-            doc.text(`Name: ${name}`, 20, 35);
-            doc.text(`Experience Level: ${level.charAt(0).toUpperCase() + level.slice(1)} Designer`, 20, 42);
-            doc.text(`Date: ${new Date().toLocaleDateString('en-AU')}`, 20, 49);
-            doc.text(`Tax Residency: ${residencyStatus.charAt(0).toUpperCase() + residencyStatus.slice(1).replace('-', ' ')}`, 110, 35);
-            doc.text(`Lifestyle: ${currentLifestyle.charAt(0).toUpperCase() + currentLifestyle.slice(1)}`, 110, 42);
-            doc.text(`Work Capacity: Full-time (40hrs/week)`, 110, 49);
-            
-            // Main Results Box
-            doc.setFillColor(230, 30, 42);
-            doc.rect(20, 57, 170, 20, 'F');
-            doc.setFontSize(16);
-            doc.setTextColor(255, 255, 255);
-            doc.text(`CALCULATED HOURLY RATE: ${hourlyRate}`, 105, 70, { align: 'center' });
-            
-            // Two Column Layout
-            doc.setFontSize(12);
-            doc.setTextColor(34, 33, 96);
-            
-            // Left Column - Financial Summary
-            doc.text('FINANCIAL SUMMARY', 20, 85);
-            doc.setFontSize(9);
-            doc.setTextColor(0, 0, 0);
-            let leftY = 92;
-            doc.text(`Target Take-Home Salary: ${parseInt(targetSalary).toLocaleString()}`, 20, leftY);
-            leftY += 6;
-            doc.text(`Gross Income Required: ${grossIncome}`, 20, leftY);
-            leftY += 6;
-            doc.text(`Effective Tax Rate: ${effectiveTaxRate}%`, 20, leftY);
-            leftY += 6;
-            doc.text(`Total Income Tax: ${totalTax}`, 20, leftY);
-            leftY += 6;
-            doc.text(`Total Business Expenses: ${totalExpenses}`, 20, leftY);
-            leftY += 6;
-            doc.text(`Billable Hours per Year: ${billableHours}`, 20, leftY);
-            
-            // Right Column - Working Hours
-            doc.setFontSize(12);
-            doc.setTextColor(34, 33, 96);
-            doc.text('WORKING HOURS ANALYSIS', 110, 85);
-            doc.setFontSize(9);
-            doc.setTextColor(0, 0, 0);
-            let rightY = 92;
-            
-            const availableHours = document.getElementById('availableHours').value;
-            const lifestyle = lifestyleSettings[currentLifestyle];
-            const totalNonWorking = 88 + lifestyle.holidays + lifestyle.sick + lifestyle.other;
-            const adminHours = document.getElementById('detailAdmin').textContent;
-            
-            doc.text(`Available Hours: ${parseInt(availableHours).toLocaleString()}`, 110, rightY);
-            rightY += 6;
-            doc.text(`Public Holidays: 88h`, 110, rightY);
-            rightY += 6;
-            doc.text(`Annual Leave: ${lifestyle.holidays}h`, 110, rightY);
-            rightY += 6;
-            doc.text(`Less: Sick days (${lifestyle.sick}h), Other time off (${lifestyle.other}h)`, 25, rightY);
-            rightY += 6;
-            doc.text(`Admin Time: ${adminHours}h`, 110, rightY);
-            rightY += 6;
-            doc.text(`Billable Hours: ${billableHours}`, 110, rightY);
-            
-            // Business Expenses Section
-            let currentY = Math.max(leftY, rightY) + 15;
-            doc.setFontSize(12);
-            doc.setTextColor(34, 33, 96);
-            doc.text('BUSINESS EXPENSES BREAKDOWN', 20, currentY);
-            
-            currentY += 8;
-            doc.setFontSize(8);
-            doc.setTextColor(0, 0, 0);
-            
-            const expenseItems = [
-                { id: 'workspace', label: 'Workspace/Studio' },
-                { id: 'software', label: 'Software Subscriptions' },
-                { id: 'computer', label: 'Equipment & Hardware' },
-                { id: 'marketing', label: 'Marketing & Advertising' },
-                { id: 'insurance', label: 'Professional Insurance' },
-                { id: 'accountant', label: 'Accounting & Bookkeeping' },
-                { id: 'internet', label: 'Internet Connection' },
-                { id: 'phone', label: 'Phone & Communications' },
-                { id: 'development', label: 'Professional Development' },
-                { id: 'stationery', label: 'Supplies & Materials' },
-                { id: 'otherExpenses', label: 'Other Business Expenses' }
-            ];
-            
-            let col1Y = currentY;
-            let col2Y = currentY;
-            
-            expenseItems.forEach((item, index) => {
-                const value = document.getElementById(item.id).value;
-                if (parseFloat(value) > 0) {
-                    const displayText = `${item.label}: ${parseInt(value).toLocaleString()}`;
-                    if (index % 2 === 0) {
-                        doc.text(displayText, 20, col1Y);
-                        col1Y += 4;
-                    } else {
-                        doc.text(displayText, 110, col2Y);
-                        col2Y += 4;
-                    }
-                }
-            });
-            
-            // Final Calculation
-            currentY = Math.max(col1Y, col2Y) + 10;
-            doc.setFontSize(12);
-            doc.setTextColor(34, 33, 96);
-            doc.text('CALCULATION FORMULA', 20, currentY);
-            
-            currentY += 8;
-            doc.setFontSize(9);
-            doc.setTextColor(0, 0, 0);
-            doc.text('Hourly Rate = (Gross Income + Business Expenses + Superannuation) ÷ Billable Hours', 20, currentY);
-            currentY += 6;
-            const superAmount = document.getElementById('calcSuper').textContent;
-            doc.text(`Calculation: (${grossIncome} + ${totalExpenses} + ${superAmount}) ÷ ${billableHours}`, 20, currentY);
-            currentY += 6;
-            doc.setFontSize(11);
-            doc.setTextColor(230, 30, 42);
-            doc.text(`Final Result: ${hourlyRate} per hour`, 20, currentY);
-            
-            // Industry Benchmark
-            currentY += 15;
-            doc.setFontSize(12);
-            doc.setTextColor(34, 33, 96);
-            doc.text('INDUSTRY BENCHMARK COMPARISON', 20, currentY);
-            
-            currentY += 8;
-            doc.setFontSize(8);
-            doc.setTextColor(0, 0, 0);
-            doc.text('Australian freelance design rates (2025):', 20, currentY);
-            currentY += 5;
-            doc.text('• Emerging Designer: $40-65/hour', 20, currentY);
-            currentY += 4;
-            doc.text('• Junior Designer (1-2 years): $50-75/hour', 20, currentY);
-            currentY += 4;
-            doc.text('• Mid-level Designer (3-5 years): $70-100/hour', 20, currentY);
-            currentY += 4;
-            doc.text('• Senior Designer (5+ years): $100-150/hour', 20, currentY);
-            currentY += 4;
-            doc.text('• Specialist/Expert (10+ years): $150+/hour', 20, currentY);
-            
-            // Professional Notes
-            currentY += 12;
-            doc.setFontSize(12);
-            doc.setTextColor(34, 33, 96);
-            doc.text('PROFESSIONAL DEVELOPMENT NOTES', 20, currentY);
-            
-            currentY += 8;
-            doc.setFontSize(8);
-            doc.setTextColor(0, 0, 0);
-            doc.text('This calculation demonstrates understanding of:', 20, currentY);
-            currentY += 5;
-            doc.text('• Australian tax obligations and business structure for creative freelancers', 20, currentY);
-            currentY += 4;
-            doc.text('• Comprehensive business expense planning including professional development', 20, currentY);
-            currentY += 4;
-            doc.text('• Strategic time management and work-life balance considerations', 20, currentY);
-            currentY += 4;
-            doc.text('• Professional rate setting methodology for sustainable practice', 20, currentY);
-            currentY += 4;
-            doc.text('• Industry positioning and competitive market analysis', 20, currentY);
-            
-            // Footer
-            doc.setFontSize(7);
-            doc.setTextColor(128, 128, 128);
-            doc.text('Tax calculations are estimates based on 2025-26 rates. Consult a qualified accountant for professional advice.', 105, 280, { align: 'center' });
-            
-            // Save the PDF
-            const fileName = `Freelance_Rate_Calculator_${name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
-            doc.save(fileName);
         }
 
         // Event Listeners
