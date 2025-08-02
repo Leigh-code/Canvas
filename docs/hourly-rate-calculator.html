@@ -467,15 +467,7 @@
                         </div>
                     </div>
 
-                    <div class="benchmark">
-                        <strong>Industry benchmark:</strong><br>
-                        Emerging: $40-65/hr<br>
-                        Junior: $50-75/hr<br>
-                        Mid-weight: $70-100/hr<br>
-                        Senior: $100-150/hr<br>
-                        Senior/Specialist: $150+/hr
-                    </div>
-
+                  
                     <div class="form-group">
                         <label for="superannuation">Superannuation %:</label>
                         <input type="number" id="superannuation" value="11" step="0.5" min="10" max="25">
@@ -501,7 +493,7 @@
                         <div class="form-group">
                             <label for="availableHours">Available hours:</label>
                             <input type="number" id="availableHours" value="1920">
-                            <small style="color: #666; font-size: 11px;"><span id="hoursCalculation">Default based on balanced lifestyle</span></small>                        </div>
+                            <small style="color: #666; font-size: 11px;"><span id="hoursCalculation">Default based on balanced lifestyle</span></small></div>
                     </div>
                     <p style="font-size: 12px; color: #666;">Billable hours: <strong><span id="billableHoursPreview">0</span></strong></p>
                 </div>
@@ -620,11 +612,19 @@
                     <div class="result-rate">$<span id="hourlyRateDisplay">0</span></div>
                     <div class="result-subtitle">Hourly rate</div>
                 </div>
+<div class="benchmark">
+                        <strong>Industry benchmark:</strong><br>
+                        Emerging/junior: $40-75/hr<br>
+                        Mid-weight: $70-100/hr<br>
+                        Senior: $100-150/hr<br>
+                        Senior/Specialist: $150+/hr
+                    </div>
 
                 <div class="tax-info-box">
-                    <div class="tax-rate-display">Tax rate: <span id="effectiveTaxRate">0</span>% $<span id="taxDollarAmount">0</span><br>Gross income: $<span id="grossIncomeRequired">0</span><br>Take-home pay: $<span id="takeHomePayBox">0</span></div>
+                    <div class="tax-rate-display">Tax (<span id="effectiveTaxRate">0</span>%): <br>$<span id="taxDollarAmount">0</span><hr>Gross income: <br>$<span id="grossIncomeRequired">0</span><hr>Take-home pay: <br>$<span id="takeHomePayBox">0</span></div>
                     <div style="margin-top: 5px; font-size: 11px;">Based on 2025-26 Australian tax rates. <br>Check for current rates.</div>
                 </div>
+
 
                 <button class="btn btn-primary" onclick="window.print()" style="width: 100%; margin-bottom: 20px;">Print (PDF)</button>
 
