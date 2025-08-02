@@ -439,8 +439,9 @@
             const cmykValues = profiles[currentProfile].getCMYK(currentGrey);
             const totalInk = cmykValues.c + cmykValues.m + cmykValues.y + cmykValues.k;
             
-            // Update grey level display
-            document.getElementById('greyDisplay').textContent = `${currentGrey}%`;
+            // Update grey level display with rich black notation
+            const greyText = currentGrey === 100 ? `${currentGrey}% (rich black)` : `${currentGrey}%`;
+            document.getElementById('greyDisplay').textContent = greyText;
             
             // Update RGB swatch
             document.getElementById('rgbSwatch').style.backgroundColor = `rgb(${rgbValue}, ${rgbValue}, ${rgbValue})`;
