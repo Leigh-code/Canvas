@@ -245,20 +245,14 @@
             <div class="content-block strategy-block">
                 <h4>Concept focus: <span id="strategyTitle">Strategic approach</span></h4>
                 <p id="strategyDescription"></p>
-            </div>
-
-            <div class="content-block critical-block">
-                <h4>Critical thinking application</h4>
-                <p class="critical-question" id="criticalQuestion"></p>
+                <div class="critical-question">
+                    <strong>Critical thinking question:</strong> <span id="criticalQuestion"></span>
+                </div>
             </div>
 
             <div class="content-block" style="border-left-color: #6f42c1; background-color: #f8f7ff;">
-                <h4>For your AT2a: Ideas worksheet</h4>
+                <h4>Design approach</h4>
                 <div id="designGuidance"></div>
-                <div style="background: #fff; border: 1px solid #e1e5e9; padding: 1rem; margin-top: 1rem; border-radius: 2px;">
-                    <h5>Fill out your worksheet:</h5>
-                    <div id="worksheetHelp"></div>
-                </div>
             </div>
 
             <div class="content-block technique-block">
@@ -268,13 +262,18 @@
                 <p class="text-muted">Use different approaches for each concept to show your range.</p>
             </div>
 
+            <div class="content-block" style="border-left-color: #28a745; background-color: #f8fff8;">
+                <h4>Copy into your AT2a: Ideas worksheet</h4>
+                <div id="worksheetHelp"></div>
+            </div>
+
             <div class="content-block reminder-block">
                 <h4>Design considerations</h4>
                 <p><strong>T-shirt placement:</strong> One concept becomes a placement print. Consider which design will maintain impact at chest or sleeve scale.</p>
-                <p><strong>System thinking:</strong> Ensure your design approach works cohesively across five packages and the t-shirt while allowing for variety within the range.</p>
+                <p><strong>Design thinking:</strong> Ensure your design approach works cohesively across five packages + t-shirt while allowing for variety within the range.</p>
                 <p><strong>Time constraints:</strong> Choose techniques you can execute well within the timeframe. A confident marker sketch often beats a rushed digital illustration.</p>
-                <p><strong>Reproduction quality:</strong> Remember this will be scanned or photographed for client presentation. Ensure sufficient contrast and clarity.</p>
-                <p><strong>Concept clarity:</strong> The technique should support, not overshadow, your design thinking.</p>
+                <p><strong>Presentation quality:</strong> Remember this will be scanned or photographed for presentation, and will likely be re-used in your folio. Ensure sufficient contrast and clarity, and your photos are well-lit.</p>
+                <p><strong>Concept clarity:</strong> The technique you pick should match the design ideas. For example, some ideas are better represented with Copic markers, others might look better with cut-out craft paper.</p>
             </div>
 
         </div>
@@ -289,40 +288,44 @@
     <script>
         const designGuidance = {
             "Follow current trends": {
-                elements: "Focus on **colour** (contemporary palettes) and **shape** (clean geometric forms).",
-                principles: "Apply **balance** through symmetric layouts and **unity** through consistent colour use.",
-                colour: "Try **analogous** colours (next to each other on colour wheel) for sophisticated harmony.",
+                elements: "Focus on <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong> (contemporary palettes) and <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>shape</a></strong> (clean geometric forms).",
+                principles: "Apply <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>balance</a></strong> through symmetric layouts and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>unity</a></strong> through consistent colour use.",
+                colour: "Try <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>analogous</a></strong> colours (next to each other on colour wheel) for sophisticated harmony.",
                 typography: "Use clean sans-serif hierarchy: large product name, medium description, small legal text.",
                 summary: "Contemporary, market-appropriate design using current colour trends and clean geometric forms",
-                technique: "Research current packaging trends, create mood board, sketch multiple layout options",
-                message: "Appeals to target audience through familiar, on-trend visual language that feels current and desirable"
+                technique: "Look at 5-6 current beauty products in store or online, take photos, identify common colours and shapes, then sketch 3 quick variations using those trends",
+                message: "Appeals to target audience through familiar, on-trend visual language that feels current and desirable",
+                equipmentMedia: "Phone camera, sketchbook, pencils, basic markers or coloured pencils"
             },
             "Stand out approach": {
-                elements: "Emphasize **colour** (bold combinations) and **contrast** through opposing sizes or tones.",
-                principles: "Create strong **emphasis** through scale or colour and **contrast** for visual impact.",
-                colour: "Use **complementary** colours (opposites on colour wheel) for maximum visual impact.",
+                elements: "Emphasize <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong> (bold combinations) and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>contrast</a></strong> through opposing sizes or tones.",
+                principles: "Create strong <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>emphasis</a></strong> through scale or colour and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>contrast</a></strong> for visual impact.",
+                colour: "Use <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>complementary</a></strong> colours (opposites on colour wheel) for maximum visual impact.",
                 typography: "Bold font weights with clear hierarchy, consider mixing serif and sans-serif carefully.",
                 summary: "High-impact design using bold colour relationships and strong contrast to create shelf presence",
-                technique: "Brainstorm unexpected colour combinations, test high-contrast layouts, explore bold typography",
-                message: "Communicates confidence and energy through visually striking design that demands attention"
+                technique: "Make a quick colour wheel sketch, pick opposite colours, then draw 3 thumbnails using big vs small elements and bright vs dark colours",
+                message: "Communicates confidence and energy through visually striking design that demands attention",
+                equipmentMedia: "Colour wheel (printed or app), bright markers or digital colours, pencils for sketching"
             },
             "Focus on one strong element": {
-                elements: "Select your hero: **colour**, **texture**, **shape**, or **typography** as the dominant element.",
-                principles: "Use **repetition** of chosen element and **proportion** to make it clearly dominant.",
-                colour: "If colour is your focus: use **triadic** (three equally spaced) or limit to 2-3 colours maximum.",
+                elements: "Select your hero: <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>texture</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>shape</a></strong>, or <strong><a href='https://practicaltypography.com/' target='_blank'>typography</a></strong> as the dominant element.",
+                principles: "Use <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>repetition</a></strong> of chosen element and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>proportion</a></strong> to make it clearly dominant.",
+                colour: "If colour is your focus: use <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>triadic</a></strong> (three equally spaced) or limit to 2-3 colours maximum.",
                 typography: "If typography is your focus: one font family with multiple weights, or one distinctive display font.",
                 summary: "Systematic design approach with one dominant element creating cohesion across the gift collection",
-                technique: "Choose your strongest element, explore variations of that element, test across multiple formats",
-                message: "Creates memorable brand experience through consistent, purposeful use of signature design element"
+                technique: "Pick one thing (like a colour, pattern, or font style), then sketch 4-5 quick ideas showing that same element used in different ways across the packages",
+                message: "Creates memorable brand experience through consistent, purposeful use of signature design element",
+                equipmentMedia: "Depends on chosen element: colour swatches, texture samples, font printouts, or pattern examples"
             },
             "Use your strengths": {
-                elements: "Apply elements you're most confident with (**colour**, **line**, **shape**, **texture**).",
-                principles: "Start with **balance** and **alignment**, add **emphasis** where you feel confident.",
-                colour: "Use relationships you understand: **analogous** for harmony, **monochromatic** for sophistication.",
+                elements: "Apply elements you're most confident with (<strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>line</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>shape</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>texture</a></strong>).",
+                principles: "Start with <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>balance</a></strong> and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>alignment</a></strong>, add <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>emphasis</a></strong> where you feel confident.",
+                colour: "Use relationships you understand: <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>analogous</a></strong> for harmony, <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>monochromatic</a></strong> for sophistication.",
                 typography: "Stick to font combinations you've practiced successfully before.",
                 summary: "Confident execution using your strongest design skills to create professional, polished concepts",
-                technique: "Build on techniques you've used successfully, refine and improve rather than experiment",
-                message: "Demonstrates your design capabilities through confident application of your strongest skills"
+                technique: "Think about what design work you enjoyed most this semester, then use that same approach (drawing style, colour method, etc.) for these concepts",
+                message: "Demonstrates your design capabilities through confident application of your strongest skills",
+                equipmentMedia: "Whatever tools you used successfully in previous projects this semester"
             }
         };
 
@@ -439,18 +442,19 @@
             // Update design guidance
             const guidance = designGuidance[randomStrategy.name];
             document.getElementById('designGuidance').innerHTML = `
-                <p><strong>Elements to focus on:</strong> ${guidance.elements.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-                <p><strong>Principles to apply:</strong> ${guidance.principles.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-                <p><strong>Colour approach:</strong> ${guidance.colour.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
-                <p><strong>Typography strategy:</strong> ${guidance.typography.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                <p><strong>Elements to focus on:</strong> ${guidance.elements}</p>
+                <p><strong>Principles to apply:</strong> ${guidance.principles}</p>
+                <p><strong>Colour approach:</strong> ${guidance.colour}</p>
+                <p><strong>Typography strategy:</strong> ${guidance.typography}</p>
             `;
             
             // Update worksheet helper
             document.getElementById('worksheetHelp').innerHTML = `
-                <p><strong>Summary:</strong> ${guidance.summary}</p>
-                <p><strong>Technique for generating ideas:</strong> ${guidance.technique}</p>
+                <p><strong>How concept is new and different:</strong> ${guidance.summary}</p>
+                <p><strong>Equipment and media to visualise concept:</strong> ${guidance.equipmentMedia}</p>
+                <p><strong>Technique to generate ideas:</strong> ${guidance.technique}</p>
                 <p><strong>How it communicates key message:</strong> ${guidance.message}</p>
-                <p class="text-muted" style="margin-top: 0.75rem; font-size: 0.9rem;">Copy these into your AT2a worksheet and adapt them to your specific concept.</p>
+                <p class="text-muted" style="margin-top: 0.75rem; font-size: 0.9rem;">Copy these directly into your AT2a worksheet and adapt to your specific concept.</p>
             `;
 
             // Update technique sections
