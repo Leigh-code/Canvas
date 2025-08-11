@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AT2 Concept Strategy Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            line-height: 1.6;
+            color: #2d3b45;
+            background-color: #ffffff;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+        }
+        
+        /* Clean, professional header */
+        .page-header {
+            background-color: #2d3b45;
+            color: white;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border-radius: 2px;
+        }
+        
+        .page-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        .page-header p {
+            opacity: 0.85;
+            margin: 0;
+            font-weight: 300;
+        }
+        
+        /* Clean info block */
+        .info-block {
+            background-color: #f8f9fa;
+            border-left: 4px solid #008ee2;
+            padding: 1.25rem;
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Sophisticated button */
+        .generate-btn {
+            background-color: #2d3b45;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 400;
+            padding: 14px 28px;
+            width: 100%;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 2rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-size: 14px;
+        }
+        
+        .generate-btn:hover {
+            background-color: #1a242a;
+            transform: translateY(-1px);
+        }
+        
+        /* Content blocks with minimal styling */
+        .content-block {
+            background-color: white;
+            border: 1px solid #e1e5e9;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-radius: 2px;
+        }
+        
+        .strategy-block {
+            border-left: 4px solid #2d3b45;
+        }
+        
+        .critical-block {
+            border-left: 4px solid #6c757d;
+            background-color: #fafbfc;
+        }
+        
+        .technique-block {
+            border-left: 4px solid #008ee2;
+        }
+        
+        .reminder-block {
+            border-left: 4px solid #dc3545;
+            background-color: #fff5f5;
+        }
+        
+        .content-block h4 {
+            margin-bottom: 1rem;
+            color: #2d3b45;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        .content-block p {
+            margin-bottom: 0.75rem;
+            color: #495057;
+        }
+        
+        .content-block p:last-child {
+            margin-bottom: 0;
+        }
+        
+        /* Technique grid - clean and minimal */
+        .technique-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin: 1.25rem 0;
+        }
+        
+        @media (max-width: 600px) {
+            .technique-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .technique-item {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            padding: 1.25rem;
+            border-radius: 2px;
+        }
+        
+        .technique-name {
+            font-weight: 500;
+            color: #2d3b45;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+        
+        .technique-materials {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.5;
+        }
+        
+        .technique-category {
+            color: #008ee2;
+            font-size: 0.8rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.25rem;
+        }
+        
+        /* Reset button */
+        .reset-btn {
+            background-color: transparent;
+            border: 1px solid #6c757d;
+            color: #6c757d;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px 20px;
+            display: block;
+            margin: 2rem auto 0;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 400;
+        }
+        
+        .reset-btn:hover {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        /* Utility classes */
+        .hidden {
+            display: none;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-muted {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+        
+        /* Critical thinking emphasis */
+        .critical-question {
+            font-style: italic;
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #495057;
+        }
+        
+        /* Responsive adjustments for iframe */
+        @media (max-width: 500px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Concept strategy tool</h1>
+            <p>Strategic direction and execution method for AT2 concept development</p>
+        </div>
+
+        <div class="info-block">
+            <strong>Generate direction for your AT2 concepts.</strong> Get a strategic approach and practical execution method to help develop your ideas.
+            <br><br><span class="text-muted">Remember: you need two different concepts using different approaches.</span>
+        </div>
+
+        <button class="generate-btn" onclick="generateDirection()" id="generateBtn">
+            Generate strategy
+        </button>
+
+        <div id="results" class="hidden">
+            
+            <div class="content-block strategy-block">
+                <h4 id="strategyTitle">Strategic approach</h4>
+                <p id="strategyDescription"></p>
+            </div>
+
+            <div class="content-block critical-block">
+                <h4>Critical thinking application</h4>
+                <p class="critical-question" id="criticalQuestion"></p>
+            </div>
+
+            <div class="content-block technique-block">
+                <h4>Execution methods</h4>
+                <div class="technique-grid" id="techniqueGrid">
+                </div>
+                <p class="text-muted">Use different approaches for each concept to show your range.</p>
+            </div>
+
+            <div class="content-block reminder-block">
+                <h4>Design considerations</h4>
+                <p><strong>T-shirt placement:</strong> One concept becomes a placement print. Consider which design will maintain impact at chest or sleeve scale.</p>
+                <p><strong>System thinking:</strong> Ensure your design approach works cohesively across five packages and the t-shirt while allowing for variety within the range.</p>
+            </div>
+
+        </div>
+
+        <div id="resetSection" class="hidden text-center">
+            <button class="reset-btn" onclick="resetGenerator()">
+                Generate new strategy
+            </button>
+        </div>
+    </div>
+
+    <script>
+        const strategies = [
+            {
+                name: "Follow current trends",
+                description: "Create packaging that looks like what's popular right now. Look at what's working in beauty retail and adapt it for Sportsgirl's young, confident audience.",
+                criticalQuestion: "What packaging have you noticed recently that made you want to pick it up? How can you capture that appeal while staying true to Sportsgirl's brand?"
+            },
+            {
+                name: "Stand out approach", 
+                description: "Make your design the one that catches attention on the shelf. Be bold but stay on-brand for Sportsgirl.",
+                criticalQuestion: "What would make someone stop scrolling or stop walking? How can you be eye-catching without being off-brand for Sportsgirl's audience?"
+            },
+            {
+                name: "Focus on one strong element",
+                description: "Pick one thing (colour, pattern, typography, or texture) and make it the hero across all your packaging. Keep everything else simple.",
+                criticalQuestion: "What's the one thing you want people to remember about this design? How can you make that element work across five packages and the t-shirt placement?"
+            },
+            {
+                name: "Use your strengths",
+                description: "Start with what you're already good at. Use techniques and approaches you feel confident about to create something solid.",
+                criticalQuestion: "What kind of design work do you enjoy and feel confident creating? How can you adapt that approach to work for this brief?"
+            }
+        ];
+
+        const techniques = [
+            {
+                category: "Hand-drawn approach",
+                methods: [
+                    { name: "Marker sketches", materials: "Markers, fine pens, paper", skills: "Quick colour concepts" },
+                    { name: "Coloured pencil", materials: "Coloured pencils, paper", skills: "Detailed rendering" },
+                    { name: "Cut and paste", materials: "Magazines, coloured paper, glue", skills: "Texture and collage" }
+                ]
+            },
+            {
+                category: "Digital design",
+                methods: [
+                    { name: "Illustrator shapes", materials: "Basic shapes, colour fill, simple effects", skills: "Clean vector design" },
+                    { name: "Photoshop collage", materials: "Photos, textures, layer blending", skills: "Image combination" },
+                    { name: "Template design", materials: "Canva or similar, pre-made layouts", skills: "Quick composition" }
+                ]
+            },
+            {
+                category: "Mixed approach",
+                methods: [
+                    { name: "Draw then scan", materials: "Hand drawing, phone camera, Photoshop", skills: "Combining analog and digital" },
+                    { name: "Photo textures", materials: "Phone photos, digital editing", skills: "Real-world texture capture" },
+                    { name: "Paper mockups", materials: "Card, cutting, photography", skills: "3D visualization" }
+                ]
+            }
+        ];
+
+        function generateDirection() {
+            const randomStrategy = strategies[Math.floor(Math.random() * strategies.length)];
+            
+            // Select one technique category and pick 2 methods from different categories
+            const shuffledCategories = [...techniques].sort(() => 0.5 - Math.random());
+            const selectedTechniques = [
+                shuffledCategories[0].methods[Math.floor(Math.random() * shuffledCategories[0].methods.length)],
+                shuffledCategories[1].methods[Math.floor(Math.random() * shuffledCategories[1].methods.length)]
+            ];
+
+            // Update strategy section
+            document.getElementById('strategyTitle').textContent = randomStrategy.name;
+            document.getElementById('strategyDescription').textContent = randomStrategy.description;
+            document.getElementById('criticalQuestion').textContent = randomStrategy.criticalQuestion;
+
+            // Update technique sections
+            const techniqueGrid = document.getElementById('techniqueGrid');
+            techniqueGrid.innerHTML = selectedTechniques.map((technique, index) => {
+                const category = techniques.find(cat => cat.methods.includes(technique));
+                return `
+                    <div class="technique-item">
+                        <div class="technique-category">${category.category}</div>
+                        <div class="technique-name">Method ${index + 1}: ${technique.name}</div>
+                        <div class="technique-materials"><strong>Materials:</strong> ${technique.materials}</div>
+                        <div class="technique-materials"><strong>Skills applied:</strong> ${technique.skills}</div>
+                    </div>
+                `;
+            }).join('');
+
+            // Show results
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('resetSection').classList.remove('hidden');
+            document.getElementById('generateBtn').textContent = 'Generate new strategy';
+        }
+
+        function resetGenerator() {
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('resetSection').classList.add('hidden');
+            document.getElementById('generateBtn').textContent = 'Generate strategy';
+        }
+
+        // Auto-resize iframe height (if parent allows)
+        function resizeIframe() {
+            const height = document.body.scrollHeight;
+            if (window.parent && window.parent.postMessage) {
+                window.parent.postMessage({
+                    type: 'resize',
+                    height: height
+                }, '*');
+            }
+        }
+
+        // Call resize on load and when content changes
+        window.addEventListener('load', resizeIframe);
+        
+        // Override the generate function to include resize
+        const originalGenerate = generateDirection;
+        generateDirection = function() {
+            originalGenerate();
+            setTimeout(resizeIframe, 100);
+        };
+
+        const originalReset = resetGenerator;
+        resetGenerator = function() {
+            originalReset();
+            setTimeout(resizeIframe, 100);
+        };
+    </script>
+</body>
+</html>
