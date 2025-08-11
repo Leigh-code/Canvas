@@ -439,10 +439,10 @@
             // Update design guidance
             const guidance = designGuidance[randomStrategy.name];
             document.getElementById('designGuidance').innerHTML = `
-                <p><strong>Elements to focus on:</strong> ${guidance.elements}</p>
-                <p><strong>Principles to apply:</strong> ${guidance.principles}</p>
-                <p><strong>Colour approach:</strong> ${guidance.colour}</p>
-                <p><strong>Typography strategy:</strong> ${guidance.typography}</p>
+                <p><strong>Elements to focus on:</strong> ${guidance.elements.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                <p><strong>Principles to apply:</strong> ${guidance.principles.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                <p><strong>Colour approach:</strong> ${guidance.colour.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
+                <p><strong>Typography strategy:</strong> ${guidance.typography.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}</p>
             `;
             
             // Update worksheet helper
