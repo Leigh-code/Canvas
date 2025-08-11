@@ -243,7 +243,7 @@
         <div id="results" class="hidden">
             
             <div class="content-block strategy-block">
-                <h4 id="strategyTitle">Strategic approach</h4>
+                <h4>Concept focus: <span id="strategyTitle">Strategic approach</span></h4>
                 <p id="strategyDescription"></p>
             </div>
 
@@ -252,8 +252,17 @@
                 <p class="critical-question" id="criticalQuestion"></p>
             </div>
 
+            <div class="content-block" style="border-left-color: #6f42c1; background-color: #f8f7ff;">
+                <h4>For your AT2a: Ideas worksheet</h4>
+                <div id="designGuidance"></div>
+                <div style="background: #fff; border: 1px solid #e1e5e9; padding: 1rem; margin-top: 1rem; border-radius: 2px;">
+                    <h5>Fill out your worksheet:</h5>
+                    <div id="worksheetHelp"></div>
+                </div>
+            </div>
+
             <div class="content-block technique-block">
-                <h4>Execution methods</h4>
+                <h4>Try one of these material approaches when visualising your concept</h4>
                 <div class="technique-grid" id="techniqueGrid">
                 </div>
                 <p class="text-muted">Use different approaches for each concept to show your range.</p>
@@ -263,6 +272,9 @@
                 <h4>Design considerations</h4>
                 <p><strong>T-shirt placement:</strong> One concept becomes a placement print. Consider which design will maintain impact at chest or sleeve scale.</p>
                 <p><strong>System thinking:</strong> Ensure your design approach works cohesively across five packages and the t-shirt while allowing for variety within the range.</p>
+                <p><strong>Time constraints:</strong> Choose techniques you can execute well within the timeframe. A confident marker sketch often beats a rushed digital illustration.</p>
+                <p><strong>Reproduction quality:</strong> Remember this will be scanned or photographed for client presentation. Ensure sufficient contrast and clarity.</p>
+                <p><strong>Concept clarity:</strong> The technique should support, not overshadow, your design thinking.</p>
             </div>
 
         </div>
@@ -275,26 +287,65 @@
     </div>
 
     <script>
+        const designGuidance = {
+            "Follow current trends": {
+                elements: "Focus on **colour** (contemporary palettes) and **shape** (clean geometric forms).",
+                principles: "Apply **balance** through symmetric layouts and **unity** through consistent colour use.",
+                colour: "Try **analogous** colours (next to each other on colour wheel) for sophisticated harmony.",
+                typography: "Use clean sans-serif hierarchy: large product name, medium description, small legal text.",
+                summary: "Contemporary, market-appropriate design using current colour trends and clean geometric forms",
+                technique: "Research current packaging trends, create mood board, sketch multiple layout options",
+                message: "Appeals to target audience through familiar, on-trend visual language that feels current and desirable"
+            },
+            "Stand out approach": {
+                elements: "Emphasize **colour** (bold combinations) and **contrast** through opposing sizes or tones.",
+                principles: "Create strong **emphasis** through scale or colour and **contrast** for visual impact.",
+                colour: "Use **complementary** colours (opposites on colour wheel) for maximum visual impact.",
+                typography: "Bold font weights with clear hierarchy, consider mixing serif and sans-serif carefully.",
+                summary: "High-impact design using bold colour relationships and strong contrast to create shelf presence",
+                technique: "Brainstorm unexpected colour combinations, test high-contrast layouts, explore bold typography",
+                message: "Communicates confidence and energy through visually striking design that demands attention"
+            },
+            "Focus on one strong element": {
+                elements: "Select your hero: **colour**, **texture**, **shape**, or **typography** as the dominant element.",
+                principles: "Use **repetition** of chosen element and **proportion** to make it clearly dominant.",
+                colour: "If colour is your focus: use **triadic** (three equally spaced) or limit to 2-3 colours maximum.",
+                typography: "If typography is your focus: one font family with multiple weights, or one distinctive display font.",
+                summary: "Systematic design approach with one dominant element creating cohesion across the gift collection",
+                technique: "Choose your strongest element, explore variations of that element, test across multiple formats",
+                message: "Creates memorable brand experience through consistent, purposeful use of signature design element"
+            },
+            "Use your strengths": {
+                elements: "Apply elements you're most confident with (**colour**, **line**, **shape**, **texture**).",
+                principles: "Start with **balance** and **alignment**, add **emphasis** where you feel confident.",
+                colour: "Use relationships you understand: **analogous** for harmony, **monochromatic** for sophistication.",
+                typography: "Stick to font combinations you've practiced successfully before.",
+                summary: "Confident execution using your strongest design skills to create professional, polished concepts",
+                technique: "Build on techniques you've used successfully, refine and improve rather than experiment",
+                message: "Demonstrates your design capabilities through confident application of your strongest skills"
+            }
+        };
+
         const strategies = [
             {
                 name: "Follow current trends",
-                description: "Create packaging that looks like what's popular right now. Look at what's working in beauty retail and adapt it for Sportsgirl's young, confident audience.",
-                criticalQuestion: "What packaging have you noticed recently that made you want to pick it up? How can you capture that appeal while staying true to Sportsgirl's brand?"
+                description: "Create gift packaging that looks like what's working in retail right now. This approach gives you a clear direction and appeals to what Sportsgirl customers already find attractive.",
+                criticalQuestion: "What gift packaging have you seen recently that made you want to pick it up? How can you capture that same appeal while keeping it authentic to Sportsgirl's brand?"
             },
             {
                 name: "Stand out approach", 
-                description: "Make your design the one that catches attention on the shelf. Be bold but stay on-brand for Sportsgirl.",
-                criticalQuestion: "What would make someone stop scrolling or stop walking? How can you be eye-catching without being off-brand for Sportsgirl's audience?"
+                description: "Make your packaging the one that stops people in their tracks. This works well when you want to create memorable gift sets that people will photograph and share.",
+                criticalQuestion: "What would make someone stop and look twice at this gift set? How can you be eye-catching without losing the sophisticated feel Sportsgirl customers want?"
             },
             {
                 name: "Focus on one strong element",
-                description: "Pick one thing (colour, pattern, typography, or texture) and make it the hero across all your packaging. Keep everything else simple.",
-                criticalQuestion: "What's the one thing you want people to remember about this design? How can you make that element work across five packages and the t-shirt placement?"
+                description: "Pick one design element (colour story, pattern, typography style, or material finish) and make it the hero across all five packages. This creates a cohesive gift collection that feels intentional and premium.",
+                criticalQuestion: "What's the one thing you want people to remember about this gift collection? How can you make that element work across five packages and the t-shirt placement?"
             },
             {
                 name: "Use your strengths",
-                description: "Start with what you're already good at. Use techniques and approaches you feel confident about to create something solid.",
-                criticalQuestion: "What kind of design work do you enjoy and feel confident creating? How can you adapt that approach to work for this brief?"
+                description: "Start with design approaches you already feel confident about. This lets you focus on solving the brief rather than learning new techniques under pressure.",
+                criticalQuestion: "What kind of design work do you enjoy and feel confident creating? How can you adapt that approach to work for Sportsgirl's gift packaging?"
             }
         ];
 
@@ -302,25 +353,70 @@
             {
                 category: "Hand-drawn approach",
                 methods: [
-                    { name: "Marker sketches", materials: "Markers, fine pens, paper", skills: "Quick colour concepts" },
-                    { name: "Coloured pencil", materials: "Coloured pencils, paper", skills: "Detailed rendering" },
-                    { name: "Cut and paste", materials: "Magazines, coloured paper, glue", skills: "Texture and collage" }
+                    { 
+                        name: "Marker sketches", 
+                        materials: "Markers, fine pens, paper",
+                        steps: "Rough layout sketch • Block in main colour areas • Add details and type indication • Refine with fine liner",
+                        timeGuide: "45 mins per concept"
+                    },
+                    { 
+                        name: "Coloured pencil", 
+                        materials: "Coloured pencils, paper",
+                        steps: "Light outline sketch • Build colour in layers • Add shadows and highlights • Clean up edges",
+                        timeGuide: "60 mins per concept"
+                    },
+                    { 
+                        name: "Cut and paste", 
+                        materials: "Magazines, coloured paper, glue",
+                        steps: "Collect colour/texture references • Cut basic shapes • Arrange composition • Glue down and add drawn details",
+                        timeGuide: "50 mins per concept"
+                    }
                 ]
             },
             {
                 category: "Digital design",
                 methods: [
-                    { name: "Illustrator shapes", materials: "Basic shapes, colour fill, simple effects", skills: "Clean vector design" },
-                    { name: "Photoshop collage", materials: "Photos, textures, layer blending", skills: "Image combination" },
-                    { name: "Template design", materials: "Canva or similar, pre-made layouts", skills: "Quick composition" }
+                    { 
+                        name: "Illustrator shapes", 
+                        materials: "Basic shapes, colour fill, simple effects",
+                        steps: "Create artboard layout • Build with basic shapes • Apply colour palette • Add text placeholders",
+                        timeGuide: "40 mins per concept"
+                    },
+                    { 
+                        name: "Photoshop collage", 
+                        materials: "Photos, textures, layer blending",
+                        steps: "Gather image assets • Create base layout • Layer and blend images • Add text and colour adjustments",
+                        timeGuide: "55 mins per concept"
+                    },
+                    { 
+                        name: "Template design", 
+                        materials: "Canva or similar, pre-made layouts",
+                        steps: "Select appropriate template • Customise colours and fonts • Replace placeholder content • Export high resolution",
+                        timeGuide: "30 mins per concept"
+                    }
                 ]
             },
             {
                 category: "Mixed approach",
                 methods: [
-                    { name: "Draw then scan", materials: "Hand drawing, phone camera, Photoshop", skills: "Combining analog and digital" },
-                    { name: "Photo textures", materials: "Phone photos, digital editing", skills: "Real-world texture capture" },
-                    { name: "Paper mockups", materials: "Card, cutting, photography", skills: "3D visualization" }
+                    { 
+                        name: "Draw then scan", 
+                        materials: "Hand drawing, phone camera, Photoshop",
+                        steps: "Hand draw main elements • Scan or photograph • Clean up digitally • Add colour and text",
+                        timeGuide: "65 mins per concept"
+                    },
+                    { 
+                        name: "Photo textures", 
+                        materials: "Phone photos, digital editing",
+                        steps: "Photograph relevant textures • Create base design layout • Integrate texture photos • Adjust colours and contrast",
+                        timeGuide: "50 mins per concept"
+                    },
+                    { 
+                        name: "Paper mockups", 
+                        materials: "Card, cutting, photography",
+                        steps: "Cut basic package shapes • Apply design elements • Set up simple lighting • Photograph multiple angles",
+                        timeGuide: "70 mins per concept"
+                    }
                 ]
             }
         ];
@@ -340,6 +436,23 @@
             document.getElementById('strategyDescription').textContent = randomStrategy.description;
             document.getElementById('criticalQuestion').textContent = randomStrategy.criticalQuestion;
 
+            // Update design guidance
+            const guidance = designGuidance[randomStrategy.name];
+            document.getElementById('designGuidance').innerHTML = `
+                <p><strong>Elements to focus on:</strong> ${guidance.elements}</p>
+                <p><strong>Principles to apply:</strong> ${guidance.principles}</p>
+                <p><strong>Colour approach:</strong> ${guidance.colour}</p>
+                <p><strong>Typography strategy:</strong> ${guidance.typography}</p>
+            `;
+            
+            // Update worksheet helper
+            document.getElementById('worksheetHelp').innerHTML = `
+                <p><strong>Summary:</strong> ${guidance.summary}</p>
+                <p><strong>Technique for generating ideas:</strong> ${guidance.technique}</p>
+                <p><strong>How it communicates key message:</strong> ${guidance.message}</p>
+                <p class="text-muted" style="margin-top: 0.75rem; font-size: 0.9rem;">Copy these into your AT2a worksheet and adapt them to your specific concept.</p>
+            `;
+
             // Update technique sections
             const techniqueGrid = document.getElementById('techniqueGrid');
             techniqueGrid.innerHTML = selectedTechniques.map((technique, index) => {
@@ -349,7 +462,8 @@
                         <div class="technique-category">${category.category}</div>
                         <div class="technique-name">Method ${index + 1}: ${technique.name}</div>
                         <div class="technique-materials"><strong>Materials:</strong> ${technique.materials}</div>
-                        <div class="technique-materials"><strong>Skills applied:</strong> ${technique.skills}</div>
+                        <div class="technique-materials"><strong>Process:</strong> ${technique.steps}</div>
+                        <div class="technique-materials"><strong>Time estimate:</strong> ${technique.timeGuide}</div>
                     </div>
                 `;
             }).join('');
