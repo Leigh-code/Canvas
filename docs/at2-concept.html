@@ -124,6 +124,11 @@
             background-color: #fff8f0;
         }
         
+        .sustainability-block {
+            border-left: 4px solid #28a745;
+            background-color: #f8fff8;
+        }
+        
         .timer-block {
             border-left: 4px solid #dc3545;
             background-color: #fff5f5;
@@ -191,7 +196,7 @@
         </div>
 
         <div class="info-block">
-            <strong>Generate one concept direction at a time.</strong> Use this tool three times for three different concepts. Each concept should be completed in about 1.5 hours including visualization.
+            <strong>Generate one concept direction at a time.</strong> Use this tool three times for three different concepts. Each concept should be completed in about 1.5 hours including visualisation.
             <br><span class="text-muted">Remember: concepts must be different from each other but work together as a Sportsgirl collection. One package must have a reuse solution. Save this page as PDF if it's helpful.</span>
         </div>
 
@@ -227,6 +232,11 @@
                 <p id="colourDirection"></p>
             </div>
 
+            <div class="content-block sustainability-block">
+                <h4>Sustainability and reuse consideration</h4>
+                <p id="sustainabilityDirection"></p>
+            </div>
+
             <div class="content-block timer-block">
                 <h4>Time allocation (1.5 hours total)</h4>
                 <p id="timeAllocation"></p>
@@ -248,12 +258,12 @@
                 explanation: "Extract fruit shapes and tropical elements from the mood board to create a cohesive pattern system across all packages."
             },
             {
-                starter: "Stripe evolution concept",
+                starter: "Pattern evolution",
                 explanation: "Reinterpret a pattern from the mood board in your own style, and transform it into three variations of something unexpected - curved, layered, or dimensional."
             },
             {
                 starter: "Tropical maximalism",
-                explanation: "Use the bold, colorful energy from the mood board to create packaging that feels like a summer celebration – like a Hawaiian shirt."
+                explanation: "Use the bold, colourful energy from the mood board to create packaging that feels like a summer celebration – like a Hawaiian shirt."
             },
             {
                 starter: "Market stall aesthetic",
@@ -274,6 +284,54 @@
             {
                 starter: "Cultural celebration",
                 explanation: "Draw inspiration from the diverse cultural elements visible in the mood board to create inclusive, globally-inspired packaging."
+            },
+            {
+                starter: "Botanical illustration style",
+                explanation: "Transform the organic elements from the mood board into detailed botanical-style illustrations across your packaging range."
+            },
+            {
+                starter: "Vintage fruit crate labels",
+                explanation: "Channel the aesthetic of classic fruit shipping labels, inspired by the market imagery in the mood board."
+            },
+            {
+                starter: "Geometric fruit abstraction",
+                explanation: "Take fruit shapes from the mood board and simplify them into bold geometric patterns that work across all packages."
+            },
+            {
+                starter: "Festival poster energy",
+                explanation: "Capture the vibrant, celebratory feeling from the mood board with bold graphics that feel like music festival posters."
+            },
+            {
+                starter: "Fabric pattern translation",
+                explanation: "Find textile patterns in the mood board and adapt them into packaging graphics that feel fresh and contemporary."
+            },
+            {
+                starter: "Hand-lettered market signs",
+                explanation: "Create custom lettering inspired by the handwritten signage aesthetic visible in market scenes from the mood board."
+            },
+            {
+                starter: "Collage composition approach",
+                explanation: "Use the layered, eclectic feeling of the mood board to create packaging that feels like a curated collection of elements."
+            },
+            {
+                starter: "Minimalist fruit essence",
+                explanation: "Distil the essence of tropical elements from the mood board into clean, minimal design language."
+            },
+            {
+                starter: "Street art influence",
+                explanation: "Draw from any urban or graffiti-inspired elements in the mood board to create packaging with street art energy."
+            },
+            {
+                starter: "Sustainable craft aesthetic",
+                explanation: "Emphasise the natural, eco-friendly elements from the mood board with packaging that feels handmade and sustainable."
+            },
+            {
+                starter: "Pop art fruit celebration",
+                explanation: "Take inspiration from the bold colours and fruit imagery to create packaging with pop art sensibilities."
+            },
+            {
+                starter: "Travel postcard collection",
+                explanation: "Use the diverse cultural elements to create packaging that feels like a collection of travel postcards from tropical destinations."
             }
         ];
 
@@ -282,17 +340,17 @@
             "Coloured pencils and paper. Layer colours to build depth, scan or photograph for clean presentation.",
             "Procreate or similar digital drawing app. Use basic shapes and brushes, focus on clean execution over complex effects.",
             "Cut paper and adhesive. Create collage-style concepts, photograph flat layouts with good lighting.",
-            "Basic digital tools (Canva, Photoshop basics). Use templates and simple layouts, customize with brand colors.",
-            "Mixed media approach: sketch by hand, scan, add colors digitally for best of both techniques.",
+            "Basic digital tools (Canva, Photoshop basics). Use templates and simple layouts, customise with brand colours.",
+            "Mixed media approach: sketch by hand, scan, add colours digitally for best of both techniques.",
             "Photography and digital editing. Take texture photos, create layouts digitally using real materials as inspiration.",
-            "Watercolor pencils or paints. Create loose, artistic concepts without detail, then draw over the top when it is dried. Can be refined digitally if needed."
+            "Watercolour pencils or paints. Create loose, artistic concepts without detail, then draw over the top when it is dried. Can be refined digitally if needed."
         ];
 
         const thinkingTechniques = [
             "Apply your peer's critical thinking technique from AT1b plus the mood board. What would appeal most to Sportsgirl customers according to these documents?",
             "Use the 'mood board dissection' technique: pick 3 elements from the mood board, sketch how each could inspire a different package design.",
             "Try 'element isolation': cover most of the mood board, reveal only small sections, sketch packaging concepts based on these limited views.",
-            "Use 'colour extraction exercise': screenshot 3 different mood board areas, use Adobe Color to extract palettes, sketch concepts for each.",
+            "Use 'colour extraction exercise': screenshot 3 different mood board areas, use Adobe Colour to extract palettes, sketch concepts for each.",
             "Apply 'texture translation': find 3 different textures inspired by the mood board, sketch how each could be applied as graphic pattern for packaging.",
             "Use 'story building from mood board': create a short story about someone in the mood board images, design packaging that fits their lifestyle.",
             "Try 'scale manipulation': pick small details from mood board images, sketch them enlarged as hero elements for package design. Ridiculously large! What if a strawberry seed took up a whole side of a package? How zoomed into an orange skin can you go until it is unrecognisable?",
@@ -300,6 +358,7 @@
             "Generate a concept based on a literal interpretation of your critical thinking technique. Put aside your own tastes and try to design something the client would expect.",
             "Try 'Pitch it older': Consider that teenagers may want to move into the next age bracket.",
             "Brand heritage: Research what the design from the client looked like (or might have looked like) 20, 30 or 40 years ago. Using that design language, interpret the mood board."
+            
         ];
 
         const elementsAndPrinciples = [
@@ -309,19 +368,19 @@
             },
             {
                 focus: "Typography inspired by mood board text",
-                description: "Look for text, signage, or lettering in the mood board images. Create a custom type treatment using <a href='https://guides.lib.berkeley.edu/design' target='_blank'><strong>emphasis</strong></a> principle - make product names large, descriptions medium, ingredients small."
+                description: "Look for text, signage, or lettering in the mood board images. Create a custom type treatment using <a href='https://en.wikipedia.org/wiki/Visual_hierarchy' target='_blank'><strong>hierarchy</strong></a> principle - make product names large, descriptions medium, ingredients small."
             },
             {
                 focus: "Colour blocking using mood board palette",
-                description: "Identify the boldest color combinations in the mood board. Use <a href='https://en.wikipedia.org/wiki/Design_principles#Balance' target='_blank'><strong>balance</strong></a> principle by placing large colour blocks on opposite sides of packages or distributing colours evenly across the range."
+                description: "Identify the boldest colour combinations in the mood board. Use <a href='https://en.wikipedia.org/wiki/Design_principles#Balance' target='_blank'><strong>balance</strong></a> principle by placing large colour blocks on opposite sides of packages or distributing colours evenly across the range."
             },
             {
                 focus: "Illustration style from mood board aesthetic",
-                description: "Draw inspiration from the illustration and graphic styles visible in the mood board. Use <a href='https://guides.lib.berkeley.edu/design' target='_blank'><strong>emphasis</strong></a> to make illustrations the hero element - make them larger, brighter, or more detailed than other elements."
+                description: "Draw inspiration from the illustration and graphic styles visible in the mood board. Use <a href='https://en.wikipedia.org/wiki/Emphasis_(typography)' target='_blank'><strong>emphasis</strong></a> to make illustrations the hero element - make them larger, brighter, or more detailed than other elements."
             },
             {
                 focus: "Texture translation from mood board materials",
-                description: "Look at fabric textures, fruit skins, and other surfaces in the mood board. Apply <a href='https://en.wikipedia.org/wiki/Design_principles#Tone,_Value_and_Contrast' target='_blank'><strong>contrast</strong></a> between smooth areas (solid colors) and textured areas (patterns or illustrated textures)."
+                description: "Look at fabric textures, fruit skins, and other surfaces in the mood board. Apply <a href='https://en.wikipedia.org/wiki/Contrast_(vision)' target='_blank'><strong>contrast</strong></a> between smooth areas (solid colours) and textured areas (patterns or illustrated textures)."
             },
             {
                 focus: "Line work inspired by mood board graphics",
@@ -329,46 +388,129 @@
             },
             {
                 focus: "Shape language from mood board objects",
-                description: "Extract key shapes from mood board imagery (fruit forms, geometric patterns). Use <a href='https://en.wikipedia.org/wiki/Design_principles#Scale' target='_blank'><strong>scale (proportion)</strong></a> - make your main shape element larger than supporting shapes for clear visual importance."
+                description: "Extract key shapes from mood board imagery (fruit forms, geometric patterns). Use <a href='https://en.wikipedia.org/wiki/Scale_(map)#Graphic_or_bar_scale' target='_blank'><strong>scale (proportion)</strong></a> - make your main shape element larger than supporting shapes for clear visual importance."
             },
             {
                 focus: "Negative space inspired by mood board composition",
-                description: "Study how empty space is used in the mood board layouts. Apply the <i>gestalt</i> principle of <a href='https://en.wikipedia.org/wiki/Principles_of_grouping#Similarity' target='_blank'><strong>closure</strong></a> by using consistent amounts of white space around text and graphics on all packages."
+                description: "Study how empty space is used in the mood board layouts. Apply the <a href='https://en.wikipedia.org/wiki/Principles_of_grouping#Closure' target='_blank'><strong>closure principle</strong></a> by using consistent amounts of white space around text and graphics on all packages."
+            },
+            {
+                focus: "Grid system from mood board layout",
+                description: "Analyse how elements are arranged in the mood board images. Create a <a href='https://en.wikipedia.org/wiki/Grid_(graphic_design)' target='_blank'><strong>grid system</strong></a> that aligns text and graphics consistently across all packages for professional unity."
+            },
+            {
+                focus: "Value contrast for readability",
+                description: "Study light and dark areas in the mood board. Apply <a href='https://en.wikipedia.org/wiki/Contrast_(vision)' target='_blank'><strong>value contrast</strong></a> to ensure text is readable - place light text on dark backgrounds or dark text on light backgrounds."
+            },
+            {
+                focus: "Rhythmic spacing from mood board patterns",
+                description: "Look at how patterns repeat in the mood board imagery. Create <a href='https://en.wikipedia.org/wiki/Rhythm' target='_blank'><strong>rhythm</strong></a> by spacing design elements at regular intervals across your packaging range."
+            },
+            {
+                focus: "Focal point hierarchy",
+                description: "Identify what draws your eye first in mood board images. Create clear <a href='https://en.wikipedia.org/wiki/Visual_hierarchy' target='_blank'><strong>hierarchy</strong></a> - product name first, then key benefits, then supporting information, using size and colour to guide attention."
+            },
+            {
+                focus: "Colour temperature mood setting",
+                description: "Notice warm vs cool colours in the mood board. Use <a href='https://en.wikipedia.org/wiki/Color_theory#Warm_vs._cool_colors' target='_blank'><strong>colour temperature</strong></a> consistently - warm colours (reds, oranges) for energy, cool colours (blues, greens) for calm sophistication."
+            },
+            {
+                focus: "Symmetrical balance approach",
+                description: "Look for balanced compositions in the mood board. Apply <a href='https://en.wikipedia.org/wiki/Symmetry#In_the_arts' target='_blank'><strong>symmetrical balance</strong></a> by centring key elements and creating mirror-like arrangements on each package."
+            },
+            {
+                focus: "Asymmetrical dynamic balance",
+                description: "Find dynamic, off-centre compositions in the mood board. Use <a href='https://en.wikipedia.org/wiki/Asymmetry#In_art_and_design' target='_blank'><strong>asymmetrical balance</strong></a> - place large elements on one side, balance with smaller elements on the other."
+            },
+            {
+                focus: "Progressive size variation",
+                description: "Notice how objects of different sizes work together in the mood board. Create <a href='https://en.wikipedia.org/wiki/Scale_(map)#Graphic_or_bar_scale' target='_blank'><strong>progressive scale</strong></a> - arrange elements from largest to smallest to guide the eye through information."
+            },
+            {
+                focus: "Directional flow from mood board composition",
+                description: "Study how your eye moves through mood board images. Design <a href='https://en.wikipedia.org/wiki/Eye_tracking#Applications' target='_blank'><strong>directional flow</strong></a> using arrows, lines, or pointing shapes to lead from package front to sides to back."
+            },
+            {
+                focus: "Proximity grouping for information",
+                description: "See how related items are grouped in mood board layouts. Apply <a href='https://en.wikipedia.org/wiki/Principles_of_grouping#Proximity' target='_blank'><strong>proximity principle</strong></a> - place related information close together (ingredients list, usage instructions) with space between different groups."
+            },
+            {
+                focus: "Similarity through consistent style",
+                description: "Notice repeated visual styles across mood board elements. Create <a href='https://en.wikipedia.org/wiki/Principles_of_grouping#Similarity' target='_blank'><strong>similarity</strong></a> by using the same illustration style, font family, or graphic treatment across all packages."
+            },
+            {
+                focus: "Border and frame emphasis",
+                description: "Look for frames, borders, or containers in mood board imagery. Use <a href='https://en.wikipedia.org/wiki/Picture_frame' target='_blank'><strong>enclosure</strong></a> to group important information within borders, boxes, or decorative frames on each package."
             }
         ];
 
         const colourOptions = [
             {
-                relationship: "Extract a **complementary** colour palette from the mood board using Adobe Color",
-                description: "Open Adobe Color, upload a mood board image, and use the complementary color theme to create high-contrast packaging."
+                relationship: "Extract a complementary colour palette from the mood board using Adobe Colour",
+                description: "Open Adobe Colour, upload a mood board image, and use the complementary colour theme to create high-contrast packaging."
             },
             {
-                relationship: "Pick three **analogous** colours from the fruit imagery in the mood board",
-                description: "Choose colors that sit next to each other on the color wheel, found in the tropical fruit photos."
+                relationship: "Pick three analogous colours from the fruit imagery in the mood board",
+                description: "Choose colours that sit next to each other on the colour wheel, found in the tropical fruit photos."
             },
             {
-                relationship: "Use only **two colours per package** inspired by the mood board",
+                relationship: "Use only two colours per package inspired by the mood board",
                 description: "Create three patterns inspired by the mood board. Use only two colours per package (but different colours for each package)."
             },
             {
-                relationship: "Extract a **monochromatic** palette from one mood board image",
-                description: "Pick one dominant color from a single mood board image, then use different tints and shades of that same color."
+                relationship: "Extract a monochromatic palette from one mood board image",
+                description: "Pick one dominant colour from a single mood board image, then use different tints and shades of that same colour."
             },
             {
-                relationship: "Apply the **60-30-10 rule** using mood board colors",
-                description: "Choose three colors from the mood board: dominant colour 60%, secondary 30%, accent 10% across your package range."
+                relationship: "Apply the 60-30-10 rule using mood board colours",
+                description: "Choose three colours from the mood board: dominant colour 60%, secondary 30%, accent 10% across your package range."
             },
             {
-                relationship: "Focus on **warm colours only** from the mood board",
+                relationship: "Focus on warm colours only from the mood board",
                 description: "Identify all the reds, oranges, yellows, and pinks inspired by the mood board and create a cohesive warm palette."
             },
             {
-                relationship: "Use **one bold accent** color from the mood board with lots of white",
-                description: "Pick the most vibrant color you can find in the mood board, use it sparingly against white for maximum impact."
+                relationship: "Use one bold accent colour from the mood board with lots of white",
+                description: "Pick the most vibrant colour you can find in the mood board, use it sparingly against white for maximum impact."
             },
             {
-                relationship: "Create a **triadic scheme** based on the mood board's primary colors",
-                description: "Find the main color in the mood board, then use Adobe Color to generate two additional colors equally spaced on the color wheel."
+                relationship: "Create a triadic scheme based on the mood board's primary colours",
+                description: "Find the main colour in the mood board, then use Adobe Colour to generate two additional colours equally spaced on the colour wheel."
+            }
+        ];
+
+        const sustainabilityOptions = [
+            {
+                focus: "Jewellery storage",
+                description: "Design to become a travel jewellery box. Consider compartments, soft interior, and closure that works for both original product and reuse."
+            },
+            {
+                focus: "Package as  organiser system",
+                description: "Create packaging that transforms into a modular desktop storage system - pen holders, cable organisers, or small item containers that stack or connect."
+            },
+            {
+                focus: "Gift set packaging as storage box",
+                description: "Design the largest package to become a keepsake storage box. Include fold-down dividers, reinforced corners, and attractive closure for long-term use."
+            },
+            {
+                focus: "Multi-package modular storage system",
+                description: "Design packages that nest together or connect to create a modular storage solution - makeup organiser, bathroom caddy, or desk organisation system."
+            },
+            {
+                focus: "Packaging as room decor",
+                description: "Transform the packaging into functional room decor - picture frame, desk organiser, or wall-mounted storage with the same aesthetic appeal. Design on package is secondary to its re-use"
+            },
+            {
+                focus: "Seed packet integration for plantable packaging",
+                description: "Include wildflower or herb seeds embedded in package elements. After use, parts of packaging lined with a plastic bag and soil added to grow plants."
+            },
+            {
+                focus: "Origami-inspired transformable design",
+                description: "Create packaging that unfolds or refolds into useful items - phone stands, small bowls, gift card holders, or decorative elements using origami principles."
+            },
+            {
+                focus: "Upcycling instruction integration",
+                description: "Include clear visual instructions on packaging showing 3-4 different ways to repurpose each package type, with QR codes linking to video tutorials."
             }
         ];
 
@@ -387,6 +529,7 @@
             const randomThinking = thinkingTechniques[Math.floor(Math.random() * thinkingTechniques.length)];
             const randomElements = elementsAndPrinciples[Math.floor(Math.random() * elementsAndPrinciples.length)];
             const randomColour = colourOptions[Math.floor(Math.random() * colourOptions.length)];
+            const randomSustainability = sustainabilityOptions[Math.floor(Math.random() * sustainabilityOptions.length)];
             const randomTime = timeAllocations[Math.floor(Math.random() * timeAllocations.length)];
 
             // Update content
@@ -398,10 +541,13 @@
             document.getElementById('thinkingTechnique').textContent = randomThinking;
             
             document.getElementById('designElementsAndPrinciples').innerHTML = 
-                `<strong>${randomElements.focus}:</strong> ${randomElements.description}`;
+                '<strong>' + randomElements.focus + ':</strong> ' + randomElements.description;
             
             document.getElementById('colourDirection').innerHTML = 
-                `<strong>${randomColour.relationship}:</strong> ${randomColour.description}`;
+                '<strong>' + randomColour.relationship + ':</strong> ' + randomColour.description;
+            
+            document.getElementById('sustainabilityDirection').innerHTML = 
+                '<strong>' + randomSustainability.focus + ':</strong> ' + randomSustainability.description;
             
             document.getElementById('timeAllocation').textContent = randomTime;
 
@@ -430,15 +576,18 @@
 
         window.addEventListener('load', resizeIframe);
         
-        const originalGenerate = generateConcept;
+        // Store original functions to avoid conflicts
+        window.originalGenerate = generateConcept;
+        window.originalReset = resetGenerator;
+        
+        // Override with resize functionality
         generateConcept = function() {
-            originalGenerate();
+            window.originalGenerate();
             setTimeout(resizeIframe, 100);
         };
 
-        const originalReset = resetGenerator;
         resetGenerator = function() {
-            originalReset();
+            window.originalReset();
             setTimeout(resizeIframe, 100);
         };
     </script>
