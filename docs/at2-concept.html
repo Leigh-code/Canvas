@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AT2 Concept Strategy Tool</title>
+    <title>AT2 Concept Generator</title>
     <style>
         * {
             margin: 0;
@@ -21,11 +21,10 @@
         }
         
         .container {
-            max-width: 100%;
+            max-width: 800px;
             margin: 0 auto;
         }
         
-        /* Clean, professional header */
         .page-header {
             background-color: #2d3b45;
             color: white;
@@ -47,7 +46,6 @@
             font-weight: 300;
         }
         
-        /* Clean info block */
         .info-block {
             background-color: #f8f9fa;
             border-left: 4px solid #008ee2;
@@ -56,7 +54,6 @@
             font-size: 0.95rem;
         }
         
-        /* Sophisticated button */
         .generate-btn {
             background-color: #2d3b45;
             border: none;
@@ -79,31 +76,12 @@
             transform: translateY(-1px);
         }
         
-        /* Content blocks with minimal styling */
         .content-block {
             background-color: white;
             border: 1px solid #e1e5e9;
             padding: 1.5rem;
             margin-bottom: 1.5rem;
             border-radius: 2px;
-        }
-        
-        .strategy-block {
-            border-left: 4px solid #2d3b45;
-        }
-        
-        .critical-block {
-            border-left: 4px solid #6c757d;
-            background-color: #fafbfc;
-        }
-        
-        .technique-block {
-            border-left: 4px solid #008ee2;
-        }
-        
-        .reminder-block {
-            border-left: 4px solid #dc3545;
-            background-color: #fff5f5;
         }
         
         .content-block h4 {
@@ -122,50 +100,36 @@
             margin-bottom: 0;
         }
         
-        /* Technique grid - clean and minimal */
-        .technique-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1.5rem;
-            margin: 1.25rem 0;
+        .concept-starter {
+            border-left: 4px solid #e61e2a;
+            background-color: #fff5f5;
         }
         
-        @media (max-width: 600px) {
-            .technique-grid {
-                grid-template-columns: 1fr;
-            }
+        .materials-block {
+            border-left: 4px solid #008ee2;
         }
         
-        .technique-item {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            padding: 1.25rem;
-            border-radius: 2px;
+        .thinking-block {
+            border-left: 4px solid #6f42c1;
+            background-color: #f8f7ff;
         }
         
-        .technique-name {
+        .elements-block {
+            border-left: 4px solid #28a745;
+            background-color: #f8fff8;
+        }
+        
+        .colour-block {
+            border-left: 4px solid #fd7e14;
+            background-color: #fff8f0;
+        }
+        
+        .timer-block {
+            border-left: 4px solid #dc3545;
+            background-color: #fff5f5;
             font-weight: 500;
-            color: #2d3b45;
-            margin-bottom: 0.5rem;
-            font-size: 1rem;
         }
         
-        .technique-materials {
-            color: #6c757d;
-            font-size: 0.9rem;
-            line-height: 1.5;
-        }
-        
-        .technique-category {
-            color: #008ee2;
-            font-size: 0.8rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.25rem;
-        }
-        
-        /* Reset button */
         .reset-btn {
             background-color: transparent;
             border: 1px solid #6c757d;
@@ -186,7 +150,6 @@
             color: white;
         }
         
-        /* Utility classes */
         .hidden {
             display: none;
         }
@@ -200,15 +163,11 @@
             font-size: 0.9rem;
         }
         
-        /* Critical thinking emphasis */
-        .critical-question {
-            font-style: italic;
-            font-size: 1rem;
-            line-height: 1.7;
-            color: #495057;
+        .emphasis {
+            font-weight: 600;
+            color: #2d3b45;
         }
         
-        /* Responsive adjustments for iframe */
         @media (max-width: 500px) {
             body {
                 padding: 1rem;
@@ -227,263 +186,235 @@
 <body>
     <div class="container">
         <div class="page-header">
-            <h1>Concept strategy tool</h1>
-            <p>Strategic direction and execution method for AT2 concept development</p>
+            <h1>AT2 concept generator</h1>
+            <p>Get focused direction for one concept – clear, simple, actionable</p>
         </div>
 
         <div class="info-block">
-            <strong>Generate direction for your AT2 concepts.</strong> Get a strategic approach and practical execution method to help develop your ideas.
-            <br><span class="text-muted">Remember: you need 2–3 <em>different</em> concepts using different materials/techniques. <br>If you think you could use it, hit ⌘P and save the page as a PDF.
-
-<br>The aim is to spend less than 3 hours per concept. This is just a guide to get you started – you are free to ignore or modify it as you see fit.</span>
+            <strong>Generate one concept direction at a time.</strong> Use this tool three times for three different concepts. Each concept should be completed in about 1.5 hours including visualization.
+            <br><span class="text-muted">Remember: concepts must be different from each other but work together as a Sportsgirl collection. One package must have a reuse solution. Save this page as PDF if it's helpful.</span>
         </div>
 
-        <button class="generate-btn" onclick="generateDirection()" id="generateBtn">
-            Generate strategy
+        <button class="generate-btn" onclick="generateConcept()" id="generateBtn">
+            Generate concept direction
         </button>
 
         <div id="results" class="hidden">
             
-            <div class="content-block strategy-block">
-                <h4>Concept focus: <span id="strategyTitle">Strategic approach</span></h4>
-                <p id="strategyDescription"></p>
-                <div class="critical-question">
-                    <strong>Critical thinking question:</strong> <span id="criticalQuestion"></span>
-                </div>
+            <div class="content-block concept-starter">
+                <h4>Your concept starter</h4>
+                <p class="emphasis" id="conceptStarter"></p>
+                <p id="conceptExplanation"></p>
             </div>
 
-            <div class="content-block" style="border-left-color: #6f42c1; background-color: #f8f7ff;">
-                <h4>Design approach</h4>
-                <div id="designGuidance"></div>
+            <div class="content-block materials-block">
+                <h4>Equipment and media to visualise the concept</h4>
+                <p id="materialsAndProcess"></p>
             </div>
 
-            <div class="content-block technique-block">
-                <h4>Try one of these material approaches when visualising your concept</h4>
-                <div class="technique-grid" id="techniqueGrid">
-                </div>
-                <p class="text-muted">Use different approaches for each concept to show your range.</p>
+            <div class="content-block thinking-block">
+                <h4>Technique to generate ideas</h4>
+                <p id="thinkingTechnique"></p>
             </div>
 
-            <div class="content-block" style="border-left-color: #28a745; background-color: #f8fff8;">
-                <h4>Copy into your AT2a: Ideas worksheet</h4>
-                <div id="worksheetHelp"></div>
+            <div class="content-block elements-block">
+                <h4>Design elements and principles</h4>
+                <p id="designElementsAndPrinciples"></p>
             </div>
 
-            <div class="content-block reminder-block">
-                <h4>Design considerations</h4>
-                <p><strong>T-shirt placement:</strong> One concept becomes a placement print. Consider which design will maintain impact at chest or sleeve scale.</p>
-                <p><strong>Design thinking:</strong> Ensure your design approach works cohesively across five packages + t-shirt while allowing for variety within the range.</p>
-                <p><strong>Time constraints:</strong> Choose techniques you can execute well within the timeframe. A confident marker sketch often beats a rushed digital illustration.</p>
-                <p><strong>Presentation quality:</strong> Remember this will be scanned or photographed for presentation, and will likely be re-used in your folio. Ensure sufficient contrast and clarity, and your photos are well-lit.</p>
-                <p><strong>Concept clarity:</strong> The technique you pick should match the design ideas. For example, some ideas are better represented with Copic markers, others might look better with cut-out craft paper.</p>
+            <div class="content-block colour-block">
+                <h4>Colour direction</h4>
+                <p id="colourDirection"></p>
+            </div>
+
+            <div class="content-block timer-block">
+                <h4>Time allocation (1.5 hours total)</h4>
+                <p id="timeAllocation"></p>
             </div>
 
         </div>
 
         <div id="resetSection" class="hidden text-center">
             <button class="reset-btn" onclick="resetGenerator()">
-                Generate new strategy
+                Generate new concept
             </button>
         </div>
     </div>
 
     <script>
-        const designGuidance = {
-            "Follow current trends": {
-                elements: "Focus on <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong> (contemporary palettes) and <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>shape</a></strong> (clean geometric forms).",
-                principles: "Apply <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>balance</a></strong> through symmetric layouts and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>unity</a></strong> through consistent colour use.",
-                colour: "Try <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>analogous</a></strong> colours (next to each other on colour wheel) for sophisticated harmony.",
-                typography: "Use clean sans-serif hierarchy: large product name, medium description, small legal text.",
-                summary: "Contemporary, market-appropriate design using current colour trends and clean geometric forms – inspired by the mood baord.",
-                technique: "Look at 5-6 current beauty products in store or online, take photos, identify common colours and shapes, then sketch 3 quick variations using those trends",
-                message: "Appeals to target audience through familiar, on-trend visual language that feels current and desirable",
-                equipmentMedia: "Phone camera, sketchbook, pencils, basic markers or coloured pencils"
-            },
-            "Stand out approach": {
-                elements: "Emphasize <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong> (bold combinations) and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>contrast</a></strong> through opposing sizes or tones.",
-                principles: "Create strong <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>emphasis</a></strong> through scale or colour and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>contrast</a></strong> for visual impact.",
-                colour: "Use <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>complementary</a></strong> colours (opposites on colour wheel) for maximum visual impact.",
-                typography: "Bold font weights with clear hierarchy, consider mixing serif and sans-serif carefully.",
-                summary: "High-impact design using bold colour relationships and strong contrast to create shelf presence – inspired by the mood baord",
-                technique: "Make a quick colour wheel sketch, pick opposite colours, then draw 3 thumbnails using big vs small elements and bright vs dark colours",
-                message: "Communicates confidence and energy through visually striking design that demands attention",
-                equipmentMedia: "Colour wheel (printed or app), bright markers or digital colours, pencils for sketching"
-            },
-            "Focus on one strong element": {
-                elements: "Using the mood board as inspo, select your hero: <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>texture</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>shape</a></strong>, or <strong><a href='https://practicaltypography.com/' target='_blank'>typography</a></strong> as the dominant element.",
-                principles: "Use <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>repetition</a></strong> of chosen element and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>proportion</a></strong> to make it clearly dominant.",
-                colour: "If colour is your focus: use <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>triadic</a></strong> (three equally spaced) or limit to 2-3 colours maximum.",
-                typography: "If typography is your focus: one font family with multiple weights, or one distinctive display font.",
-                summary: "Systematic design approach with one dominant element creating cohesion across the gift collection",
-                technique: "Pick one thing (like a colour, pattern, or font style), then sketch 4-5 quick ideas showing that same element used in different ways across the packages",
-                message: "Creates memorable brand experience through consistent, purposeful use of signature design element",
-                equipmentMedia: "Depends on chosen element: colour swatches, texture samples, font printouts, or pattern examples"
-            },
-            "Use your strengths": {
-                elements: "Apply elements you're most confident with (<strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>colour</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>line</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>shape</a></strong>, <strong><a href='https://guides.lib.berkeley.edu/design/elements' target='_blank'>texture</a></strong>).",
-                principles: "Start with <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>balance</a></strong> and <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>alignment</a></strong>, add <strong><a href='https://guides.lib.berkeley.edu/design/principles' target='_blank'>emphasis</a></strong> where you feel confident.",
-                colour: "Use relationships you understand: <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>analogous</a></strong> for harmony, <strong><a href='https://color.adobe.com/create/color-wheel' target='_blank'>monochromatic</a></strong> for sophistication.",
-                typography: "Stick to font combinations you've practiced successfully before.",
-                summary: "Confident execution using your strongest design skills to create professional, polished concepts inspired by the supplied mood board.",
-                technique: "Think about what design work you enjoyed doing so far in the Diploma of Graphic Design, then use that same approach (drawing style, colour method, etc.) for these concepts",
-                message: "Demonstrates your design capabilities through confident application of your strongest skills",
-                equipmentMedia: "Tools and techniques you used successfully in previous projects"
-            }
-        };
-
-        const strategies = [
+        const conceptStarters = [
             {
-                name: "Follow current trends",
-                description: "Create gift packaging inspired by the mood board that looks like what's working in retail right now. This approach gives you a clear direction and appeals to what Sportsgirl customers already find attractive.",
-                criticalQuestion: "What gift packaging have you seen recently that made you want to pick it up? How can you capture that same appeal while keeping it authentic to Sportsgirl's brand?"
+                starter: "Fruit market pattern system",
+                explanation: "Extract fruit shapes and tropical elements from the mood board to create a cohesive pattern system across all packages."
             },
             {
-                name: "Stand out approach", 
-                description: "Pick something from the mood board or brief that could be taken to the extreme and would make your packaging the one that stops people in their tracks. This works well when you want to create memorable gift sets that people will photograph and share.",
-                criticalQuestion: "What would make someone stop and look twice at this gift set? How can you be eye-catching, take inspo from the mood board, without losing the sophisticated feel Sportsgirl customers want?"
+                starter: "Stripe evolution concept",
+                explanation: "Reinterpret a pattern from the mood board in your own style, and transform it into three variations of something unexpected - curved, layered, or dimensional."
             },
             {
-                name: "Focus on one strong element",
-                description: "Pick one design element (colour story, pattern, typography style, or material finish) inspired by the mood board and make it the hero across all five packages. This creates a cohesive gift collection that feels intentional and premium.",
-                criticalQuestion: "What's the one thing you want people to remember about this gift collection? How can you make that element work across five packages and the t-shirt placement?"
+                starter: "Tropical maximalism",
+                explanation: "Use the bold, colorful energy from the mood board to create packaging that feels like a summer celebration – like a Hawaiian shirt."
             },
             {
-                name: "Use your strengths",
-                description: "Start with design approaches you already feel confident about. This lets you focus on solving the brief rather than learning new techniques under pressure.",
-                criticalQuestion: "What kind of design work do you enjoy and feel confident creating? How can you adapt that approach to work for Sportsgirl's gift packaging?"
+                starter: "Market stall aesthetic",
+                explanation: "Channel the authentic, handmade feeling from the market imagery in the mood board into your packaging design – like the cardboard boxes that fruit and vegetables are delivered in."
+            },
+            {
+                starter: "Typography from imagery",
+                explanation: "Go to a local greengrocer or the market and find text and signage inspired by the mood board, then create a custom typography approach based on those references."
+            },
+            {
+                starter: "Colour story hero",
+                explanation: "Pick the most vibrant colour combination from the mood board and make it the hero element across your packaging range."
+            },
+            {
+                starter: "Texture and material focus",
+                explanation: "Look at the different textures and materials inspired by the mood board (fabric, fruit skin, paper) and translate these into graphic elements that can be used in different but cohesive ways across the range."
+            },
+            {
+                starter: "Cultural celebration",
+                explanation: "Draw inspiration from the diverse cultural elements visible in the mood board to create inclusive, globally-inspired packaging."
             }
         ];
 
-        const techniques = [
+        const materialsOptions = [
+            "Markers and fine liners on paper. Start with thumbnails, develop 2-3 sketches to presentation standard.",
+            "Coloured pencils and paper. Layer colours to build depth, scan or photograph for clean presentation.",
+            "Procreate or similar digital drawing app. Use basic shapes and brushes, focus on clean execution over complex effects.",
+            "Cut paper and adhesive. Create collage-style concepts, photograph flat layouts with good lighting.",
+            "Basic digital tools (Canva, Photoshop basics). Use templates and simple layouts, customize with brand colors.",
+            "Mixed media approach: sketch by hand, scan, add colors digitally for best of both techniques.",
+            "Photography and digital editing. Take texture photos, create layouts digitally using real materials as inspiration.",
+            "Watercolor pencils or paints. Create loose, artistic concepts without detail, then draw over the top when it is dried. Can be refined digitally if needed."
+        ];
+
+        const thinkingTechniques = [
+            "Apply your peer's critical thinking technique from AT1b plus the mood board. What would appeal most to Sportsgirl customers according to these documents?",
+            "Use the 'mood board dissection' technique: pick 3 elements from the mood board, sketch how each could inspire a different package design.",
+            "Try 'element isolation': cover most of the mood board, reveal only small sections, sketch packaging concepts based on these limited views.",
+            "Use 'colour extraction exercise': screenshot 3 different mood board areas, use Adobe Color to extract palettes, sketch concepts for each.",
+            "Apply 'texture translation': find 3 different textures inspired by the mood board, sketch how each could be applied as graphic pattern for packaging.",
+            "Use 'story building from mood board': create a short story about someone in the mood board images, design packaging that fits their lifestyle.",
+            "Try 'scale manipulation': pick small details from mood board images, sketch them enlarged as hero elements for package design. Ridiculously large! What if a strawberry seed took up a whole side of a package? How zoomed into an orange skin can you go until it is unrecognisable?",
+            "Use 'mood board word association': write 5 words the mood board makes you think of, sketch packaging concepts for each word.",
+            "Generate a concept based on a literal interpretation of your critical thinking technique. Put aside your own tastes and try to design something the client would expect.",
+            "Try 'Pitch it older': Consider that teenagers may want to move into the next age bracket.",
+            "Brand heritage: Research what the design from the client looked like (or might have looked like) 20, 30 or 40 years ago. Using that design language, interpret the mood board."
+        ];
+
+        const elementsAndPrinciples = [
             {
-                category: "Hand-drawn approach",
-                methods: [
-                    { 
-                        name: "Marker sketches", 
-                        materials: "Markers, fine pens, paper",
-                        steps: "Rough layout sketch • Block in main colour areas without drawing details • Add details and type indication • Refine details with fine liner",
-                        timeGuide: "45 mins per concept"
-                    },
-                    { 
-                        name: "Coloured pencil", 
-                        materials: "Coloured pencils, paper",
-                        steps: "Light outline sketch of a package (you can trace the 3D models in the <em>Sportsgirl Brief and Assets</em> page) • Build colour in layers • Add shadows and highlights • Clean up edges",
-                        timeGuide: "60 mins per concept"
-                    },
-                    { 
-                        name: "Cut and paste", 
-                        materials: "Coloured paper, glue",
-                        steps: "Collect colour/texture references • Cut basic shapes • Arrange composition • Glue down and add drawn details",
-                        timeGuide: "50 mins per concept"
-                    }
-                ]
+                focus: "Pattern extraction from mood board imagery",
+                description: "Find repeating elements in the mood board (fruit shapes, fabric patterns, stripe variations) and create your own pattern system using <a href='https://en.wikipedia.org/wiki/Design_elements#Pattern' target='_blank'><strong>repetition</strong></a>. Apply the same pattern element across multiple packages to create visual connection."
             },
             {
-                category: "Digital design",
-                methods: [
-                    { 
-                        name: "Digital drawing", 
-                        materials: "Basic shapes, colour fill, simple effects, your preferred software (Photoshop, Procreate, Fresco…)",
-                        steps: "Create artboard layout • Build with basic shapes • Apply colour palette • Add text placeholders",
-                        timeGuide: "40 mins per concept"
-                    },
-                    { 
-                        name: "Digital collage", 
-                        materials: "Photos, textures, layer blending, your preferred software",
-                        steps: "Gather image assets • Create base layout • Layer and blend images • Add text and colour adjustments",
-                        timeGuide: "55 mins per concept"
-                    },
-                    { 
-                        name: "Template design", 
-                        materials: "Canva or similar, pre-made layouts",
-                        steps: "Select appropriate template • Customise colours and fonts • Replace placeholder content • Export high resolution",
-                        timeGuide: "30 mins per concept"
-                    }
-                ]
+                focus: "Typography inspired by mood board text",
+                description: "Look for text, signage, or lettering in the mood board images. Create a custom type treatment using <a href='https://guides.lib.berkeley.edu/design' target='_blank'><strong>emphasis</strong></a> principle - make product names large, descriptions medium, ingredients small."
             },
             {
-                category: "Mixed approach",
-                methods: [
-                    { 
-                        name: "Draw then scan", 
-                        materials: "Hand drawing, phone camera, Photoshop",
-                        steps: "Hand draw main elements • Scan or photograph • Clean up digitally • Add colour and text",
-                        timeGuide: "65 mins per concept"
-                    },
-                    { 
-                        name: "Photo textures", 
-                        materials: "Phone photos, digital editing",
-                        steps: "Photograph relevant textures • Create base design layout • Integrate texture photos • Adjust colours and contrast",
-                        timeGuide: "50 mins per concept"
-                    },
-                    { 
-                        name: "Paper mockups", 
-                        materials: "Card, cutting, photography",
-                        steps: "Cut basic package shapes • Apply design elements • Set up simple lighting • Photograph multiple angles",
-                        timeGuide: "70 mins per concept"
-                    }
-                ]
+                focus: "Colour blocking using mood board palette",
+                description: "Identify the boldest color combinations in the mood board. Use <a href='https://en.wikipedia.org/wiki/Design_principles#Balance' target='_blank'><strong>balance</strong></a> principle by placing large colour blocks on opposite sides of packages or distributing colours evenly across the range."
+            },
+            {
+                focus: "Illustration style from mood board aesthetic",
+                description: "Draw inspiration from the illustration and graphic styles visible in the mood board. Use <a href='https://guides.lib.berkeley.edu/design' target='_blank'><strong>emphasis</strong></a> to make illustrations the hero element - make them larger, brighter, or more detailed than other elements."
+            },
+            {
+                focus: "Texture translation from mood board materials",
+                description: "Look at fabric textures, fruit skins, and other surfaces in the mood board. Apply <a href='https://en.wikipedia.org/wiki/Design_principles#Tone,_Value_and_Contrast' target='_blank'><strong>contrast</strong></a> between smooth areas (solid colors) and textured areas (patterns or illustrated textures)."
+            },
+            {
+                focus: "Line work inspired by mood board graphics",
+                description: "Find linear elements in the mood board (stripe patterns, drawn elements). Use <a href='https://en.wikipedia.org/wiki/Design_principles#Movement' target='_blank'><strong>movement</strong></a> principle - arrange lines to guide the eye from product name to key information to brand logo."
+            },
+            {
+                focus: "Shape language from mood board objects",
+                description: "Extract key shapes from mood board imagery (fruit forms, geometric patterns). Use <a href='https://en.wikipedia.org/wiki/Design_principles#Scale' target='_blank'><strong>scale (proportion)</strong></a> - make your main shape element larger than supporting shapes for clear visual importance."
+            },
+            {
+                focus: "Negative space inspired by mood board composition",
+                description: "Study how empty space is used in the mood board layouts. Apply the <i>gestalt</i> principle of <a href='https://en.wikipedia.org/wiki/Principles_of_grouping#Similarity' target='_blank'><strong>closure</strong></a> by using consistent amounts of white space around text and graphics on all packages."
             }
         ];
 
-        function generateDirection() {
-            const randomStrategy = strategies[Math.floor(Math.random() * strategies.length)];
+        const colourOptions = [
+            {
+                relationship: "Extract a **complementary** colour palette from the mood board using Adobe Color",
+                description: "Open Adobe Color, upload a mood board image, and use the complementary color theme to create high-contrast packaging."
+            },
+            {
+                relationship: "Pick three **analogous** colours from the fruit imagery in the mood board",
+                description: "Choose colors that sit next to each other on the color wheel, found in the tropical fruit photos."
+            },
+            {
+                relationship: "Use only **two colours per package** inspired by the mood board",
+                description: "Create three patterns inspired by the mood board. Use only two colours per package (but different colours for each package)."
+            },
+            {
+                relationship: "Extract a **monochromatic** palette from one mood board image",
+                description: "Pick one dominant color from a single mood board image, then use different tints and shades of that same color."
+            },
+            {
+                relationship: "Apply the **60-30-10 rule** using mood board colors",
+                description: "Choose three colors from the mood board: dominant colour 60%, secondary 30%, accent 10% across your package range."
+            },
+            {
+                relationship: "Focus on **warm colours only** from the mood board",
+                description: "Identify all the reds, oranges, yellows, and pinks inspired by the mood board and create a cohesive warm palette."
+            },
+            {
+                relationship: "Use **one bold accent** color from the mood board with lots of white",
+                description: "Pick the most vibrant color you can find in the mood board, use it sparingly against white for maximum impact."
+            },
+            {
+                relationship: "Create a **triadic scheme** based on the mood board's primary colors",
+                description: "Find the main color in the mood board, then use Adobe Color to generate two additional colors equally spaced on the color wheel."
+            }
+        ];
+
+        const timeAllocations = [
+            "20 mins: thumbnails and ideation • 30 mins: develop chosen concept • 40 mins: create presentation visuals",
+            "15 mins: research mood board • 35 mins: sketch development • 40 mins: final presentation creation",
+            "25 mins: creative thinking exercise • 25 mins: concept refinement • 40 mins: visual execution",
+            "18 mins: material setup and planning • 32 mins: concept development • 40 mins: presentation preparation",
+            "22 mins: initial sketching and ideas • 33 mins: concept development • 35 mins: final artwork creation",
+            "20 mins: apply thinking technique • 30 mins: sketch best ideas • 40 mins: create final visuals"
+        ];
+
+        function generateConcept() {
+            const randomStarter = conceptStarters[Math.floor(Math.random() * conceptStarters.length)];
+            const randomMaterials = materialsOptions[Math.floor(Math.random() * materialsOptions.length)];
+            const randomThinking = thinkingTechniques[Math.floor(Math.random() * thinkingTechniques.length)];
+            const randomElements = elementsAndPrinciples[Math.floor(Math.random() * elementsAndPrinciples.length)];
+            const randomColour = colourOptions[Math.floor(Math.random() * colourOptions.length)];
+            const randomTime = timeAllocations[Math.floor(Math.random() * timeAllocations.length)];
+
+            // Update content
+            document.getElementById('conceptStarter').textContent = randomStarter.starter;
+            document.getElementById('conceptExplanation').textContent = randomStarter.explanation;
             
-            // Select one technique category and pick 2 methods from different categories
-            const shuffledCategories = [...techniques].sort(() => 0.5 - Math.random());
-            const selectedTechniques = [
-                shuffledCategories[0].methods[Math.floor(Math.random() * shuffledCategories[0].methods.length)],
-                shuffledCategories[1].methods[Math.floor(Math.random() * shuffledCategories[1].methods.length)]
-            ];
-
-            // Update strategy section
-            document.getElementById('strategyTitle').textContent = randomStrategy.name;
-            document.getElementById('strategyDescription').textContent = randomStrategy.description;
-            document.getElementById('criticalQuestion').textContent = randomStrategy.criticalQuestion;
-
-            // Update design guidance
-            const guidance = designGuidance[randomStrategy.name];
-            document.getElementById('designGuidance').innerHTML = `
-                <p><strong>Elements to focus on:</strong> ${guidance.elements}</p>
-                <p><strong>Principles to apply:</strong> ${guidance.principles}</p>
-                <p><strong>Colour approach:</strong> ${guidance.colour}</p>
-                <p><strong>Typography strategy:</strong> ${guidance.typography}</p>
-            `;
+            document.getElementById('materialsAndProcess').textContent = randomMaterials;
             
-            // Update worksheet helper
-            document.getElementById('worksheetHelp').innerHTML = `
-                <p><strong>How concept is new and different:</strong> ${guidance.summary}</p>
-                <p><strong>Equipment and media to visualise concept:</strong> ${guidance.equipmentMedia}</p>
-                <p><strong>Technique to generate ideas:</strong> ${guidance.technique}</p>
-                <p><strong>How it communicates key message:</strong> ${guidance.message}</p>
-                <p class="text-muted" style="margin-top: 0.75rem; font-size: 0.9rem;">Copy these directly into your AT2a worksheet and adapt to your specific concept.</p>
-            `;
-
-            // Update technique sections
-            const techniqueGrid = document.getElementById('techniqueGrid');
-            techniqueGrid.innerHTML = selectedTechniques.map((technique, index) => {
-                const category = techniques.find(cat => cat.methods.includes(technique));
-                return `
-                    <div class="technique-item">
-                        <div class="technique-category">${category.category}</div>
-                        <div class="technique-name">Method ${index + 1}: ${technique.name}</div>
-                        <div class="technique-materials"><strong>Materials:</strong> ${technique.materials}</div>
-                        <div class="technique-materials"><strong>Process:</strong> ${technique.steps}</div>
-                        <div class="technique-materials"><strong>Time estimate:</strong> ${technique.timeGuide}</div>
-                    </div>
-                `;
-            }).join('');
+            document.getElementById('thinkingTechnique').textContent = randomThinking;
+            
+            document.getElementById('designElementsAndPrinciples').innerHTML = 
+                `<strong>${randomElements.focus}:</strong> ${randomElements.description}`;
+            
+            document.getElementById('colourDirection').innerHTML = 
+                `<strong>${randomColour.relationship}:</strong> ${randomColour.description}`;
+            
+            document.getElementById('timeAllocation').textContent = randomTime;
 
             // Show results
             document.getElementById('results').classList.remove('hidden');
             document.getElementById('resetSection').classList.remove('hidden');
-            document.getElementById('generateBtn').textContent = 'Generate new strategy';
+            document.getElementById('generateBtn').textContent = 'Generate new concept';
         }
 
         function resetGenerator() {
             document.getElementById('results').classList.add('hidden');
             document.getElementById('resetSection').classList.add('hidden');
-            document.getElementById('generateBtn').textContent = 'Generate strategy';
+            document.getElementById('generateBtn').textContent = 'Generate concept direction';
         }
 
         // Auto-resize iframe height (if parent allows)
@@ -497,12 +428,10 @@
             }
         }
 
-        // Call resize on load and when content changes
         window.addEventListener('load', resizeIframe);
         
-        // Override the generate function to include resize
-        const originalGenerate = generateDirection;
-        generateDirection = function() {
+        const originalGenerate = generateConcept;
+        generateConcept = function() {
             originalGenerate();
             setTimeout(resizeIframe, 100);
         };
