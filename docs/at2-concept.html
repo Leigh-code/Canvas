@@ -12,10 +12,10 @@
         }
         
         body {
-            font-family: 'Lato', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            font-family: 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, sans-serif;
             line-height: 1.6;
-            color: #2d3b45;
-            background-color: #ffffff;
+            color: #1a1a2e;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             padding: 1.5rem;
             min-height: 100vh;
         }
@@ -26,74 +26,149 @@
         }
         
         .page-header {
-            background-color: #2d3b45;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
             color: white;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border-radius: 2px;
+            padding: 3rem 2rem;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+            transform: rotate(-1deg);
         }
         
         .page-header h1 {
-            font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-            font-weight: 300;
-            letter-spacing: 0.5px;
+            font-size: 2.5rem;
+            margin-bottom: 0.75rem;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .page-header h1::after {
+            content: '◆';
+            display: block;
+            font-size: 0.4em;
+            opacity: 0.8;
+            margin-top: 0.5rem;
+            letter-spacing: 2px;
         }
         
         .page-header p {
-            opacity: 0.85;
+            opacity: 0.95;
             margin: 0;
-            font-weight: 300;
+            font-weight: 500;
+            font-size: 1.1rem;
         }
         
         .info-block {
-            background-color: #f8f9fa;
-            border-left: 4px solid #008ee2;
-            padding: 1.25rem;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            padding: 1.5rem;
             margin-bottom: 2rem;
-            font-size: 0.95rem;
+            font-size: 1rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            backdrop-filter: blur(10px);
+            position: relative;
+        }
+        
+        .info-block::before {
+            content: '◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇ ◈ ◇';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-size: 0.8rem;
+            color: #667eea;
+            opacity: 0.4;
+            line-height: 1;
+            padding: 0.25rem;
+            overflow: hidden;
         }
         
         .generate-btn {
-            background-color: #2d3b45;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
             border: none;
             color: white;
             cursor: pointer;
-            font-size: 16px;
-            font-weight: 400;
-            padding: 14px 28px;
+            font-size: 18px;
+            font-weight: 600;
+            padding: 20px 40px;
             width: 100%;
             text-align: center;
             transition: all 0.3s ease;
             margin-bottom: 2rem;
             letter-spacing: 0.5px;
-            text-transform: uppercase;
-            font-size: 14px;
+            border-radius: 50px;
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.3);
+            transform: translateY(0);
         }
         
         .generate-btn:hover {
-            background-color: #1a242a;
-            transform: translateY(-1px);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(79, 172, 254, 0.4);
         }
         
         .content-block {
-            background-color: white;
-            border: 1px solid #e1e5e9;
-            padding: 1.5rem;
+            background: rgba(255,255,255,0.95);
+            border: none;
+            padding: 2rem;
             margin-bottom: 1.5rem;
-            border-radius: 2px;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            backdrop-filter: blur(10px);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-block::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--accent-color);
+        }
+        
+        .content-block::after {
+            content: var(--decoration);
+            position: absolute;
+            top: 1rem;
+            right: 1.5rem;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            color: var(--accent-text-color);
+            animation: pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 0.15; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.1); }
         }
         
         .content-block h4 {
-            margin-bottom: 1rem;
-            color: #2d3b45;
-            font-weight: 500;
-            font-size: 1.1rem;
+            margin-bottom: 1.25rem;
+            color: #1a1a2e;
+            font-weight: 700;
+            font-size: 1.3rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .content-block h4::before {
+            content: var(--icon);
+            font-size: 1.5rem;
+            filter: grayscale(0.3);
         }
         
         .content-block p {
             margin-bottom: 0.75rem;
-            color: #495057;
+            color: #4a4a68;
+            font-size: 1rem;
+            line-height: 1.7;
         }
         
         .content-block p:last-child {
@@ -101,63 +176,65 @@
         }
         
         .concept-starter {
-            border-left: 4px solid #e61e2a;
-            background-color: #fff5f5;
+            --accent-color: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            --icon: '🎯';
         }
         
         .materials-block {
-            border-left: 4px solid #008ee2;
+            --accent-color: linear-gradient(135deg, #4facfe, #00f2fe);
+            --icon: '🎨';
         }
         
         .thinking-block {
-            border-left: 4px solid #6f42c1;
-            background-color: #f8f7ff;
+            --accent-color: linear-gradient(135deg, #a8edea, #fed6e3);
+            --icon: '💭';
         }
         
         .elements-block {
-            border-left: 4px solid #28a745;
-            background-color: #f8fff8;
+            --accent-color: linear-gradient(135deg, #54a0ff, #2e86de);
+            --icon: '⚡';
         }
         
         .approach-block {
-            border-left: 4px solid #6f42c1;
-            background-color: #f8f7ff;
+            --accent-color: linear-gradient(135deg, #5f27cd, #a55eea);
+            --icon: '🚀';
         }
         
         .colour-block {
-            border-left: 4px solid #fd7e14;
-            background-color: #fff8f0;
+            --accent-color: linear-gradient(135deg, #ff9ff3, #f368e0);
+            --icon: '🌈';
         }
         
         .sustainability-block {
-            border-left: 4px solid #28a745;
-            background-color: #f8fff8;
+            --accent-color: linear-gradient(135deg, #7bed9f, #2ed573);
+            --icon: '♻️';
         }
         
         .timer-block {
-            border-left: 4px solid #dc3545;
-            background-color: #fff5f5;
-            font-weight: 500;
+            --accent-color: linear-gradient(135deg, #ff7675, #d63031);
+            --icon: '⏰';
+            font-weight: 600;
         }
         
         .reset-btn {
-            background-color: transparent;
-            border: 1px solid #6c757d;
-            color: #6c757d;
+            background: rgba(255,255,255,0.2);
+            border: 2px solid rgba(255,255,255,0.3);
+            color: white;
             cursor: pointer;
-            font-size: 14px;
-            padding: 10px 20px;
+            font-size: 16px;
+            padding: 15px 30px;
             display: block;
             margin: 2rem auto 0;
             transition: all 0.3s ease;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-weight: 400;
+            font-weight: 500;
+            border-radius: 25px;
+            backdrop-filter: blur(10px);
         }
         
         .reset-btn:hover {
-            background-color: #6c757d;
-            color: white;
+            background: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
         
         .hidden {
@@ -169,13 +246,26 @@
         }
         
         .text-muted {
-            color: #6c757d;
-            font-size: 0.9rem;
+            color: #6c7293;
+            font-size: 0.95rem;
         }
         
         .emphasis {
-            font-weight: 600;
-            color: #2d3b45;
+            font-weight: 700;
+            color: #1a1a2e;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(-1deg); }
+            50% { transform: translateY(-10px) rotate(-1deg); }
+        }
+        
+        .page-header {
+            animation: float 6s ease-in-out infinite;
         }
         
         @media (max-width: 500px) {
@@ -184,11 +274,17 @@
             }
             
             .page-header {
-                padding: 1.5rem;
+                padding: 2rem 1.5rem;
+                transform: rotate(0deg);
+                animation: none;
             }
             
             .page-header h1 {
-                font-size: 1.5rem;
+                font-size: 2rem;
+            }
+            
+            .content-block {
+                padding: 1.5rem;
             }
         }
     </style>
@@ -197,7 +293,7 @@
     <div class="container">
         <div class="page-header">
             <h1>AT2 concept generator</h1>
-            <p>Get focused direction for one concept – clear, simple, actionable</p>
+            <p>Get focused direction for one concept</p>
         </div>
 
         <div class="info-block">
@@ -284,7 +380,27 @@
                 ["Street art influence", "Draw from any urban or graffiti-inspired elements in the mood board to create packaging with street art energy."],
                 ["Sustainable craft aesthetic", "Emphasise the natural, eco-friendly elements from the mood board with packaging that feels handmade and sustainable."],
                 ["Pop art fruit celebration", "Take inspiration from the bold colours and fruit imagery to create packaging with pop art sensibilities."],
-                ["Travel postcard collection", "Use the diverse cultural elements to create packaging that feels like a collection of travel postcards from tropical destinations."]
+                ["Travel postcard collection", "Use the diverse cultural elements to create packaging that feels like a collection of travel postcards from tropical destinations."],
+                ["Instagram story aesthetic", "Design packaging that looks like it belongs in a curated Instagram feed – clean, bright, and perfectly arranged for social media."],
+                ["Music festival wristband vibes", "Create packaging that captures the energy of summer music festivals with bold colours and layered graphics."],
+                ["Farmers market fresh", "Design packaging that feels like it came straight from a weekend farmers market with authentic, organic styling."],
+                ["Y2K retro revival", "Combine mood board elements with early 2000s design trends – think holographic effects, bold sans fonts, and tech-inspired graphics."],
+                ["Aesthetic wallpaper collection", "Create packaging that looks like it could be phone wallpaper – trendy, shareable, and visually satisfying."],
+                ["Cottagecore summer", "Blend the natural elements from the mood board with cottagecore aesthetics for a dreamy, pastoral packaging approach."],
+                ["Neon summer nights", "Take mood board colours and amp them up with neon brightness for packaging that screams summer festival energy."],
+                ["Vintage polaroid memories", "Design packaging that feels like a collection of vintage summer photos with faded colours and nostalgic styling."],
+                ["Maximalist tropical chaos", "Go full maximalist with every tropical element from the mood board layered together in organised chaos."],
+                ["Minimalist zen market", "Strip back the mood board to its most essential elements for clean, mindful packaging that feels premium and calming."],
+                ["Comic book energy", "Translate the bold, energetic feeling of the mood board into comic book-style graphics with strong outlines and dynamic composition."],
+                ["Sunset gradient story", "Focus on the beautiful colour transitions in the mood board to create packaging based entirely on gradient storytelling."],
+                ["Handmade craft market", "Design packaging that looks like it was made by hand at a local craft market using mood board inspiration."],
+                ["Digital art exhibition", "Create packaging that feels like pieces from a digital art gallery, using mood board elements as inspiration for contemporary art."],
+                ["Tropical data visualization", "Turn mood board elements into infographic-style packaging that presents beauty information in a fun, visual way."],
+                ["Skateboard deck graphics", "Channel the bold, youth-focused energy of skateboard graphics using tropical and cultural elements from the mood board."],
+                ["Playlist cover art", "Design packaging that looks like album artwork for the perfect summer playlist inspired by mood board vibes."],
+                ["Zine publication style", "Create packaging that feels like pages from an independent zine about travel, culture, and summer adventures."],
+                ["Retro video game aesthetics", "Combine mood board elements with nostalgic video game graphics for packaging that appeals to gaming culture."],
+                ["Social cause awareness", "Use mood board elements to create packaging that subtly highlights environmental or social issues important to young consumers."]
             ],
             materials: [
                 "Markers and fine liners on paper. Start with thumbnails, develop 2-3 sketches to presentation standard.",
@@ -297,17 +413,31 @@
                 "Watercolour pencils or paints. Create loose, artistic concepts without detail, then draw over the top when it is dried. Can be refined digitally if needed."
             ],
             thinking: [
-                "Apply your peer's critical thinking technique from AT1b plus the mood board. What would appeal most to Sportsgirl customers according to these documents?",
-                "Use the 'mood board dissection' technique: pick 3 elements from the mood board, sketch how each could inspire a different package design.",
-                "Try 'element isolation': cover most of the mood board, reveal only small sections, sketch packaging concepts based on these limited views.",
-                "Use 'colour extraction exercise': screenshot 3 different mood board areas, use Adobe Colour to extract palettes, sketch concepts for each.",
-                "Apply 'texture translation': find 3 different textures inspired by the mood board, sketch how each could be applied as graphic pattern for packaging.",
-                "Use 'story building from mood board': create a short story about someone in the mood board images, design packaging that fits their lifestyle.",
-                "Try 'scale manipulation': pick small details from mood board images, sketch them enlarged as hero elements for package design. Ridiculously large! What if a strawberry seed took up a whole side of a package? How zoomed into an orange skin can you go until it is unrecognisable?",
-                "Use 'mood board word association': write 5 words the mood board makes you think of, sketch packaging concepts for each word.",
-                "Generate a concept based on a literal interpretation of your critical thinking technique. Put aside your own tastes and try to design something the client would expect.",
-                "Try 'Pitch it older': Consider that teenagers may want to move into the next age bracket.",
-                "Brand heritage: Research what the design from the client looked like (or might have looked like) 20, 30 or 40 years ago. Using that design language, interpret the mood board."
+                "Substitute: Pick a typical design element and substitute it for something else. What if the title was a cut out of the cardboard? What if the front was the back? What if the package was the product? What if imagery was replaced with texture?",
+                "Combine: Take two different elements from the mood board and combine them in unexpected ways. Mix fruit textures with geometric patterns, product titles with illustrations, or blend typography styles from different cultures. What else can you think of?",
+                "Adapt: Take an element from the mood board or package and adapt it for a different purpose. Turn a fabric pattern into illustrations, a carry handle into a phone holder, or adapt fruit shapes into letterforms. What else could you adapt?",
+                "Modify: Change the scale, colour, or proportion of typical design elements. Make small details huge, turn bright colours muted, re-arrange expected hierarchies or stretch shapes in unexpected directions.",
+                "Put to other uses: How could packaging elements serve multiple purposes? Could text become decoration? Could structural elements become part of the graphics?",
+                "Eliminate: Remove expected packaging elements. What if there's no traditional logo placement? No standard colour scheme? What if there was no ink? What's left when you strip away the obvious?",
+                "Reverse: Flip expectations. Put dark colours where you'd expect light, place small text where big text usually goes, or reverse the typical information hierarchy.",
+                "Five word brainstorm: Write down the first 5 words the mood board makes you feel. Design packaging for each word. Don't overthink – trust your first instincts.",
+                "Three mood board elements: Pick exactly 3 visual elements from the mood board. Sketch how each one could become the main design feature on different packages.",
+                "Colour palette extraction: Screenshot your favourite part of the mood board. Use Adobe Colour to extract a 5-colour palette. Design packaging using only these colours.",
+                "Target customer profile: Describe a specific 18-year-old Sportsgirl customer in detail. Design packaging that would make her excited to buy and keep the product.",
+                "Zoom focus technique: Pick the smallest detail you can find in the mood board. Make this tiny detail the hero element of your packaging design.",
+                "One pattern, three ways: Find one pattern or texture in the mood board. Show it applied three different ways across your packaging range.",
+                "Texture hunt: Look at 5 different textures in the mood board (fabric, fruit skin, paper, etc.). Choose one to inspire your packaging surface treatment.",
+                "Mood board word list: Write 10 adjectives that describe the mood board feeling. Pick 3 words to guide all your design decisions.",
+                "Copy then change: Find existing packaging you like online. Sketch it roughly, then change 3 specific things to match the Sportsgirl brief and mood board.",
+                "Size comparison exercise: Look at the mood board and identify something tiny, medium, and large. Use these three scale relationships in your packaging hierarchy.",
+                "Cultural element focus: Find one cultural reference in the mood board (food, textiles, architecture). Research it briefly, then apply that cultural aesthetic respectfully.",
+                "Problem identification: Think of one annoying thing about current beauty packaging. Design a solution that incorporates mood board inspiration.",
+                "Layout inspiration hunt: Find a magazine page, poster, or website layout you like. Adapt its composition structure for packaging using mood board elements.",
+                "Memory connection: What personal memory does the mood board trigger? Design packaging that captures that feeling in a way Sportsgirl customers would relate to.",
+                "Trend research: Look up one current design trend on Pinterest or Instagram. Combine it thoughtfully with mood board elements for contemporary packaging.",
+                "Material translation: Pick one material quality from the mood board (rough, smooth, soft, shiny). Show how you'd recreate this feeling using only print techniques.",
+                "Story creation: Imagine the journey of someone in the mood board images. Design packaging that tells part of their story.",
+                "Element isolation: Cover most of the mood board with paper, leaving only a small section visible. Design packaging based only on what you can see."
             ],
             elements: [
                 ["Pattern extraction from mood board imagery", "Find repeating elements in the mood board (fruit shapes, fabric patterns, stripe variations) and create your own pattern system using repetition. Apply the same pattern element across multiple packages to create visual connection."],
@@ -345,24 +475,48 @@
                 ["Systematic thinking", "Create a comprehensive design system that could extend beyond these 5 packages. Think about how your approach could work across Sportsgirl's entire product range and seasonal collections."]
             ],
             colours: [
-                ["Extract a complementary colour palette from the mood board using Adobe Colour", "Open Adobe Colour, upload a mood board image, and use the complementary colour theme to create high-contrast packaging."],
-                ["Pick three analogous colours from the fruit imagery in the mood board", "Choose colours that sit next to each other on the colour wheel, found in the tropical fruit photos."],
-                ["Use only two colours per package inspired by the mood board", "Create three patterns inspired by the mood board. Use only two colours per package (but different colours for each package)."],
-                ["Extract a monochromatic palette from one mood board image", "Pick one dominant colour from a single mood board image, then use different tints and shades of that same colour."],
-                ["Apply the 60-30-10 rule using mood board colours", "Choose three colours from the mood board: dominant colour 60%, secondary 30%, accent 10% across your package range."],
-                ["Focus on warm colours only from the mood board", "Identify all the reds, oranges, yellows, and pinks inspired by the mood board and create a cohesive warm palette."],
-                ["Use one bold accent colour from the mood board with lots of white", "Pick the most vibrant colour you can find in the mood board, use it sparingly against white for maximum impact."],
-                ["Create a triadic scheme based on the mood board's primary colours", "Find the main colour in the mood board, then use Adobe Colour to generate two additional colours equally spaced on the colour wheel."]
+                ["Tropical sunset palette", "Extract warm oranges, pinks, and yellows from mood board fruit imagery. Use orange as dominant (60%), pink as secondary (30%), yellow as accent (10%)."],
+                ["Fresh market greens", "Focus on all the green tones from the mood board – lime, emerald, mint. Pair with crisp white for clean, fresh packaging that feels healthy and natural."],
+                ["Bold contrast combo", "Pick the brightest colour and darkest colour from the mood board. Use high contrast for maximum shelf impact – think hot pink against deep navy."],
+                ["Monochrome magic", "Choose one mood board colour you love. Use it in 5 different shades from very light tint to very dark shade. Creates sophisticated, cohesive look."],
+                ["Two-colour power", "Select two colours that appear together in one mood board image. Use only these two colours across all packaging for strong brand recognition."],
+                ["Pastel mood board interpretation", "Take any mood board colours and make them 50% lighter. Creates soft, Instagram-worthy packaging perfect for young customers."],
+                ["Neon accent strategy", "Use mostly white packaging with one super-bright neon colour from the mood board as small accent elements – text, borders, or icons."],
+                ["Gradient inspiration", "Find where two colours blend together in the mood board. Create packaging using gradients that transition between these colours."],
+                ["Unexpected colour story", "Find the smallest colour area in the mood board. Make this unexpected colour your hero colour across all packaging."],
+                ["Cultural colour reference", "Look for cultural colour combinations in the mood board (festivals, traditional textiles). Adapt these authentic palettes for modern packaging."],
+                ["Fruit-focused palette", "Extract colours directly from specific fruits in the mood board. Mango packaging gets mango colours, berry products get berry tones."],
+                ["Metallic modern approach", "Take mood board colours and pair each with gold, silver, or copper metallic accents for premium feel."],
+                ["Black and white plus one", "Use mostly black and white design with one mood board colour as the only colour accent for dramatic, memorable impact."],
+                ["Warm vs cool split", "Divide mood board colours into warm (reds, oranges, yellows) and cool (blues, greens, purples). Use only warm OR cool family for cohesive mood."],
+                ["Instagram filter effect", "What if you put a filter on the mood board? Sepia, vintage, or high saturation? Use these filtered colours for your packaging palette."],
+                ["Complementary colour excitement", "Upload mood board image to Adobe Colour. Use complementary colour theme to find colours that create maximum visual excitement together."],
+                ["Triadic harmony", "Find the main colour in mood board, then use Adobe Colour to generate triadic scheme (3 colours equally spaced on colour wheel) for balanced design."],
+                ["Analogous colour flow", "Choose 3-4 colours that sit next to each other on the colour wheel, all found in the mood board. Creates smooth, pleasing colour transitions."],
+                ["Seasonal colour shift", "Take mood board colours and make them more summer-appropriate – brighter, more saturated, more energetic for hot weather appeal."],
+                ["Colour psychology match", "Red for energy, blue for trust, green for nature, yellow for happiness. Match mood board colours to the feeling you want customers to have."]
             ],
             sustainability: [
-                ["Beauty Bon Bon reuse as jewellery storage", "Design the small cosmetic package to become a travel jewellery box. Consider compartments, soft interior, and closure that works for both original product and reuse."],
-                ["Drink bottle as desk organiser system", "Create packaging that transforms into a modular desktop storage system - pen holders, cable organisers, or small item containers that stack or connect."],
-                ["Gift set packaging as storage box", "Design the largest package to become a keepsake storage box. Include fold-down dividers, reinforced corners, and attractive closure for long-term use."],
-                ["Multi-package modular storage system", "Design packages that nest together or connect to create a modular storage solution - makeup organiser, bathroom caddy, or desk organisation system."],
-                ["Light-up board packaging as room decor", "Transform the electronics packaging into functional room decor - picture frame, desk organiser, or wall-mounted storage with the same aesthetic appeal."],
-                ["Seed packet integration for plantable packaging", "Include wildflower or herb seeds embedded in package elements. After use, parts of packaging can be planted in soil to grow plants."],
-                ["Origami-inspired transformable design", "Create packaging that unfolds or refolds into useful items - phone stands, small bowls, gift card holders, or decorative elements using origami principles."],
-                ["Upcycling instruction integration", "Include clear visual instructions on packaging showing 3-4 different ways to repurpose each package type, with QR codes linking to video tutorials."]
+                ["Jewelry box organizer", "Design packaging that transforms into a jewelry storage box with compartments. Consider velvet-lined sections, mirror integration, and secure closure for rings, earrings, and small accessories."],
+                ["Modular makeup storage system", "Create packages that connect or stack to form a comprehensive makeup organizer. Include brush holders, product slots, and mirror positioning for dressing table use."],
+                ["Travel toiletry organizer", "Design packaging that becomes a hanging travel organizer with clear pockets, hooks, and water-resistant materials for bathroom organization."],
+                ["Phone stand and charging station", "Transform packaging into a functional phone stand with cable management and additional storage for earphones, cards, or small tech accessories."],
+                ["Desktop study organizer", "Create packaging that becomes a desk caddy with pen holders, note storage, and small compartments for student essentials like clips and erasers."],
+                ["Bathroom caddy system", "Design packaging that transforms into shower or bathroom storage with drainage holes, suction cup attachment, and compartments for toiletries."],
+                ["Small planter with drainage", "Create packaging that becomes a decorative planter for succulents or herbs, with proper drainage system and water-resistant finish."],
+                ["Gift box for future presents", "Design beautiful packaging specifically intended for reuse as gift boxes, with reversible patterns, ribbon storage, and premium finish."],
+                ["Memory box for keepsakes", "Transform packaging into a special storage box for photos, letters, and small mementos with acid-free lining and secure closure."],
+                ["Festival kit organizer", "Create packaging that becomes a portable organizer for festivals or events, with compartments for tickets, cash, phone, and small essentials."],
+                ["Art supply storage", "Design packaging that transforms into storage for art materials like pencils, markers, brushes, and small craft supplies with dividers."],
+                ["Gym locker organizer", "Create compact packaging that becomes a gym bag organizer with ventilated sections for shoes, toiletries, and accessories."],
+                ["Dorm room essentials box", "Design packaging that becomes functional dorm storage for small items, with stackable design and labels for easy organization."],
+                ["Travel game storage", "Transform packaging into storage for travel games, cards, or puzzle pieces with secure compartments and portable design."],
+                ["Seed starting system", "Include wildflower or herb seeds with packaging that becomes biodegradable seed starting pots, complete with planting instructions."],
+                ["Beach day kit container", "Create packaging that becomes a waterproof beach organizer for sunscreen, keys, phone, and small accessories with sand-resistant closure."],
+                ["Hair accessory organizer", "Design packaging that transforms into specialized storage for hair ties, clips, headbands, and styling tools with easy access design."],
+                ["Origami-inspired transformables", "Create packaging that unfolds into useful items like phone stands, small bowls, or desk organizers using origami folding principles."],
+                ["Charging cable organizer", "Transform packaging into a cable management system with cord wrappers, velcro ties, and labeled storage for different cable types."],
+                ["Snack container system", "Design food-safe packaging that becomes portion-controlled snack containers for healthy eating, with airtight seals and stackable design."]
             ],
             timeOptions: [
                 "20 mins: thumbnails and ideation • 30 mins: develop chosen concept • 40 mins: create presentation visuals",
