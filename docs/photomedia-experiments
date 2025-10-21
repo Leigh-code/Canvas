@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photomedia Experiments Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            line-height: 1.6;
+            color: #e8e8e8;
+            background: #2c2c2c;
+            padding: 1.5rem;
+            min-height: 100vh;
+        }
+        
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .page-header {
+            background: #1f1f1f;
+            color: #e8e8e8;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid #3a3a3a;
+            border-radius: 4px;
+        }
+        
+        .page-header h1 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+            letter-spacing: 0;
+            color: #e8e8e8;
+        }
+        
+        .page-header p {
+            opacity: 0.7;
+            margin: 0;
+            font-weight: 400;
+            font-size: 0.95rem;
+        }
+        
+        .info-block {
+            background: #262626;
+            border: 1px solid #3a3a3a;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            font-size: 0.9rem;
+            border-radius: 4px;
+            color: #b8b8b8;
+        }
+        
+        .info-block strong {
+            color: #e8e8e8;
+        }
+        
+        .generate-btn {
+            background: #1473e6;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 400;
+            padding: 12px 24px;
+            width: 100%;
+            text-align: center;
+            transition: background 0.2s ease;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0;
+            border-radius: 4px;
+        }
+        
+        .generate-btn:hover {
+            background: #0d66d0;
+        }
+        
+        .generate-btn:active {
+            background: #095aba;
+        }
+        
+        .content-block {
+            background: #262626;
+            border: 1px solid #3a3a3a;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 4px;
+            position: relative;
+        }
+        
+        .content-block h4 {
+            margin-bottom: 1rem;
+            color: #b8b8b8;
+            font-weight: 400;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid #3a3a3a;
+            padding-bottom: 0.5rem;
+        }
+        
+        .content-block p {
+            margin-bottom: 0.75rem;
+            color: #e8e8e8;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+        
+        .content-block p:last-child {
+            margin-bottom: 0;
+        }
+        
+        .content-block ul {
+            margin-left: 1.5rem;
+            color: #e8e8e8;
+        }
+        
+        .content-block li {
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+        
+        .content-block strong {
+            color: #e8e8e8;
+            font-weight: 500;
+        }
+        
+        .experiment-type {
+            border-left: 3px solid #1473e6;
+        }
+        
+        .technique-block {
+            border-left: 3px solid #44a1ff;
+        }
+        
+        .why-block {
+            border-left: 3px solid #2d9da8;
+        }
+        
+        .documentation-block {
+            border-left: 3px solid #00b67a;
+            background: #242424;
+        }
+        
+        .reset-btn {
+            background: transparent;
+            border: 1px solid #3a3a3a;
+            color: #b8b8b8;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 10px 20px;
+            display: block;
+            margin: 1.5rem auto 0;
+            transition: all 0.2s ease;
+            font-weight: 400;
+            border-radius: 4px;
+        }
+        
+        .reset-btn:hover {
+            background: #2c2c2c;
+            border-color: #4a4a4a;
+            color: #e8e8e8;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-muted {
+            color: #888;
+            font-size: 0.85rem;
+        }
+        
+        .emphasis {
+            font-weight: 500;
+            color: #44a1ff;
+        }
+        
+        @media (max-width: 500px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .page-header {
+                padding: 1.5rem;
+            }
+            
+            .page-header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .content-block {
+                padding: 1.25rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1>Experiments generator</h1>
+            <p>Try something new with your composite</p>
+        </div>
+
+        <div class="info-block">
+            <strong>Generate one experiment at a time.</strong> You need to document two experiments for your AT3d Report. Even if an experiment does not work out, it is still valuable documentation that shows your process.
+            <br><span class="text-muted">Remember: save each experiment as a screenshot or JPEG. Write three sentences: what you tried, what you hoped to achieve, and why it did or did not work.</span>
+        </div>
+
+        <button class="generate-btn" onclick="generateExperiment()" id="generateBtn">
+            Generate experiment idea
+        </button>
+
+        <div id="results" class="hidden">
+            
+            <div class="content-block experiment-type">
+                <h4>Your experiment</h4>
+                <p class="emphasis" id="experimentName"></p>
+            </div>
+
+            <div class="content-block technique-block">
+                <h4>How to do it</h4>
+                <div id="technique"></div>
+            </div>
+
+            <div class="content-block why-block">
+                <h4>Why try this</h4>
+                <p id="rationale"></p>
+            </div>
+
+            <div class="content-block documentation-block">
+                <h4>What to write in your report</h4>
+                <p id="documentation"></p>
+            </div>
+
+        </div>
+
+        <div id="resetSection" class="hidden text-center">
+            <button class="reset-btn" onclick="resetGenerator()">
+                Generate another experiment
+            </button>
+        </div>
+    </div>
+
+    <script>
+        var data = {
+            experiments: [
+                {
+                    name: "Film grain texture overlay",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Find a grayscale film grain texture from Adobe Stock or texture sites,</li><li>place it as the top layer in your composite,</li><li>set blend mode to Overlay or Soft Light,</li><li>reduce opacity to 20-40%,</li><li>save a version before and after to compare.</li></ul>",
+                    rationale: "Film grain can unify all your composite elements and add a subtle vintage quality. However, it can also make your image look muddy or distract from details if overdone. This is a good experiment to try because you will learn when texture enhances versus when it just adds noise.",
+                    documentation: "Describe what blend mode and opacity you used. Explain whether the grain created the vintage feeling you wanted, or if it made the image less clear. If it did not work, specify which areas looked worst (shadows, highlights, or fine details)."
+                },
+                {
+                    name: "Selective desaturation with masking",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Add a Hue/Saturation adjustment layer,</li><li>reduce saturation to -100 (making everything grayscale),</li><li>use a soft brush to paint black on the layer mask over areas you want to keep in colour,</li><li>experiment with desaturating everything except your main subject, or vice versa.</li></ul>",
+                    rationale: "This experiment teaches you about focal points and how colour draws the eye. It is a dramatic effect that usually does not make it into the final composite, but trying it helps you understand how selective colour can guide attention. Most attempts will be too heavy-handed, which is exactly what you want to learn.",
+                    documentation: "Explain the impact that selective desaturation had on your composite. Did it successfully draw attention to the coloured area? If you thought it detracted from the composition, explain why (too obvious, felt cliched, or disrupted the mood you were creating)."
+                },
+                {
+                    name: "Vignette with adjustment layer",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Create a Levels or Curves adjustment layer,</li><li>darken the image by moving the midpoint slider to the left,</li><li>use the Brush Tool (B) with black colour,</li><li>paint on the white layer mask in the centre area to hide the darkening effect there,</li><li>this creates darker edges with a bright centre.</li></ul>",
+                    rationale: "Vignettes are a classic way to direct attention, but the right amount is crucial. This experiment helps you find the balance between subtle and obvious. Most first attempts are too strong, and documenting this teaches restraint for future projects.",
+                    documentation: "Describe how strong you made the vignette initially and whether you had to adjust it. Explain if it successfully focused attention on your subject, or if it made the composition feel too dark or tunnel-like. Note what you learned about finding the right balance."
+                },
+                {
+                    name: "Paper texture with blend mode",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Find an old paper or parchment texture,</li><li>place it as top layer,</li><li>set blend mode to Multiply,</li><li>start at 30% opacity and adjust down,</li><li>optional: mask it out of the main subject to keep them clean.</li></ul>",
+                    rationale: "Paper textures work brilliantly for vintage or organic themes but often clash with modern or clean aesthetics. This experiment will likely fail for most composites, which makes it perfect for documentation. You will learn when texture enhances versus when it distracts.",
+                    documentation: "Explain what you hoped the paper texture would add (warmth, vintage feel, organic quality). Then describe whether it enhanced or detracted from your composite. If it did not work, specify why (too much visual noise, clashed with the aesthetic, or made it look dated)."
+                },
+                {
+                    name: "Camera Raw preset exploration",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Duplicate your composite into a Smart Object (right-click layer > Convert to Smart Object),</li><li>go to Filter > Camera Raw Filter,</li><li>try different presets from the Presets panel (Artistic, Black & White, Cinematic, etc.),</li><li>adjust the intensity by reducing the filter opacity afterward if needed.</li></ul>",
+                    rationale: "Camera Raw presets apply complex adjustments instantly. Most presets will be wrong for your specific image, making this an excellent experiment to document. Learning which looks work for different moods is valuable for all future projects. The Smart Object means you can always go back and change it.",
+                    documentation: "Name the specific preset you tried and describe what it did to your colours and mood. Explain whether it unified the composition or created problems (like unnatural skin tones or wrong colour temperature). If you tried multiple presets, mention how many before giving up."
+                },
+                {
+                    name: "Colour tint with adjustment layer",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Add a Color Balance adjustment layer,</li><li>shift the sliders toward one colour family (e.g., more cyan and blue for cool, or more red and yellow for warm),</li><li>reduce the layer opacity to 30-50% so it is subtle,</li><li>try different colour shifts to see what mood they create.</li></ul>",
+                    rationale: "Colour tints create overall mood and can help unify elements. However, it is easy to create unnatural colour casts that ruin carefully matched colours. Experimenting with obvious tints helps you develop subtlety and understand how colour temperature affects atmosphere.",
+                    documentation: "Describe which direction you shifted the colours (warmer or cooler) and what mood you were aiming for. Explain whether the tint unified the elements or created muddy, unnatural-looking areas. Note what opacity worked best, or why you abandoned the technique entirely."
+                },
+                {
+                    name: "Texture with masking for depth",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Add a texture (concrete, fabric, or noise) as the top layer,</li><li>set blend mode to Overlay or Soft Light,</li><li>add a layer mask,</li><li>use a gradient or brush to hide the texture from the main subject,</li><li>keep texture only in the background or edges.</li></ul>",
+                    rationale: "Selective texture application adds depth by treating foreground and background differently. This experiment teaches you about visual hierarchy and how texture can enhance some areas while overwhelming others. Even if it fails, you will understand spatial relationships better.",
+                    documentation: "Explain where you applied the texture (background only, edges, or specific areas) and what you hoped it would achieve. Describe whether keeping the subject texture-free helped create depth, or if the textured areas competed for attention and cluttered the composition."
+                },
+                {
+                    name: "Saturation boost for emphasis",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Add a Hue/Saturation adjustment layer,</li><li>instead of Master, select a specific colour range from the dropdown (Reds, Yellows, Greens, etc.),</li><li>increase saturation by +20 to +40 for that colour only,</li><li>compare how it looks versus the original.</li></ul>",
+                    rationale: "Selective saturation helps specific elements stand out without affecting the whole image. However, oversaturated single colours look unnatural quickly. This experiment teaches colour relationships and helps you understand how much saturation boost is too much.",
+                    documentation: "Specify which colour you boosted and by how much. Explain whether it successfully emphasized that element or made it look artificial and oversaturated. If you had to reduce the amount, note what the final adjustment was and why the original was too strong."
+                },
+                {
+                    name: "Light leak overlay effect",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Find a light leak image (sun flares, lens flares, or bokeh),</li><li>place it on top of your composite,</li><li>set to Screen or Lighten blend mode,</li><li>position it coming from one side or corner,</li><li>reduce opacity to 30-50%.</li></ul>",
+                    rationale: "Light leaks add atmosphere and can suggest a light source, but they are trendy and often feel forced. Most attempts will look gimmicky, making this perfect for documentation. You will learn when atmospheric effects enhance versus when they just look like Instagram filters.",
+                    documentation: "Describe what atmosphere or mood you hoped the light leak would create. Explain whether it enhanced the lighting or just looked like a trendy filter. If it did not work, note whether it distracted from your composition or clashed with the existing light direction."
+                },
+                {
+                    name: "Black and white with selective colour",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Add a Black & White adjustment layer (not Hue/Saturation),</li><li>adjust the colour sliders to control how different colours convert to grayscale,</li><li>reduce layer opacity to 50-70% to create a partially desaturated look,</li><li>or use layer mask to apply black and white only to certain areas.</li></ul>",
+                    rationale: "The Black & White adjustment gives you more control than simple desaturation. Experimenting with partial conversion teaches you how colours translate to tone and helps you see your composition's value structure. Even if you do not use it, you will better understand tonal relationships.",
+                    documentation: "Explain what opacity you used or which areas you converted to black and white. Describe whether removing colour helped emphasize form and lighting, or if it removed energy and vibrancy that was essential to your concept. Note what you learned about tonal contrast."
+                },
+                {
+                    name: "Selective blur for depth of field",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Duplicate your entire composite layer,</li><li>apply Gaussian Blur (Filter > Blur > Gaussian Blur) at 6-12 pixels,</li><li>add a black layer mask (Layer > Layer Mask > Hide All),</li><li>paint white on the mask with a soft brush over areas you want blurred (usually edges or background),</li><li>this keeps the main subject sharp while blurring surroundings.</li></ul>",
+                    rationale: "Selective blur mimics a camera's shallow depth of field, directing focus to your main subject. It is easy to make the transition too obvious, creating an artificial look. Trying this helps you understand how blur affects visual hierarchy and when it helps versus when it looks fake.",
+                    documentation: "Describe which areas you blurred and how much (the pixel amount). Explain whether the blur successfully directed focus to your subject or created an obvious, artificial-looking transition. If the effect looked fake, note what gave it away (too abrupt, circular pattern, or wrong areas blurred)."
+                },
+                {
+                    name: "Levels adjustment for contrast",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Add a Levels adjustment layer,</li><li>move the black point slider (left) slightly right to deepen shadows,</li><li>move the white point slider (right) slightly left to brighten highlights,</li><li>adjust the middle grey slider to control overall brightness,</li><li>if it is too strong, reduce layer opacity or mask it from certain areas.</li></ul>",
+                    rationale: "Levels adjustments control contrast and can make images pop, but too much creates a harsh, over-processed look. Experimenting with aggressive contrast changes teaches you to recognize when adjustments improve versus when they destroy subtle tonality. Most beginners underestimate how much is too much.",
+                    documentation: "Explain what you did with the black and white point sliders and whether it made the image more dramatic. Describe if increased contrast improved definition or crushed shadow detail and created harsh, blown-out areas. Note what you learned about contrast limits."
+                },
+                {
+                    name: "Alternative colour scheme test",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Select all your colour-related adjustment layers,</li><li>hide them or reduce their opacity significantly,</li><li>add new Hue/Saturation or Color Balance layers,</li><li>try a completely different colour scheme (cool if it was warm, muted if it was vibrant),</li><li>save both versions to compare.</li></ul>",
+                    rationale: "Sometimes your first colour choice is not the best. Trying a dramatically different scheme teaches you about colour mood and helps you recognize when your instincts were correct. Even if the alternative fails, comparing both versions builds confidence in design decisions.",
+                    documentation: "Describe the alternative colour scheme you tried and how it differed from your original (warm to cool, vibrant to muted). Explain whether the new scheme improved the mood or removed something essential to your concept. Note what comparing both versions taught you about your colour decisions."
+                },
+                {
+                    name: "Gradient colour overlay",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Create a new layer, fill it with a gradient using the Gradient Tool (G),</li><li>try going from one colour to another (e.g., purple to orange, blue to yellow),</li><li>set blend mode to Color or Soft Light,</li><li>reduce opacity to 10-20% for a very subtle effect,</li><li>this creates a gentle colour shift across your image.</li></ul>",
+                    rationale: "Gradient overlays can add atmospheric colour shifts that suggest lighting direction or time of day. However, even subtle gradients can ruin carefully matched colours. This experiment often fails, teaching you about colour consistency and when to leave colours alone.",
+                    documentation: "Describe the gradient colours you used and what lighting or atmosphere you hoped to suggest. Explain whether the gradient added visual interest or conflicted with your existing colour matching and lighting direction. Note what opacity you used and whether even that was too much."
+                },
+                {
+                    name: "Different composition arrangement",
+                    technique: "<p><strong>Steps:</strong></p><ul><li>Save your current composite as a separate file,</li><li>move your main subject to a significantly different position,</li><li>rearrange background elements,</li><li>try flipping the subject horizontally (Edit > Transform > Flip Horizontal),</li><li>save this alternative version and compare both side by side.</li></ul>",
+                    rationale: "Sometimes the first composition is not the strongest. Trying a completely different arrangement teaches you about visual balance, focal points, and the rule of thirds. This experiment often reveals that your original instinct was correct, which builds confidence in your compositional decisions for future work.",
+                    documentation: "Describe how you rearranged the composition (subject moved where, elements repositioned how). Explain whether the new arrangement improved visual balance and flow, or if it felt unbalanced and drew attention to the wrong areas. Note what this comparison taught you about composition."
+                }
+            ]
+        };
+
+        function getRandom(array) {
+            return array[Math.floor(Math.random() * array.length)];
+        }
+
+        function generateExperiment() {
+            var experiment = getRandom(data.experiments);
+
+            document.getElementById('experimentName').textContent = experiment.name;
+            document.getElementById('technique').innerHTML = experiment.technique;
+            document.getElementById('rationale').textContent = experiment.rationale;
+            document.getElementById('documentation').textContent = experiment.documentation;
+
+            document.getElementById('results').classList.remove('hidden');
+            document.getElementById('resetSection').classList.remove('hidden');
+            document.getElementById('generateBtn').textContent = 'Generate another experiment';
+        }
+
+        function resetGenerator() {
+            document.getElementById('results').classList.add('hidden');
+            document.getElementById('resetSection').classList.add('hidden');
+            document.getElementById('generateBtn').textContent = 'Generate experiment idea';
+        }
+    </script>
+</body>
+</html>
