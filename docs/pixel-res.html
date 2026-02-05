@@ -38,6 +38,19 @@
             font-size: 28px;
         }
 
+        h2 {
+            color: #2d3748;
+            font-size: 22px;
+            margin: 30px 0 15px 0;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+        }
+
+        h2:first-of-type {
+            border-top: none;
+            padding-top: 0;
+        }
+
         .subtitle {
             text-align: center;
             color: #718096;
@@ -266,14 +279,6 @@
             margin: 4px 0;
         }
 
-        footer {
-            margin-top: 30px;
-            text-align: center;
-            color: #a0aec0;
-            font-size: 13px;
-            line-height: 1.6;
-        }
-
         .note {
             background: #ebf8ff;
             border-left: 4px solid #4299e1;
@@ -282,6 +287,100 @@
             border-radius: 4px;
             font-size: 13px;
             color: #2c5282;
+        }
+
+        .educational-content {
+            margin-top: 40px;
+            padding-top: 30px;
+            border-top: 3px solid #e2e8f0;
+        }
+
+        .educational-content p {
+            color: #4a5568;
+            line-height: 1.7;
+            margin-bottom: 15px;
+        }
+
+        .educational-content strong {
+            color: #2d3748;
+        }
+
+        .educational-content em {
+            color: #667eea;
+            font-style: normal;
+            font-weight: 600;
+        }
+
+        .examples {
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .examples ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .examples li {
+            padding: 8px 0;
+            color: #4a5568;
+        }
+
+        .examples code {
+            background: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #2d3748;
+        }
+
+        .info-section {
+            margin: 25px 0;
+        }
+
+        .info-section h3 {
+            color: #2d3748;
+            font-size: 16px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .usage-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .usage-card {
+            background: #f7fafc;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .usage-card strong {
+            display: block;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .usage-card p {
+            font-size: 13px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        footer {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e2e8f0;
+            text-align: center;
+            color: #a0aec0;
+            font-size: 13px;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -346,6 +445,63 @@
 
             <div class="note">
                 <strong>Note:</strong> On most screens, differences above 150 PPI become difficult to perceive. This demo uses a curved scale to make changes more visible throughout the slider range, emphasizing the dramatic quality differences at lower resolutions where they matter most.
+            </div>
+        </div>
+
+        <div class="educational-content">
+            <h2>Digital Resolution</h2>
+            <p>Digital resolution tells you <strong>how much image data you have</strong> – it's the pixel dimensions of your image file (width × height).</p>
+            
+            <p>A <em>pixel</em> (picture element) is the smallest unit of digital image data. Each pixel stores specific colour information using red, green, and blue values.</p>
+
+            <div class="examples">
+                <h3>Examples:</h3>
+                <ul>
+                    <li><code>1920 × 1080</code> = 2,073,600 pixels total</li>
+                    <li><code>3000 × 2000</code> = 6,000,000 pixels total</li>
+                    <li><code>4000 × 3000</code> = 12,000,000 pixels total</li>
+                </ul>
+            </div>
+
+            <p>More pixels = more image data = potential for higher quality output.</p>
+
+            <h2>Pixels per inch (PPI)</h2>
+            
+            <p>PPI measures how many pixels can fit in a 1-inch line. It's used in two ways:</p>
+
+            <div class="info-section">
+                <h3>Physical devices:</h3>
+                <p>Describes pixel density on screens. A modern phone might have 460 PPI (sharp for close viewing), while a billboard might have 10 PPI (adequate for distant viewing).</p>
+            </div>
+
+            <div class="info-section">
+                <h3>Software metadata:</h3>
+                <p>In programs like Photoshop, PPI tells other software the intended pixel density when the image is used elsewhere.</p>
+            </div>
+
+            <div class="note">
+                <strong>Important:</strong> Changing PPI in software doesn't change your pixel count – it's metadata that controls physical print size while maintaining quality.
+            </div>
+
+            <h2>Common PPI Standards</h2>
+            
+            <div class="usage-grid">
+                <div class="usage-card">
+                    <strong>72 PPI</strong>
+                    <p>Traditional screen resolution, adequate for web graphics and digital display</p>
+                </div>
+                <div class="usage-card">
+                    <strong>150 PPI</strong>
+                    <p>High-quality screen display, upper limit of what's perceptible on most monitors</p>
+                </div>
+                <div class="usage-card">
+                    <strong>300 PPI</strong>
+                    <p>Industry standard for professional printing, ensures smooth reproduction of detail</p>
+                </div>
+                <div class="usage-card">
+                    <strong>Retina Displays</strong>
+                    <p>Apple devices often use 220+ PPI for screens viewed at typical distances</p>
+                </div>
             </div>
         </div>
 
