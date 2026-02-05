@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PPI Resolution Demo - The Great Wave</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+            max-width: 900px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 10px;
+            color: #2d3748;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 14px;
+        }
+
+        .image-container {
+            position: relative;
+            width: 100%;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+            background: #f7fafc;
+        }
+
+        #canvas {
+            display: block;
+            width: 100%;
+            height: auto;
+            image-rendering: pixelated;
+        }
+
+        .controls {
+            margin-bottom: 30px;
+        }
+
+        .slider-container {
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            color: #4a5568;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        .slider-wrapper {
+            position: relative;
+            padding: 10px 0;
+        }
+
+        input[type="range"] {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: transparent;
+            outline: none;
+            -webkit-appearance: none;
+            position: relative;
+            z-index: 2;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            background: #5a67d8;
+            transform: scale(1.15);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            border: none;
+            transition: all 0.15s ease;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="range"]::-moz-range-thumb:hover {
+            background: #5a67d8;
+            transform: scale(1.15);
+        }
+
+        input[type="range"]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, 
+                #fc8181 0%, 
+                #fc8181 30%, 
+                #f6ad55 30%, 
+                #f6ad55 55%, 
+                #68d391 55%, 
+                #68d391 100%);
+        }
+
+        input[type="range"]::-moz-range-track {
+            width: 100%;
+            height: 8px;
+            border-radius: 4px;
+            background: linear-gradient(to right, 
+                #fc8181 0%, 
+                #fc8181 30%, 
+                #f6ad55 30%, 
+                #f6ad55 55%, 
+                #68d391 55%, 
+                #68d391 100%);
+        }
+
+        .slider-markers {
+            position: absolute;
+            top: 30px;
+            left: 0;
+            right: 0;
+            height: 40px;
+            pointer-events: none;
+        }
+
+        .marker {
+            position: absolute;
+            transform: translateX(-50%);
+            text-align: center;
+        }
+
+        .marker-line {
+            width: 2px;
+            height: 12px;
+            background: #4a5568;
+            margin: 0 auto 4px;
+            opacity: 0.5;
+        }
+
+        .marker-label {
+            font-size: 11px;
+            color: #4a5568;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .info-display {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            background: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            margin-top: 50px;
+        }
+
+        .info-item {
+            text-align: center;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 12px;
+            color: #718096;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            display: block;
+            font-size: 24px;
+            font-weight: 700;
+            color: #2d3748;
+        }
+
+        .quality-indicator {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            font-weight: 600;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .quality-low {
+            background: #fed7d7;
+            color: #c53030;
+        }
+
+        .quality-medium {
+            background: #feebc8;
+            color: #c05621;
+        }
+
+        .quality-high {
+            background: #c6f6d5;
+            color: #22543d;
+        }
+
+        .description-box {
+            margin-top: 15px;
+            padding: 16px;
+            background: white;
+            border-radius: 6px;
+            border: 2px solid #e2e8f0;
+            font-size: 14px;
+            line-height: 1.6;
+            color: #4a5568;
+        }
+
+        .description-box strong {
+            color: #2d3748;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .description-box ul {
+            margin: 8px 0 0 20px;
+            padding: 0;
+        }
+
+        .description-box li {
+            margin: 4px 0;
+        }
+
+        footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #a0aec0;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .note {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 12px 16px;
+            margin-top: 20px;
+            border-radius: 4px;
+            font-size: 13px;
+            color: #2c5282;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Understanding PPI (Pixels Per Inch)</h1>
+        <p class="subtitle">The Great Wave off Kanagawa by Katsushika Hokusai</p>
+        
+        <div class="image-container">
+            <canvas id="canvas"></canvas>
+        </div>
+
+        <div class="controls">
+            <div class="slider-container">
+                <label for="ppiSlider">Resolution: <span id="ppiValue">72</span> PPI</label>
+                <div class="slider-wrapper">
+                    <input type="range" id="ppiSlider" min="0" max="100" value="50" step="1">
+                    <div class="slider-markers">
+                        <div class="marker" style="left: 30%">
+                            <div class="marker-line"></div>
+                            <div class="marker-label">72 PPI</div>
+                        </div>
+                        <div class="marker" style="left: 55%">
+                            <div class="marker-line"></div>
+                            <div class="marker-label">150 PPI</div>
+                        </div>
+                        <div class="marker" style="left: 80%">
+                            <div class="marker-line"></div>
+                            <div class="marker-label">300 PPI</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-display">
+                <div class="info-item">
+                    <span class="info-label">PPI</span>
+                    <span class="info-value" id="displayPPI">72</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pixel Width</span>
+                    <span class="info-value" id="displayWidth">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Pixel Height</span>
+                    <span class="info-value" id="displayHeight">—</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Total Pixels</span>
+                    <span class="info-value" id="displayTotal">—</span>
+                </div>
+            </div>
+
+            <div class="quality-indicator" id="qualityIndicator">
+                Standard Screen Resolution
+            </div>
+
+            <div class="description-box" id="descriptionBox">
+                <strong>What to look for:</strong>
+                <p id="descriptionText">Loading...</p>
+            </div>
+
+            <div class="note">
+                <strong>Note:</strong> On most screens, differences above 150 PPI become difficult to perceive. This demo uses a curved scale to make changes more visible throughout the slider range, emphasizing the dramatic quality differences at lower resolutions where they matter most.
+            </div>
+        </div>
+
+        <footer>
+            Move the slider to see how PPI affects image quality.<br>
+            Lower PPI = fewer pixels = blockier image. Higher PPI = more detail and smoother edges.
+        </footer>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const slider = document.getElementById('ppiSlider');
+        const ppiValue = document.getElementById('ppiValue');
+        const displayPPI = document.getElementById('displayPPI');
+        const displayWidth = document.getElementById('displayWidth');
+        const displayHeight = document.getElementById('displayHeight');
+        const displayTotal = document.getElementById('displayTotal');
+        const qualityIndicator = document.getElementById('qualityIndicator');
+        const descriptionBox = document.getElementById('descriptionBox');
+        const descriptionText = document.getElementById('descriptionText');
+
+        const img = new Image();
+        img.crossOrigin = "anonymous";
+        
+        // Using a reliable CDN source for The Great Wave
+        img.src = 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0a/The_Great_Wave_off_Kanagawa.jpg/1280px-The_Great_Wave_off_Kanagawa.jpg';
+
+        const PHYSICAL_WIDTH = 10; // inches - reference width for calculations
+
+        const descriptions = {
+            low: `<strong>Insufficient Resolution (Too Low for Most Uses)</strong>
+                <ul>
+                    <li>Look at the foam on the wave - you can see individual pixels as blocky squares</li>
+                    <li>Curved lines appear jagged and stepped (called "aliasing" or "jaggies")</li>
+                    <li>Fine details like the Mt. Fuji silhouette become unclear or disappear entirely</li>
+                    <li>Text would be difficult to read; diagonal strokes look stepped</li>
+                    <li><em>Use case: Very low quality web thumbnails, placeholder images</em></li>
+                </ul>`,
+            
+            screen: `<strong>Good Screen Resolution (72-150 PPI)</strong>
+                <ul>
+                    <li>Details are clear on screen - the wave's foam and spray are distinguishable</li>
+                    <li>Curves and edges appear relatively smooth when viewed at normal distance</li>
+                    <li>Text is readable and comfortable to view on digital displays</li>
+                    <li>This matches most computer monitors and is standard for web graphics</li>
+                    <li><em>Use case: Websites, social media, email graphics, digital presentations</em></li>
+                </ul>`,
+            
+            transition: `<strong>High Screen Resolution (150-200 PPI)</strong>
+                <ul>
+                    <li>On screen, this looks very similar to 150 PPI - hard to spot differences</li>
+                    <li>Retina displays and high-DPI screens benefit from this range</li>
+                    <li>Still not quite enough detail for quality printing</li>
+                    <li>If printed, you'd notice graininess and loss of fine detail</li>
+                    <li><em>Use case: High-quality web graphics, tablet displays, but insufficient for print</em></li>
+                </ul>`,
+            
+            print: `<strong>Professional Print Quality (200+ PPI)</strong>
+                <ul>
+                    <li>On screen, this may look identical to 150 PPI due to display limitations</li>
+                    <li>The extra detail only becomes visible when printed on paper</li>
+                    <li>Fine lines, gradients, and textures reproduce smoothly without graininess</li>
+                    <li>300 PPI is the industry standard for professional printing</li>
+                    <li><em>Use case: Magazine printing, professional photography, high-quality marketing materials</em></li>
+                </ul>`
+        };
+
+        img.onload = function() {
+            updateCanvas(50);
+        };
+
+        slider.addEventListener('input', function() {
+            const sliderPosition = parseInt(this.value);
+            updateCanvas(sliderPosition);
+        });
+
+        // Non-linear mapping function for PPI
+        function mapSliderToPPI(sliderValue) {
+            const normalized = sliderValue / 100;
+            const curved = Math.pow(normalized, 1.8);
+            const ppi = 10 + (curved * 290);
+            return Math.round(ppi);
+        }
+
+        function updateCanvas(sliderPosition) {
+            const ppi = mapSliderToPPI(sliderPosition);
+            
+            ppiValue.textContent = ppi;
+            displayPPI.textContent = ppi;
+
+            // Calculate pixel dimensions based on PPI
+            const pixelWidth = Math.round(PHYSICAL_WIDTH * ppi);
+            const aspectRatio = img.naturalHeight / img.naturalWidth;
+            const pixelHeight = Math.round(pixelWidth * aspectRatio);
+
+            // Update canvas size
+            canvas.width = pixelWidth;
+            canvas.height = pixelHeight;
+
+            // Disable image smoothing for pixelated effect
+            ctx.imageSmoothingEnabled = false;
+
+            // Draw the image at the calculated resolution
+            ctx.drawImage(img, 0, 0, pixelWidth, pixelHeight);
+
+            // Update info display
+            displayWidth.textContent = pixelWidth.toLocaleString();
+            displayHeight.textContent = pixelHeight.toLocaleString();
+            const totalPixels = pixelWidth * pixelHeight;
+            displayTotal.textContent = (totalPixels / 1000000).toFixed(2) + 'M';
+
+            // Update quality indicator and description
+            updateQualityIndicator(ppi);
+        }
+
+        function updateQualityIndicator(ppi) {
+            let message, className, description;
+
+            if (ppi < 72) {
+                message = 'Insufficient Resolution - Too pixelated for most uses';
+                className = 'quality-low';
+                description = descriptions.low;
+            } else if (ppi < 150) {
+                message = 'Good Screen Resolution - Perfect for web and digital display';
+                className = 'quality-medium';
+                description = descriptions.screen;
+            } else if (ppi < 200) {
+                message = 'High Screen Resolution - Good for screens, insufficient for print';
+                className = 'quality-medium';
+                description = descriptions.transition;
+            } else {
+                message = 'Professional Print Quality - Industry standard for printing';
+                className = 'quality-high';
+                description = descriptions.print;
+            }
+
+            qualityIndicator.textContent = message;
+            qualityIndicator.className = 'quality-indicator ' + className;
+            descriptionText.innerHTML = description;
+        }
+
+        img.onerror = function() {
+            console.error('Failed to load image');
+            ctx.fillStyle = '#e2e8f0';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = '#4a5568';
+            ctx.font = '16px sans-serif';
+            ctx.textAlign = 'center';
+            ctx.fillText('Image failed to load', canvas.width / 2, canvas.height / 2);
+        };
+    </script>
+</body>
+</html>
