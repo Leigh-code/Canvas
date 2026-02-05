@@ -337,7 +337,7 @@
             </div>
 
             <div class="quality-indicator" id="qualityIndicator">
-                Standard Screen Resolution
+                Standard Display Resolution
             </div>
 
             <div class="description-box" id="descriptionBox">
@@ -378,36 +378,36 @@
         const PHYSICAL_WIDTH = 10; // inches - reference width for calculations
 
         const descriptions = {
-            low: `<strong>Insufficient Resolution (Too Low for Most Uses)</strong>
+            low: `<strong>Insufficient Resolution (Too Low for Most Displays)</strong>
                 <ul>
                     <li>Look at the foam on the wave - you can see individual pixels as blocky squares</li>
                     <li>Curved lines appear jagged and stepped (called "aliasing" or "jaggies")</li>
                     <li>Fine details like the Mt. Fuji silhouette become unclear or disappear entirely</li>
                     <li>Text would be difficult to read; diagonal strokes look stepped</li>
-                    <li><em>Use case: Very low quality web thumbnails, placeholder images</em></li>
+                    <li><em>Use case: Very low quality web thumbnails, placeholder images, very coarse displays like digital billboards</em></li>
                 </ul>`,
             
-            screen: `<strong>Good Screen Resolution (72-150 PPI)</strong>
+            screen: `<strong>Good Resolution for Displays (72-150 PPI)</strong>
                 <ul>
-                    <li>Details are clear on screen - the wave's foam and spray are distinguishable</li>
+                    <li>Details are clear on monitors - the wave's foam and spray are distinguishable</li>
                     <li>Curves and edges appear relatively smooth when viewed at normal distance</li>
                     <li>Text is readable and comfortable to view on digital displays</li>
                     <li>This matches most computer monitors and is standard for web graphics</li>
                     <li><em>Use case: Websites, social media, email graphics, digital presentations</em></li>
                 </ul>`,
             
-            transition: `<strong>High Screen Resolution (150-200 PPI)</strong>
+            transition: `<strong>High Resolution for Displays (150-200 PPI)</strong>
                 <ul>
-                    <li>On screen, this looks very similar to 150 PPI - hard to spot differences</li>
-                    <li>Retina displays and high-DPI screens benefit from this range</li>
-                    <li>Still not quite enough detail for quality printing</li>
-                    <li>If printed, you'd notice graininess and loss of fine detail</li>
-                    <li><em>Use case: High-quality web graphics, tablet displays, but insufficient for print</em></li>
+                    <li>On display, this looks very similar to 150 PPI - hard to spot differences</li>
+                    <li>Retina displays and high-PPI displays like phones benefit from this range</li>
+                    <li>Not quite enough detail for quality printing, but it depends on the print method and substrate. Would work for newsprint, for example.</li>
+                    <li>If printed on glossy paper, you'd notice graininess and loss of fine detail</li>
+                    <li><em>Use case: High-quality web graphics, tablet displays, but insufficient for most common print scenarios</em></li>
                 </ul>`,
             
             print: `<strong>Professional Print Quality (200+ PPI)</strong>
                 <ul>
-                    <li>On screen, this may look identical to 150 PPI due to display limitations</li>
+                    <li>On a monitor, this may look identical to 150 PPI due to display limitations</li>
                     <li>The extra detail only becomes visible when printed on paper</li>
                     <li>Fine lines, gradients, and textures reproduce smoothly without graininess</li>
                     <li>300 PPI is the industry standard for professional printing</li>
@@ -471,11 +471,11 @@
                 className = 'quality-low';
                 description = descriptions.low;
             } else if (ppi < 150) {
-                message = 'Good Screen Resolution - Perfect for web and digital display';
+                message = 'Good Display Resolution - Good for web and monitors';
                 className = 'quality-medium';
                 description = descriptions.screen;
             } else if (ppi < 200) {
-                message = 'High Screen Resolution - Good for screens, insufficient for print';
+                message = 'High Digital Resolution - Good for displays, insufficient for print';
                 className = 'quality-medium';
                 description = descriptions.transition;
             } else {
