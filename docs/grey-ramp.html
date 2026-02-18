@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CMYK Grey Creation Interactive</title>
+    <title>Creating Grey in CMYK</title>
     <style>
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -13,7 +13,7 @@
             color: #333;
             font-size: 14px;
         }
-        
+
         .container {
             background: white;
             border: 2px solid #e9ecef;
@@ -33,34 +33,33 @@
 
         .header h1 {
             margin: 0;
-            font-size: 1.4em;
+            font-size: 1.3em;
             font-weight: 600;
             color: #495057;
         }
 
-        .main-layout {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
+        .header p {
+            margin: 6px 0 0;
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        /* Profile selector */
+        .profile-section {
             margin-bottom: 15px;
         }
 
-        .profile-section {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 12px;
-        }
-
         .profile-section h4 {
-            margin: 0 0 10px 0;
-            font-size: 0.9em;
+            margin: 0 0 8px 0;
+            font-size: 0.85em;
             color: #495057;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .profile-grid {
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: repeat(3, 1fr);
             gap: 8px;
         }
 
@@ -68,63 +67,34 @@
             background: white;
             border: 2px solid #e9ecef;
             border-radius: 4px;
-            padding: 8px;
+            padding: 8px 6px;
             cursor: pointer;
-            transition: all 0.3s ease;
             text-align: center;
             font-size: 0.75em;
+            transition: all 0.2s ease;
         }
 
         .profile-card:hover {
-            border-color: #007bff;
-            transform: translateY(-1px);
+            border-color: #0374B5;
         }
 
         .profile-card.active {
-            border-color: #007bff;
+            border-color: #0374B5;
             background: #f0f7ff;
         }
 
         .profile-card strong {
             display: block;
-            font-size: 0.8em;
+            font-size: 0.95em;
+            margin-bottom: 2px;
         }
 
         .profile-card small {
-            font-size: 0.7em;
             color: #666;
         }
 
-        .rgb-section {
-            background: #f8f9fa;
-            border: 1px solid #dee2e6;
-            border-radius: 6px;
-            padding: 12px;
-            text-align: center;
-        }
-
-        .rgb-section h4 {
-            margin: 0 0 10px 0;
-            font-size: 0.9em;
-            color: #495057;
-        }
-
-        .colour-swatch {
-            width: 80px;
-            height: 80px;
-            margin: 0 auto 10px;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
-            font-size: 0.8em;
-        }
-
-        .curves-section {
+        /* Bar chart */
+        .chart-section {
             background: #f8f9fa;
             border: 1px solid #dee2e6;
             border-radius: 6px;
@@ -132,24 +102,88 @@
             margin-bottom: 15px;
         }
 
-        .curves-section h4 {
-            margin: 0 0 15px 0;
-            font-size: 0.9em;
-            color: #495057;
-            text-align: center;
-        }
-
-        .slider-section {
-            margin-top: 15px;
-            padding: 10px;
+        .chart-container {
+            width: 100%;
+            height: 160px;
             background: white;
-            border-radius: 4px;
             border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 10px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-around;
+            margin-bottom: 10px;
+            box-sizing: border-box;
         }
 
-        .slider-container {
-            position: relative;
-            margin: 10px 0;
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 70px;
+        }
+
+        .bar {
+            width: 52px;
+            transition: height 0.3s ease;
+            border-radius: 3px 3px 0 0;
+            min-height: 2px;
+        }
+
+        .bar-label {
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-top: 6px;
+        }
+
+        .cyan-bar   { background: #0099cc; }
+        .magenta-bar { background: #cc0066; }
+        .yellow-bar  { background: #e6a800; }
+        .black-bar   { background: #333333; }
+
+        /* Values display */
+        .values-row {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            font-size: 0.8em;
+            margin-bottom: 4px;
+        }
+
+        .value-item span.label {
+            display: block;
+            font-weight: bold;
+        }
+
+        .value-item span.num {
+            font-size: 1.1em;
+        }
+
+        /* Slider */
+        .slider-section {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+        }
+
+        .slider-label {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            margin-bottom: 8px;
+            font-size: 0.85em;
+        }
+
+        .slider-label strong {
+            color: #495057;
+        }
+
+        .slider-label span {
+            font-size: 1.1em;
+            font-weight: bold;
+            color: #333;
         }
 
         .grey-slider {
@@ -164,340 +198,241 @@
 
         .grey-slider::-webkit-slider-thumb {
             appearance: none;
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            background: #ff0000;
+            background: #0374B5;
             cursor: pointer;
             border: 2px solid white;
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
         .grey-slider::-moz-range-thumb {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             border-radius: 50%;
-            background: #ff0000;
+            background: #0374B5;
             cursor: pointer;
             border: 2px solid white;
             box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
 
-        .slider-labels {
+        .slider-ends {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75em;
-            color: #666;
-            margin-top: 5px;
+            font-size: 0.72em;
+            color: #888;
+            margin-top: 4px;
         }
 
-        .current-values {
-            text-align: center;
-            font-size: 0.85em;
-            margin: 10px 0;
-        }
-
-        .profile-name {
-            text-align: center;
-            font-weight: bold;
-            font-size: 0.85em;
-            color: #495057;
-            margin-top: 10px;
-        }
-
-        .chart-container {
-            width: 100%;
-            height: 200px;
-            border: 1px solid #ccc;
-            margin-bottom: 15px;
-            position: relative;
+        /* TIL display */
+        .til-display {
             background: white;
-            padding: 10px;
-            display: flex;
-            align-items: end;
-            justify-content: space-around;
+            border: 1px solid #dee2e6;
+            border-radius: 6px;
+            padding: 10px 15px;
+            text-align: center;
+            font-size: 0.85em;
         }
 
-        .bar-group {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 80px;
-        }
-
-        .bar {
-            width: 60px;
-            transition: height 0.3s ease;
-            margin-bottom: 5px;
-            border-radius: 3px 3px 0 0;
-            position: relative;
-            display: flex;
-            align-items: end;
-            justify-content: center;
-            color: white;
+        .til-display .til-numbers {
+            font-size: 1.2em;
             font-weight: bold;
-            font-size: 0.9em;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            margin-top: 4px;
         }
 
-        .bar-label {
-            font-size: 0.8em;
-            font-weight: bold;
-            margin-top: 5px;
-        }
-
-        .cyan-bar {
-            background: linear-gradient(to top, #006ba8, #0099cc);
-        }
-
-        .magenta-bar {
-            background: linear-gradient(to top, #a0005a, #cc0066);
-        }
-
-        .yellow-bar {
-            background: linear-gradient(to top, #cc7700, #ff9900);
-        }
-
-        .black-bar {
-            background: linear-gradient(to top, #111111, #333333);
-        }
+        .til-ok    { color: #27ae60; }
+        .til-warn  { color: #e67e22; }
+        .til-over  { color: #e74c3c; }
 
         @media (max-width: 450px) {
-            .main-layout {
-                grid-template-columns: 1fr;
-            }
-            
-            .container {
-                margin: 0;
-                border-radius: 0;
-                max-width: none;
-                padding: 15px;
-            }
-            
-            body {
-                padding: 5px;
-            }
+            .container { border-radius: 0; max-width: none; padding: 15px; }
+            body { padding: 5px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>Creating Grey in CMYK</h1>
-        </div>
+<div class="container">
 
-        <div class="main-layout">
-            <div class="profile-section">
-                <h4>ICC Profile</h4>
-                <div class="profile-grid">
-                    <div class="profile-card active" data-profile="fogra39">
-                        <strong>FOGRA39</strong>
-                        <small>Coated TIL: 330%</small>
-                    </div>
-                    <div class="profile-card" data-profile="newsprint">
-                        <strong>Newsprint</strong>
-                        <small>News TIL: 240%</small>
-                    </div>
-                    <div class="profile-card" data-profile="uncoated">
-                        <strong>FOGRA29</strong>
-                        <small>Uncoated TIL: 280%</small>
-                    </div>
-                    <div class="profile-card" data-profile="sheetfed">
-                        <strong>Sheetfed</strong>
-                        <small>Coated TIL: 310%</small>
-                    </div>
-                </div>
-            </div>
+    <div class="header">
+        <h1>Creating grey in CMYK</h1>
+        <p>Select a profile and drag the slider to see how the ink recipe changes.</p>
+    </div>
 
-            <div class="rgb-section">
-                <h4>RGB Target</h4>
-                <div class="colour-swatch" id="rgbSwatch">RGB</div>
-                <div id="rgbValues" style="font-size: 0.8em;">R: 128, G: 128, B: 128</div>
+    <div class="profile-section">
+        <h4>ICC profile</h4>
+        <div class="profile-grid">
+            <div class="profile-card active" data-profile="fogra39">
+                <strong>FOGRA39</strong>
+                <small>Coated · 330%</small>
             </div>
-        </div>
-        
-        <div class="curves-section">
-            <h4>CMYK Separation Curves</h4>
-            <div class="chart-container">
-                <div class="bar-group">
-                    <div id="cyanBar" class="bar cyan-bar" style="height: 70px;">50%</div>
-                    <div class="bar-label" style="color: #0099cc;">Cyan</div>
-                </div>
-                <div class="bar-group">
-                    <div id="magentaBar" class="bar magenta-bar" style="height: 56px;">40%</div>
-                    <div class="bar-label" style="color: #cc0066;">Magenta</div>
-                </div>
-                <div class="bar-group">
-                    <div id="yellowBar" class="bar yellow-bar" style="height: 49px;">35%</div>
-                    <div class="bar-label" style="color: #ff9900;">Yellow</div>
-                </div>
-                <div class="bar-group">
-                    <div id="blackBar" class="bar black-bar" style="height: 140px;">100%</div>
-                    <div class="bar-label" style="color: #333333;">Black</div>
-                </div>
+            <div class="profile-card" data-profile="fogra29">
+                <strong>FOGRA29</strong>
+                <small>Uncoated · 280%</small>
             </div>
-            
-            <div class="slider-section">
-                <label style="font-size: 0.85em; font-weight: bold; color: #495057;">Target Grey Level: <span id="greyDisplay">50%</span></label>
-                <div class="slider-container">
-                    <input type="range" id="greySlider" class="grey-slider" min="0" max="100" value="50" step="1">
-                    <div class="slider-labels">
-                        <span>0% (Paper White)</span>
-                        <span>100% (Rich Black)</span>
-                    </div>
-                </div>
+            <div class="profile-card" data-profile="newsprint">
+                <strong>ISONewspaper26v4</strong>
+                <small>Newsprint · 240%</small>
             </div>
-            
-            <div class="current-values">
-                <span style="color: #0099cc;">■</span> C: <span id="cyanPercent">18%</span> &nbsp;
-                <span style="color: #cc0066;">■</span> M: <span id="magentaPercent">10%</span> &nbsp;
-                <span style="color: #ff9900;">■</span> Y: <span id="yellowPercent">10%</span> &nbsp;
-                <span style="color: #333333;">■</span> K: <span id="blackPercent">30%</span>
-                <br><br>
-                <strong>Total ink limit (TIL): <span id="totalInk">68%</span> / <span id="inkLimit">330%</span></strong>
-            </div>
-            
-            <div class="profile-name" id="profileName">Coated FOGRA39</div>
         </div>
     </div>
 
-    <script>
-        // Realistic CMYK data with proper ink limits and cyan dominance
-        const profiles = {
-            fogra39: {
-                name: "Coated FOGRA39 (PSO)",
-                inkLimit: 330,
-                getCMYK: function(grey) {
-                    const t = grey / 100;
-                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
-                    if (grey === 100) return { c: 85, m: 75, y: 70, k: 100 }; // Total: 330%
-                    
-                    // Scale linearly to rich black with cyan dominance
-                    return {
-                        c: Math.round(85 * t),  // Highest to compensate for ink impurities
-                        m: Math.round(75 * t),
-                        y: Math.round(70 * t),  // Lowest
-                        k: Math.round(100 * t)
-                    };
-                }
-            },
-            newsprint: {
-                name: "Newsprint Standard",
-                inkLimit: 240,
-                getCMYK: function(grey) {
-                    const t = grey / 100;
-                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
-                    if (grey === 100) return { c: 55, m: 45, y: 40, k: 100 }; // Total: 240%
-                    
-                    return {
-                        c: Math.round(55 * t),  // Higher cyan for neutrality
-                        m: Math.round(45 * t),
-                        y: Math.round(40 * t),  // Lower yellow
-                        k: Math.round(100 * t)
-                    };
-                }
-            },
-            uncoated: {
-                name: "Uncoated FOGRA29 (PSO)",
-                inkLimit: 280,
-                getCMYK: function(grey) {
-                    const t = grey / 100;
-                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
-                    if (grey === 100) return { c: 70, m: 55, y: 55, k: 100 }; // Total: 280%
-                    
-                    return {
-                        c: Math.round(70 * t),  // Highest cyan for uncoated neutrality
-                        m: Math.round(55 * t),
-                        y: Math.round(55 * t),
-                        k: Math.round(100 * t)
-                    };
-                }
-            },
-            sheetfed: {
-                name: "Sheetfed Premium",
-                inkLimit: 400,
-                getCMYK: function(grey) {
-                    const t = grey / 100;
-                    if (grey === 0) return { c: 0, m: 0, y: 0, k: 0 };
-                    if (grey === 100) return { c: 85, m: 65, y: 60, k: 100 }; // Total: 310%
-                    
-                    return {
-                        c: Math.round(85 * t),  // Highest cyan even in premium conditions
-                        m: Math.round(65 * t),
-                        y: Math.round(60 * t),  // Lowest
-                        k: Math.round(100 * t)
-                    };
-                }
+    <div class="chart-section">
+        <div class="chart-container">
+            <div class="bar-group">
+                <div id="cyanBar" class="bar cyan-bar"></div>
+                <div class="bar-label" style="color:#0099cc;">C</div>
+            </div>
+            <div class="bar-group">
+                <div id="magentaBar" class="bar magenta-bar"></div>
+                <div class="bar-label" style="color:#cc0066;">M</div>
+            </div>
+            <div class="bar-group">
+                <div id="yellowBar" class="bar yellow-bar"></div>
+                <div class="bar-label" style="color:#b37d00;">Y</div>
+            </div>
+            <div class="bar-group">
+                <div id="blackBar" class="bar black-bar"></div>
+                <div class="bar-label" style="color:#333;">K</div>
+            </div>
+        </div>
+
+        <div class="values-row">
+            <div class="value-item">
+                <span class="label" style="color:#0099cc;">Cyan</span>
+                <span class="num" id="cyanVal">—</span>
+            </div>
+            <div class="value-item">
+                <span class="label" style="color:#cc0066;">Magenta</span>
+                <span class="num" id="magentaVal">—</span>
+            </div>
+            <div class="value-item">
+                <span class="label" style="color:#b37d00;">Yellow</span>
+                <span class="num" id="yellowVal">—</span>
+            </div>
+            <div class="value-item">
+                <span class="label" style="color:#333;">Black</span>
+                <span class="num" id="blackVal">—</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="slider-section">
+        <div class="slider-label">
+            <strong>Target grey</strong>
+            <span id="greyDisplay">50%</span>
+        </div>
+        <input type="range" id="greySlider" class="grey-slider" min="0" max="100" value="50" step="1">
+        <div class="slider-ends">
+            <span>Paper white</span>
+            <span>Rich black</span>
+        </div>
+    </div>
+
+    <div class="til-display">
+        <div>Total ink on paper</div>
+        <div class="til-numbers">
+            <span id="totalInk">—</span> / <span id="inkLimit">330%</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const profiles = {
+        fogra39: {
+            name: "Coated FOGRA39",
+            inkLimit: 330,
+            getCMYK: function(g) {
+                if (g === 0) return { c:0, m:0, y:0, k:0 };
+                const t = g / 100;
+                return {
+                    c: Math.round(85 * t),
+                    m: Math.round(75 * t),
+                    y: Math.round(70 * t),
+                    k: Math.round(100 * t)
+                };
             }
-        };
-
-        let currentProfile = 'fogra39';
-        let currentGrey = 50;
-
-        function updateDisplay() {
-            const rgbValue = Math.round(255 * (100 - currentGrey) / 100);
-            const cmykValues = profiles[currentProfile].getCMYK(currentGrey);
-            const totalInk = cmykValues.c + cmykValues.m + cmykValues.y + cmykValues.k;
-            
-            // Update grey level display with rich black notation
-            const greyText = currentGrey === 100 ? `${currentGrey}% (rich black)` : `${currentGrey}%`;
-            document.getElementById('greyDisplay').textContent = greyText;
-            
-            // Update RGB swatch
-            document.getElementById('rgbSwatch').style.backgroundColor = `rgb(${rgbValue}, ${rgbValue}, ${rgbValue})`;
-            document.getElementById('rgbValues').textContent = `R: ${rgbValue}, G: ${rgbValue}, B: ${rgbValue}`;
-            
-            // Update CMYK percentage displays
-            document.getElementById('cyanPercent').textContent = `${cmykValues.c}%`;
-            document.getElementById('magentaPercent').textContent = `${cmykValues.m}%`;
-            document.getElementById('yellowPercent').textContent = `${cmykValues.y}%`;
-            document.getElementById('blackPercent').textContent = `${cmykValues.k}%`;
-            
-            // Update total ink coverage display
-            document.getElementById('totalInk').textContent = `${totalInk}%`;
-            document.getElementById('inkLimit').textContent = `${profiles[currentProfile].inkLimit}%`;
-            
-            // Update bar chart
-            updateBarChart(cmykValues);
-            
-            // Update profile name
-            document.getElementById('profileName').textContent = profiles[currentProfile].name;
+        },
+        fogra29: {
+            name: "Uncoated FOGRA29",
+            inkLimit: 280,
+            getCMYK: function(g) {
+                if (g === 0) return { c:0, m:0, y:0, k:0 };
+                const t = g / 100;
+                return {
+                    c: Math.round(70 * t),
+                    m: Math.round(55 * t),
+                    y: Math.round(55 * t),
+                    k: Math.round(100 * t)
+                };
+            }
+        },
+        newsprint: {
+            name: "Newsprint",
+            inkLimit: 240,
+            getCMYK: function(g) {
+                if (g === 0) return { c:0, m:0, y:0, k:0 };
+                const t = g / 100;
+                return {
+                    c: Math.round(55 * t),
+                    m: Math.round(45 * t),
+                    y: Math.round(40 * t),
+                    k: Math.round(100 * t)
+                };
+            }
         }
+    };
 
-        function updateBarChart(cmykValues) {
-            const maxHeight = 140; // Reduced maximum bar height in pixels
-            
-            // Update bar heights and text (scale to max height)
-            document.getElementById('cyanBar').style.height = `${(cmykValues.c / 100) * maxHeight}px`;
-            document.getElementById('cyanBar').textContent = `${cmykValues.c}%`;
-            
-            document.getElementById('magentaBar').style.height = `${(cmykValues.m / 100) * maxHeight}px`;
-            document.getElementById('magentaBar').textContent = `${cmykValues.m}%`;
-            
-            document.getElementById('yellowBar').style.height = `${(cmykValues.y / 100) * maxHeight}px`;
-            document.getElementById('yellowBar').textContent = `${cmykValues.y}%`;
-            
-            document.getElementById('blackBar').style.height = `${(cmykValues.k / 100) * maxHeight}px`;
-            document.getElementById('blackBar').textContent = `${cmykValues.k}%`;
-        }
+    let currentProfile = 'fogra39';
+    let currentGrey = 50;
+    const MAX_HEIGHT = 130; // px
 
-        // Event listeners
-        document.getElementById('greySlider').addEventListener('input', function(e) {
-            currentGrey = parseInt(e.target.value);
-            updateDisplay();
+    function update() {
+        const cmyk = profiles[currentProfile].getCMYK(currentGrey);
+        const limit = profiles[currentProfile].inkLimit;
+        const total = cmyk.c + cmyk.m + cmyk.y + cmyk.k;
+
+        // Slider label
+        document.getElementById('greyDisplay').textContent =
+            currentGrey === 100 ? '100% (rich black)' : currentGrey + '%';
+
+        // Bar heights
+        ['cyan','magenta','yellow','black'].forEach(ch => {
+            const val = cmyk[ch === 'cyan' ? 'c' : ch === 'magenta' ? 'm' : ch === 'yellow' ? 'y' : 'k'];
+            document.getElementById(ch + 'Bar').style.height = (val / 100 * MAX_HEIGHT) + 'px';
+            document.getElementById(ch.charAt(0).toUpperCase() === ch.charAt(0) ? ch + 'Val' :
+                ch + 'Val').textContent = val + '%';
         });
 
-        document.querySelectorAll('.profile-card').forEach(card => {
-            card.addEventListener('click', function() {
-                document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('active'));
-                this.classList.add('active');
-                currentProfile = this.getAttribute('data-profile');
-                updateDisplay();
-            });
-        });
+        // Value labels
+        document.getElementById('cyanVal').textContent    = cmyk.c + '%';
+        document.getElementById('magentaVal').textContent = cmyk.m + '%';
+        document.getElementById('yellowVal').textContent  = cmyk.y + '%';
+        document.getElementById('blackVal').textContent   = cmyk.k + '%';
 
-        // Initial display
-        updateDisplay();
-    </script>
+        // TIL
+        const tilEl = document.getElementById('totalInk');
+        tilEl.textContent = total + '%';
+        document.getElementById('inkLimit').textContent = limit + '%';
+        tilEl.className = total > limit ? 'til-over' : total > limit * 0.9 ? 'til-warn' : 'til-ok';
+    }
+
+    document.getElementById('greySlider').addEventListener('input', function() {
+        currentGrey = parseInt(this.value);
+        update();
+    });
+
+    document.querySelectorAll('.profile-card').forEach(card => {
+        card.addEventListener('click', function() {
+            document.querySelectorAll('.profile-card').forEach(c => c.classList.remove('active'));
+            this.classList.add('active');
+            currentProfile = this.dataset.profile;
+            update();
+        });
+    });
+
+    update();
+</script>
 </body>
 </html>
