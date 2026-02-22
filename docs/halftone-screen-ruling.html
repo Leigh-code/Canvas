@@ -2,195 +2,204 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Halftone Screen Ruling with Dot Gain</title>
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <title>Halftone Step Wedge</title>
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
-            background-color: #FFFFFF;
-            color: #000000;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            max-width: 500px;
-            margin: 20px auto;
-            padding: 20px;
-            background-color: #FAC800;
-            box-shadow: 0 0 10px rgba(0,0,0,0.1);
-        }
-        .halftone-container {
-            background-color: #FFFFFF;
-            padding: 10px;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        .slider-container {
-            padding: 10px;
-            margin-bottom: 10px;
-        }
-        .slider {
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; padding: 20px; }
+        .wrap { max-width: 500px; margin: 0 auto; background: #fff; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.15); }
+
+        canvas { display: block; width: 100%; border: 1px solid #ddd; margin-bottom: 4px; }
+        .tick-row { display: flex; margin-bottom: 20px; }
+        .tick-row span { font-size: 10px; color: #888; flex: 1; text-align: center; }
+
+        hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
+
+        .ctrl { margin-bottom: 16px; }
+        .ctrl-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+        .ctrl-name { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.4px; color: #444; }
+        .ctrl-val { font-size: 15px; font-weight: bold; color: #111; }
+
+        /* Custom slider */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
             width: 100%;
-            margin: 5px 0;
-            -webkit-appearance: none;
-            appearance: none;
-            height: 6px;
+            height: 3px;
             background: #ddd;
+            border-radius: 2px;
             outline: none;
-            opacity: 0.8;
-            -webkit-transition: .2s;
-            transition: opacity .2s;
+            cursor: pointer;
+            margin-bottom: 6px;
         }
-        .slider:hover {
-            opacity: 1;
-        }
-        .slider::-webkit-slider-thumb {
+        input[type=range]#dgSlider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 16px;
-            height: 16px;
             border-radius: 50%;
             background: #E61E2A;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
             cursor: pointer;
+            transition: width 0.1s, height 0.1s, background 0.1s;
         }
-        .slider::-moz-range-thumb {
-            width: 16px;
-            height: 16px;
+        input[type=range]#dgSlider::-moz-range-thumb {
             border-radius: 50%;
             background: #E61E2A;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
             cursor: pointer;
         }
-        .label-container {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            font-size: 14px;
-            color: #000000;
-        }
-        .lpi-display, .dot-gain-display {
-            text-align: center;
-            font-size: 18px;
-            font-weight: bold;
-            margin-top: 5px;
-            color: #000000;
-        }
-        .instructions {
-            text-align: center;
-            margin-top: 10px;
-            font-weight: bold;
-            font-size: 14px;
-            line-height: 1.5;
-        }
+
+        .ctrl-labels { display: flex; justify-content: space-between; }
+        .ctrl-labels span { font-size: 10px; color: #999; }
+        .ctrl-hint { font-size: 10px; color: #aaa; margin-top: 4px; font-style: italic; }
     </style>
+    <style id="dgThumbStyle"></style>
 </head>
 <body>
-    <div id="root"></div>
+<div class="wrap">
 
-    <script type="text/babel">
-        const HalftoneDemo = () => {
-            const [spacing, setSpacing] = React.useState(127); // Initial value for coarsest LPI
-            const [dotGain, setDotGain] = React.useState(0); // Initial dot gain
-            const size = 400;
-            const angle = 45;
+    <canvas id="wedge" width="462" height="110"></canvas>
+    <div class="tick-row">
+        <span>0%</span><span>10%</span><span>20%</span><span>30%</span><span>40%</span>
+        <span>50%</span><span>60%</span><span>70%</span><span>80%</span><span>90%</span><span>100%</span>
+    </div>
 
-            const circularGradient = (x, y) => {
-                const centerX = size / 2;
-                const centerY = size / 2;
-                const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
-                const distance = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
-                return 1 - (distance / maxDistance);
-            };
+    <hr>
 
-            const dots = [];
-            for (let x = 0; x < size; x += spacing) {
-                for (let y = 0; y < size; y += spacing) {
-                    const centerX = x + spacing / 2;
-                    const centerY = y + spacing / 2;
+    <div class="ctrl">
+        <div class="ctrl-top">
+            <span class="ctrl-name">Screen Ruling</span>
+            <span class="ctrl-val" id="lpiVal">— LPI</span>
+        </div>
+        <input type="range" id="lpiSlider" min="30" max="150" step="5" value="65">
+        <div class="ctrl-labels">
+            <span>30 LPI — Newsprint</span>
+            <span>100 LPI — Uncoated paper</span>
+            <span>150 LPI — Coated paper</span>
+        </div>
+    </div>
 
-                    const rotatedX = (centerX - size / 2) * Math.cos(angle * Math.PI / 180) - (centerY - size / 2) * Math.sin(angle * Math.PI / 180) + size / 2;
-                    const rotatedY = (centerX - size / 2) * Math.sin(angle * Math.PI / 180) + (centerY - size / 2) * Math.cos(angle * Math.PI / 180) + size / 2;
+    <div class="ctrl">
+        <div class="ctrl-top">
+            <span class="ctrl-name">Dot Gain</span>
+            <span class="ctrl-val" id="dgVal">0%</span>
+        </div>
+        <input type="range" id="dgSlider" min="0" max="30" value="0">
+        <div class="ctrl-labels">
+            <span>~10% — Coated paper</span>
+            <span>~20% — Uncoated paper</span>
+            <span>~30% — Newsprint</span>
+        </div>
+    </div>
 
-                    const gradientValue = circularGradient(rotatedX, rotatedY);
-                    const radius = (spacing / 2) * gradientValue * (1 + dotGain / 100); // Adjust radius with dot gain
+</div>
 
-                    dots.push(
-                        <circle
-                            key={`${x}-${y}`}
-                            cx={centerX}
-                            cy={centerY}
-                            r={radius}
-                            fill="#000000"
-                        />
-                    );
+<script>
+(function () {
+    var canvas = document.getElementById('wedge');
+    var ctx = canvas.getContext('2d');
+    var W = canvas.width, H = canvas.height;
+    var PATCHES = 11;
+    var patchW = W / PATCHES;
+
+    function lpiToSpacing(lpi) {
+        return 14 - (lpi - 30) / (150 - 30) * 8;
+    }
+
+    function render() {
+        var lpi   = parseInt(document.getElementById('lpiSlider').value);
+        var dgPct = parseInt(document.getElementById('dgSlider').value);
+        var dg    = dgPct / 100;
+        document.getElementById('lpiVal').textContent = lpi + ' LPI';
+        document.getElementById('dgVal').textContent  = dgPct + '%';
+
+        var spacing = lpiToSpacing(lpi);
+        var A   = 45 * Math.PI / 180;
+        var cos = Math.cos(A), sin = Math.sin(A);
+        var gcx = W / 2, gcy = H / 2;
+
+        ctx.clearRect(0, 0, W, H);
+        ctx.fillStyle = '#fff';
+        ctx.fillRect(0, 0, W, H);
+
+        var span = Math.ceil(Math.max(W, H) * 1.5 / spacing) + 2;
+
+        for (var p = 0; p < PATCHES; p++) {
+            var inkPct  = p / (PATCHES - 1);
+            var dotArea = Math.min(1, inkPct + dg * 4 * inkPct * (1 - inkPct));
+            var maxR    = spacing * 0.72;
+            var dotR    = maxR * dotArea;
+
+            var x0 = p * patchW;
+            var x1 = x0 + patchW;
+
+            ctx.save();
+            ctx.beginPath();
+            ctx.rect(x0, 0, patchW, H);
+            ctx.clip();
+            ctx.beginPath();
+            ctx.fillStyle = '#000';
+
+            for (var gi = -span; gi <= span; gi++) {
+                for (var gj = -span; gj <= span; gj++) {
+                    var px = cos * gi * spacing - sin * gj * spacing + gcx;
+                    var py = sin * gi * spacing + cos * gj * spacing + gcy;
+                    if (px < x0 - spacing || px > x1 + spacing) continue;
+                    if (py < -spacing || py > H + spacing) continue;
+                    if (dotR < 0.3) continue;
+                    ctx.moveTo(px + dotR, py);
+                    ctx.arc(px, py, dotR, 0, Math.PI * 2);
                 }
             }
+            ctx.fill();
+            ctx.restore();
+        }
 
-            const handleSpacingChange = (event) => {
-                setSpacing(Number(event.target.value));
-            };
+        ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+        ctx.lineWidth = 1;
+        for (var i = 1; i < PATCHES; i++) {
+            ctx.beginPath();
+            ctx.moveTo(i * patchW, 0);
+            ctx.lineTo(i * patchW, H);
+            ctx.stroke();
+        }
+    }
 
-            const handleDotGainChange = (event) => {
-                setDotGain(Number(event.target.value));
-            };
+    var pending = false;
+    function scheduleRender() {
+        if (!pending) {
+            pending = true;
+            requestAnimationFrame(function () { pending = false; render(); });
+        }
+    }
 
-            const lpi = Math.round(2540 / spacing);
+    function updateDgThumb(val) {
+        var t = val / 30; // 0..1
+        var size = Math.round(14 + t * 16); // 14px -> 30px
+        // colour shifts light grey -> black as gain increases
+        var r = Math.round(180 - t * 170);
+        var g = Math.round(180 - t * 170);
+        var b = Math.round(180 - t * 170);
+        var color = 'rgb(' + r + ',' + g + ',' + b + ')';
+        document.getElementById('dgThumbStyle').textContent =
+            'input[type=range]#dgSlider::-webkit-slider-thumb{' +
+            '-webkit-appearance:none;border-radius:50%;cursor:pointer;' +
+            'border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);' +
+            'width:' + size + 'px;height:' + size + 'px;background:' + color + ';}' +
+            'input[type=range]#dgSlider::-moz-range-thumb{' +
+            'border-radius:50%;cursor:pointer;' +
+            'border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.3);' +
+            'width:' + size + 'px;height:' + size + 'px;background:' + color + ';}';
+    }
 
-            return (
-                <div className="container">
-                    <div className="halftone-container">
-                        <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
-                            {dots}
-                        </svg>
-                    </div>
-                    <div className="slider-container">
-                        <div className="label-container">
-                            <span>Fine</span>
-                            <span>Coarse</span>
-                        </div>
-                        <input
-                            type="range"
-                            min="4"
-                            max="127"
-                            step="1"
-                            value={spacing}
-                            onChange={handleSpacingChange}
-                            className="slider"
-                        />
-                        <div className="lpi-display">
-                            {lpi} LPI
-                        </div>
-                    </div>
-                    <div className="slider-container">
-                        <div className="label-container">
-                            <span>0%</span>
-                            <span>50%</span>
-                        </div>
-                        <input
-                            type="range"
-                            min="0"
-                            max="50"
-                            step="1"
-                            value={dotGain}
-                            onChange={handleDotGainChange}
-                            className="slider"
-                        />
-                        <div className="dot-gain-display">
-                            {dotGain}% Dot Gain
-                        </div>
-                    </div>
-                    <p className="instructions">
-                        Adjust the sliders to see how screen ruling and dot gain affect the halftone pattern.
-                    </p>
-                </div>
-            );
-        };
+    document.getElementById('lpiSlider').addEventListener('input', scheduleRender);
+    document.getElementById('dgSlider').addEventListener('input', function() {
+        updateDgThumb(parseInt(this.value));
+        scheduleRender();
+    });
 
-        ReactDOM.render(<HalftoneDemo />, document.getElementById('root'));
-    </script>
+    updateDgThumb(0);
+    render();
+})();
+</script>
 </body>
 </html>
