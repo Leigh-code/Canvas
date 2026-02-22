@@ -12,8 +12,6 @@
         hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
         .ctrl { margin-bottom: 16px; }
         .ctrl-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-        .ctrl-name { font-weight: bold; text-transform: uppercase; letter-spacing: 0.4px; }
-        .ctrl-val { font-weight: bold; }
         input[type=range] {
             -webkit-appearance: none;
             appearance: none;
@@ -73,8 +71,8 @@
 
     <div class="ctrl">
         <div class="ctrl-top">
-            <span class="ctrl-name">Screen Ruling</span>
-            <span class="ctrl-val" id="lpiVal">— LPI</span>
+            <h4>Screen Ruling</h4>
+            <span id="lpiVal">— LPI</span>
         </div>
         <input type="range" id="lpiSlider" min="30" max="150" step="5" value="65">
         <div class="ctrl-labels">
@@ -82,12 +80,13 @@
             <span>100 LPI — Uncoated paper</span>
             <span>150 LPI — Coated paper</span>
         </div>
+        <p id="dpiHint" style="margin-top:8px;"></p>
     </div>
 
     <div class="ctrl">
         <div class="ctrl-top">
-            <span class="ctrl-name">Dot Gain</span>
-            <span class="ctrl-val" id="dgVal">0%</span>
+            <h4>Dot Gain</h4>
+            <span id="dgVal">0%</span>
         </div>
         <input type="range" id="dgSlider" min="0" max="30" value="0">
         <div class="ctrl-labels">
@@ -117,6 +116,8 @@
         var dg    = dgPct / 100;
         document.getElementById('lpiVal').textContent = lpi + ' LPI';
         document.getElementById('dgVal').textContent  = dgPct + '%';
+        var minPpi = lpi * 2;
+        document.getElementById('dpiHint').innerHTML = 'At ' + lpi + ' LPI your image needs to be at least <strong>' + minPpi + ' PPI</strong>. Larger dots mean less detail, but fewer problems caused by dot gain.';
 
         var spacing = lpiToSpacing(lpi);
         var A   = 45 * Math.PI / 180;
