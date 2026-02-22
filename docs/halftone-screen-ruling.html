@@ -5,21 +5,15 @@
     <title>Halftone Step Wedge</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #fff; }
-        .wrap { background: #fff; padding: 24px; }
-
+        .wrap { padding: 24px; }
         canvas { display: block; width: 100%; border: 1px solid #ddd; margin-bottom: 4px; }
         .tick-row { display: flex; margin-bottom: 20px; }
-        .tick-row span { font-size: 10px; color: #888; flex: 1; text-align: center; }
-
+        .tick-row span { flex: 1; text-align: center; }
         hr { border: none; border-top: 1px solid #eee; margin: 16px 0; }
-
         .ctrl { margin-bottom: 16px; }
         .ctrl-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
-        .ctrl-name { font-size: 12px; font-weight: bold; text-transform: uppercase; letter-spacing: 0.4px; color: #444; }
-        .ctrl-val { font-size: 15px; font-weight: bold; color: #111; }
-
-        /* Custom slider */
+        .ctrl-name { font-weight: bold; text-transform: uppercase; letter-spacing: 0.4px; }
+        .ctrl-val { font-weight: bold; }
         input[type=range] {
             -webkit-appearance: none;
             appearance: none;
@@ -31,26 +25,38 @@
             cursor: pointer;
             margin-bottom: 6px;
         }
+        input[type=range]#lpiSlider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: #888;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+        input[type=range]#lpiSlider::-moz-range-thumb {
+            width: 18px; height: 18px;
+            border-radius: 50%;
+            background: #888;
+            border: 2px solid #fff;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
         input[type=range]#dgSlider::-webkit-slider-thumb {
             -webkit-appearance: none;
             border-radius: 50%;
-            background: #E61E2A;
             border: 2px solid #fff;
             box-shadow: 0 1px 4px rgba(0,0,0,0.3);
             cursor: pointer;
-            transition: width 0.1s, height 0.1s, background 0.1s;
         }
         input[type=range]#dgSlider::-moz-range-thumb {
             border-radius: 50%;
-            background: #E61E2A;
             border: 2px solid #fff;
             box-shadow: 0 1px 4px rgba(0,0,0,0.3);
             cursor: pointer;
         }
-
         .ctrl-labels { display: flex; justify-content: space-between; }
-        .ctrl-labels span { font-size: 10px; color: #999; }
-        .ctrl-hint { font-size: 10px; color: #aaa; margin-top: 4px; font-style: italic; }
+        .ctrl-hint { margin-top: 4px; font-style: italic; }
     </style>
     <style id="dgThumbStyle"></style>
 </head>
