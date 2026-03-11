@@ -605,6 +605,14 @@
                 <div class="hint">The compulsory retirement savings contribution your clients pay on top of your rate. Current legislated rate is 12%.</div>
             </div>
 
+            <div class="form-group">
+                <label style="display:flex; align-items:center; gap:8px; font-weight:500; cursor:pointer;">
+                    <input type="checkbox" id="hecsToggle" style="width:auto; margin:0;">
+                    I have a HECS/HELP debt
+                </label>
+                <div class="hint" id="hecsHint" style="display:none;"></div>
+            </div>
+
             <h2>Time & lifestyle</h2>
 
             <div class="form-group">
@@ -768,6 +776,10 @@
                     <span>Effective tax rate</span>
                     <span><span id="taxEffectiveRate">—</span>%</span>
                 </div>
+                <div class="tax-row" id="hecsRow" style="display:none;">
+                    <span>HECS/HELP repayment</span>
+                    <span>$<span id="taxHecs">—</span></span>
+                </div>
                 <div class="tax-row total">
                     <span>Gross income required</span>
                     <span>$<span id="taxGross">—</span></span>
@@ -883,6 +895,7 @@
                 <div class="ps-row"><span>Medicare levy (2%)</span><span>$<span id="ps-medicare">—</span></span></div>
                 <div class="ps-row"><span>Effective tax rate</span><span><span id="ps-taxrate">—</span>%</span></div>
                 <div class="ps-row"><span>Superannuation (<span id="ps-superrate">—</span>%)</span><span>$<span id="ps-super">—</span></span></div>
+                <div class="ps-row" id="ps-hecsRow" style="display:none;"><span>HECS/HELP repayment</span><span>$<span id="ps-hecs">—</span></span></div>
                 <div class="ps-note">Tax calculated on gross income. Superannuation is paid on top of your rate and must be factored into what you charge.</div>
             </div>
         </div>
@@ -955,7 +968,36 @@
         return gross * 0.02;
     }
 
-    // Binary search: find gross income that yields the target net
+    // ── 2025–26 HECS/HELP compulsory repayment rates ─────────────────────
+    // Source: ATO study and training loan repayment thresholds 2025–26
+    const hecsRates = [
+        { min: 0,       max: 54435,  rate: 0.000 },
+        { min: 54435,   max: 62849,  rate: 0.010 },
+        { min: 62849,   max: 66053,  rate: 0.020 },
+        { min: 66053,   max: 69399,  rate: 0.025 },
+        { min: 69399,   max: 72869,  rate: 0.030 },
+        { min: 72869,   max: 76512,  rate: 0.035 },
+        { min: 76512,   max: 80338,  rate: 0.040 },
+        { min: 80338,   max: 84354,  rate: 0.045 },
+        { min: 84354,   max: 88572,  rate: 0.050 },
+        { min: 88572,   max: 93000,  rate: 0.055 },
+        { min: 93000,   max: 97651,  rate: 0.060 },
+        { min: 97651,   max: 102533, rate: 0.065 },
+        { min: 102533,  max: 107660, rate: 0.070 },
+        { min: 107660,  max: 113043, rate: 0.075 },
+        { min: 113043,  max: 118695, rate: 0.080 },
+        { min: 118695,  max: 124629, rate: 0.085 },
+        { min: 124629,  max: 130861, rate: 0.090 },
+        { min: 130861,  max: 137405, rate: 0.095 },
+        { min: 137405,  max: Infinity, rate: 0.100 },
+    ];
+
+    function calcHecs(gross) {
+        for (const bracket of hecsRates) {
+            if (gross < bracket.max) return gross * bracket.rate;
+        }
+        return gross * 0.10;
+    }
     function grossForNet(targetNet) {
         let lo = targetNet, hi = targetNet * 2.5, iter = 0;
         while (iter++ < 60 && hi - lo > 0.5) {
@@ -1023,7 +1065,10 @@
         const effectiveRate = (totalTax / gross * 100).toFixed(1);
 
         const superAmount  = gross * superRate / 100;
-        const totalNeeded  = gross + expenses + superAmount;
+        const hasHecs      = document.getElementById('hecsToggle').checked;
+        const hecsAmount   = hasHecs ? calcHecs(gross) : 0;
+        const hecsRate     = hasHecs ? (hecsRates.find(b => gross < b.max) || hecsRates[hecsRates.length-1]).rate * 100 : 0;
+        const totalNeeded  = gross + expenses + superAmount + hecsAmount;
         const hourlyRate   = totalNeeded / billableHrs;
 
         // ── Update UI ──────────────────────────────────────────────────────
@@ -1035,6 +1080,12 @@
         document.getElementById('taxMedicare').textContent        = fmt(medicare);
         document.getElementById('taxEffectiveRate').textContent   = effectiveRate;
         document.getElementById('taxGross').textContent           = fmt(gross);
+        document.getElementById('hecsRow').style.display          = hasHecs ? '' : 'none';
+        document.getElementById('taxHecs').textContent            = fmt(hecsAmount);
+        document.getElementById('hecsHint').style.display         = hasHecs ? '' : 'none';
+        document.getElementById('hecsHint').textContent           = hasHecs
+            ? `Compulsory repayment rate at this income: ${hecsRate}% = $${fmt(hecsAmount)}/yr. This is added to your rate so you're not out of pocket.`
+            : '';
 
         document.getElementById('totalExpenses').textContent      = fmt(expenses);
         document.getElementById('totalSuper').textContent         = fmt(superAmount);
@@ -1068,6 +1119,8 @@
         document.getElementById('ps-taxrate').textContent     = effectiveRate;
         document.getElementById('ps-superrate').textContent   = superRate;
         document.getElementById('ps-super').textContent       = fmt(superAmount);
+        document.getElementById('ps-hecsRow').style.display   = hasHecs ? '' : 'none';
+        document.getElementById('ps-hecs').textContent        = fmt(hecsAmount);
 
         const expenseMap = {
             'ps-workspace':   'workspace',
@@ -1125,6 +1178,7 @@
 
     // ── Event listeners ────────────────────────────────────────────────────
     document.getElementById('salarySlider').addEventListener('input', calculate);
+    document.getElementById('hecsToggle').addEventListener('change', calculate);
     document.getElementById('daysPerWeek').addEventListener('input', calculate);
     document.getElementById('designerLevel').addEventListener('change', function () {
         const d = experienceDefaults[this.value];
