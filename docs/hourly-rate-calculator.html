@@ -470,9 +470,14 @@
             .panel:nth-child(2) { display: none; }
             .btn-print { display: none; }
             .rate-display .rate-value { font-size: 48px; }
-            details { border: none; }
+            /* Force breakdown visible regardless of open/closed state */
+            details { display: block; border: 1px solid #e0e0e0; border-radius: 3px; }
             details summary { display: none; }
-            details .breakdown-inner { padding: 0; border: none; }
+            details .breakdown-inner {
+                display: block !important;
+                padding: 10px 14px 12px;
+                border-top: none;
+            }
             .print-only { display: block; }
         }
     </style>
@@ -733,6 +738,7 @@
             <details>
                 <summary>Calculation breakdown</summary>
                 <div class="breakdown-inner">
+                    <div style="font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:#888; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid #e0e0e0;">Calculation breakdown</div>
                     <div class="breakdown-section">Formula</div>
                     <div class="breakdown-row">
                         <span>(Gross + Expenses + Super) ÷ Billable hrs</span>
