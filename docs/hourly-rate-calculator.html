@@ -469,14 +469,27 @@
             .sidebar { border-left: 1px solid #e0e0e0; }
             .panel:nth-child(2) { display: none; }
             .btn-print { display: none; }
+            .rate-display { margin-bottom: 10px; }
             .rate-display .rate-value { font-size: 48px; }
-            /* Force breakdown visible regardless of open/closed state */
-            details { display: block; border: 1px solid #e0e0e0; border-radius: 3px; }
+            /* Hide benchmarks — not relevant to assessment */
+            .benchmark-box { display: none; }
+            /* Force breakdown open and prominent */
+            details {
+                display: block;
+                border: 1px solid #e0e0e0;
+                border-radius: 3px;
+                margin-bottom: 10px;
+            }
             details summary { display: none; }
             details .breakdown-inner {
                 display: block !important;
                 padding: 10px 14px 12px;
                 border-top: none;
+            }
+            /* Ensure tax and summary boxes print clearly */
+            .tax-box, .summary-box {
+                margin-bottom: 10px;
+                page-break-inside: avoid;
             }
             .print-only { display: block; }
         }
@@ -677,34 +690,6 @@
                 <div class="rate-label">per billable hour</div>
             </div>
 
-            <div class="benchmark-box">
-                <div class="bm-title">Industry benchmarks</div>
-                <div class="benchmark-row">
-                    <span>Emerging / student</span>
-                    <span>$40–65</span>
-                </div>
-                <div class="benchmark-row">
-                    <span>Junior (1–4 yrs)</span>
-                    <span>$55–80</span>
-                </div>
-                <div class="benchmark-row">
-                    <span>Midweight (5–10 yrs)</span>
-                    <span>$75–110</span>
-                </div>
-                <div class="benchmark-row">
-                    <span>Senior (10+ yrs)</span>
-                    <span>$110–160</span>
-                </div>
-                <div class="benchmark-row">
-                    <span>Specialist / manager</span>
-                    <span>$160+</span>
-                </div>
-                <div class="benchmark-row highlight-rate" id="yourRateRow" style="margin-top:6px; padding-top:6px; border-top:1px solid #e0e0e0;">
-                    <span>Your calculated rate</span>
-                    <span>$<span id="benchmarkRate">—</span></span>
-                </div>
-            </div>
-
             <div class="tax-box">
                 <div class="bm-title">Tax breakdown (2025–26)</div>
                 <div class="tax-row">
@@ -746,8 +731,6 @@
                 </div>
             </div>
 
-            <button class="btn-print" onclick="window.print()">Print / save as PDF</button>
-
             <details>
                 <summary>Calculation breakdown</summary>
                 <div class="breakdown-inner">
@@ -783,6 +766,36 @@
                     </div>
                 </div>
             </details>
+
+            <button class="btn-print" onclick="window.print()">Print / save as PDF</button>
+
+            <div class="benchmark-box">
+                <div class="bm-title">Industry benchmarks</div>
+                <div class="benchmark-row">
+                    <span>Emerging / student</span>
+                    <span>$40–65</span>
+                </div>
+                <div class="benchmark-row">
+                    <span>Junior (1–4 yrs)</span>
+                    <span>$55–80</span>
+                </div>
+                <div class="benchmark-row">
+                    <span>Midweight (5–10 yrs)</span>
+                    <span>$75–110</span>
+                </div>
+                <div class="benchmark-row">
+                    <span>Senior (10+ yrs)</span>
+                    <span>$110–160</span>
+                </div>
+                <div class="benchmark-row">
+                    <span>Specialist / manager</span>
+                    <span>$160+</span>
+                </div>
+                <div class="benchmark-row highlight-rate" style="margin-top:6px; padding-top:6px; border-top:1px solid #e0e0e0;">
+                    <span>Your calculated rate</span>
+                    <span>$<span id="benchmarkRate">—</span></span>
+                </div>
+            </div>
 
         </div>
     </div>
