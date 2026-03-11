@@ -1090,7 +1090,7 @@
         document.getElementById('taxHecs').textContent            = fmt(hecsAmount);
         document.getElementById('hecsHint').style.display         = hasHecs ? '' : 'none';
         document.getElementById('hecsHint').textContent           = hasHecs
-            ? `Compulsory repayment rate at this income: ${hecsRate}% = $${fmt(hecsAmount)}/yr. This is added to your rate so you're not out of pocket.`
+            ? `Compulsory repayment rate at this income: ${hecsRate.toFixed(1)}% = $${fmt(hecsAmount)}/yr. This is added to your rate so you're not out of pocket.`
             : '';
 
         document.getElementById('totalExpenses').textContent      = fmt(expenses);
