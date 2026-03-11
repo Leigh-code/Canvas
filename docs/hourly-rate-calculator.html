@@ -463,16 +463,21 @@
         }
 
         @media print {
-            body { background: white; padding: 0; font-size: 12px; }
+            body { background: white; padding: 0; font-size: 11px; }
             .container { box-shadow: none; border-radius: 0; }
-            .main-grid { grid-template-columns: 1fr 1fr; }
+            .main-grid { grid-template-columns: 1fr 1fr 220px; }
             .sidebar { border-left: 1px solid #e0e0e0; }
-            .panel:nth-child(2) { display: none; }
+            /* Show expenses panel on print */
+            .panel:nth-child(2) { display: block; }
             .btn-print { display: none; }
             .rate-display { margin-bottom: 10px; }
-            .rate-display .rate-value { font-size: 48px; }
+            .rate-display .rate-value { font-size: 40px; }
             /* Hide benchmarks — not relevant to assessment */
             .benchmark-box { display: none; }
+            /* Hide lifestyle buttons — state shown in hours breakdown */
+            .lifestyle-grid { display: none; }
+            /* Hide hints to save space */
+            .hint { display: none; }
             /* Force breakdown open and prominent */
             details {
                 display: block;
@@ -486,11 +491,12 @@
                 padding: 10px 14px 12px;
                 border-top: none;
             }
-            /* Ensure tax and summary boxes print clearly */
-            .tax-box, .summary-box {
-                margin-bottom: 10px;
+            /* Ensure boxes don't break across pages */
+            .tax-box, .summary-box, .form-group {
+                margin-bottom: 8px;
                 page-break-inside: avoid;
             }
+            h2 { margin-top: 16px; }
             .print-only { display: block; }
         }
     </style>
