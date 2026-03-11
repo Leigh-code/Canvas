@@ -148,6 +148,63 @@
             margin-top: 3px;
         }
 
+        /* Help button and panel */
+        .label-row {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+        }
+
+        .label-row label {
+            margin-bottom: 0;
+        }
+
+        .help-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: #d0d0d0;
+            color: #555;
+            font-size: 10px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            flex-shrink: 0;
+            line-height: 1;
+            padding: 0;
+            transition: background 0.15s;
+        }
+
+        .help-btn:hover {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .help-btn.active {
+            background: #1a1a1a;
+            color: white;
+        }
+
+        .help-panel {
+            display: none;
+            background: #f7f7f7;
+            border-left: 2px solid #1a1a1a;
+            padding: 8px 10px;
+            margin-top: 5px;
+            font-size: 11px;
+            color: #444;
+            line-height: 1.5;
+            border-radius: 0 3px 3px 0;
+        }
+
+        .help-panel.open {
+            display: block;
+        }
+
         /* Salary slider */
         .slider-row {
             display: flex;
@@ -470,6 +527,9 @@
             .container { box-shadow: none; border-radius: 0; }
             /* Hide the entire interactive app */
             .main-grid { display: none; }
+            .help-btn { display: none; }
+            .help-panel { display: none !important; }
+            .hint { display: none; }
             .header { padding: 14px 20px; }
             .header h1 { font-size: 16px; }
             /* Show the print sheet */
@@ -576,7 +636,10 @@
             </div>
 
             <div class="form-group">
-                <label for="designerLevel">Experience level</label>
+                <div class="label-row">
+                    <label for="designerLevel">Experience level</label>
+                    <button class="help-btn" onclick="toggleHelp('help-level', this)">?</button>
+                </div>
                 <select id="designerLevel">
                     <option value="emerging" selected>Emerging / student</option>
                     <option value="junior">Junior (1–4 years)</option>
@@ -584,12 +647,16 @@
                     <option value="senior">Senior (10+ years)</option>
                     <option value="specialist">Specialist / studio manager</option>
                 </select>
+                <div class="help-panel" id="help-level">Sets the default salary target to a realistic starting point for that stage of career. You can override it with the slider. Use it as a sanity check — if your calculated rate is well below the benchmark for your level, your expenses or income goal may need revisiting.</div>
             </div>
 
             <h2>Income goal</h2>
 
             <div class="form-group">
-                <label>Annual take-home salary <strong>(after tax)</strong></label>
+                <div class="label-row">
+                    <label>Annual take-home salary <strong>(after tax)</strong></label>
+                    <button class="help-btn" onclick="toggleHelp('help-salary', this)">?</button>
+                </div>
                 <div class="slider-row">
                     <input type="range" id="salarySlider" min="35000" max="150000" step="5000" value="45000">
                     <div class="slider-value">$<span id="salaryDisplay">45,000</span></div>
@@ -598,12 +665,16 @@
                     <span>$35k</span><span>$70k</span><span>$110k</span><span>$150k</span>
                 </div>
                 <div class="hint" id="salaryScaleHint" style="display:none;"></div>
+                <div class="help-panel" id="help-salary">This is what you actually want to see in your bank account each year, after tax. It's not what you invoice — that number (gross income) will be higher once tax, super, and expenses are added. For reference, a graduate designer in Melbourne might aim for $45–55k to start; a midweight designer $70–90k.</div>
             </div>
 
             <div class="form-group">
-                <label for="superannuation">Superannuation rate (%)</label>
+                <div class="label-row">
+                    <label for="superannuation">Superannuation rate (%)</label>
+                    <button class="help-btn" onclick="toggleHelp('help-super', this)">?</button>
+                </div>
                 <input type="number" id="superannuation" value="12" step="0.5" min="10" max="25">
-                <div class="hint">The compulsory retirement savings contribution your clients pay on top of your rate. Current legislated rate is 12%.</div>
+                <div class="help-panel" id="help-super">Superannuation is compulsory retirement savings. As a freelancer, no one pays it for you — you have to build it into your rate and set it aside yourself. The current legislated rate is 12% of your gross income. If you don't include it, you're effectively working for less than your headline rate every year and arriving at retirement with nothing saved.</div>
             </div>
 
             <div class="form-group">
@@ -617,7 +688,10 @@
             <h2>Time & lifestyle</h2>
 
             <div class="form-group">
-                <label>Leave and time off</label>
+                <div class="label-row">
+                    <label>Leave and time off</label>
+                    <button class="help-btn" onclick="toggleHelp('help-leave', this)">?</button>
+                </div>
                 <div class="lifestyle-grid">
                     <div class="lifestyle-btn" data-style="standard">
                         <strong>Standard</strong>
@@ -636,10 +710,14 @@
                         <span>12 wks leave, 10 sick days</span>
                     </div>
                 </div>
+                <div class="help-panel" id="help-leave">As a freelancer you don't get paid leave — every week you're not working is a week you're not earning. This setting reduces your available working hours accordingly, which pushes your hourly rate up to compensate. Standard (4 weeks) is the minimum most people need. Balanced (6 weeks) is realistic once you factor in public holidays and the odd sick day. Don't underestimate this — it's one of the most common mistakes new freelancers make when setting their rates.</div>
             </div>
 
             <div class="form-group">
-                <label>Days per week</label>
+                <div class="label-row">
+                    <label>Days per week</label>
+                    <button class="help-btn" onclick="toggleHelp('help-days', this)">?</button>
+                </div>
                 <div class="slider-row">
                     <input type="range" id="daysPerWeek" min="1" max="5" step="1" value="5">
                     <div class="slider-value"><span id="daysDisplay">5</span> days</div>
@@ -647,19 +725,23 @@
                 <div class="slider-labels">
                     <span>1 day</span><span>2</span><span>3</span><span>4</span><span>5 days</span>
                 </div>
-                <div class="hint" id="daysHint">Full time — fixed costs spread across more hours, so rate is lower</div>
+                <div class="hint" id="daysHint">Full time — fixed costs spread across the most hours, so rate is lowest</div>
+                <div class="help-panel" id="help-days">Working part time doesn't reduce your fixed costs — software, insurance, and equipment cost the same whether you work 2 days or 5. So your hourly rate needs to be higher to cover those costs across fewer hours. Your income target also scales down proportionally — 3 days a week means roughly 60% of a full-time salary. The rate stays roughly the same because both income and hours reduce together, but your overheads push it up slightly.</div>
             </div>
 
             <div class="two-col">
                 <div class="form-group">
-                    <label for="adminTime">Time you can't charge for (%)</label>
+                    <div class="label-row">
+                        <label for="adminTime">Time you can't charge for (%)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-admin', this)">?</button>
+                    </div>
                     <input type="number" id="adminTime" value="20" min="5" max="50">
-                    <div class="hint">Not every hour at your desk is billable. Admin, emails, pitching for work, and learning all take time — typically 20–30% for a freelancer starting out.</div>
+                    <div class="help-panel" id="help-admin">Not every hour at your desk earns money. Replying to emails, writing quotes, chasing invoices, updating your portfolio, and keeping your skills current all take real time. For a freelancer starting out, 20–25% is realistic. If you're also studying or working on personal projects, it could be higher. Underestimating this is a fast way to underprice your work.</div>
                 </div>
                 <div class="form-group">
                     <label for="availableHours">Hours you could work / year</label>
                     <input type="number" id="availableHours" value="1920" readonly style="background:#f5f5f5; color:#888; cursor:default;">
-                    <div class="hint" id="hoursHint">Calculated from your days per week and leave settings above</div>
+                    <div class="hint" id="hoursHint">Calculated from your settings above</div>
                 </div>
             </div>
 
@@ -673,78 +755,117 @@
             <div class="two-col">
 
                 <div class="form-group">
-                    <label for="workspaceType">Workspace type</label>
+                    <div class="label-row">
+                        <label for="workspaceType">Workspace type</label>
+                        <button class="help-btn" onclick="toggleHelp('help-workspace-type', this)">?</button>
+                    </div>
                     <select id="workspaceType">
                         <option value="home" selected>Home office</option>
                         <option value="part-time-2">Cowork — 2 days/wk</option>
                         <option value="part-time-3">Cowork — 3 days/wk</option>
                         <option value="full-time">Cowork — full time</option>
                     </select>
+                    <div class="help-panel" id="help-workspace-type">Where you work affects your costs. A home office is cheapest but you need a dedicated space — the ATO allows you to claim a portion of rent and utilities. A coworking space gives you a professional environment, fast internet, and separation between work and home life. Rates shown are based on T.O.M.S Place in Brunswick; prices vary by location.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="workspace">Workspace cost ($)</label>
+                    <div class="label-row">
+                        <label for="workspace">Workspace cost ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-workspace-cost', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="workspace" value="2000"></div>
-                    <div class="hint" id="workspaceHint">A rough share of your rent and internet if you work from home — typically around 15%</div>
+                    <div class="hint" id="workspaceHint">A rough share of your rent and internet if you work from home</div>
+                    <div class="help-panel" id="help-workspace-cost">For a home office, the ATO allows roughly 67 cents per hour worked as a deduction, or you can calculate a percentage of actual rent and utilities based on floor area. $2,000/yr is a conservative estimate. For a coworking desk, use the actual membership cost — the dropdown above sets a realistic figure based on current Melbourne coworking rates.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="software">Software subscriptions ($)</label>
+                    <div class="label-row">
+                        <label for="software">Software subscriptions ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-software', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="software" value="1191.60"></div>
-                    <div class="hint">e.g. Adobe Creative Cloud</div>
+                    <div class="help-panel" id="help-software">The default is the current Adobe Creative Cloud All Apps annual subscription. You may also have other tools: Figma, font licences, stock image subscriptions, project management tools, or cloud storage. Add them up and enter the total. These are legitimate business expenses and reduce your taxable income.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="computer">Equipment — cost per year ($)</label>
+                    <div class="label-row">
+                        <label for="computer">Equipment — cost per year ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-computer', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="computer" value="1000"></div>
-                    <div class="hint">Purchase price ÷ how many years you'll use it</div>
+                    <div class="help-panel" id="help-computer">You can't expense a $3,000 laptop all in one year, but you can spread the cost. Divide the purchase price by how many years you expect to use it. For example: a $3,000 computer used for 3 years = $1,000/yr. Include other equipment too — external drives, monitors, drawing tablets, cameras. The ATO calls this depreciation.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="marketing">Marketing ($)</label>
+                    <div class="label-row">
+                        <label for="marketing">Marketing ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-marketing', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="marketing" value="300"></div>
-                    <div class="hint">Hosting your portfolio website, domain name, or any paid promotion.</div>
+                    <div class="help-panel" id="help-marketing">Anything you spend getting work. This includes your portfolio website hosting and domain name (typically $100–200/yr), any paid advertising, or printed self-promotion materials. As you become more established this number grows — some designers spend significantly more on building their profile.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="insurance">Insurance ($)</label>
+                    <div class="label-row">
+                        <label for="insurance">Insurance ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-insurance', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="insurance" value="0"></div>
-                    <div class="hint">Covers you if a client claims your work caused them a financial loss. Not urgent as a student, but required by most studios before they'll hire you as a contractor.</div>
+                    <div class="help-panel" id="help-insurance">Professional indemnity insurance covers you if a client claims your work caused them financial harm — for example, a typo in a printed run or a missed deadline that cost them money. It's typically $500–1,500/yr depending on your turnover. Most studios require contractors to hold it before they'll engage you. Set to $0 for now as a student, but factor it in once you start taking commercial work.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="accountant">Accounting / bookkeeping ($)</label>
+                    <div class="label-row">
+                        <label for="accountant">Accounting / bookkeeping ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-accountant', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="accountant" value="0"></div>
-                    <div class="hint">Helps you lodge your tax return correctly and find deductions. Worth it once you're earning regularly — a good accountant usually saves more than they cost.</div>
+                    <div class="help-panel" id="help-accountant">A basic tax return lodged by an accountant costs $150–400/yr for a sole trader. Once you're earning regularly, it's worth it — an accountant will find deductions you'd miss, keep you on the right side of the ATO, and give you advice on whether to register for GST (required once you earn over $75,000/yr). Set to $0 for now, but include it once you start freelancing properly.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="internet">Internet ($)</label>
+                    <div class="label-row">
+                        <label for="internet">Internet ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-internet', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="internet" value="1000"></div>
-                    <div class="hint">Your annual home internet cost. Set to $0 if you're working from a studio that covers this.</div>
+                    <div class="help-panel" id="help-internet">A standard home NBN plan runs about $70–100/month ($840–1,200/yr). If you work from a coworking space that includes internet, set this to $0 — but you may still want to include a portion for home use outside work hours. Mobile data costs can also be included here.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Phone — cost per year ($)</label>
+                    <div class="label-row">
+                        <label for="phone">Phone — cost per year ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-phone', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="phone" value="1200"></div>
-                    <div class="hint">Handset price ÷ years + annual plan cost</div>
+                    <div class="help-panel" id="help-phone">Divide your handset purchase price by how many years you'll use it (e.g. $1,200 phone ÷ 3 years = $400/yr), then add your annual plan cost (e.g. $60/month = $720/yr). Total: $1,120/yr. You can only claim the business-use portion, but for a freelancer that's typically most of it.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="development">Professional development ($)</label>
+                    <div class="label-row">
+                        <label for="development">Professional development ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-development', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="development" value="200"></div>
-                    <div class="hint">Online courses, books, workshops — staying current is part of the job and a legitimate business expense.</div>
+                    <div class="help-panel" id="help-development">Staying current is part of the job. This might include online courses (LinkedIn Learning, Skillshare, Domestika), books, industry publications, or workshops. These are legitimate business expenses. Even $200/yr is enough for a few courses — consider increasing this as your income grows.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="stationery">Supplies / stationery ($)</label>
+                    <div class="label-row">
+                        <label for="stationery">Supplies / stationery ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-stationery', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="stationery" value="300"></div>
+                    <div class="help-panel" id="help-stationery">Printer paper, ink cartridges, notebooks, pens, packaging for client deliverables. Small costs that add up over a year. $200–400 is typical for a designer working from home.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="otherExpenses">Other costs ($)</label>
+                    <div class="label-row">
+                        <label for="otherExpenses">Other costs ($)</label>
+                        <button class="help-btn" onclick="toggleHelp('help-other', this)">?</button>
+                    </div>
                     <div class="input-prefix"><span>$</span><input type="number" id="otherExpenses" value="0"></div>
-                    <div class="hint">Industry memberships (e.g. AGDA), stock image subscriptions, printing, anything else that's a regular cost of doing business.</div>
+                    <div class="help-panel" id="help-other">Anything else that's a regular cost of doing business. Examples: AGDA membership (~$200/yr for emerging designers), stock image subscriptions (Adobe Stock, Shutterstock), typeface licences, printing proofs for clients, or software not covered above. If you're not sure, leave this at $0 and add it later.</div>
                 </div>
 
             </div>
@@ -951,6 +1072,13 @@
 </div>
 
 <script>
+    function toggleHelp(id, btn) {
+        const panel = document.getElementById(id);
+        const isOpen = panel.classList.contains('open');
+        panel.classList.toggle('open', !isOpen);
+        btn.classList.toggle('active', !isOpen);
+    }
+
     // ── 2025–26 ATO tax brackets (cumulative method) ──────────────────────
     function calcIncomeTax(gross) {
         if (gross <= 18200)  return 0;
