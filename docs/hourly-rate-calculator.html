@@ -505,9 +505,9 @@
             <div class="form-group">
                 <label for="designerLevel">Experience level</label>
                 <select id="designerLevel">
-                    <option value="emerging">Emerging / student</option>
+                    <option value="emerging" selected>Emerging / student</option>
                     <option value="junior">Junior (1–4 years)</option>
-                    <option value="mid" selected>Midweight (5–10 years)</option>
+                    <option value="mid">Midweight (5–10 years)</option>
                     <option value="senior">Senior (10+ years)</option>
                     <option value="specialist">Specialist / studio manager</option>
                 </select>
@@ -518,8 +518,8 @@
             <div class="form-group">
                 <label>Annual take-home salary <strong>(after tax)</strong></label>
                 <div class="slider-row">
-                    <input type="range" id="salarySlider" min="35000" max="150000" step="5000" value="70000">
-                    <div class="slider-value">$<span id="salaryDisplay">70,000</span></div>
+                    <input type="range" id="salarySlider" min="35000" max="150000" step="5000" value="45000">
+                    <div class="slider-value">$<span id="salaryDisplay">45,000</span></div>
                 </div>
                 <div class="slider-labels">
                     <span>$35k</span><span>$70k</span><span>$110k</span><span>$150k</span>
@@ -556,6 +556,18 @@
                 </div>
             </div>
 
+            <div class="form-group">
+                <label>Days per week</label>
+                <div class="slider-row">
+                    <input type="range" id="daysPerWeek" min="1" max="5" step="1" value="5">
+                    <div class="slider-value"><span id="daysDisplay">5</span> days</div>
+                </div>
+                <div class="slider-labels">
+                    <span>1 day</span><span>2</span><span>3</span><span>4</span><span>5 days</span>
+                </div>
+                <div class="hint" id="daysHint">Full time — fixed costs spread across more hours, so rate is lower</div>
+            </div>
+
             <div class="two-col">
                 <div class="form-group">
                     <label for="adminTime">Non-billable time (%)</label>
@@ -564,7 +576,7 @@
                 </div>
                 <div class="form-group">
                     <label for="availableHours">Available hours / year</label>
-                    <input type="number" id="availableHours" value="1920">
+                    <input type="number" id="availableHours" value="1920" readonly style="background:#f5f5f5; color:#888; cursor:default;">
                     <div class="hint" id="hoursHint">—</div>
                 </div>
             </div>
@@ -581,17 +593,17 @@
                 <div class="form-group">
                     <label for="workspaceType">Workspace type</label>
                     <select id="workspaceType">
-                        <option value="home">Home office</option>
+                        <option value="home" selected>Home office</option>
                         <option value="part-time-2">Cowork — 2 days/wk</option>
                         <option value="part-time-3">Cowork — 3 days/wk</option>
-                        <option value="full-time" selected>Cowork — full time</option>
+                        <option value="full-time">Cowork — full time</option>
                     </select>
                 </div>
 
                 <div class="form-group">
                     <label for="workspace">Workspace cost ($)</label>
-                    <div class="input-prefix"><span>$</span><input type="number" id="workspace" value="7260"></div>
-                    <div class="hint" id="workspaceHint">Est. $550+GST/month</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="workspace" value="2000"></div>
+                    <div class="hint" id="workspaceHint">Est. ~15% of home rent/utilities</div>
                 </div>
 
                 <div class="form-group">
@@ -608,19 +620,20 @@
 
                 <div class="form-group">
                     <label for="marketing">Marketing ($)</label>
-                    <div class="input-prefix"><span>$</span><input type="number" id="marketing" value="1200"></div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="marketing" value="300"></div>
                     <div class="hint">Portfolio, ads, promotions</div>
                 </div>
 
                 <div class="form-group">
                     <label for="insurance">Insurance ($)</label>
-                    <div class="input-prefix"><span>$</span><input type="number" id="insurance" value="800"></div>
-                    <div class="hint">Professional indemnity, PI</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="insurance" value="0"></div>
+                    <div class="hint">Professional indemnity — add when taking clients</div>
                 </div>
 
                 <div class="form-group">
                     <label for="accountant">Accounting / bookkeeping ($)</label>
-                    <div class="input-prefix"><span>$</span><input type="number" id="accountant" value="250"></div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="accountant" value="0"></div>
+                    <div class="hint">Add once income is regular</div>
                 </div>
 
                 <div class="form-group">
@@ -637,7 +650,7 @@
 
                 <div class="form-group">
                     <label for="development">Professional development ($)</label>
-                    <div class="input-prefix"><span>$</span><input type="number" id="development" value="500"></div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="development" value="200"></div>
                     <div class="hint">Courses, conferences, books</div>
                 </div>
 
@@ -751,6 +764,9 @@
                     </div>
                     <div class="breakdown-section">Working hours</div>
                     <div class="breakdown-row">
+                        <span>Days per week</span><span><span id="detailDays">5</span> days</span>
+                    </div>
+                    <div class="breakdown-row">
                         <span>Full-year hours (52 × 40)</span><span>2,080</span>
                     </div>
                     <div class="breakdown-row">
@@ -835,13 +851,19 @@
         const targetNet    = parseFloat(document.getElementById('salarySlider').value);
         const superRate    = parseFloat(document.getElementById('superannuation').value) || 11.5;
         const adminPct     = parseFloat(document.getElementById('adminTime').value) || 20;
-        const availHours   = parseFloat(document.getElementById('availableHours').value) || 1920;
+        const daysPerWeek  = parseFloat(document.getElementById('daysPerWeek').value) || 5;
 
+        // Scale available hours by days/week fraction of full time (5 days)
         const ls           = lifestyleData[currentLifestyle];
         const leaveHrs     = ls.leaveHrs + ls.sickHrs;
         const publicHols   = 88;
-        const workingHrs   = availHours - leaveHrs - publicHols;
-        const billableHrs  = Math.max(workingHrs * (1 - adminPct / 100), 100);
+        // Full-time base then scale proportionally
+        const fullTimeAvail = 2080 - leaveHrs - publicHols;
+        const scaledAvail   = fullTimeAvail * (daysPerWeek / 5);
+        const billableHrs  = Math.max(scaledAvail * (1 - adminPct / 100), 100);
+
+        // Update the available hours field to reflect scaling (read-only display)
+        document.getElementById('availableHours').value = Math.round(scaledAvail + leaveHrs + publicHols);
 
         const expenses = ['workspace','software','computer','marketing','insurance',
                           'accountant','internet','phone','development','stationery','otherExpenses']
@@ -881,27 +903,37 @@
         document.getElementById('calcResult').textContent         = Math.round(hourlyRate);
 
         document.getElementById('detailLeave').textContent        = leaveHrs;
-        document.getElementById('detailAdmin').textContent        = Math.round(workingHrs * adminPct / 100);
+        document.getElementById('detailDays').textContent         = daysPerWeek;
+        document.getElementById('detailAdmin').textContent        = Math.round(scaledAvail * adminPct / 100);
         document.getElementById('detailBillable').textContent     = Math.round(billableHrs);
 
         // Hours hint
-        const workWeeks = ((availHours - leaveHrs - publicHols) / 40).toFixed(1);
-        document.getElementById('hoursHint').textContent = `≈ ${workWeeks} working weeks`;
+        const workWeeks = (scaledAvail / (8 * daysPerWeek)).toFixed(1);
+        const daysLabel = daysPerWeek === 5 ? 'Full time' : `${daysPerWeek} day${daysPerWeek > 1 ? 's' : ''}/week`;
+        document.getElementById('hoursHint').textContent = `${daysLabel} — ≈ ${workWeeks} working weeks`;
+
+        // Days slider hint
+        const daysHints = {
+            1: '1 day/week — fixed costs spread across very few hours, so rate is much higher',
+            2: '2 days/week — part time; rate rises significantly to cover fixed costs',
+            3: '3 days/week — part time; rate still higher than full time',
+            4: '4 days/week — near full time',
+            5: 'Full time — fixed costs spread across the most hours, so rate is lowest',
+        };
+        document.getElementById('daysDisplay').textContent  = daysPerWeek;
+        document.getElementById('daysHint').textContent     = daysHints[daysPerWeek];
     }
 
     function setLifestyle(style) {
         currentLifestyle = style;
         document.querySelectorAll('.lifestyle-btn').forEach(b => b.classList.remove('active'));
         document.querySelector(`[data-style="${style}"]`).classList.add('active');
-
-        const ls   = lifestyleData[style];
-        const total = ls.leaveHrs + ls.sickHrs + 88;
-        document.getElementById('availableHours').value = 2080 - total;
         calculate();
     }
 
     // ── Event listeners ────────────────────────────────────────────────────
     document.getElementById('salarySlider').addEventListener('input', calculate);
+    document.getElementById('daysPerWeek').addEventListener('input', calculate);
     document.getElementById('designerLevel').addEventListener('change', function () {
         const d = experienceDefaults[this.value];
         document.getElementById('salarySlider').value = d.salary;
@@ -920,7 +952,8 @@
         el.addEventListener('input', calculate);
     });
 
-    // Init
+    // Init — emerging defaults
+    document.getElementById('salarySlider').value = 45000;
     calculate();
 </script>
 </body>
