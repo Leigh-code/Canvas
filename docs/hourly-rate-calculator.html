@@ -462,42 +462,96 @@
             }
         }
 
+        /* Print sheet — hidden on screen, visible on print */
+        .print-sheet { display: none; }
+
         @media print {
-            body { background: white; padding: 0; font-size: 11px; }
+            body { background: white; padding: 0; font-size: 11px; color: #1a1a1a; }
             .container { box-shadow: none; border-radius: 0; }
-            .main-grid { grid-template-columns: 1fr 1fr 220px; }
-            .sidebar { border-left: 1px solid #e0e0e0; }
-            /* Show expenses panel on print */
-            .panel:nth-child(2) { display: block; }
-            .btn-print { display: none; }
-            .rate-display { margin-bottom: 10px; }
-            .rate-display .rate-value { font-size: 40px; }
-            /* Hide benchmarks — not relevant to assessment */
-            .benchmark-box { display: none; }
-            /* Hide lifestyle buttons — state shown in hours breakdown */
-            .lifestyle-grid { display: none; }
-            /* Hide hints to save space */
-            .hint { display: none; }
-            /* Force breakdown open and prominent */
-            details {
-                display: block;
-                border: 1px solid #e0e0e0;
-                border-radius: 3px;
-                margin-bottom: 10px;
+            /* Hide the entire interactive app */
+            .main-grid { display: none; }
+            .header { padding: 14px 20px; }
+            .header h1 { font-size: 16px; }
+            /* Show the print sheet */
+            .print-sheet {
+                display: grid;
+                grid-template-columns: 1fr 1fr 1fr;
+                gap: 16px;
+                padding: 20px;
             }
-            details summary { display: none; }
-            details .breakdown-inner {
-                display: block !important;
-                padding: 10px 14px 12px;
-                border-top: none;
-            }
-            /* Ensure boxes don't break across pages */
-            .tax-box, .summary-box, .form-group {
-                margin-bottom: 8px;
+            .ps-col { }
+            .ps-section {
+                margin-bottom: 14px;
                 page-break-inside: avoid;
             }
-            h2 { margin-top: 16px; }
-            .print-only { display: block; }
+            .ps-heading {
+                font-size: 9px;
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.8px;
+                color: #888;
+                padding-bottom: 5px;
+                border-bottom: 1px solid #d0d0d0;
+                margin-bottom: 7px;
+            }
+            .ps-row {
+                display: flex;
+                justify-content: space-between;
+                padding: 3px 0;
+                border-bottom: 1px solid #f0f0f0;
+                font-size: 11px;
+            }
+            .ps-row:last-child { border-bottom: none; }
+            .ps-row.total {
+                font-weight: 700;
+                font-size: 12px;
+                border-top: 1px solid #ccc;
+                border-bottom: none;
+                margin-top: 4px;
+                padding-top: 6px;
+            }
+            .ps-rate-box {
+                background: #C8102E;
+                color: white;
+                text-align: center;
+                padding: 16px;
+                border-radius: 4px;
+                margin-bottom: 14px;
+            }
+            .ps-rate-box .ps-rate-value {
+                font-size: 52px;
+                font-weight: 800;
+                line-height: 1;
+                letter-spacing: -2px;
+            }
+            .ps-rate-box .ps-rate-label {
+                font-size: 11px;
+                opacity: 0.85;
+                margin-top: 3px;
+            }
+            .ps-formula {
+                background: #f7f7f7;
+                border: 1px solid #e0e0e0;
+                border-radius: 3px;
+                padding: 10px 12px;
+                font-size: 11px;
+            }
+            .ps-formula .ps-formula-line {
+                padding: 2px 0;
+            }
+            .ps-formula .ps-formula-result {
+                font-weight: 700;
+                font-size: 13px;
+                margin-top: 6px;
+                padding-top: 6px;
+                border-top: 1px solid #d0d0d0;
+            }
+            .ps-note {
+                font-size: 9px;
+                color: #999;
+                margin-top: 6px;
+                line-height: 1.4;
+            }
         }
     </style>
 </head>
@@ -547,8 +601,8 @@
 
             <div class="form-group">
                 <label for="superannuation">Superannuation rate (%)</label>
-                <input type="number" id="superannuation" value="11.5" step="0.5" min="10" max="25">
-                <div class="hint">Current legislated rate is 11.5% (rising to 12% in July 2025)</div>
+                <input type="number" id="superannuation" value="12" step="0.5" min="10" max="25">
+                <div class="hint">The compulsory retirement savings contribution your clients pay on top of your rate. Current legislated rate is 12%.</div>
             </div>
 
             <h2>Time & lifestyle</h2>
@@ -589,14 +643,14 @@
 
             <div class="two-col">
                 <div class="form-group">
-                    <label for="adminTime">Non-billable time (%)</label>
+                    <label for="adminTime">Time you can't charge for (%)</label>
                     <input type="number" id="adminTime" value="20" min="5" max="50">
-                    <div class="hint">Admin, pitching, learning</div>
+                    <div class="hint">Not every hour at your desk is billable. Admin, emails, pitching for work, and learning all take time — typically 20–30% for a freelancer starting out.</div>
                 </div>
                 <div class="form-group">
-                    <label for="availableHours">Available hours / year</label>
+                    <label for="availableHours">Hours you could work / year</label>
                     <input type="number" id="availableHours" value="1920" readonly style="background:#f5f5f5; color:#888; cursor:default;">
-                    <div class="hint" id="hoursHint">—</div>
+                    <div class="hint" id="hoursHint">Calculated from your days per week and leave settings above</div>
                 </div>
             </div>
 
@@ -622,7 +676,7 @@
                 <div class="form-group">
                     <label for="workspace">Workspace cost ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="workspace" value="2000"></div>
-                    <div class="hint" id="workspaceHint">Est. ~15% of home rent/utilities</div>
+                    <div class="hint" id="workspaceHint">A rough share of your rent and internet if you work from home — typically around 15%</div>
                 </div>
 
                 <div class="form-group">
@@ -632,45 +686,45 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="computer">Equipment — amortised ($)</label>
+                    <label for="computer">Equipment — cost per year ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="computer" value="1000"></div>
-                    <div class="hint">Purchase cost ÷ years used</div>
+                    <div class="hint">Purchase price ÷ how many years you'll use it</div>
                 </div>
 
                 <div class="form-group">
                     <label for="marketing">Marketing ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="marketing" value="300"></div>
-                    <div class="hint">Portfolio, ads, promotions</div>
+                    <div class="hint">Hosting your portfolio website, domain name, or any paid promotion.</div>
                 </div>
 
                 <div class="form-group">
                     <label for="insurance">Insurance ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="insurance" value="0"></div>
-                    <div class="hint">Professional indemnity — add when taking clients</div>
+                    <div class="hint">Covers you if a client claims your work caused them a financial loss. Not urgent as a student, but required by most studios before they'll hire you as a contractor.</div>
                 </div>
 
                 <div class="form-group">
                     <label for="accountant">Accounting / bookkeeping ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="accountant" value="0"></div>
-                    <div class="hint">Add once income is regular</div>
+                    <div class="hint">Helps you lodge your tax return correctly and find deductions. Worth it once you're earning regularly — a good accountant usually saves more than they cost.</div>
                 </div>
 
                 <div class="form-group">
                     <label for="internet">Internet ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="internet" value="1000"></div>
-                    <div class="hint">Adjust if working from a studio</div>
+                    <div class="hint">Your annual home internet cost. Set to $0 if you're working from a studio that covers this.</div>
                 </div>
 
                 <div class="form-group">
-                    <label for="phone">Phone — amortised ($)</label>
+                    <label for="phone">Phone — cost per year ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="phone" value="1200"></div>
-                    <div class="hint">Handset cost ÷ yrs + plan</div>
+                    <div class="hint">Handset price ÷ years + annual plan cost</div>
                 </div>
 
                 <div class="form-group">
                     <label for="development">Professional development ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="development" value="200"></div>
-                    <div class="hint">Courses, conferences, books</div>
+                    <div class="hint">Online courses, books, workshops — staying current is part of the job and a legitimate business expense.</div>
                 </div>
 
                 <div class="form-group">
@@ -681,7 +735,7 @@
                 <div class="form-group">
                     <label for="otherExpenses">Other costs ($)</label>
                     <div class="input-prefix"><span>$</span><input type="number" id="otherExpenses" value="0"></div>
-                    <div class="hint">Memberships, subscriptions, etc.</div>
+                    <div class="hint">Industry memberships (e.g. AGDA), stock image subscriptions, printing, anything else that's a regular cost of doing business.</div>
                 </div>
 
             </div>
@@ -805,6 +859,80 @@
 
         </div>
     </div>
+
+    <!-- Print-only summary sheet -->
+    <div class="print-sheet">
+
+        <!-- Column 1: Income & legal obligations -->
+        <div class="ps-col">
+            <div class="ps-section">
+                <div class="ps-heading">About</div>
+                <div class="ps-row"><span>Name</span><span id="ps-name">—</span></div>
+                <div class="ps-row"><span>Experience level</span><span id="ps-level">—</span></div>
+            </div>
+
+            <div class="ps-section">
+                <div class="ps-heading">Income goal</div>
+                <div class="ps-row"><span>Target take-home (after tax)</span><span>$<span id="ps-takehome">—</span></span></div>
+                <div class="ps-row"><span>Gross income needed</span><span>$<span id="ps-gross">—</span></span></div>
+            </div>
+
+            <div class="ps-section">
+                <div class="ps-heading">Legal obligations</div>
+                <div class="ps-row"><span>Income tax (2025–26 ATO rates)</span><span>$<span id="ps-tax">—</span></span></div>
+                <div class="ps-row"><span>Medicare levy (2%)</span><span>$<span id="ps-medicare">—</span></span></div>
+                <div class="ps-row"><span>Effective tax rate</span><span><span id="ps-taxrate">—</span>%</span></div>
+                <div class="ps-row"><span>Superannuation (<span id="ps-superrate">—</span>%)</span><span>$<span id="ps-super">—</span></span></div>
+                <div class="ps-note">Tax calculated on gross income. Superannuation is paid on top of your rate and must be factored into what you charge.</div>
+            </div>
+        </div>
+
+        <!-- Column 2: Overheads -->
+        <div class="ps-col">
+            <div class="ps-section">
+                <div class="ps-heading">Business overheads (annual)</div>
+                <div class="ps-row"><span>Workspace</span><span>$<span id="ps-workspace">—</span></span></div>
+                <div class="ps-row"><span>Software subscriptions</span><span>$<span id="ps-software">—</span></span></div>
+                <div class="ps-row"><span>Equipment (cost per year)</span><span>$<span id="ps-computer">—</span></span></div>
+                <div class="ps-row"><span>Phone (cost per year)</span><span>$<span id="ps-phone">—</span></span></div>
+                <div class="ps-row"><span>Internet</span><span>$<span id="ps-internet">—</span></span></div>
+                <div class="ps-row"><span>Marketing</span><span>$<span id="ps-marketing">—</span></span></div>
+                <div class="ps-row"><span>Insurance</span><span>$<span id="ps-insurance">—</span></span></div>
+                <div class="ps-row"><span>Accounting</span><span>$<span id="ps-accountant">—</span></span></div>
+                <div class="ps-row"><span>Professional development</span><span>$<span id="ps-development">—</span></span></div>
+                <div class="ps-row"><span>Supplies / stationery</span><span>$<span id="ps-stationery">—</span></span></div>
+                <div class="ps-row"><span>Other</span><span>$<span id="ps-other">—</span></span></div>
+                <div class="ps-row total"><span>Total overheads</span><span>$<span id="ps-totalexpenses">—</span></span></div>
+            </div>
+        </div>
+
+        <!-- Column 3: Hours, formula, rate -->
+        <div class="ps-col">
+            <div class="ps-section">
+                <div class="ps-heading">Working hours</div>
+                <div class="ps-row"><span>Days per week</span><span><span id="ps-days">—</span> days</span></div>
+                <div class="ps-row"><span>Leave &amp; sick days</span><span>–<span id="ps-leave">—</span> hrs</span></div>
+                <div class="ps-row"><span>Public holidays</span><span>–88 hrs</span></div>
+                <div class="ps-row"><span>Time that can't be charged</span><span>–<span id="ps-admin">—</span> hrs</span></div>
+                <div class="ps-row total"><span>Billable hours / year</span><span><span id="ps-billable">—</span> hrs</span></div>
+            </div>
+
+            <div class="ps-section">
+                <div class="ps-rate-box">
+                    <div class="ps-rate-value">$<span id="ps-rate">—</span></div>
+                    <div class="ps-rate-label">per billable hour</div>
+                </div>
+                <div class="ps-formula">
+                    <div class="ps-formula-line">Formula: (Gross + Overheads + Super) ÷ Billable hours</div>
+                    <div class="ps-formula-line">= ($<span id="ps-f-gross">—</span> + $<span id="ps-f-expenses">—</span> + $<span id="ps-f-super">—</span>) ÷ <span id="ps-f-hours">—</span></div>
+                    <div class="ps-formula-result">= $<span id="ps-f-result">—</span> per hour</div>
+                </div>
+                <div class="ps-note">Based on ATO 2025–26 resident tax rates. Does not include HECS/HELP or Medicare levy surcharge.</div>
+            </div>
+        </div>
+
+    </div>
+
 </div>
 
 <script>
@@ -925,6 +1053,51 @@
         document.getElementById('detailDays').textContent         = daysPerWeek;
         document.getElementById('detailAdmin').textContent        = Math.round(scaledAvail * adminPct / 100);
         document.getElementById('detailBillable').textContent     = Math.round(billableHrs);
+
+        // ── Print sheet ────────────────────────────────────────────────────
+        const nameVal  = document.getElementById('name').value.trim();
+        const levelEl  = document.getElementById('designerLevel');
+        const levelTxt = levelEl.options[levelEl.selectedIndex].text;
+
+        document.getElementById('ps-name').textContent        = nameVal || '—';
+        document.getElementById('ps-level').textContent       = levelTxt;
+        document.getElementById('ps-takehome').textContent    = fmt(targetNet);
+        document.getElementById('ps-gross').textContent       = fmt(gross);
+        document.getElementById('ps-tax').textContent         = fmt(incomeTax);
+        document.getElementById('ps-medicare').textContent    = fmt(medicare);
+        document.getElementById('ps-taxrate').textContent     = effectiveRate;
+        document.getElementById('ps-superrate').textContent   = superRate;
+        document.getElementById('ps-super').textContent       = fmt(superAmount);
+
+        const expenseMap = {
+            'ps-workspace':   'workspace',
+            'ps-software':    'software',
+            'ps-computer':    'computer',
+            'ps-phone':       'phone',
+            'ps-internet':    'internet',
+            'ps-marketing':   'marketing',
+            'ps-insurance':   'insurance',
+            'ps-accountant':  'accountant',
+            'ps-development': 'development',
+            'ps-stationery':  'stationery',
+            'ps-other':       'otherExpenses',
+        };
+        for (const [psId, inputId] of Object.entries(expenseMap)) {
+            const val = parseFloat(document.getElementById(inputId).value) || 0;
+            document.getElementById(psId).textContent = fmt(val);
+        }
+        document.getElementById('ps-totalexpenses').textContent  = fmt(expenses);
+
+        document.getElementById('ps-days').textContent           = daysPerWeek;
+        document.getElementById('ps-leave').textContent          = leaveHrs;
+        document.getElementById('ps-admin').textContent          = Math.round(scaledAvail * adminPct / 100);
+        document.getElementById('ps-billable').textContent       = Math.round(billableHrs);
+        document.getElementById('ps-rate').textContent           = Math.round(hourlyRate);
+        document.getElementById('ps-f-gross').textContent        = fmt(gross);
+        document.getElementById('ps-f-expenses').textContent     = fmt(expenses);
+        document.getElementById('ps-f-super').textContent        = fmt(superAmount);
+        document.getElementById('ps-f-hours').textContent        = Math.round(billableHrs);
+        document.getElementById('ps-f-result').textContent       = Math.round(hourlyRate);
 
         // Hours hint
         const workWeeks = (scaledAvail / (8 * daysPerWeek)).toFixed(1);
