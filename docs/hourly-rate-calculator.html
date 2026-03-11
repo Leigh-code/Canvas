@@ -597,6 +597,7 @@
                 <div class="slider-labels">
                     <span>$35k</span><span>$70k</span><span>$110k</span><span>$150k</span>
                 </div>
+                <div class="hint" id="salaryScaleHint" style="display:none;"></div>
             </div>
 
             <div class="form-group">
@@ -885,7 +886,8 @@
 
             <div class="ps-section">
                 <div class="ps-heading">Income goal</div>
-                <div class="ps-row"><span>Target take-home (after tax)</span><span>$<span id="ps-takehome">—</span></span></div>
+                <div class="ps-row"><span>Full-time equivalent salary</span><span>$<span id="ps-ftesalary">—</span></span></div>
+                <div class="ps-row"><span>Target take-home at <span id="ps-dayslabel">—</span></span><span>$<span id="ps-takehome">—</span></span></div>
                 <div class="ps-row"><span>Gross income needed</span><span>$<span id="ps-gross">—</span></span></div>
             </div>
 
@@ -1037,10 +1039,14 @@
     }
 
     function calculate() {
-        const targetNet    = parseFloat(document.getElementById('salarySlider').value);
-        const superRate    = parseFloat(document.getElementById('superannuation').value) || 11.5;
+        const fullTimeSalary = parseFloat(document.getElementById('salarySlider').value);
+        const superRate    = parseFloat(document.getElementById('superannuation').value) || 12;
         const adminPct     = parseFloat(document.getElementById('adminTime').value) || 20;
         const daysPerWeek  = parseFloat(document.getElementById('daysPerWeek').value) || 5;
+
+        // Scale income and hours proportionally by days/week
+        const daysFraction  = daysPerWeek / 5;
+        const targetNet     = fullTimeSalary * daysFraction;
 
         // Scale available hours by days/week fraction of full time (5 days)
         const ls           = lifestyleData[currentLifestyle];
@@ -1091,7 +1097,16 @@
         document.getElementById('totalSuper').textContent         = fmt(superAmount);
         document.getElementById('billableHours').textContent      = Math.round(billableHrs);
 
-        document.getElementById('salaryDisplay').textContent      = fmt(targetNet);
+        document.getElementById('salaryDisplay').textContent      = fmt(fullTimeSalary);
+
+        // Show scaled take-home if part time
+        const salaryHint = document.getElementById('salaryScaleHint');
+        if (daysPerWeek < 5) {
+            salaryHint.textContent = `At ${daysPerWeek} days/week: actual take-home $${fmt(targetNet)}/yr`;
+            salaryHint.style.display = '';
+        } else {
+            salaryHint.style.display = 'none';
+        }
 
         // Breakdown
         document.getElementById('calcGross').textContent          = fmt(gross);
@@ -1112,6 +1127,8 @@
 
         document.getElementById('ps-name').textContent        = nameVal || '—';
         document.getElementById('ps-level').textContent       = levelTxt;
+        document.getElementById('ps-ftesalary').textContent   = fmt(fullTimeSalary);
+        document.getElementById('ps-dayslabel').textContent   = daysPerWeek === 5 ? '5 days/week' : `${daysPerWeek} days/week`;
         document.getElementById('ps-takehome').textContent    = fmt(targetNet);
         document.getElementById('ps-gross').textContent       = fmt(gross);
         document.getElementById('ps-tax').textContent         = fmt(incomeTax);
