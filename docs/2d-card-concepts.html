@@ -24,45 +24,8 @@ body {
   background: #fff; border: 1px solid #ddd; border-radius: 4px;
   padding: 1.1rem 1.2rem; margin-bottom: 1rem;
 }
-.reframe h2 { font-size: 1rem; font-weight: 700; margin-bottom: 0.5rem; }
 .reframe p { font-size: 0.88rem; color: #444; line-height: 1.6; margin-bottom: 0.5rem; }
 .reframe p:last-child { margin-bottom: 0; }
-.compare {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin: 0.75rem 0;
-}
-@media (max-width: 480px) { .compare { grid-template-columns: 1fr; } }
-.compare-col {
-  padding: 0.65rem 0.85rem; border-radius: 3px; font-size: 0.85rem; line-height: 1.5;
-}
-.compare-col.before { background: #f5f5f2; border: 1px solid #ddd; color: #888; }
-.compare-col.after  { background: #f0f7ee; border: 1px solid #b8ddb0; color: #2a5a20; }
-.compare-col .clabel {
-  font-size: 0.67rem; font-weight: 700; text-transform: uppercase;
-  letter-spacing: 0.6px; margin-bottom: 0.3rem; display: block;
-}
-.compare-col.before .clabel { color: #aaa; }
-.compare-col.after  .clabel { color: #6aab5a; }
-.compare-col ul { padding-left: 1.1rem; margin: 0; }
-.compare-col ul li { margin-bottom: 0.2rem; }
-
-.w4-block {
-  background: #fff8e6; border: 1px solid #e8c84a; border-radius: 4px;
-  padding: 1rem 1.2rem; margin-bottom: 1rem;
-}
-.w4-block h2 { font-size: 0.88rem; font-weight: 700; color: #7a5c00; margin-bottom: 0.5rem; }
-.w4-block .q {
-  padding: 0.35rem 0 0.35rem 1.25rem; position: relative;
-  font-size: 0.87rem; color: #3a3000; line-height: 1.5;
-  border-bottom: 1px solid rgba(200,160,0,0.2);
-}
-.w4-block .q:last-of-type { border-bottom: none; padding-bottom: 0; }
-.w4-block .q::before { content: '→'; position: absolute; left: 0; color: #b09000; }
-.w4-block .links {
-  margin-top: 0.7rem; padding-top: 0.6rem;
-  border-top: 1px solid rgba(200,160,0,0.25);
-  font-size: 0.82rem; color: #7a5c00;
-}
-.w4-block .links a { color: #5a4400; font-weight: 600; }
 
 .picker-label {
   font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
@@ -94,7 +57,6 @@ body {
 
 .results { display: none; }
 .results.show { display: block; }
-.theme-echo strong { color: #1a1a1a; }
 
 .card {
   background: #fff; border-radius: 4px; border: 1px solid #ddd;
@@ -182,10 +144,6 @@ details.other-details[open] summary::before { content: '▾  '; }
     <p><strong>A subject is a starting point — a concept is what you do with it.</strong> "Birds" is a subject. "One bird species, court cards as elaborate poses, number cards as silhouettes" is a concept.</p>
   </div>
 
-
-<!-- Theme input -->
-
-  <!-- Area picker -->
   <div class="picker-label">Which area interests you most?</div>
   <div class="area-grid">
     <button class="area-btn" onclick="selectArea('illustration')" id="btn-illustration">
@@ -194,7 +152,7 @@ details.other-details[open] summary::before { content: '▾  '; }
     </button>
     <button class="area-btn" onclick="selectArea('photography')" id="btn-photography">
       <span class="aname">Photography</span>
-      <span class="adesc">Curating and compositing found images</span>
+      <span class="adesc">Your own photos or curated found images</span>
     </button>
     <button class="area-btn" onclick="selectArea('typography')" id="btn-typography">
       <span class="aname">Typography</span>
@@ -204,8 +162,12 @@ details.other-details[open] summary::before { content: '▾  '; }
       <span class="aname">Pattern and geometry</span>
       <span class="adesc">Repeating systems, shapes, surface design</span>
     </button>
-    <button class="area-btn" onclick="selectArea('graphic')" id="btn-graphic" style="grid-column: span 2;">
-      <span class="aname">Graphic and simple</span>
+    <button class="area-btn" onclick="selectArea('remix')" id="btn-remix">
+      <span class="aname">Remix and repurpose</span>
+      <span class="adesc">Transform public domain images, prints, or paintings into something new</span>
+    </button>
+    <button class="area-btn" onclick="selectArea('graphic')" id="btn-graphic">
+      <span class="aname">Graphic and bold</span>
       <span class="adesc">Bold, flat, few elements — high impact without complex drawing skills</span>
     </button>
   </div>
@@ -214,7 +176,6 @@ details.other-details[open] summary::before { content: '▾  '; }
 
   <div class="results" id="results">
 
-    <!-- Concept model -->
     <div class="card">
       <div class="card-head c-concept">What a concept in this area looks like</div>
       <div class="card-body">
@@ -232,7 +193,6 @@ details.other-details[open] summary::before { content: '▾  '; }
       </div>
     </div>
 
-    <!-- Example -->
     <div class="card">
       <div class="card-head c-example">Example to look at</div>
       <div class="card-body">
@@ -245,22 +205,20 @@ details.other-details[open] summary::before { content: '▾  '; }
       </div>
     </div>
 
-    <!-- How to -->
     <div class="card">
       <div class="card-head c-howto">How to develop this concept</div>
       <div class="card-body">
-        <div class="field-label">Step 1 — Understand the prompt</div>
+        <div class="field-label">Step 1 — Research and gather</div>
         <div class="field-value" id="f-howto-research"></div>
-        <div class="field-label">Step 2 — Generate thumbnails</div>
+        <div class="field-label">Step 2 — Sketch thumbnails</div>
         <div class="field-value" id="f-howto-thumbnails"></div>
         <div class="field-label">Step 3 — Develop a rough</div>
         <div class="field-value" id="f-howto-rough"></div>
-        <div class="field-label">Step 4 — Presentation and write-up</div>
+        <div class="field-label">Step 4 — Document it</div>
         <div class="field-value" id="f-howto-writeup"></div>
       </div>
     </div>
 
-    <!-- Colour -->
     <div class="card">
       <div class="card-head c-colour">Colour starting point</div>
       <div class="card-body">
@@ -268,7 +226,6 @@ details.other-details[open] summary::before { content: '▾  '; }
       </div>
     </div>
 
-    <!-- Sketch -->
     <div class="card">
       <div class="card-head c-sketch">Try this</div>
       <div class="card-body">
@@ -279,7 +236,6 @@ details.other-details[open] summary::before { content: '▾  '; }
       </div>
     </div>
 
-    <!-- Evidence -->
     <div class="card">
       <div class="card-head c-evidence">Process evidence to collect</div>
       <div class="card-body">
@@ -304,7 +260,7 @@ var areas = {
       {
         title: "One subject, many variations",
         detail: "Pick one animal, bird, or plant. Focus your energy on the court cards (Jack, Queen, King), the Ace of Spades, and the Joker — these are the cards that carry the most visual weight. Draw your subject in different poses, expressions, or states for each of these. Number cards can use simpler or repeated versions of the same image. The deck holds together because every card shares the same character.",
-        note: "You're not drawing 54 unique illustrations — the court cards, the Ace of Spades, and the Joker do the heavy lifting visually. Number cards use a simpler or repeated version of the same image. The constraint is the concept: one subject, one visual system."
+        note: "You're not drawing 54 unique illustrations — the court cards, the Ace of Spades, and the Joker do the heavy lifting. Number cards use a simpler or repeated version of the same image. The constraint is the concept: one subject, one visual system."
       },
       {
         title: "Natural history plate style",
@@ -351,19 +307,19 @@ var areas = {
     ],
     howtos: [
       {
-        research: "" + OPT + " Go outside onto Dawson St or around the campus. Find a plant, a tree, a piece of bark — something with a strong, clear shape. Sketch it directly from observation for five minutes. Drawing from life produces more interesting results than drawing from a screen. Alternatively, visit the RMIT Brunswick library and ask for books on botanical illustration or natural history field guides. For digital reference, the Biodiversity Heritage Library on Flickr and rawpixel.com/category/53/public-domain both have free public domain specimens suitable for commercial use.",
-        thumbnails: "Draw 12 thumbnails — small rectangles in playing card proportions, about the size of a matchbox. For each one, draw your subject in a different pose, angle, or state. Set a timer: one minute per thumbnail maximum. You're working out what the subject looks like at card scale and which poses have the strongest silhouette. Don't add detail — just the essential shapes.",
-        rough: "Pick your two or three strongest thumbnails. Your rough should show at least one court card in enough detail that someone can understand the visual style — the line quality, the level of detail, the colour approach. Draw it at actual card size (64 × 89mm) or larger in any medium. Add the suit symbol and card number to show how the illustration and functional elements sit together.",
-        writeup: "Photograph or scan your thumbnails and your rough. Add them to your concept presentation slides — thumbnails on one slide, developed rough on the next. Write two or three sentences: what the illustration style is, why it suits the target audience, and what the card back pattern will look like. This is your AT1A-B Part B4 evidence."
+        research: OPT + " Go outside onto Dawson St or around campus and find something with a strong, clear shape — a plant, bark, a leaf. Sketch it for five minutes from life. For digital reference, the Biodiversity Heritage Library on Flickr and rawpixel.com/category/53/public-domain both have free public domain specimens you can use commercially.",
+        thumbnails: "Draw 12 small rectangles in playing card proportions — roughly matchbox size. In each one, draw your subject in a different pose or angle, one minute maximum each. You're working out which poses have the strongest silhouette at card scale. No detail — just the essential shapes.",
+        rough: "Pick your two or three strongest thumbnails and develop the best into a rough at actual card size (64 × 89mm) or larger. Show at least one court card in enough detail that someone can see the line quality, level of detail, and colour approach. Add the suit symbol and card number to show how illustration and functional elements sit together.",
+        writeup: "Photograph or scan your thumbnails and your rough. Add them to your concept presentation slides. Write two or three sentences: what the illustration style is, why it suits the target audience, and what the card back pattern will look like."
       }
     ],
     colours: [
       {
-        direction: "Open your mood board. Find the image with the strongest colour combination — the one your eye goes to first. Drag it into Adobe Color (color.adobe.com) and use Extract Theme. From the five colours it gives you, pick one for the card background and one for the line work. That\'s enough to start.",
+        direction: "Open your mood board. Find the image with the strongest colour combination — the one your eye goes to first. Drag it into Adobe Color (color.adobe.com) and use Extract Theme. From the five colours it gives you, pick one for the card background and one for the line work. That's enough to start.",
         how: ""
       },
       {
-        direction: "Look at your ideation sketches. What colours did you naturally reach for — pencil, pen, marker? If you drew mostly in black, that\'s telling you something. Try: black line work on a warm cream background, with one muted colour for the suit symbols only.",
+        direction: "Look at your ideation sketches. What colours did you naturally reach for — pencil, pen, marker? If you drew mostly in black, that's telling you something. Try: black line work on a warm cream background, with one muted colour for the suit symbols only.",
         how: ""
       },
       {
@@ -373,11 +329,11 @@ var areas = {
     ],
     sketches: [
       {
-        now: "Draw your subject three times on the same page — once very quickly (30 seconds), once more carefully (2 minutes), once from a different angle or in a different state. Don\'t erase anything. You\'re looking for which version has the strongest silhouette at small scale.",
+        now: "Draw your subject three times on the same page — once very quickly (30 seconds), once more carefully (2 minutes), once from a different angle or in a different state. Don't erase anything. You're looking for which version has the strongest silhouette at small scale.",
         then: "Draw a playing card rectangle in your sketchbook — taller than wide, roughly matchbox size. Place your best version of the subject inside it. Fit in the card number and suit symbol. Try two different layouts: number in the corner, and number along the edge."
       },
       {
-        now: "" + OPT + " Go outside and find something to draw directly from observation — a plant, bark, a leaf. Spend five minutes sketching it. Draw what you actually see, not what you think it looks like.",
+        now: OPT + " Go outside and find something to draw directly from observation — a plant, bark, a leaf. Spend five minutes sketching it. Draw what you actually see, not what you think it looks like.",
         then: "Back at your desk, simplify your sketch down to its most essential shapes — the version you could cut from paper with scissors. Draw it again inside a playing card rectangle. Where do the number and suit symbol sit?"
       }
     ],
@@ -392,9 +348,14 @@ var areas = {
   photography: {
     concepts: [
       {
-        title: "Found texture as the card background",
-        detail: "Photograph or source close-up images of surfaces — brick, timber, bark, painted wall, stone, fabric, water. Each suit uses a different texture as its card background. The suit symbol and card number sit on top. The card back is a cropped and tiled section of one texture.",
-        note: "The design decision is which textures to pair with which suits, and why. That reasoning is what makes it a concept rather than just a collage."
+        title: "Your own photography — texture and close-up",
+        detail: "Go out and photograph surfaces: brick, timber, bark, painted wall, stone, fabric, water. Get as close as your phone will focus. Each suit uses a different texture as its card background, with the suit symbol and card number placed on top. The card back is a cropped section of one texture tiled as a pattern.",
+        note: "The design decision is which textures to pair with which suits, and why. Using your own photographs also means the imagery is entirely original — no licensing to worry about."
+      },
+      {
+        title: "Your own photography — consistent subject and treatment",
+        detail: "Shoot a series of photographs around a single theme — Melbourne architecture, plants, everyday objects, street details. Apply the same editing treatment (warm, cool, high contrast, desaturated) to every image. The deck has visual unity because every card is processed identically, even though the subjects differ.",
+        note: "The treatment IS the concept. Consistent editing can hold 54 different photographs together into something that looks like it belongs in one box."
       },
       {
         title: "Australian archive photography",
@@ -403,13 +364,8 @@ var areas = {
       },
       {
         title: "Macro and close-up abstraction",
-        detail: "Source or photograph extreme close-ups of everyday objects — the surface of a coin, wood grain, a cross-section of fruit, worn paint on metal, woven fabric. At card size, close-up photography becomes abstract. Each suit is a different category of object.",
+        detail: "Photograph or source extreme close-ups of everyday objects — the surface of a coin, wood grain, a cross-section of fruit, worn paint on metal, woven fabric. At card size, close-up photography becomes abstract. Each suit is a different category of object.",
         note: "The brief says the target audience is comfortable with unconventional visual language. A deck where the images aren't immediately identifiable is a strong design choice — not a risky one."
-      },
-      {
-        title: "Consistent colour grade, varied subject",
-        detail: "Source photographs from a public domain library around a single theme — Australian landscapes, architecture, flora, or historical scenes. Apply the same colour treatment to every image. The deck has visual unity because every card is processed identically, even though the subjects differ.",
-        note: "The treatment IS the concept. Every card looking like it came from the same roll of film is a design decision that holds 54 different images together."
       }
     ],
     examples: [
@@ -436,10 +392,10 @@ var areas = {
     ],
     howtos: [
       {
-        research: "" + OPT + " Go on a texture hunt around the Brunswick campus or Dawson St. Photograph close-up surfaces — brick walls, timber facade, bark, concrete, painted surfaces. Aim for ten images, getting as close as your phone will focus. Alternatively, go to the State Library Victoria digitised collections (slv.vic.gov.au) or Trove (trove.nla.gov.au) and search for Australian historical photographs related to your concept direction. Save at least five options and check the rights status on each image before using.",
-        thumbnails: "Draw 12 thumbnails — small playing card rectangles. For each one, sketch a different layout: where does the photograph sit, where do the suit symbol and number go, how much of the card does the image fill? Try: full bleed image with text on top, image in a frame with coloured border, cropped detail versus full subject. You're solving a layout problem, not drawing the photograph.",
-        rough: "Choose your strongest layout. Find or photograph the actual image you want to use and apply your layout to it in Photoshop or Illustrator. Your rough should show at least one card at close to actual size with a real image in place — not a placeholder. If your concept uses a consistent colour treatment (duotone, high contrast black and white), apply that treatment to the image and show it in the rough.",
-        writeup: "Screenshot your image sources showing the licence or rights status — this is evidence that you've used commercially suitable images. Add your layout thumbnails and developed rough to your concept presentation slides. Write two or three sentences: what the image subject is, where the images come from and why they're suitable, and how the treatment creates visual unity across the deck."
+        research: OPT + " Go on a texture or subject hunt around the Brunswick campus or Dawson St. Aim for ten close-up photographs, getting as close as your phone will focus. Alternatively, go to the State Library Victoria digitised collections (slv.vic.gov.au) or Trove (trove.nla.gov.au) and search for Australian historical photographs. Check the rights status on each image before using.",
+        thumbnails: "Draw 12 small playing card rectangles. For each one, sketch a different layout: where does the photograph sit, where do the suit symbol and number go, how much of the card does the image fill? You're solving a layout problem — you don't need to draw the photographs themselves.",
+        rough: "Choose your strongest layout and find or take the actual image you want to use. Place it in your layout in Photoshop or Illustrator — your rough should show at least one card with a real image in place, not a placeholder. If your concept uses a consistent colour treatment, apply it and show it in the rough.",
+        writeup: "Screenshot your image sources showing the licence or rights status — this is evidence that you've used commercially suitable images. For your own photos, note that they're original. Add your layout sketches and rough card to your concept presentation slides. Write two or three sentences: what the image subject is, where the images come from, and how the treatment creates visual consistency across the deck."
       }
     ],
     colours: [
@@ -448,7 +404,7 @@ var areas = {
         how: ""
       },
       {
-        direction: "Look at the tones in the photographs you\'re planning to use. Are they warm or cool? Light or dark? Match your card background colour to that quality — a warm image on a warm background, a cold high-contrast image on a dark background.",
+        direction: "Look at the tones in the photographs you're planning to use. Are they warm or cool? Light or dark? Match your card background colour to that quality — a warm image on a warm background, a cold high-contrast image on a dark background.",
         how: ""
       },
       {
@@ -458,18 +414,18 @@ var areas = {
     ],
     sketches: [
       {
-        now: "Before sourcing any images, sketch three different card layouts in your sketchbook: where does the photograph sit, where do the number and suit symbol go, how much of the card does the image fill? These are layout decisions — make them on paper first.",
-        then: "Now look at your mood board or your texture hunt photographs. Which image fits your best layout? Sketch a rough version of that card — draw the image area as a toned rectangle and place the text elements on top. Does the layout work with this image?"
+        now: "Before sourcing or taking any images, sketch three different card layouts in your sketchbook: where does the photograph sit, where do the number and suit symbol go, how much of the card does the image fill? Make these decisions on paper first.",
+        then: "Now look at your mood board or texture hunt photographs. Which image fits your best layout? Sketch a rough version of that card — draw the image area as a toned rectangle and place the text elements on top. Does the layout work with this image?"
       },
       {
-        now: "Find one image that fits your concept direction — from your mood board, your texture hunt, or the State Library Victoria. Print it or keep it on screen. Sketch it very roughly inside a playing card rectangle, blocking in light and dark areas only.",
+        now: "Find or take one image that fits your concept direction. Sketch it very roughly inside a playing card rectangle, blocking in light and dark areas only.",
         then: "Try three different crops of the same image in your sketchbook. Which crop is most interesting at card size — the whole image, a detail, or an edge? Keep all three sketches."
       }
     ],
     evidence: [
-      "Screenshot of each image source page showing the image title and its licence",
+      "Screenshot of each image source page showing the image title and its licence — or, for your own photos, a note that they are original",
       "Photos or screenshots of images you considered but rejected — show your selection process",
-      "Screenshot of your Photoshop colour treatment before and after",
+      "Screenshot of your colour treatment before and after, if you applied one",
       "Screenshot of an early card layout before you made adjustments",
       "A note in your process document: where did you source the images and why are they suitable for commercial use?"
     ]
@@ -522,9 +478,9 @@ var areas = {
     ],
     howtos: [
       {
-        research: "" + OPT + " Do a type hunt on or around the Brunswick campus. Walk along Dawson St and photograph interesting letterforms — shop signs, painted numbers, street stencils, street art lettering. Collect at least ten examples. Back at your desk, look at what you found: what makes some letterforms more interesting than others at small scale? Alternatively, spend fifteen minutes on fonts.google.com browsing typefaces. Filter by number of styles to find families with multiple weights. Screenshot three that feel right for your concept and write one word next to each describing what it communicates.",
-        thumbnails: "Draw 12 thumbnails — small playing card rectangles. For each one, try a different way of placing the card number or letter as the main visual: very large and cropped at the edges, centred with space around it, pushed to one corner, rotated, two numbers overlapping. Use a pencil and write the letter or number freehand — this is faster than going to a computer at this stage. You're exploring scale and position.",
-        rough: "Pick your strongest thumbnail and set it up in Illustrator using an actual typeface. Your rough should show at least one card — the King or Ace of Spades are good choices — at close to actual size. Include the corner identifiers (small number and suit symbol, top-left and bottom-right, the bottom-right rotated 180°). Try at least two different type sizes before settling.",
+        research: OPT + " Do a type hunt on or around the Brunswick campus. Walk along Dawson St and photograph interesting letterforms — shop signs, painted numbers, street stencils, street art lettering. Alternatively, spend fifteen minutes on fonts.google.com browsing typefaces, filtering by number of styles to find families with multiple weights. Screenshot three that feel right for your concept.",
+        thumbnails: "Draw 12 small playing card rectangles. In each one, try a different way of placing the card number or letter as the main visual: very large, centred with space around it, pushed to one corner, rotated, two numbers overlapping. Write the letter freehand in pencil — faster than going to a computer at this stage.",
+        rough: "Pick your strongest thumbnail and set it up in Illustrator using an actual typeface. Show at least one card at close to actual size, including the small corner number and suit symbol. Try at least two different type sizes before settling.",
         writeup: "Screenshot the typefaces you considered and the one you chose. Add your thumbnails and Illustrator rough to your concept presentation slides. Write two or three sentences: which typeface you chose and why, what it communicates to a design-conscious buyer, and how suits will be differentiated across the deck."
       }
     ],
@@ -545,7 +501,7 @@ var areas = {
     sketches: [
       {
         now: "Write the number 7 in your sketchbook as large as the page allows. Write it four more times — thin, thick, tall and narrow, wide and squat. Which version has the most character? Now draw it inside a playing card rectangle with the number filling most of the card face.",
-        then: "Draw the same card three more times, each time moving the large 7 to a different position — centred, pushed to one side, cropped at the edge. Add the corner identifiers (small number and suit symbol). Which layout reads best as a playing card?"
+        then: "Draw the same card three more times, each time moving the large 7 to a different position — centred, pushed to one side, cropped at the edge. Add the small corner number and suit symbol. Which layout reads best as a playing card?"
       },
       {
         now: "Write the letters K, Q, J and A in your sketchbook — one per page quarter — each as large as that quarter allows. These are the cards that carry the most visual weight. Which letter has the most interesting shape to work with?",
@@ -586,7 +542,7 @@ var areas = {
     ],
     examples: [
       {
-        name: "Illustrator\'s built-in pattern tool",
+        name: "Illustrator's built-in pattern tool",
         why: "Illustrator has a pattern-making tool that handles tiling automatically. Worth learning early — you will need it for the card back regardless of your overall concept.",
         link: "YouTube: Illustrator pattern tool beginners"
       },
@@ -608,10 +564,10 @@ var areas = {
     ],
     howtos: [
       {
-        research: "" + OPT + " Go on a pattern hunt around the Brunswick campus or nearby streets. Look for repeating structures: the brick bond on the campus walls, the timber facade boards, a grate, paving, a fence. Photograph or sketch at least three. Back at your desk, simplify one to a basic geometric structure — ignore colour and texture, just get the rhythm of the repeat. This is your starting point. Alternatively, search Behance for 'geometric playing cards' and spend fifteen minutes looking at how pattern systems work across a full deck. Save three examples.",
-        thumbnails: "Draw 12 thumbnails — small playing card rectangles. For each one, try a different version of your pattern: change the scale of the repeating unit, the spacing, the direction, or the density. Some should feel too dense, some too sparse — you're finding the right weight for card scale. Then draw two or three thumbnails showing the same pattern applied differently: one as a number card, one as a face card, one as the card back.",
-        rough: "Pick your strongest pattern. For a pattern concept, your rough needs to show at least three things: one number card, one court card, and the card back — because the relationship between these three is what communicates the concept. Build the pattern in Illustrator using the Pattern tool and apply it to card-sized rectangles. Add suit symbols and card numbers to show how the functional elements work with the pattern.",
-        writeup: "Screenshot your pattern hunt research and your Illustrator pattern tile settings. Add the thumbnails and three-card rough to your concept presentation slides. Write two or three sentences: what the pattern source or logic is, how suits are differentiated, and why the visual system works at the scale and context of a premium playing card deck."
+        research: OPT + " Go on a pattern hunt around the Brunswick campus or nearby streets. Look for repeating structures: the brick bond on the campus walls, the timber facade boards, a grate, paving, a fence. Photograph or sketch at least three. Alternatively, search Behance for 'geometric playing cards' and spend fifteen minutes looking at how pattern systems work across a full deck.",
+        thumbnails: "Draw 12 small playing card rectangles. For each one, try a different version of your pattern: change the scale of the repeating unit, the spacing, the direction, or the density. Some should feel too dense, some too sparse — you're finding the right weight for card scale.",
+        rough: "Pick your strongest pattern. For a pattern concept, your rough needs to show at least three things: one number card, one court card, and the card back. Build the pattern in Illustrator using the Pattern tool and apply it to card-sized rectangles. Add suit symbols and card numbers to show how the functional elements work with the pattern.",
+        writeup: "Screenshot your pattern research and your Illustrator pattern tile settings. Add the thumbnails and three-card rough to your concept presentation slides. Write two or three sentences: what the pattern source or logic is, how suits are differentiated, and why the visual system works at card scale."
       }
     ],
     colours: [
@@ -620,7 +576,7 @@ var areas = {
         how: ""
       },
       {
-        direction: "Look at your pattern hunt sketches or photographs from campus. What colours are in the source material — the brick, the timber, the paving? Pick two of those tones and use them as your pattern\'s foreground and background.",
+        direction: "Look at your pattern hunt sketches or photographs from campus. What colours are in the source material — the brick, the timber, the paving? Pick two of those tones and use them as your pattern's foreground and background.",
         how: ""
       },
       {
@@ -634,7 +590,7 @@ var areas = {
         then: "Draw a playing card rectangle and fill it with your favourite variation. Add a suit symbol and card number. Does the pattern overwhelm the functional elements or work with them? Try adjusting the density."
       },
       {
-        now: "" + OPT + " Look at your pattern hunt photographs or sketches from campus. Pick one pattern source — the brick bond, the timber boards, a grate. Sketch its basic geometry on paper, simplified to lines and shapes only, ignoring colour and texture.",
+        now: OPT + " Look at your pattern hunt photographs or sketches from campus. Pick one pattern source — the brick bond, the timber boards, a grate. Sketch its basic geometry on paper, simplified to lines and shapes only, ignoring colour and texture.",
         then: "Repeat that simplified pattern to fill a playing card rectangle. Then draw it again at half the density and again at double the density. Which density reads best at card scale?"
       }
     ],
@@ -644,6 +600,102 @@ var areas = {
       "Screenshot of your Illustrator pattern editor showing the tile settings",
       "Screenshot of the pattern applied to a full card layout before any adjustments",
       "A note in your process document: which source and arrangement did you settle on, and why?"
+    ]
+  },
+
+  remix: {
+    concepts: [
+      {
+        title: "Old master paintings, redesigned",
+        detail: "Source paintings from public domain collections — Wikimedia Commons, the Metropolitan Museum, the Art Institute of Chicago. Crop, recolour, apply a graphic treatment (duotone, posterise, screen-print effect), or cut elements out to collage them with new backgrounds. The concept is what you do to the source, not just the source itself.",
+        note: "Remixing fine art is a well-established commercial design tradition — you can buy this kind of deck in every gallery shop. The quality of the concept comes from the consistency and intelligence of the transformation, not from simply placing a painting on a card."
+      },
+      {
+        title: "Botanical and natural history prints, reworked",
+        detail: "The Biodiversity Heritage Library and Rawpixel have thousands of free botanical and zoological engravings. Isolate the specimen illustrations, strip the backgrounds, add solid colour, apply an overprint-style colour treatment, or combine them with geometric shapes. Each suit is a different species category.",
+        note: "Natural history illustration is one of the most commercially successful design territories for premium card decks. The transformation step — what you do to the source — is what makes it a design project rather than just a download."
+      },
+      {
+        title: "Victorian and Edwardian ephemera collage",
+        detail: "Source decorative frames, ornamental borders, typographic flourishes, and illustrated vignettes from 19th century printed material — all freely available on Rawpixel and the Internet Archive. Combine them in new layouts to build each card. The card back is a dense pattern of ornamental elements.",
+        note: "The brief mentions design-conscious adults as the target audience — these are people who appreciate historical visual references. A well-executed Victorian collage deck is both historically grounded and visually distinctive."
+      },
+      {
+        title: "Maps and diagrams, recontextualised",
+        detail: "Source antique maps, scientific diagrams, or technical drawings from public domain archives. Crop them to card proportions, apply a colour treatment, and overlay the card numbers and suit symbols using a typeface that complements the era of the source material.",
+        note: "The concept here is about context shift — something designed as a technical document becomes the surface of a playing card. The tension between original function and new use is interesting."
+      },
+      {
+        title: "Folk art and pattern, adapted",
+        detail: "Research a specific folk art tradition — Japanese katazome, Eastern European embroidery, West African kente, Aboriginal design principles, Indian block printing. Adapt the visual language into a card system without copying specific cultural artworks. Use the grammar of the tradition — its geometry, colour relationships, and symmetry — as your design starting point.",
+        note: "Adaptation is not copying. The key is deep enough research that you can describe the visual logic of the tradition, not just its surface appearance. This is also a concept where cultural respect matters: research the tradition, credit your sources, and focus on formal properties rather than sacred symbols."
+      }
+    ],
+    examples: [
+      {
+        name: "Rawpixel — free public domain art and illustration",
+        why: "One of the best-organised sources of public domain imagery. Includes paintings, botanical prints, vintage posters, maps, and decorative elements, all clearly labelled as free for commercial use.",
+        link: "rawpixel.com — browse by category or search by subject"
+      },
+      {
+        name: "Wikimedia Commons — public domain fine art",
+        why: "Reproduction-quality scans of paintings and prints from major collections worldwide. Check the rights status on each file — look for 'Public Domain' or 'CC0'.",
+        link: "commons.wikimedia.org — search by artist, period, or subject"
+      },
+      {
+        name: "Biodiversity Heritage Library on Flickr",
+        why: "Thousands of botanical and zoological illustrations from 18th and 19th century natural history publications. All public domain, high resolution, free for commercial use.",
+        link: "flickr.com/photos/biodivlibrary"
+      },
+      {
+        name: "The Metropolitan Museum of Art — open access collection",
+        why: "Over 400,000 artworks available for free download and commercial use. Includes paintings, prints, drawings, textiles, and decorative arts across all periods.",
+        link: "metmuseum.org/art/collection — filter by Open Access"
+      },
+      {
+        name: "Internet Archive — vintage ephemera and printed material",
+        why: "Books, posters, magazines, and illustrated periodicals, many out of copyright. Useful for Victorian ornament, decorative borders, and typographic material.",
+        link: "archive.org — search by subject or decade"
+      }
+    ],
+    howtos: [
+      {
+        research: "Start by identifying your source material. Go to rawpixel.com or Wikimedia Commons and search for the type of image you want to work with — botanical prints, old master paintings, antique maps, Victorian ornament. Save at least ten options. Then decide: what will you do to these images? Recolour, crop, apply a graphic treatment, or combine them with new elements?",
+        thumbnails: "Draw 12 small playing card rectangles. For each one, sketch a different way of using your source material: full image on the card, cropped to a detail, treated with a strong colour overlay, combined with a geometric shape or new typographic element. You're designing a transformation system, not just a frame.",
+        rough: "Choose your strongest direction and apply it to a real image in Illustrator or Photoshop. Your rough should show at least one court card and one number card, so the system across different card types is clear. The transformation — whatever you're doing to the source — needs to be visible and consistent.",
+        writeup: "Screenshot each source image with its Rawpixel or Wikimedia page showing it's free for commercial use — this is essential evidence. Add your thumbnails and rough to your concept presentation slides. Write two or three sentences: what the source material is, what transformation you're applying, and why the combination suits the brief."
+      }
+    ],
+    colours: [
+      {
+        direction: "Open one of your source images in Adobe Color (color.adobe.com) and use Extract Theme. The colours already in the original artwork are your starting palette. Decide whether to keep them as-is, shift them all in one direction (warmer, cooler, more muted), or replace them entirely with a new palette applied consistently across all cards.",
+        how: ""
+      },
+      {
+        direction: "Apply a two-colour treatment: convert your source image to black and white, then add one colour on top. This is called a duotone. Choose one colour per suit — all four duotone colours should work together when the cards are spread on a table.",
+        how: ""
+      },
+      {
+        direction: "Keep the colours of the original source material but apply them consistently across all cards. If your source uses dusty greens and ochres, everything in the deck uses dusty greens and ochres. The historical palette becomes the deck's palette.",
+        how: ""
+      }
+    ],
+    sketches: [
+      {
+        now: "Print or display one of your source images. Sketch it very roughly inside a playing card rectangle — don't copy it carefully, just block in the main shapes and tones. Then sketch it again, but this time remove one major element. What's left? Is it more or less interesting?",
+        then: "Sketch the same image a third time, but add something new on top — a geometric shape, a large card number, a solid colour block over part of the image. You're looking for the transformation that makes this a design, not just a picture."
+      },
+      {
+        now: "Choose two very different source images from the same category. Sketch both inside playing card rectangles. Side by side, do they look like they belong in the same deck? What would you need to add or change to make them feel related?",
+        then: "Sketch a card back using a small section of one of your source images, repeated to fill the rectangle. Does it tile in an interesting way? Try a different crop."
+      }
+    ],
+    evidence: [
+      "Screenshots of each source image page on Rawpixel, Wikimedia Commons, or equivalent — showing the image is free for commercial use",
+      "Screenshots of images you considered but rejected — show your selection process",
+      "Photo or screenshot of your transformation experiments — before and after applying your treatment",
+      "Screenshot of your Illustrator or Photoshop artboard showing the treatment applied to a real image",
+      "A note in your process document: what is the source, what did you do to it, and why does the combination suit the brief?"
     ]
   },
 
@@ -699,10 +751,10 @@ var areas = {
     ],
     howtos: [
       {
-        research: "" + OPT + " Find a reference for the graphic style you\'re pursuing. For silhouette: go to thenounproject.com and search for your subject — look at how complex things are reduced to simple shapes. For linocut or stamp: search Etsy for \"linocut playing cards\" or Behance for \"risograph playing cards\" and save three examples. For flat colour: look at your mood board and identify the strongest colour combination — that\'s your starting palette. " + OPT + " Make a simple stamp from a rubber eraser: carve a basic shape and test it on paper a few times. The result will tell you immediately what works at small scale.",
-        thumbnails: "Draw 12 thumbnails — small playing card rectangles. For silhouette: draw your subject as a filled solid shape 12 different ways — different sizes, positions, amounts of the card it fills. For flat colour: draw 12 different compositions using only simple shapes and no more than two colours. For stamp or linocut: draw 12 rough impressions varying the weight of line and density of marks. One minute per thumbnail maximum.",
-        rough: "Pick your strongest two or three thumbnails and develop the best into a rough at actual card size (64 × 89mm). For a graphic concept, push the rough close to finished — the simplicity of the approach means there\'s less to resolve later. Show the court card or Ace of Spades if your concept has a strong subject. Show a number card and the card back if the concept is colour or pattern-led.",
-        writeup: "Photograph or scan your thumbnails and rough. If you made physical stamps or marks, photograph those too — they\'re strong process evidence. Add everything to your concept presentation slides. Write two or three sentences: what the graphic approach is, what constraint you\'re working within (silhouette only, two colours, stamp marks), and why that constraint suits the retail environment in the brief."
+        research: OPT + " Find a reference for the graphic style you're pursuing. For silhouette: go to thenounproject.com and search for your subject — look at how complex things are reduced to simple shapes. For linocut or stamp: search Etsy for 'linocut playing cards' or Behance for 'risograph playing cards' and save three examples. For flat colour: look at your mood board and identify the strongest colour combination — that's your starting palette.",
+        thumbnails: "Draw 12 small playing card rectangles. For silhouette: draw your subject as a filled solid shape 12 different ways — different sizes, positions, amounts of the card it fills. For flat colour: draw 12 different compositions using only simple shapes and no more than two colours. One minute per thumbnail maximum.",
+        rough: "Pick your strongest two or three thumbnails and develop the best into a rough at actual card size (64 × 89mm). For a graphic concept, push the rough close to finished — the simplicity of the approach means there's less to resolve later. Show the court card or Ace of Spades if your concept has a strong subject; show a number card and the card back if it's colour or pattern-led.",
+        writeup: "Photograph or scan your thumbnails and rough. If you made physical stamps or marks, photograph those too — they're strong process evidence. Add everything to your concept presentation slides. Write two or three sentences: what the graphic approach is, what constraint you're working within (silhouette only, two colours, stamp marks), and why that constraint suits the retail environment in the brief."
       }
     ],
     colours: [
@@ -711,7 +763,7 @@ var areas = {
         how: ""
       },
       {
-        direction: "Look at the linocut or risograph references you found. How many colours do they use? Usually two or three. Pick one background colour and one foreground colour from your mood board and start there. Add a third only if the first two aren\'t enough.",
+        direction: "Look at the linocut or risograph references you found. How many colours do they use? Usually two or three. Pick one background colour and one foreground colour from your mood board and start there. Add a third only if the first two aren't enough.",
         how: ""
       },
       {
@@ -725,7 +777,7 @@ var areas = {
         then: "Take your best silhouette placement. Draw it four times with four different background tones — light, medium, dark, and very dark. Which background makes the silhouette read most clearly?"
       },
       {
-        now: "" + OPT + " Get four colours of pencil, crayon, or marker. Redraw one of the standard court figures (Jack, Queen, or King) from memory using only those four colours and simple flat shapes — no shading, no outlines where you can avoid them. You\'re reducing a figure to its most essential graphic shapes.",
+        now: OPT + " Get four colours of pencil, crayon, or marker. Redraw one of the standard court figures (Jack, Queen, or King) from memory using only those four colours and simple flat shapes — no shading, no outlines where you can avoid them. You're reducing a figure to its most essential graphic shapes.",
         then: "Look at what you drew. Which parts did you simplify most? Which parts were hardest to reduce? Draw the figure again, simplifying further — remove one more element than feels comfortable."
       }
     ],
@@ -763,12 +815,10 @@ function generate() {
   var colour   = getRandom(area.colours);
   var sketch   = getRandom(area.sketches);
 
-  // Concept card
   setText('f-concept-title', '<strong>' + concept.title + '</strong>');
   setText('f-concept-detail', concept.detail);
   setText('f-concept-note', concept.note);
 
-  // Other directions
   var others = area.concepts.filter(function(c) { return c.title !== concept.title; });
   var odHTML = others.map(function(c) {
     return '<div class="other-item"><strong>' + c.title + '</strong><span>' + c.detail + '</span></div>';
