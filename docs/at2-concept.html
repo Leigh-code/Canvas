@@ -6,7 +6,6 @@
 <title>AT2 concept generator — Sportsgirl SS26</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
 body {
   font-family: 'Georgia', serif;
   font-size: 15px;
@@ -15,9 +14,7 @@ body {
   background: #f5f4f0;
   padding: 1.5rem 1rem 4rem;
 }
-
 .wrap { max-width: 740px; margin: 0 auto; }
-
 /* ── Header ── */
 .header {
   background: #1a1a1a;
@@ -48,45 +45,6 @@ body {
   padding-top: 0.85rem;
   line-height: 1.5;
 }
-
-/* ── How to use ── */
-.how-to-use {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 3px;
-  padding: 1.1rem 1.25rem;
-  margin-bottom: 1rem;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 0.86rem;
-  color: #444;
-  line-height: 1.6;
-}
-.how-to-use strong { color: #1a1a1a; }
-.steps {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
-  margin-top: 0.75rem;
-}
-@media (max-width: 520px) { .steps { grid-template-columns: 1fr; } }
-.step {
-  background: #f5f4f0;
-  border: 1px solid #e0ddd8;
-  border-radius: 2px;
-  padding: 0.6rem 0.75rem;
-  font-size: 0.8rem;
-}
-.step .step-num {
-  display: block;
-  font-weight: 700;
-  font-size: 0.67rem;
-  text-transform: uppercase;
-  letter-spacing: 0.7px;
-  color: #999;
-  margin-bottom: 0.15rem;
-}
-.step p { color: #333; }
-
 /* ── Generate button ── */
 .btn-gen {
   display: block;
@@ -105,11 +63,9 @@ body {
   transition: background 0.15s;
 }
 .btn-gen:hover { background: #c91f6a; }
-
 /* ── Cards ── */
 .results { display: none; }
 .results.show { display: block; }
-
 .card {
   background: #fff;
   border: 1px solid #ddd;
@@ -117,24 +73,32 @@ body {
   margin-bottom: 0.85rem;
   overflow: hidden;
 }
-
 .card-head {
-  padding: 0.5rem 1rem;
+  padding: 0.55rem 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  font-size: 0.67rem;
+  font-size: 0.7rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 1px;
   color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
 }
-
-.c-concept   { background: #1a1a1a; }
-.c-process   { background: #3a3a3a; }
-.c-thinking  { background: #5a3a7a; }
-.c-colour    { background: #c9a4e8; color: #1a1a1a !important; }
-.c-rough     { background: #0057a8; }
-.c-sustain   { background: #3a7a5a; }
-
+.step-badge {
+  display: inline-block;
+  border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 2px;
+  padding: 0.05rem 0.4rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.5px;
+  opacity: 0.8;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.c-concept  { background: #1a1a1a; }
+.c-thinking { background: #5a3a7a; }
+.c-rough    { background: #0057a8; }
 .card-body {
   padding: 0.9rem 1.1rem 1rem;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -142,7 +106,6 @@ body {
   line-height: 1.6;
   color: #1a1a1a;
 }
-
 .field-label {
   font-size: 0.67rem;
   font-weight: 700;
@@ -150,16 +113,13 @@ body {
   letter-spacing: 0.6px;
   color: #aaa;
   margin-top: 0.85rem;
-  margin-bottom: 0.15rem;
+  margin-bottom: 0.2rem;
 }
 .field-label:first-child { margin-top: 0; }
-
 .field-value { color: #1a1a1a; }
 .field-value strong { color: #1a1a1a; }
 .field-value a { color: #0057a8; text-decoration: none; }
 .field-value a:hover { text-decoration: underline; }
-.concept-name a { color: #0057a8; }
-
 .concept-name {
   font-family: 'Georgia', serif;
   font-size: 1.15rem;
@@ -167,7 +127,6 @@ body {
   color: #1a1a1a;
   margin-bottom: 0.4rem;
 }
-
 .sustain-tag {
   display: inline-block;
   background: #f0f7ee;
@@ -177,41 +136,32 @@ body {
   font-size: 0.72rem;
   color: #2a5a20;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.4rem;
 }
-
-.process-steps {
-  counter-reset: step-counter;
-  list-style: none;
-  padding: 0;
+.step-rule {
+  border: none;
+  border-top: 1px solid #eeece8;
+  margin: 0.85rem -1.1rem 0.75rem;
 }
-.process-steps li {
-  counter-increment: step-counter;
-  position: relative;
-  padding: 0.45rem 0 0.45rem 1.8rem;
-  border-bottom: 1px solid #f0f0f0;
-  font-size: 0.88rem;
+.field-research {
+  font-style: italic;
+  color: #444;
+  background: #f9f8f5;
+  border-left: 3px solid #ddd;
+  padding: 0.5rem 0.7rem;
+  border-radius: 0 2px 2px 0;
+  font-size: 0.87rem;
   line-height: 1.5;
 }
-.process-steps li:last-child { border-bottom: none; padding-bottom: 0; }
-.process-steps li::before {
-  content: counter(step-counter);
-  position: absolute;
-  left: 0;
-  top: 0.45rem;
-  background: #1a1a1a;
-  color: #fff;
-  width: 1.15rem;
-  height: 1.15rem;
-  border-radius: 50%;
-  font-size: 0.65rem;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
+.sketch-core {
+  background: #f5f4f0;
+  border: 1px solid #e0ddd8;
+  border-radius: 2px;
+  padding: 0.65rem 0.8rem;
+  font-size: 0.87rem;
+  line-height: 1.55;
+  color: #1a1a1a;
 }
-
 .checklist {
   list-style: none;
   padding: 0;
@@ -227,7 +177,6 @@ body {
 }
 .checklist li:last-child { border-bottom: none; }
 .checklist li::before { content: '☐'; position: absolute; left: 0.1rem; color: #ccc; }
-
 /* ── Other directions ── */
 details.others {
   border: 1px solid #eee;
@@ -257,7 +206,6 @@ details.others[open] summary::before { content: '▾  '; }
 .other-item:last-child { border-bottom: none; padding-bottom: 0; }
 .other-item strong { display: block; color: #1a1a1a; font-style: italic; font-family: 'Georgia', serif; margin-bottom: 0.1rem; }
 .other-item span { color: #555; line-height: 1.45; display: block; }
-
 /* ── Reset ── */
 .btn-reset {
   display: block;
@@ -278,91 +226,72 @@ details.others[open] summary::before { content: '▾  '; }
 </head>
 <body>
 <div class="wrap">
-
   <div class="header">
     <h1>AT2 concept generator</h1>
     <div class="sub">Sportsgirl SS26 &nbsp;·&nbsp; GRAP6344C</div>
     <div class="brief-note">
-      Use this once per concept. Each generate gives you a starting direction — you decide how far to take it. Aim for three concepts that are distinct from each other but work together as a range. One package presented well is enough to represent the full collection.
+      Each generate gives you one example of how you might approach a concept across three steps. Take what's useful — adapt it, use it verbatim, or ignore the parts that don't fit. Run it again for a different starting point.
     </div>
   </div>
-
-  <div class="how-to-use">
-    <strong>Your process for each concept:</strong>
-    <div class="steps">
-      <div class="step">
-        <span class="step-num">Step 1</span>
-        <p>Do some light visual research into the concept direction — not to find answers, but to build a visual vocabulary. Go deeper into what the mood board is pointing at.</p>
-      </div>
-      <div class="step">
-        <span class="step-num">Step 2</span>
-        <p>Sketch 12 thumbnails — quick visualisations of what a package in this style could look like. The generator gives you a direction, not a prescription. Use the sketching prompt if you need a way in.</p>
-      </div>
-      <div class="step">
-        <span class="step-num">Step 3</span>
-        <p>Create a rough showing one package plus the design system elements: pattern, colour swatches, type treatment. This is what goes in your presentation.</p>
-      </div>
-    </div>
-  </div>
-
   <button class="btn-gen" onclick="generate()">Generate concept direction ♡</button>
-
   <div class="results" id="results">
 
+    <!-- Step 1 -->
     <div class="card">
-      <div class="card-head c-concept">Concept direction</div>
+      <div class="card-head c-concept"><span class="step-badge">Step 1</span>Concept direction</div>
       <div class="card-body">
         <div class="concept-name" id="f-concept-name"></div>
         <div class="field-value" id="f-concept-body"></div>
+        <hr class="step-rule">
+        <div class="field-label">Re-use or sustainability idea</div>
+        <div><span class="sustain-tag" id="f-sustain-tag"></span></div>
+        <div class="field-value" id="f-sustain-body"></div>
+        <div class="field-label" style="margin-top:0.85rem;">Research direction</div>
+        <div class="field-value field-research" id="f-research"></div>
         <details class="others">
-          <summary>Other directions to consider instead</summary>
+          <summary>Other concept directions to consider instead</summary>
           <div class="others-body" id="f-others"></div>
         </details>
       </div>
     </div>
 
+    <!-- Step 2 -->
     <div class="card">
-      <div class="card-head c-thinking">Sketching prompt</div>
+      <div class="card-head c-thinking"><span class="step-badge">Step 2</span>Ideation</div>
       <div class="card-body">
-        <div class="field-label">A starting point if you need one — ignore it if you don't</div>
+        <div class="field-label">Core sketching task</div>
+        <div class="sketch-core">Sketch the package 12 times — quick thumbnails, not finished drawings. In each one, try a different arrangement of the four essential elements: Sportsgirl brand, product title, product identification (window, illustration, or label), and the re-use idea from Step 1. Keep moving; don't refine until you have a direction you like.</div>
+        <div class="field-label" style="margin-top:0.85rem;">Then try this</div>
         <div class="field-value" id="f-thinking"></div>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head c-colour">Colour and type direction</div>
-      <div class="card-body">
+        <hr class="step-rule">
         <div class="field-label">Colour approach</div>
         <div class="field-value" id="f-colour"></div>
         <div class="field-label" style="margin-top:0.75rem;">Type direction</div>
         <div class="field-value" id="f-type"></div>
+        <div class="field-label" style="margin-top:0.75rem;">Print finish — optional</div>
+        <div class="field-value" id="f-pantone"></div>
       </div>
     </div>
 
+    <!-- Step 3 -->
     <div class="card">
-      <div class="card-head c-rough">What to show in your rough</div>
+      <div class="card-head c-rough"><span class="step-badge">Step 3</span>Rough and presentation</div>
       <div class="card-body">
+        <div class="field-label">What the rough should include</div>
         <div class="field-value" style="margin-bottom: 0.6rem;" id="f-rough-intro"></div>
         <ul class="checklist" id="f-rough-list"></ul>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head c-sustain">Sustainability and design constraints</div>
-      <div class="card-body">
-        <div class="sustain-tag" id="f-sustain-tag"></div>
-        <div class="field-value" id="f-sustain-body"></div>
+        <div class="field-label" style="margin-top:0.85rem;">Materials to consider</div>
+        <div class="field-value" id="f-materials"></div>
+        <div class="field-label" style="margin-top:0.85rem;">What to show in your presentation</div>
+        <div class="field-value" id="f-present-note"></div>
       </div>
     </div>
 
     <button class="btn-reset" onclick="generate()">Generate a different direction ↺</button>
-
   </div>
-
 </div>
 <script>
 // ── Data ──────────────────────────────────────────────────────────────────
-
 var concepts = [
   {
     name: "Y2K sticker bomb",
@@ -382,7 +311,7 @@ var concepts = [
   },
   {
     name: "Heart maximalism",
-    body: "Hearts dominate the mood board — rhinestone hearts, glitter hearts, heart-shaped packaging, heart motifs everywhere. Make the heart your system: use it as a pattern unit, a structural shape, a type element, a framing device. Across the range, explore what happens when you do the same thing many different ways: outlined, filled, oversized, tiny, outlined only, stacked."
+    body: "Hearts dominate the mood board — rhinestone hearts, glitter hearts, heart-shaped packaging, heart motifs everywhere. Make the heart your system: use it as a pattern unit, a structural shape, a type element, a framing device. Across the range, explore what happens when you do the same thing many different ways: outlined, filled, oversized, tiny, stacked."
   },
   {
     name: "Butterfly effect",
@@ -425,7 +354,6 @@ var concepts = [
     body: "Stars, sparkles, and shine marks are scattered through the mood board. Build a design system around star shapes at every scale — from tiny sparkle marks used as punctuation to large decorative stars as background elements. Stars are a simple shape with a lot of variation: five-point, four-point, burst, outlined, filled, scattered, in formation."
   }
 ];
-
 var sketchingPrompts = [
   "Pick one element from your visual research and make it fill the entire package face. Too big, too close, no margins. Now work backwards from there.",
   "Write down five words that describe what this concept feels like — not what it looks like. Sketch one thumbnail for each word.",
@@ -436,81 +364,186 @@ var sketchingPrompts = [
   "Think about what this concept looks like on the package back, not the front. Sometimes that's the more interesting surface.",
   "What's the version of this concept with only two colours? Sketch it.",
   "Design the package like a flip phone ad from 1999 — not too literally. Just the same style.",
-  "Sketch the pattern or repeat element first, before you think about layout. Once you have a pattern you like, place it into a package."
+  "Sketch the pattern or repeat element first, before you think about layout. Once you have a pattern you like, place it into a package.",
+  "Screenshot the 3D model of the package from the Sportsgirl Assets page on Canvas at an angle you like. Trace over it — on a light table or digitally — to use as a template. Drawing from the actual 3D form is faster than constructing perspective from scratch, and it stops the rough looking like a flat diagram.",
+  "Before you start sketching: open the 3D model on the Sportsgirl Assets page and rotate it. Screenshot it from three different angles. Which one makes your design most legible? Sketch your thumbnails from that angle.",
+  "Sketch the package in three-quarter view — front face, one side panel, and the top all visible. What needs to move or change when your layout wraps around a corner? Sometimes the answer is nothing. Sometimes it changes the whole layout.",
+  "Think about the package in someone's hand. She picks it up, turns it over, puts it down. Sketch it from the angle she'd naturally look at it — not the angle that makes your flat layout easiest to draw.",
+  "Print your rough onto the dieline, score it, and assemble the package by hand. Photograph it against a plain background for the presentation. You'll immediately see things — proportion, how colour reads on a corner, what the top looks like — that never show up in a flat layout."
 ];
-
 var colours = [
-  { colour: "Commit to the pink spectrum — pick three or four pinks from dusty rose through hot pink and work only within those. Add one dark (near-black or deep plum) for type. White as breathing room. Nothing outside the pink family.", type: "Look for a typeface with a personality: a script that feels handwritten, a serif with slightly unusual letterforms, or a sans-serif with a quirky detail. The Sportsgirl wordmark must appear — choose your supporting typeface to feel different from it, not to compete." },
-  { colour: "Holographic palette: pink (#f4a7c3), lilac (#c9a4e8), sky (#a8d4f5), soft lemon (#f5f0b8), white. Use these together — small amounts of each create the colour-shift effect. Avoid using any single colour in too large a block.", type: "Mixed type treatment: the product name can be hand-lettered or set in an expressive display face; ingredient and usage information in a clean, neutral secondary font. Don't make the secondary font compete with the hero." },
-  { colour: "One saturated background colour per package, pulled directly from the mood board. Hot pink, lilac, teal, baby blue, lime — one vivid background, graphic elements in white and black only. The colour is the personality; the graphics stay clean.", type: "Bold and graphic: all caps, wide-tracked, or an oversized initial. Type as visual element, not just label. Consider letting letterforms become part of the pattern or repeat system." },
-  { colour: "Restraint: cream or off-white background across all packages. Use colour only in specific, intentional places — pattern elements, product name, a single accent. This creates a premium feel within the Y2K aesthetic: more Glossier than Lisa Frank.", type: "Elegant and slightly unexpected — a thin-weight serif or a display font that looks more fashion than toy. Keep the Sportsgirl wordmark as the loudest typographic element; everything else defers to it." },
-  { colour: "Work from one specific mood board image. Extract a four-colour palette from that image alone using the eyedropper. Use those colours across all five packages. The discipline of one source creates unity without you having to engineer it.", type: "Find lettering in the mood board — the sticker text, the journal handwriting, the brand fonts on products. Use those as reference for your type decisions. Consider having the product name hand-lettered or drawn rather than typeset." },
-  { colour: "Black as the base — deep black background on some or all packages. Use the Y2K palette as bright accent colours on black rather than the other way around. Stars, hearts, type elements in pink, lilac, holographic on black reads as cool rather than sweet.", type: "Neon or high-contrast: if the background is dark, type needs to be bright and confident. A chunky display face, or something with a retro-tech feel — think early mobile phone UI, pixelated or grid-based." }
+  {
+    colour: "Commit to the pink spectrum — dusty rose through hot pink, three or four steps. Add one dark (near-black or deep plum) for type and white for breathing room. Nothing outside the pink family.",
+    type: "Look for a typeface with a personality: a script that feels handwritten, a serif with slightly unusual letterforms, or a sans-serif with a quirky detail. The Sportsgirl wordmark must appear — choose your supporting typeface to feel different from it, not to compete."
+  },
+  {
+    colour: "A holographic palette in ink: a soft pink, a lilac, and a sky blue that create a colour-shift effect when used together in small amounts. Avoid large blocks of any single colour — the effect comes from the combination, not any one hue.",
+    type: "Mixed type treatment: the product name in an expressive display face or hand-lettered; ingredient and usage information in a clean, neutral secondary. Don't let the secondary compete with the hero."
+  },
+  {
+    colour: "One saturated background colour per package — hot pink, lilac, teal, baby blue, or lime — with graphic elements in white and black only. The colour is the personality; the graphics stay clean.",
+    type: "Bold and graphic: all caps, wide-tracked, or an oversized initial. Let letterforms become part of the pattern or repeat system."
+  },
+  {
+    colour: "Restraint: cream or off-white background across all packages. Colour appears only in specific, intentional places — pattern elements, the product name, a single accent. More Glossier than Lisa Frank.",
+    type: "Elegant and slightly unexpected — a thin-weight serif or a display font that looks more fashion than toy. Keep the Sportsgirl wordmark as the loudest typographic element; everything else defers to it."
+  },
+  {
+    colour: "Work from one specific mood board image. Extract a palette from that image alone using the eyedropper. Use those colours across all five packages. The discipline of one source creates unity without you having to engineer it.",
+    type: "Find lettering in the mood board — the sticker text, the journal handwriting, the brand fonts on products. Use those as reference for your type decisions. Consider having the product name hand-lettered or drawn rather than typeset."
+  },
+  {
+    colour: "Black as the base — deep black background on some or all packages. The Y2K palette used as bright accent colours on black. Stars, hearts, and type elements in pink, lilac, or a fluorescent colour on black reads as cool rather than sweet.",
+    type: "Neon or high-contrast: if the background is dark, type needs to be bright and confident. A chunky display face or something with a retro-tech feel — think early mobile phone UI, pixelated or grid-based."
+  }
 ];
-
+var finishes = [
+  "<strong>CMYK, no added finish</strong> — Just ink on the substrate, nothing extra. The most sustainable option and completely valid. The substrate itself — coated, uncoated, or textured — does the visual and tactile work. Look at examples on <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs</a> or search 'uncoated packaging design' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a>.",
+  "<strong>Blind emboss</strong> — A die presses a raised relief into the board with no ink: texture and dimension without colour. Good for pattern elements, brand marks, or any area you want to feel different from the printed surface. Search 'blind emboss packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest for examples.",
+  "<strong>Deboss</strong> — Like emboss but pressed inward, creating a shadow-relief effect. Good for small brand marks, pattern details, or type that needs tactile presence without added colour. Search 'deboss packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest.",
+  "<strong>Water-based (aqueous) varnish</strong> — Applied over print like an ink, dries without solvents, and protects the surface without a plastic film. Can be flood (all over) or spot (selected areas only). A sustainable alternative to laminate when waterproofing isn't essential. Search 'aqueous coating packaging' on The Dieline, or look up Heidelberg or Konica Minolta aqueous coating.",
+  "<strong>Compostable laminate</strong> — A plant-based (PLA) film that looks like standard laminate but biodegrades under composting conditions. Same protective and visual function, lower environmental impact. Search 'compostable laminate packaging Australia' — suppliers include <a href='https://www.detmold.com' target='_blank' rel='noopener'>Detmold</a> and Amcor.",
+  "<strong>Soy-based inks</strong> — A drop-in substitute for standard CMYK petroleum inks: lower VOCs, more biodegradable, and easier to de-ink during paper recycling. Visually indistinguishable from standard inks. Search 'soy based ink packaging' or look up <a href='https://www.toyoink.com.au' target='_blank' rel='noopener'>Toyo Ink Australia</a> or Sun Chemical for local suppliers.",
+  "<strong>Pantone Metallic inks</strong> — Gives a shimmer effect using ink alone, no hot-stamp foil and no additional process. Less reflective than foil but significantly less material use. Look up the Pantone Metallic Coated swatch book at <a href='https://www.pantone.com' target='_blank' rel='noopener'>pantone.com</a>, or search 'metallic ink packaging no foil' on The Dieline.",
+  "<strong>Spot UV varnish</strong> — A gloss coating applied only to selected areas, creating a matte/gloss contrast or adding dimension to specific graphic elements. Water-based UV options are more eco-friendly than solvent-based. Search 'spot UV packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest for examples."
+];
+var researchPrompts = [
+  "Look for eco-friendly inks available from Australian suppliers — search for soy-based or water-based options. Note one or two products that could work for this concept and flag them in your rationale.",
+  "Browse the <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs</a> range and find two or three substrates that could suit this concept. Note the stock name, weight, and finish. There are also physical samplers in the studio.",
+  "Search the <a href='https://www.spicers.com.au/collections/packaging' target='_blank' rel='noopener'>Spicers packaging range</a> and find a board stock that matches the surface quality this concept calls for — coated, uncoated, textured, or natural. Note the specific product name.",
+  "Search 'recycled board packaging Australia' and find a supplier. Note what GSM weights and surface finishes are available — could any of them work for this range?",
+  "Search 'sustainable cosmetics packaging Australia' and find two real commercial examples — not student work. What specific material or production choices do they mention?",
+  "Search 'seed paper supplier Australia' and find a real supplier. What formats and sizes do they offer? Could a seed paper element work as part of this concept?",
+  "Look up 'aqueous laminate vs standard laminate packaging' and make sure you understand the difference. Is eco-friendly laminate relevant to this concept? Note your reasoning.",
+  "Search for 'FSC certified packaging board Australia' — what does FSC certification mean, and does it apply to this concept? Find one Australian supplier that carries it."
+];
 var roughContent = [
-  { intro: "Your rough should show one package well enough that someone can understand the design decisions. You don't need to render all five — one done properly is enough.", list: [
-    "Where the product title goes and approximately how large it is",
-    "Where the Sportsgirl logo sits on the package",
-    "How colour is used — which areas, how much, which colours",
-    "How image, pattern, or type is used as the visual language of the design",
-    "How the customer knows what the product is — shown through a window cutout, a photograph on the package, or another approach",
-    "A re-use idea, even as a quick sketch or annotation",
-    "Use the supplied dieline — the basic structure is fixed. You can remove or modify a window cutout, but don't redesign the shape of the package itself"
+  { intro: "A rough for this concept might include:", list: [
+    "Logo placement — where the Sportsgirl wordmark sits and approximately how large",
+    "Colour distribution — which areas, how much, which colours",
+    "The main visual language — pattern, image, type, or a combination",
+    "How the customer knows what the product is — window cutout, illustration, or label",
+    "The re-use or sustainability idea, even as a quick sketch or annotation"
   ]}
 ];
-
-var sustainability = [
-  { tag: "Re-use — storage", body: "The package becomes a storage container after use: a jewellery box, desk caddy, brush holder, hair pin tray. The design challenge is that branding and product info get in the way — a barcode and ingredients panel don't belong on a keepsake. Solutions: print functional information on the inside of the box, make those panels detachable (a perforated tear-off strip), or confine all product text to one face so the rest of the exterior reads as pure design. Sketch the re-use as well as the package. Starting points: <a href='https://www.google.com/search?tbm=isch&q=packaging+reuse+storage+box+design' target='_blank' rel='noopener'>packaging reuse storage</a> · <a href='https://www.instructables.com/search/?q=cardboard+box+organiser' target='_blank' rel='noopener'>Instructables</a>." },
-  { tag: "Re-use — display", body: "The package stays out after the product is gone — on a desk, shelf, or mirror ledge. This works best when the exterior looks as good empty as it does on the shelf. The obstacle: once the product is out, you're left with a box covered in ingredients and a barcode. Consider printing that information on an inner flap or a removable insert, so the exterior is clean enough to display. A magnetic closure or small stand element could help it stay upright. Starting points: <a href='https://www.google.com/search?tbm=isch&q=packaging+keepsake+box+design' target='_blank' rel='noopener'>keepsake box packaging</a> · <a href='https://www.google.com/search?tbm=isch&q=cosmetics+packaging+second+life+reuse' target='_blank' rel='noopener'>cosmetics packaging second life</a>." },
-  { tag: "Limited ink", body: "Reducing ink coverage is a real sustainability consideration — less ink uses fewer resources and often makes packaging more recyclable. Try a concept where colour is used selectively: a mostly unprinted (natural stock) package with spot colour in specific areas only. This constraint can produce a premium feeling if the graphic placement is considered. The unprinted areas aren't empty — they're part of the composition. See what's available: <a href='https://spicers.com.au/collections/packaging' target='_blank' rel='noopener'>Spicers packaging substrates</a> · <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs (sustainability guide)</a> · <a href='https://www.google.com/search?tbm=isch&q=minimal+ink+sustainable+packaging+design' target='_blank' rel='noopener'>minimal ink packaging examples</a>." },
-  { tag: "Substrate choice", body: "The brief prohibits foil and glitter, but a substrate choice can do some of that visual work without adding embellishment costs: uncoated stock with a textured feel, a natural kraft-coloured board, or a coated stock with a slight sheen. A substrate decision should be part of your concept rationale — mention what stock you're imagining and why it suits the aesthetic. There are Spicers paper samplers in the studio — worth handling before you decide. Browse what's available online: <a href='https://spicers.com.au/collections/packaging' target='_blank' rel='noopener'>Spicers packaging substrates</a> · <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs (sustainability guide)</a>." },
-  { tag: "Flat pack and material reduction", body: "Consider whether the package structure could use less material: thinner walls, no inner tray, a sleeve rather than a full box. Structural efficiency is a form of sustainability, and it's something you can annotate in your rough without needing to build a prototype. Show what you're removing and why the package still works without it. Starting points: <a href='https://www.google.com/search?tbm=isch&q=minimal+flat+pack+packaging+design' target='_blank' rel='noopener'>flat pack packaging design</a>." },
-  { tag: "Re-use — transform", body: "The package physically changes into something else: a desk note that folds into a standing display, a box with a heart cutout that becomes a photo frame, a tube that becomes a small vase. The transformation should feel like a design decision, not a hack. The key friction to solve: product information and branding need to end up hidden or removed in the second life — consider printing them on an inner surface, a removable strip, or a section that folds away. Sketch both states: the package as sold, and the package transformed. Starting points: <a href='https://www.google.com/search?tbm=isch&q=transformable+packaging+design+second+use' target='_blank' rel='noopener'>transformable packaging</a> · <a href='https://www.instructables.com/search/?q=cardboard+transform' target='_blank' rel='noopener'>Instructables cardboard transforms</a>." },
-  { tag: "No-ink areas", body: "Some recycling processes prefer packaging with unprinted areas — easier to repulp, lower processing cost. Design a concept where portions of the package are intentionally left unprinted. This can become a design feature rather than a cost-cut: the raw stock colour and the printed areas each earn their place in the composition. Applies especially well to kraft or natural board substrates. Starting points: <a href='https://www.google.com/search?tbm=isch&q=partially+printed+sustainable+packaging' target='_blank' rel='noopener'>partially printed packaging</a>." }
+var materialsSuggestions = [
+  "Marker pens (Copic or Posca) for colour blocking and backgrounds, fine liner for graphic detail and type. Scan and bring into Illustrator to clean up if needed.",
+  "Adobe Illustrator for vector work, type, and pattern. Keep layers organised — background, graphics, and type on separate layers so you can adjust each without redrawing.",
+  "Digital sketch in Procreate or Fresco for the initial composition, then trace and refine in Illustrator. Export the sketch as a reference layer.",
+  "Watercolour or gouache for colour washes and background tone, fine liner over the top for graphic elements and hand-lettered type. Works especially well for looser, more personal aesthetics.",
+  "Print a digital layout at A4, then rework it by hand — coloured pencils for shading, fine liner for outlines or annotations, hand-lettering directly onto the printout. Scan and include the reworked version.",
+  "Collage: cut and arrange printed elements, coloured paper, and magazine fragments, then photograph or scan the result. Particularly effective for diary, sticker-bomb, or flat-lay concepts.",
+  "Procreate for a fully digital rough — use separate layers for pattern, type, and colour so you can swap elements independently. Export at high resolution.",
+  "Adobe Illustrator for structure, type, and colour. Photoshop for any photographic elements or texture overlays — place them as linked files to keep the Illustrator document clean."
 ];
-
+var sustainability = [
+  {
+    tag: "Re-use — pot plant holder",
+    body: "Finish the package with an eco-friendly matte aqueous laminate instead of standard gloss — it's waterproof enough to hold a small succulent or herb pot directly inside. The laminate becomes a design feature, changing the surface feel in a way that reads as intentional. Sketch the package with a plant in it and note the laminate spec in your rationale.",
+    note: "Show the package with a plant in it alongside the on-shelf version. A call-out naming the laminate type (e.g., aqueous matte) and explaining why it makes waterproofing possible will strengthen the rationale in your presentation."
+  },
+  {
+    tag: "Re-use — stash box",
+    body: "An innocent-looking cosmetics box with a secret compartment — a false bottom, a hinged inner panel, or a sliding tray hidden behind the product cavity. The exterior design gives nothing away. The interior could have a contrasting colour treatment or a small printed message only visible when you know where to look.",
+    note: "Show the secret compartment in your presentation — a closed/open pair of sketches or a cutaway view. Part of the appeal is the discovery; let the viewer understand how it works and where the hidden space is."
+  },
+  {
+    tag: "Re-use — photo frame",
+    body: "The heart-shaped window cutout (or another cutout shape) doubles as a photo frame after use. Design the surround so it works both ways — as packaging on-shelf and as something to hang or stand on a desk. Include a fold-out or press-out tab as a stand, and print the back of the window panel as the frame's display face.",
+    note: "Show both states in your presentation: the package on-shelf and the frame standing on a desk or hanging on a wall. Sketch the fold-out stand and label it, even roughly — it shows you've thought through the structure."
+  },
+  {
+    tag: "Re-use — jewellery tray",
+    body: "After the product is gone, the package becomes a ring dish, earring tray, or pin holder. The design challenge is the branding: product info and barcodes don't belong on a keepsake. Move them to an inner flap or a perforated tear-off strip so the exterior stays clean enough to sit on a dresser.",
+    note: "Show the tray in use alongside the package design. In your rough, sketch the perforated strip or inner flap that hides the product info — that's the design problem you've solved, and it's worth making visible."
+  },
+  {
+    tag: "Re-use — phone or tablet stand",
+    body: "The package structure scores and folds into a small phone or tablet stand. The dieline already has fold lines — extend the thinking so the scores guide a second transformation. Sketch the assembled stand, mark the fold sequence on the package itself as part of the design, and show both states in your rough.",
+    note: "Show the fold sequence in your presentation — even two or three quick steps. Annotate the fold marks in the package design itself so the viewer can see they're integrated, not added on as an afterthought."
+  },
+  {
+    tag: "Re-use — origami",
+    body: "Unfolded flat, the package blank becomes an origami starting point. Instructions printed on the inside guide the customer through folding it into a crane, star, or heart. The graphic on the outside becomes the pattern face of the finished form. Works best on a flat, single-face package — the drink bottle carton or a flat pouch.",
+    note: "Show the finished origami form alongside the flat package. Note which face becomes the visible pattern side. A small fold-step diagram is worth including — just enough to show the idea."
+  },
+  {
+    tag: "Re-use — hanging decoration",
+    body: "A die-cut shape or a scored fold converts part of the package into a hanging ornament — a star, heart, or butterfly that can be cut free and hung from a bag or mirror. A small punched hole is all it needs. Design the ornament face as part of the package graphic so it looks like a feature, not an afterthought.",
+    note: "Show the ornament cut free and hanging alongside the closed package. The viewer should be able to see which part of the graphic becomes the ornament — make sure it reads clearly in the package design itself."
+  },
+  {
+    tag: "Re-use — poster or print",
+    body: "The inside of the box is designed as a small poster — a pattern, illustration, or typographic piece good enough to cut out and pin up. Product info goes on the exterior only. The interior is clean, full-bleed, and designed to live on a wall. The customer has to open the box to find it.",
+    note: "Show the interior design in your presentation. Three quick sketches work well: box closed, box opened, interior cut out and pinned up. The reveal is part of the concept — let the viewer experience it."
+  },
+  {
+    tag: "Re-use — desk organiser",
+    body: "A larger package (the drink bottle carton or a similar volume) converts into a pencil cup, brush holder, or desk organiser. The exterior graphic needs to look as strong upright and empty as it does on-shelf. Think about what disappears when the lid is removed — keep all product info off the main exterior faces.",
+    note: "Show the organiser in use — sketch it holding pencils or brushes so the scale and function are clear. Note how the product information has been kept off the display faces; that decision should be visible in your rough."
+  },
+  {
+    tag: "Re-use — seed paper insert",
+    body: "The package includes a small seed paper card — plant it in a pot and it grows wildflowers or herbs. Seed paper is a real substrate available from specialty suppliers; note it in the rationale as a material choice. The card design becomes part of the system: illustrated planting instructions on one side, a clean decorative print on the other.",
+    note: "Include the seed paper card in your rough — show both sides and the planting instructions. A call-out naming a real Australian supplier (search 'seed paper Australia') strengthens the sustainability argument considerably."
+  },
+  {
+    tag: "Re-use — perforated tear-away",
+    body: "A perforated strip or panel lets the customer remove the product information after purchase, leaving the exterior clean for display or re-use. The perforation line can be part of the graphic — a dotted line that reads as decorative until it's used. No extra production cost; just a scored cut in the dieline.",
+    note: "Show the package before and after the strip is removed. The perforation line should appear in your rough as a designed graphic element — annotate it so the viewer understands what it does and why."
+  },
+  {
+    tag: "Eco-friendly laminate",
+    body: "Specify a water-based or biodegradable aqueous laminate as a direct substitute for standard gloss laminate — same protective function, lower environmental impact, worth noting in the rationale as a specific material decision. If you're using matte versus gloss as a design contrast, flag which areas get which treatment and why.",
+    note: "Include a call-out on your presentation page naming the laminate type (e.g., aqueous matte) and why you chose it. One or two sentences — the point is to show you've thought about the material, not just the graphic."
+  },
+  {
+    tag: "Minimal print",
+    body: "Less ink coverage means less material use and easier recycling. Try a package where most of the surface is raw or lightly tinted board, with colour concentrated in one or two areas. The unprinted areas aren't empty — they're part of the composition. Works especially well on natural kraft or uncoated stock.",
+    note: "Annotate the unprinted areas in your rough — label them as intentional negative space. On your presentation page, a brief note about the recycling benefit of reduced ink coverage is worth including. Make the design decision visible, not just the outcome."
+  },
+  {
+    tag: "Substrate choice",
+    body: "The substrate is a design decision. Uncoated board feels different to coated; natural kraft reads differently to bright white; a textured stock adds surface interest without embellishment. Note the intended substrate in the rationale — it's a real sustainability consideration. There are Spicers samplers in the studio worth handling before you decide.",
+    note: "Include a call-out on your presentation page naming the substrate you're proposing and why it suits the concept. If you can get a small swatch of the actual stock from the studio, photograph it — a physical reference makes the argument more concrete."
+  }
+];
 // ── Generator ──────────────────────────────────────────────────────────────
-
 function getRandom(arr) { return arr[Math.floor(Math.random() * arr.length)]; }
 function setText(id, html) { document.getElementById(id).innerHTML = html; }
-
 function generate() {
   var concept  = getRandom(concepts);
   var thinking = getRandom(sketchingPrompts);
   var colour   = getRandom(colours);
+  var finish   = getRandom(finishes);
   var rough    = roughContent[0];
   var sustain  = getRandom(sustainability);
-
-  // Concept
+  var research = getRandom(researchPrompts);
+  var materials = getRandom(materialsSuggestions);
+  // Step 1
   setText('f-concept-name', concept.name);
   setText('f-concept-body', concept.body);
-
-  // Other directions
+  setText('f-sustain-tag', sustain.tag);
+  setText('f-sustain-body', sustain.body);
+  setText('f-research', research);
+  // Others dropdown
   var others = concepts.filter(function(c) { return c.name !== concept.name; });
-  // show 4 random others
   others = others.sort(function() { return 0.5 - Math.random(); }).slice(0, 4);
   var odHTML = others.map(function(c) {
     return '<div class="other-item"><strong>' + c.name + '</strong><span>' + c.body + '</span></div>';
   }).join('');
   setText('f-others', odHTML);
-
-  // Thinking
+  // Step 2
   setText('f-thinking', thinking);
-
-  // Colour and type
   setText('f-colour', colour.colour);
   setText('f-type', colour.type);
-
-  // Rough
+  setText('f-pantone', finish);
+  // Step 3
   setText('f-rough-intro', rough.intro);
   var listHTML = rough.list.map(function(item) { return '<li>' + item + '</li>'; }).join('');
   setText('f-rough-list', listHTML);
-
-  // Sustainability
-  setText('f-sustain-tag', sustain.tag);
-  setText('f-sustain-body', sustain.body);
-
+  setText('f-materials', materials);
+  setText('f-present-note', sustain.note);
   var results = document.getElementById('results');
   results.classList.add('show');
   results.scrollIntoView({ behavior: 'smooth', block: 'start' });
