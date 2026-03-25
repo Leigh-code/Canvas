@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marching Ants GIF Generator</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#232327;
+  color:#d4d0c8;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+}
+
+.header{ text-align:center; margin-bottom:16px; }
+.header h1{ font-size:18px; font-weight:700; color:#f0ece4; letter-spacing:-0.03em; }
+.header p{ font-size:12px; color:#777; margin-top:3px; }
+
+.app{ width:100%; max-width:900px; display:flex; flex-direction:column; gap:10px; }
+
+.toolbar{
+  display:flex; gap:6px; align-items:center; flex-wrap:wrap;
+  background:#2c2c31; border:1px solid #3a3a3f; border-radius:8px; padding:8px 12px;
+}
+.tb-group{ display:flex; gap:5px; align-items:center; }
+.tb-group+.tb-group{ border-left:1px solid #3e3e44; padding-left:6px; margin-left:2px; }
+.tb-label{ font-size:10px; font-weight:600; color:#777; text-transform:uppercase; letter-spacing:0.06em; margin-right:2px; }
+
+button{
+  font-family:'DM Sans',sans-serif; font-size:11px; font-weight:500;
+  padding:5px 10px; border-radius:5px; border:1px solid #444;
+  background:#333338; color:#bbb; cursor:pointer; transition:all .12s; white-space:nowrap;
+}
+button:hover{background:#3e3e44;color:#eee;border-color:#555}
+button.active{background:#4a6a9a;color:#fff;border-color:#5a7aaa}
+button.danger:hover{background:#4a2222;color:#f99;border-color:#744}
+button.go{background:#3a653a;border-color:#4a754a;color:#a8d4a8}
+button.go:hover{background:#4a754a;color:#fff}
+button.go:disabled{opacity:.35;cursor:not-allowed;pointer-events:none}
+button.mask-btn{background:#4a3a5a;border-color:#5a4a6a;color:#c4b4d4}
+button.mask-btn:hover{background:#5a4a6a;color:#fff}
+
+select{
+  font-family:'DM Sans',sans-serif; font-size:11px; padding:4px 6px;
+  border-radius:5px; border:1px solid #444; background:#333338; color:#bbb; cursor:pointer;
+}
+input[type=number]{
+  font-family:'JetBrains Mono',monospace; font-size:11px; width:44px;
+  padding:4px 5px; border-radius:5px; border:1px solid #444;
+  background:#2a2a2f; color:#ddd; text-align:center;
+}
+input[type=number]:focus{outline:none;border-color:#4a6a9a}
+input[type=range]{ width:60px; accent-color:#4a6a9a; }
+
+.canvas-area{
+  background:#2c2c31; border:1px solid #3a3a3f; border-radius:8px;
+  padding:12px; display:flex; align-items:center; justify-content:center; min-height:300px; position:relative;
+}
+
+.drop-zone{
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  gap:12px; width:100%; min-height:280px;
+  border:2px dashed #4a4a50; border-radius:8px; cursor:pointer; transition:border-color .2s;
+}
+.drop-zone:hover{border-color:#6a6a70}
+.drop-zone svg{opacity:.4}
+.drop-zone p{font-size:13px;color:#777}
+.drop-zone .hint{font-size:11px;color:#555}
+
+.canvas-container{ position:relative; line-height:0; display:inline-block; }
+.canvas-container canvas{ position:absolute; top:0; left:0; }
+#imgCanvas{position:relative;z-index:0}
+#drawCanvas{z-index:1;cursor:crosshair}
+#previewCanvas{z-index:2;pointer-events:none}
+
+.status{
+  font-family:'JetBrains Mono',monospace; font-size:10px; color:#666;
+  padding:4px 12px; background:#2c2c31; border:1px solid #3a3a3f;
+  border-radius:6px; display:flex; justify-content:space-between;
+}
+
+.preview-panel{
+  background:#2c2c31; border:1px solid #3a3a3f; border-radius:8px; padding:12px;
+}
+.preview-panel h3{
+  font-size:11px; font-weight:600; color:#777;
+  text-transform:uppercase; letter-spacing:.06em; margin-bottom:10px;
+}
+.preview-content{ display:flex; align-items:flex-start; gap:16px; flex-wrap:wrap; }
+.preview-content img{ border:1px solid #444; border-radius:4px; max-width:400px; max-height:300px; }
+.preview-info{ font-size:12px; color:#888; line-height:1.6; }
+.preview-info a{ color:#7aaa7a; text-decoration:none; font-weight:600; }
+.preview-info a:hover{text-decoration:underline}
+
+.progress-bar{ width:200px; height:6px; background:#333; border-radius:3px; overflow:hidden; margin-top:8px; }
+.progress-bar .fill{ height:100%; background:#4a6a9a; width:0%; border-radius:3px; }
+
+.hidden{display:none!important}
+
+.toggle-wrap{ display:flex; align-items:center; gap:5px; }
+.toggle{
+  width:32px; height:17px; background:#444; border-radius:9px;
+  position:relative; cursor:pointer; transition:background .2s;
+}
+.toggle.on{background:#4a6a9a}
+.toggle::after{
+  content:''; position:absolute; top:2px; left:2px;
+  width:13px; height:13px; background:#ccc; border-radius:50%; transition:transform .15s;
+}
+.toggle.on::after{transform:translateX(15px);background:#fff}
+
+.mask-info{
+  font-size:11px; color:#998abf; background:#2e2838;
+  border:1px solid #3e3050; border-radius:6px; padding:6px 10px;
+  margin-top:6px; line-height:1.5;
+}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Marching Ants GIF Generator</h1>
+  <p>Upload an image, draw or load a selection mask, export as animated GIF</p>
+</div>
+
+<div class="app">
+  <div class="toolbar" id="toolbar">
+    <div class="tb-group">
+      <span class="tb-label">Draw</span>
+      <button id="btnLasso" class="active" onclick="setTool('lasso')">Lasso</button>
+      <button id="btnPoly" onclick="setTool('polygon')">Polygon</button>
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">Mask</span>
+      <button class="mask-btn" onclick="document.getElementById('maskIn').click()">Load Mask Image</button>
+      <input type="file" id="maskIn" accept="image/*,.svg" class="hidden">
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">Dim</span>
+      <div class="toggle-wrap">
+        <div class="toggle" id="toggleDim" onclick="toggleDim()"></div>
+      </div>
+      <input type="range" id="dimAmount" min="10" max="80" value="50">
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">Dash</span>
+      <input type="number" id="dashLen" value="6" min="2" max="20">
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">Speed</span>
+      <select id="speed">
+        <option value="200">Slow</option>
+        <option value="120" selected>Normal</option>
+        <option value="60">Fast</option>
+      </select>
+    </div>
+    <div class="tb-group">
+      <span class="tb-label">Border</span>
+      <select id="antColor">
+        <option value="bw" selected>B/W (Photoshop)</option>
+        <option value="blue">Blue/White</option>
+        <option value="red">Red/White</option>
+      </select>
+    </div>
+    <div class="tb-group">
+      <button class="danger" onclick="clearSelection()">Clear</button>
+      <button class="go" id="btnExport" onclick="exportGIF()" disabled>Export GIF</button>
+    </div>
+  </div>
+
+  <div class="canvas-area">
+    <div class="drop-zone" id="dropZone" onclick="document.getElementById('fileIn').click()">
+      <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+      <p>Drop an image here or click to upload</p>
+      <span class="hint">This is your background image — the photo/screenshot the ants will appear over</span>
+    </div>
+    <input type="file" id="fileIn" accept="image/*" class="hidden">
+    <div class="canvas-container hidden" id="canvasContainer">
+      <canvas id="imgCanvas"></canvas>
+      <canvas id="drawCanvas"></canvas>
+      <canvas id="previewCanvas"></canvas>
+    </div>
+  </div>
+
+  <div class="status" id="statusBar">
+    <span id="statusLeft">No image loaded</span>
+    <span id="statusRight"></span>
+  </div>
+
+  <div class="preview-panel hidden" id="previewPanel">
+    <h3>Exported GIF</h3>
+    <div class="preview-content">
+      <img id="gifPreview" src="" class="hidden">
+      <div class="preview-info" id="previewInfo"></div>
+    </div>
+    <div class="progress-bar hidden" id="progressBar"><div class="fill" id="progressFill"></div></div>
+  </div>
+</div>
+
+<script>
+// ============================================================
+// Minimal GIF encoder (no web workers, no external dependencies)
+// ============================================================
+const GIFEncoder = (() => {
+  // LZW compression for GIF
+  function lzwEncode(indexStream, minCodeSize) {
+    const clearCode = 1 << minCodeSize;
+    const eoiCode = clearCode + 1;
+    let codeSize = minCodeSize + 1;
+    let nextCode = eoiCode + 1;
+    const maxCode = 4096;
+
+    const table = new Map();
+    for (let i = 0; i < clearCode; i++) table.set(String(i), i);
+
+    const output = [];
+    let buffer = 0, bits = 0;
+
+    function writeBits(code, size) {
+      buffer |= (code << bits);
+      bits += size;
+      while (bits >= 8) {
+        output.push(buffer & 0xFF);
+        buffer >>= 8;
+        bits -= 8;
+      }
+    }
+
+    writeBits(clearCode, codeSize);
+    let current = String(indexStream[0]);
+
+    for (let i = 1; i < indexStream.length; i++) {
+      const next = String(indexStream[i]);
+      const combined = current + ',' + next;
+      if (table.has(combined)) {
+        current = combined;
+      } else {
+        writeBits(table.get(current), codeSize);
+        if (nextCode < maxCode) {
+          table.set(combined, nextCode++);
+          if (nextCode > (1 << codeSize) && codeSize < 12) codeSize++;
+        } else {
+          writeBits(clearCode, codeSize);
+          table.clear();
+          for (let j = 0; j < clearCode; j++) table.set(String(j), j);
+          nextCode = eoiCode + 1;
+          codeSize = minCodeSize + 1;
+        }
+        current = next;
+      }
+    }
+    writeBits(table.get(current), codeSize);
+    writeBits(eoiCode, codeSize);
+    if (bits > 0) output.push(buffer & 0xFF);
+    return output;
+  }
+
+  function quantize(pixels, maxColors) {
+    // Median-cut quantization — preserves full tonal range including highlights
+    const numPixels = pixels.length / 4;
+
+    // Sample pixels (use all if small, sample if large for speed)
+    const sampleLimit = 100000;
+    const step = numPixels > sampleLimit ? Math.floor(numPixels / sampleLimit) : 1;
+    const samples = [];
+    for (let i = 0; i < numPixels; i += step) {
+      const j = i * 4;
+      samples.push([pixels[j], pixels[j+1], pixels[j+2]]);
+    }
+
+    // Median cut
+    function getBox(colors) {
+      let rMin=255,rMax=0,gMin=255,gMax=0,bMin=255,bMax=0;
+      for (const c of colors) {
+        if(c[0]<rMin)rMin=c[0]; if(c[0]>rMax)rMax=c[0];
+        if(c[1]<gMin)gMin=c[1]; if(c[1]>gMax)gMax=c[1];
+        if(c[2]<bMin)bMin=c[2]; if(c[2]>bMax)bMax=c[2];
+      }
+      return {colors, rMin,rMax,gMin,gMax,bMin,bMax,
+        volume: (rMax-rMin+1)*(gMax-gMin+1)*(bMax-bMin+1)};
+    }
+
+    function splitBox(box) {
+      const rRange=box.rMax-box.rMin, gRange=box.gMax-box.gMin, bRange=box.bMax-box.bMin;
+      let channel;
+      if(rRange>=gRange&&rRange>=bRange) channel=0;
+      else if(gRange>=rRange&&gRange>=bRange) channel=1;
+      else channel=2;
+
+      box.colors.sort((a,b) => a[channel]-b[channel]);
+      const mid = Math.floor(box.colors.length / 2);
+      return [
+        getBox(box.colors.slice(0, mid)),
+        getBox(box.colors.slice(mid))
+      ];
+    }
+
+    let boxes = [getBox(samples)];
+    while (boxes.length < maxColors) {
+      // Find largest box by volume * count (priority to both spread and population)
+      let bestIdx=0, bestScore=-1;
+      for(let i=0;i<boxes.length;i++){
+        if(boxes[i].colors.length<2) continue;
+        const score = boxes[i].volume * boxes[i].colors.length;
+        if(score>bestScore){bestScore=score;bestIdx=i}
+      }
+      if(bestScore<=0) break;
+      const [a,b] = splitBox(boxes[bestIdx]);
+      boxes.splice(bestIdx, 1, a, b);
+    }
+
+    // Build palette from box averages
+    const palette = boxes.map(box => {
+      let rSum=0,gSum=0,bSum=0;
+      for(const c of box.colors){rSum+=c[0];gSum+=c[1];bSum+=c[2]}
+      const n=box.colors.length||1;
+      return {r:Math.round(rSum/n), g:Math.round(gSum/n), b:Math.round(bSum/n)};
+    });
+    while(palette.length<maxColors) palette.push({r:0,g:0,b:0});
+
+    // Build lookup cache for speed (6-bit per channel = 262144 entries)
+    const cacheBits = 6;
+    const cacheSize = 1 << (cacheBits * 3);
+    const cache = new Int16Array(cacheSize).fill(-1);
+
+    function findNearest(r, g, b) {
+      const cr=r>>>(8-cacheBits), cg=g>>>(8-cacheBits), cb=b>>>(8-cacheBits);
+      const cacheKey = (cr << (cacheBits*2)) | (cg << cacheBits) | cb;
+      if(cache[cacheKey] >= 0) return cache[cacheKey];
+      let bestDist=Infinity, bestIdx=0;
+      for(let j=0;j<palette.length;j++){
+        const dr=r-palette[j].r, dg=g-palette[j].g, db=b-palette[j].b;
+        const d=dr*dr+dg*dg+db*db;
+        if(d<bestDist){bestDist=d;bestIdx=j}
+      }
+      cache[cacheKey] = bestIdx;
+      return bestIdx;
+    }
+
+    // Build index stream
+    const indexStream = new Uint8Array(numPixels);
+    for (let i = 0; i < numPixels; i++) {
+      const j = i * 4;
+      indexStream[i] = findNearest(pixels[j], pixels[j+1], pixels[j+2]);
+    }
+
+    return { palette, indexStream };
+  }
+
+  return {
+    encode(frames, width, height, onProgress) {
+      const parts = [];
+      // Header
+      parts.push(str('GIF89a'));
+      // Logical screen descriptor
+      const paletteSize = 256;
+      const paletteBits = 7; // 2^(7+1)=256
+      putLE16(parts, width);
+      putLE16(parts, height);
+      parts.push(new Uint8Array([0x70 | paletteBits, 0, 0])); // no GCT
+
+      // Netscape looping extension
+      parts.push(new Uint8Array([0x21, 0xFF, 11]));
+      parts.push(str('NETSCAPE2.0'));
+      parts.push(new Uint8Array([3, 1, 0, 0, 0])); // loop forever
+
+      for (let f = 0; f < frames.length; f++) {
+        const {imageData, delay} = frames[f];
+        const pixels = imageData.data;
+        const {palette, indexStream} = quantize(pixels, paletteSize);
+
+        // Graphic control extension
+        parts.push(new Uint8Array([
+          0x21, 0xF9, 4, 0,
+          (delay / 10) & 0xFF, ((delay / 10) >> 8) & 0xFF,
+          0, 0
+        ]));
+
+        // Image descriptor with local color table
+        parts.push(new Uint8Array([0x2C]));
+        putLE16(parts, 0); putLE16(parts, 0);
+        putLE16(parts, width); putLE16(parts, height);
+        parts.push(new Uint8Array([0x80 | paletteBits])); // local CT flag
+
+        // Local color table
+        const ct = new Uint8Array(paletteSize * 3);
+        for (let i = 0; i < paletteSize; i++) {
+          ct[i*3] = palette[i].r;
+          ct[i*3+1] = palette[i].g;
+          ct[i*3+2] = palette[i].b;
+        }
+        parts.push(ct);
+
+        // LZW data
+        const minCodeSize = 8;
+        parts.push(new Uint8Array([minCodeSize]));
+        const compressed = lzwEncode(indexStream, minCodeSize);
+
+        // Sub-blocks
+        let pos = 0;
+        while (pos < compressed.length) {
+          const chunkSize = Math.min(255, compressed.length - pos);
+          parts.push(new Uint8Array([chunkSize]));
+          parts.push(new Uint8Array(compressed.slice(pos, pos + chunkSize)));
+          pos += chunkSize;
+        }
+        parts.push(new Uint8Array([0])); // block terminator
+
+        if (onProgress) onProgress((f + 1) / frames.length);
+      }
+
+      // Trailer
+      parts.push(new Uint8Array([0x3B]));
+
+      // Combine
+      const total = parts.reduce((s, p) => s + p.length, 0);
+      const out = new Uint8Array(total);
+      let offset = 0;
+      for (const p of parts) {
+        if (typeof p === 'string') {
+          for (let i = 0; i < p.length; i++) out[offset++] = p.charCodeAt(i);
+        } else {
+          out.set(p, offset);
+          offset += p.length;
+        }
+      }
+      return new Blob([out], {type: 'image/gif'});
+    }
+  };
+
+  function str(s) { return s; } // kept as string, handled in combine
+  function putLE16(parts, val) {
+    parts.push(new Uint8Array([val & 0xFF, (val >> 8) & 0xFF]));
+  }
+})();
+
+
+// ============================================================
+// App state
+// ============================================================
+let img = null;
+let tool = 'lasso';
+let dimOn = false;
+let points = [];
+let paths = [];          // drawn paths: arrays of {x,y}
+let maskContours = [];   // contours extracted from mask image
+let isDrawing = false;
+let animFrame = null;
+let antOffset = 0;
+let lastTime = 0;
+
+const imgCanvas = document.getElementById('imgCanvas');
+const drawCanvas = document.getElementById('drawCanvas');
+const previewCanvas = document.getElementById('previewCanvas');
+const imgCtx = imgCanvas.getContext('2d');
+const drawCtx = drawCanvas.getContext('2d');
+const prevCtx = previewCanvas.getContext('2d');
+
+// ============================================================
+// File handling — background image
+// ============================================================
+document.getElementById('fileIn').addEventListener('change', e => {
+  if(e.target.files[0]) loadImage(e.target.files[0]);
+});
+
+const dz = document.getElementById('dropZone');
+dz.addEventListener('dragover', e => {e.preventDefault(); dz.style.borderColor='#7a7a80'});
+dz.addEventListener('dragleave', () => {dz.style.borderColor='#4a4a50'});
+dz.addEventListener('drop', e => {
+  e.preventDefault(); dz.style.borderColor='#4a4a50';
+  if(e.dataTransfer.files[0]) loadImage(e.dataTransfer.files[0]);
+});
+
+function loadImage(file){
+  const reader = new FileReader();
+  reader.onload = e => {
+    img = new Image();
+    img.onload = () => {
+      let w = img.naturalWidth, h = img.naturalHeight;
+      const maxW = Math.min(860, window.innerWidth - 80);
+      const maxH = window.innerHeight - 300;
+      if(w > maxW || h > maxH){
+        const s = Math.min(maxW/w, maxH/h);
+        w = Math.round(w*s); h = Math.round(h*s);
+      }
+      [imgCanvas, drawCanvas, previewCanvas].forEach(c => {
+        c.width = w; c.height = h;
+        c.style.width = w+'px'; c.style.height = h+'px';
+      });
+      imgCtx.drawImage(img, 0, 0, w, h);
+      document.getElementById('dropZone').classList.add('hidden');
+      document.getElementById('canvasContainer').classList.remove('hidden');
+      document.getElementById('statusLeft').textContent = `${img.naturalWidth}×${img.naturalHeight} → ${w}×${h}`;
+      clearSelection();
+      startPreviewLoop();
+    };
+    img.src = e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+// ============================================================
+// Mask image loading (B/W image or SVG)
+// ============================================================
+document.getElementById('maskIn').addEventListener('change', e => {
+  if(!img){ alert('Load a background image first.'); return; }
+  const file = e.target.files[0];
+  if(!file) return;
+
+  const isSVG = file.type === 'image/svg+xml' || file.name.endsWith('.svg');
+
+  const reader = new FileReader();
+  reader.onload = ev => {
+    if(isSVG){
+      loadSVGMask(ev.target.result);
+    } else {
+      loadBitmapMask(ev.target.result);
+    }
+  };
+  if(isSVG) reader.readAsText(file);
+  else reader.readAsDataURL(file);
+
+  e.target.value = '';
+});
+
+function loadBitmapMask(dataURL){
+  const maskImg = new Image();
+  maskImg.onload = () => {
+    // Draw mask at canvas size, extract contours
+    const tc = document.createElement('canvas');
+    tc.width = imgCanvas.width; tc.height = imgCanvas.height;
+    const tctx = tc.getContext('2d');
+    tctx.drawImage(maskImg, 0, 0, tc.width, tc.height);
+    const data = tctx.getImageData(0, 0, tc.width, tc.height);
+
+    // Threshold: white = selected, black = not
+    const binary = new Uint8Array(tc.width * tc.height);
+    for(let i = 0; i < data.data.length; i += 4){
+      const lum = data.data[i]*0.299 + data.data[i+1]*0.587 + data.data[i+2]*0.114;
+      binary[i/4] = lum > 128 ? 1 : 0;
+    }
+
+    const contours = traceContours(binary, tc.width, tc.height);
+    if(contours.length === 0){
+      // Try inverted (black = selected)
+      for(let i = 0; i < binary.length; i++) binary[i] = 1 - binary[i];
+      const inv = traceContours(binary, tc.width, tc.height);
+      if(inv.length > 0){
+        maskContours = inv;
+      } else {
+        alert('Could not detect any shapes in the mask. Use a high-contrast black/white image.');
+        return;
+      }
+    } else {
+      maskContours = contours;
+    }
+    document.getElementById('btnExport').disabled = false;
+    updateStatus();
+  };
+  maskImg.src = dataURL;
+}
+
+function loadSVGMask(svgText){
+  // Render SVG to canvas, then trace
+  const blob = new Blob([svgText], {type: 'image/svg+xml'});
+  const url = URL.createObjectURL(blob);
+  const svgImg = new Image();
+  svgImg.onload = () => {
+    const tc = document.createElement('canvas');
+    tc.width = imgCanvas.width; tc.height = imgCanvas.height;
+    const tctx = tc.getContext('2d');
+    // White background
+    tctx.fillStyle = '#fff';
+    tctx.fillRect(0, 0, tc.width, tc.height);
+    // Draw SVG scaled to fit
+    const scale = Math.min(tc.width / svgImg.naturalWidth, tc.height / svgImg.naturalHeight);
+    const sw = svgImg.naturalWidth * scale, sh = svgImg.naturalHeight * scale;
+    const ox = (tc.width - sw) / 2, oy = (tc.height - sh) / 2;
+    tctx.drawImage(svgImg, ox, oy, sw, sh);
+    URL.revokeObjectURL(url);
+
+    const data = tctx.getImageData(0, 0, tc.width, tc.height);
+    const binary = new Uint8Array(tc.width * tc.height);
+    for(let i = 0; i < data.data.length; i += 4){
+      const lum = data.data[i]*0.299 + data.data[i+1]*0.587 + data.data[i+2]*0.114;
+      binary[i/4] = lum < 128 ? 1 : 0; // dark shapes = selected
+    }
+
+    const contours = traceContours(binary, tc.width, tc.height);
+    if(contours.length > 0){
+      maskContours = contours;
+      document.getElementById('btnExport').disabled = false;
+      updateStatus();
+    } else {
+      alert('Could not detect shapes in SVG. Make sure it has solid filled shapes.');
+    }
+  };
+  svgImg.src = url;
+}
+
+// Simple contour tracing (marching squares)
+function traceContours(binary, w, h){
+  const visited = new Uint8Array(w * h);
+  const contours = [];
+
+  // Find boundary pixels and trace
+  for(let y = 1; y < h - 1; y++){
+    for(let x = 1; x < w - 1; x++){
+      const idx = y * w + x;
+      if(binary[idx] && !visited[idx]){
+        // Check if boundary
+        if(!binary[idx-1] || !binary[idx+1] || !binary[idx-w] || !binary[idx+w]){
+          const contour = traceSingle(binary, visited, w, h, x, y);
+          if(contour.length > 20){
+            // Simplify
+            const simplified = simplifyPath(contour, 1.5);
+            if(simplified.length > 4) contours.push(simplified);
+          }
+        }
+      }
+    }
+  }
+  return contours;
+}
+
+function traceSingle(binary, visited, w, h, startX, startY){
+  const contour = [];
+  const dirs = [[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1],[0,-1],[1,-1]];
+  let x = startX, y = startY;
+  let dir = 0;
+  const maxSteps = w * h;
+
+  for(let step = 0; step < maxSteps; step++){
+    contour.push({x, y});
+    visited[y * w + x] = 1;
+
+    let found = false;
+    const startDir = (dir + 5) % 8; // turn back-left
+    for(let i = 0; i < 8; i++){
+      const d = (startDir + i) % 8;
+      const nx = x + dirs[d][0], ny = y + dirs[d][1];
+      if(nx >= 0 && nx < w && ny >= 0 && ny < h && binary[ny * w + nx]){
+        // Check it's still a boundary pixel
+        const isEdge = nx===0||nx===w-1||ny===0||ny===h-1||
+          !binary[ny*w+nx-1]||!binary[ny*w+nx+1]||!binary[(ny-1)*w+nx]||!binary[(ny+1)*w+nx];
+        if(isEdge){
+          x = nx; y = ny; dir = d; found = true;
+          break;
+        }
+      }
+    }
+    if(!found) break;
+    if(x === startX && y === startY && step > 2) break;
+  }
+  return contour;
+}
+
+function simplifyPath(points, tolerance){
+  if(points.length < 3) return points;
+  // Douglas-Peucker
+  let maxDist = 0, maxIdx = 0;
+  const first = points[0], last = points[points.length - 1];
+  for(let i = 1; i < points.length - 1; i++){
+    const d = pointLineDistance(points[i], first, last);
+    if(d > maxDist){ maxDist = d; maxIdx = i; }
+  }
+  if(maxDist > tolerance){
+    const left = simplifyPath(points.slice(0, maxIdx + 1), tolerance);
+    const right = simplifyPath(points.slice(maxIdx), tolerance);
+    return left.slice(0, -1).concat(right);
+  }
+  return [first, last];
+}
+
+function pointLineDistance(p, a, b){
+  const dx = b.x - a.x, dy = b.y - a.y;
+  const len = Math.sqrt(dx*dx + dy*dy);
+  if(len === 0) return Math.sqrt((p.x-a.x)**2 + (p.y-a.y)**2);
+  return Math.abs(dx*(a.y-p.y) - dy*(a.x-p.x)) / len;
+}
+
+
+// ============================================================
+// Tool selection & controls
+// ============================================================
+function setTool(t){
+  tool = t;
+  document.getElementById('btnLasso').classList.toggle('active', t==='lasso');
+  document.getElementById('btnPoly').classList.toggle('active', t==='polygon');
+  if(points.length > 2){ paths.push([...points]); points = []; isDrawing = false; }
+  updateStatus();
+}
+
+function toggleDim(){
+  dimOn = !dimOn;
+  document.getElementById('toggleDim').classList.toggle('on', dimOn);
+}
+
+function clearSelection(){
+  points = []; paths = []; maskContours = [];
+  isDrawing = false;
+  drawCtx.clearRect(0,0,drawCanvas.width,drawCanvas.height);
+  document.getElementById('btnExport').disabled = true;
+  updateStatus();
+}
+
+function updateStatus(){
+  const n = paths.length + maskContours.length + (points.length > 2 ? 1 : 0);
+  const parts = [];
+  if(paths.length) parts.push(`${paths.length} drawn`);
+  if(maskContours.length) parts.push(`${maskContours.length} from mask`);
+  document.getElementById('statusRight').textContent = n ? parts.join(', ') : 'Draw a selection or load a mask';
+}
+
+// ============================================================
+// Drawing — lasso & polygon
+// ============================================================
+drawCanvas.addEventListener('mousedown', onDown);
+drawCanvas.addEventListener('mousemove', onMove);
+drawCanvas.addEventListener('mouseup', onUp);
+drawCanvas.addEventListener('dblclick', onDblClick);
+drawCanvas.addEventListener('touchstart', e=>{e.preventDefault();onDown(touchEvt(e))},{passive:false});
+drawCanvas.addEventListener('touchmove', e=>{e.preventDefault();onMove(touchEvt(e))},{passive:false});
+drawCanvas.addEventListener('touchend', e=>{e.preventDefault();onUp(touchEvt(e))},{passive:false});
+
+function touchEvt(e){
+  const t=e.touches[0]||e.changedTouches[0];
+  return{clientX:t.clientX,clientY:t.clientY,button:0};
+}
+
+function canvasXY(e){
+  const r=drawCanvas.getBoundingClientRect();
+  return{x:(e.clientX-r.left)*(drawCanvas.width/r.width),y:(e.clientY-r.top)*(drawCanvas.height/r.height)};
+}
+
+function onDown(e){
+  if(!img)return;
+  const p=canvasXY(e);
+  if(tool==='lasso'){isDrawing=true;points=[p]}
+  else{if(!isDrawing){isDrawing=true;points=[p]}else{points.push(p)}}
+}
+
+function onMove(e){
+  if(!img)return;
+  if(tool==='lasso'&&isDrawing){
+    const p=canvasXY(e),last=points[points.length-1];
+    if(Math.hypot(p.x-last.x,p.y-last.y)>2) points.push(p);
+  }
+  if(tool==='polygon'&&isDrawing) drawCanvas._hoverPt=canvasXY(e);
+}
+
+function onUp(e){
+  if(tool==='lasso'&&isDrawing){
+    isDrawing=false;
+    if(points.length>4){paths.push([...points]);document.getElementById('btnExport').disabled=false}
+    points=[];updateStatus();
+  }
+}
+
+function onDblClick(e){
+  if(tool==='polygon'&&isDrawing&&points.length>2){
+    isDrawing=false;paths.push([...points]);points=[];
+    document.getElementById('btnExport').disabled=false;drawCanvas._hoverPt=null;updateStatus();
+  }
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&tool==='polygon'&&isDrawing&&points.length>2){
+    isDrawing=false;paths.push([...points]);points=[];
+    document.getElementById('btnExport').disabled=false;drawCanvas._hoverPt=null;updateStatus();
+  }
+  if(e.key==='Escape'){points=[];isDrawing=false;drawCanvas._hoverPt=null;updateStatus()}
+});
+
+// ============================================================
+// Preview animation
+// ============================================================
+function startPreviewLoop(){
+  function loop(ts){
+    animFrame=requestAnimationFrame(loop);
+    const speed=parseInt(document.getElementById('speed').value);
+    if(ts-lastTime<speed*0.5)return;
+    lastTime=ts;
+    antOffset=(antOffset+1)%200;
+    renderFrame(prevCtx,antOffset);
+  }
+  if(animFrame)cancelAnimationFrame(animFrame);
+  requestAnimationFrame(loop);
+}
+
+function getAntColors(){
+  const v=document.getElementById('antColor').value;
+  if(v==='blue')return['#fff','#3388ff'];
+  if(v==='red')return['#fff','#dd3333'];
+  return['#fff','#000'];
+}
+
+function getAllPaths(){
+  const all=[...paths,...maskContours];
+  if(points.length>1)all.push(points);
+  return all;
+}
+
+function renderFrame(ctx,offset){
+  const w=ctx.canvas.width,h=ctx.canvas.height;
+  ctx.clearRect(0,0,w,h);
+  const allPaths=getAllPaths();
+  if(allPaths.length===0&&!(tool==='polygon'&&isDrawing))return;
+
+  const dash=parseInt(document.getElementById('dashLen').value)||6;
+  const[c1,c2]=getAntColors();
+
+  // Dim outside
+  if(dimOn&&allPaths.length>0){
+    const dimAmt=parseInt(document.getElementById('dimAmount').value)/100;
+    ctx.save();
+    ctx.fillStyle=`rgba(0,0,0,${dimAmt})`;
+    ctx.beginPath();ctx.rect(0,0,w,h);
+    for(const path of allPaths){
+      if(path.length<3)continue;
+      ctx.moveTo(path[0].x,path[0].y);
+      for(let i=1;i<path.length;i++)ctx.lineTo(path[i].x,path[i].y);
+      ctx.closePath();
+    }
+    ctx.fill('evenodd');ctx.restore();
+  }
+
+  // Marching ants — diagonal stripe pattern clipped to stroke
+  // Create the stripe pattern (shifts each frame)
+  const stripeSize = dash * 2;
+  const patCanvas = document.createElement('canvas');
+  patCanvas.width = stripeSize; patCanvas.height = stripeSize;
+  const pctx = patCanvas.getContext('2d');
+
+  // Fill with colour 1
+  pctx.fillStyle = c1;
+  pctx.fillRect(0, 0, stripeSize, stripeSize);
+
+  // Draw diagonal stripes with colour 2
+  // The offset shifts the pattern to create animation
+  const shift = (offset * stripeSize / 12) % stripeSize;
+  pctx.fillStyle = c2;
+  // Draw diagonal bands — we draw extra to cover the tile after shifting
+  for(let i = -2; i < 4; i++){
+    const x = i * stripeSize + shift;
+    pctx.beginPath();
+    pctx.moveTo(x, 0);
+    pctx.lineTo(x + dash, 0);
+    pctx.lineTo(x + dash - stripeSize, stripeSize);
+    pctx.lineTo(x - stripeSize, stripeSize);
+    pctx.closePath();
+    pctx.fill();
+  }
+
+  const pattern = ctx.createPattern(patCanvas, 'repeat');
+
+  for(const path of allPaths){
+    if(path.length<2)continue;
+    ctx.save();
+    ctx.strokeStyle = pattern;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(path[0].x, path[0].y);
+    for(let i=1;i<path.length;i++) ctx.lineTo(path[i].x, path[i].y);
+    if(path!==points) ctx.closePath();
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // Polygon rubber-band
+  if(tool==='polygon'&&isDrawing&&points.length>0&&drawCanvas._hoverPt){
+    const hp=drawCanvas._hoverPt,lp=points[points.length-1];
+    ctx.save();ctx.strokeStyle='#fff8';ctx.setLineDash([3,3]);
+    ctx.beginPath();ctx.moveTo(lp.x,lp.y);ctx.lineTo(hp.x,hp.y);ctx.stroke();
+    ctx.beginPath();ctx.moveTo(hp.x,hp.y);ctx.lineTo(points[0].x,points[0].y);ctx.stroke();
+    ctx.restore();
+  }
+
+  if(tool==='polygon'&&isDrawing){
+    for(const p of points){
+      ctx.save();ctx.fillStyle='#fff';ctx.strokeStyle='#000';ctx.lineWidth=1;
+      ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();ctx.stroke();ctx.restore();
+    }
+  }
+}
+
+
+// ============================================================
+// GIF Export — fully inline, no workers
+// ============================================================
+function exportGIF(){
+  const allPaths=getAllPaths();
+  if(allPaths.length===0)return;
+
+  const w=imgCanvas.width,h=imgCanvas.height;
+  const dash=parseInt(document.getElementById('dashLen').value)||6;
+  const speed=parseInt(document.getElementById('speed').value);
+  const totalFrames=12;
+  const[c1,c2]=getAntColors();
+  const dimAmt=dimOn?parseInt(document.getElementById('dimAmount').value)/100:0;
+
+  const pp=document.getElementById('previewPanel');
+  pp.classList.remove('hidden');
+  const pb=document.getElementById('progressBar');
+  pb.classList.remove('hidden');
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('btnExport').disabled=true;
+  document.getElementById('previewInfo').innerHTML='<span style="color:#aaa">Generating GIF…</span>';
+  document.getElementById('gifPreview').classList.add('hidden');
+
+  const fc=document.createElement('canvas');
+  fc.width=w;fc.height=h;
+  const fctx=fc.getContext('2d');
+
+  // Build frames async to keep UI responsive
+  const frames=[];
+  let f=0;
+
+  function buildFrame(){
+    fctx.clearRect(0,0,w,h);
+    fctx.drawImage(imgCanvas,0,0);
+
+    if(dimOn){
+      fctx.save();
+      fctx.fillStyle=`rgba(0,0,0,${dimAmt})`;
+      fctx.beginPath();fctx.rect(0,0,w,h);
+      for(const path of allPaths){
+        if(path.length<3)continue;
+        fctx.moveTo(path[0].x,path[0].y);
+        for(let i=1;i<path.length;i++)fctx.lineTo(path[i].x,path[i].y);
+        fctx.closePath();
+      }
+      fctx.fill('evenodd');fctx.restore();
+    }
+
+    const off=f*(dash*2/totalFrames);
+
+    // Create diagonal stripe pattern for this frame
+    const stripeSize = dash * 2;
+    const patCanvas2 = document.createElement('canvas');
+    patCanvas2.width = stripeSize; patCanvas2.height = stripeSize;
+    const pctx2 = patCanvas2.getContext('2d');
+    pctx2.fillStyle = c1;
+    pctx2.fillRect(0, 0, stripeSize, stripeSize);
+    pctx2.fillStyle = c2;
+    const shift = (off) % stripeSize;
+    for(let i = -2; i < 4; i++){
+      const x = i * stripeSize + shift;
+      pctx2.beginPath();
+      pctx2.moveTo(x, 0);
+      pctx2.lineTo(x + dash, 0);
+      pctx2.lineTo(x + dash - stripeSize, stripeSize);
+      pctx2.lineTo(x - stripeSize, stripeSize);
+      pctx2.closePath();
+      pctx2.fill();
+    }
+    const pattern = fctx.createPattern(patCanvas2, 'repeat');
+
+    for(const path of allPaths){
+      if(path.length<2)continue;
+      fctx.save();
+      fctx.strokeStyle = pattern;
+      fctx.lineWidth = 2;
+      fctx.beginPath();
+      fctx.moveTo(path[0].x,path[0].y);
+      for(let i=1;i<path.length;i++) fctx.lineTo(path[i].x,path[i].y);
+      fctx.closePath();
+      fctx.stroke();
+      fctx.restore();
+    }
+
+    frames.push({
+      imageData: fctx.getImageData(0,0,w,h),
+      delay: speed
+    });
+
+    f++;
+    document.getElementById('progressFill').style.width=Math.round(f/totalFrames*50)+'%';
+
+    if(f<totalFrames){
+      setTimeout(buildFrame, 0);
+    } else {
+      // Encode
+      const blob=GIFEncoder.encode(frames, w, h, p=>{
+        document.getElementById('progressFill').style.width=Math.round(50+p*50)+'%';
+      });
+
+      pb.classList.add('hidden');
+      document.getElementById('btnExport').disabled=false;
+
+      const url=URL.createObjectURL(blob);
+      const prev=document.getElementById('gifPreview');
+      prev.src=url;prev.classList.remove('hidden');
+
+      const kb=(blob.size/1024).toFixed(1);
+      document.getElementById('previewInfo').innerHTML=
+        `${w} × ${h}px · ${totalFrames} frames · ${kb} KB<br><br>`+
+        `<a href="${url}" download="marching-ants.gif">Download GIF</a><br><br>`+
+        `<span style="color:#666;font-size:11px">Upload into Canvas via the image button<br>in the Rich Content Editor — it animates automatically.</span>`;
+    }
+  }
+
+  setTimeout(buildFrame, 0);
+}
+</script>
+</body>
+</html>
