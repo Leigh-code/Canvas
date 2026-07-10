@@ -40,10 +40,43 @@
   .meta input{border:none;border-bottom:1px solid var(--line);padding:3px 2px;font:inherit;min-width:170px}
   .meta input:focus{outline:none;border-bottom-color:var(--ink)}
 
+  .identity{display:flex;flex-wrap:wrap;gap:22px;align-items:flex-end;background:#fff8e6;border:2px solid #e4b200;border-radius:10px;padding:14px 18px;margin-bottom:18px}
+  .identity.filled{background:#f1f8f1;border-color:#6a9e6a}
+  .identity .id-field{display:flex;flex-direction:column;gap:5px}
+  .identity label{font-weight:700;font-size:.92rem}
+  .identity .req{color:#c0392b}
+  .identity input{font-size:1.05rem;padding:9px 11px;border:1px solid var(--line);border-radius:7px;min-width:250px}
+  .identity input:focus{outline:2px solid #e4b200;outline-offset:0;border-color:#e4b200}
+  .identity .id-note{font-size:.82rem;font-weight:600;color:#a67c00;align-self:center;margin-left:auto}
+  .identity.filled .id-note{color:#4a7a4a}
+  .identity.filled .id-note::before{content:"✓ "}
+
+  .id-warn{display:none;position:relative;width:fit-content;max-width:100%;margin:-8px 0 18px 0;background:#c0392b;color:#fff;padding:11px 16px;border-radius:8px;font-weight:600;box-shadow:0 3px 12px rgba(192,57,43,.3)}
+  .id-warn::before{content:"";position:absolute;top:-9px;left:34px;border-left:9px solid transparent;border-right:9px solid transparent;border-bottom:9px solid #c0392b}
+
+  .chartwrap{position:relative}
+  .chartwrap.locked > .scroll,.chartwrap.locked > .legend,.chartwrap.locked > .summary,.chartwrap.locked > .feedback{opacity:.4;filter:grayscale(.35)}
+  .lockover{display:none;position:absolute;inset:0;z-index:40;cursor:not-allowed;justify-content:center}
+  .chartwrap.locked .lockover{display:flex}
+  .lockmsg{margin-top:24px;height:fit-content;background:rgba(43,43,48,.88);color:#fff;padding:8px 15px;border-radius:20px;font-weight:600;font-size:.85rem}
+  .lockmsg::before{content:"↑ "}
+  .shake{animation:shk .4s}
+  @keyframes shk{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-7px)}40%,80%{transform:translateX(7px)}}
+
+  .modal-back{display:none;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:100;align-items:flex-start;justify-content:center}
+  .modal{background:#fff;max-width:560px;width:calc(100% - 40px);margin-top:8vh;border-radius:12px;padding:22px 24px;box-shadow:0 12px 40px rgba(0,0,0,.3);border-top:6px solid #c0392b}
+  .modal h3{margin:0 0 6px;font-size:1.15rem;color:#c0392b}
+  .modal p{margin:0 0 10px}
+  .modal ul.miss{margin:0 0 14px 0;padding:0 0 0 20px}
+  .modal ul.miss li{margin:6px 0}
+  .modal .sugg{background:#eef6ee;color:#2e6b2e;border-radius:5px;padding:1px 7px;font-size:.85rem;white-space:nowrap}
+  .modal-actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap}
+
   .scroll{overflow-x:auto}
   table.gantt{border-collapse:collapse;font-size:.8rem;table-layout:fixed;width:100%;min-width:1060px}
   table.gantt td,table.gantt th{border-bottom:1px solid #ece9df}
-  thead th{background:#f7f7f9;font-weight:600;text-align:center;padding:6px 2px;font-size:.72rem;border-bottom:1px solid var(--line)}
+  thead th,.colhead th{background:#f7f7f9;font-weight:600;text-align:center;padding:6px 2px;font-size:.72rem;border-bottom:1px solid var(--line)}
+  .colhead th{border-top:1px solid var(--line)}
   th.h-num,th.h-task{text-align:left;padding-left:8px}
   th.wk-head{font-size:.66rem;color:#444}
   th.wk-head.brk{border-right:2px dashed #d0a94e}
@@ -103,10 +136,10 @@
 
   <div class="bar-tools no-export">
     <div class="spacer"></div>
-    <button class="primary" onclick="exportDoc()">Download for Word</button>
-    <button onclick="exportPDF()">PDF</button>
-    <button onclick="exportPNG()">PNG</button>
-    <button onclick="window.print()">Print</button>
+    <button class="primary" onclick="download('doc')">Download for Word</button>
+    <button onclick="download('pdf')">PDF</button>
+    <button onclick="download('png')">PNG</button>
+    <button onclick="download('print')">Print</button>
   </div>
 
   <details class="guide no-export">
@@ -118,8 +151,7 @@
         <li>Fill in your name, student ID and anyone you planned with.</li>
         <li>For each task, click a week on the timeline to place its bar, then drag the bar to move it and drag its ends to make it longer or shorter. Click an empty week to jump the bar there, or double-click a bar to clear it and start again. The length of the bar is how long you think the task will take.</li>
         <li>Add an hours estimate for each task. The summary tells you if you're under or over typical times.</li>
-        <li>Set each task's "Depends on" — the task that must be underway or done first. The summary flags anything scheduled out of order.</li>
-        <li>At the top, drag each coloured ◆ to the week that assessment is due and marked satisfactory. A matching coloured line runs down the chart so you can see which tasks fall before each gate — use it to check your workload is realistic.</li>
+        <li>At the top, drag each coloured ◆ to the week that milestone is due or signed off (the assessment tasks, plus your concept sign-off). A matching coloured line runs down the chart so you can see which tasks fall before each gate — use it to check your workload is realistic.</li>
         <li>Add or delete tasks (✕) if your project needs it, then export to Word and insert it into your AT1B worksheet.</li>
       </ol>
       <p>You can plan this with others — list who in the "Planned with" field. Your plan should still reflect your own project. It's assessed, but there's no single right answer: what's checked is that you understand the sequence, the dependencies and realistic effort.</p>
@@ -127,33 +159,41 @@
   </details>
 
   <div id="sheet">
+    <div class="identity" id="identity">
+      <div class="id-field"><label>Name <span class="req">*</span></label><input id="m-name" placeholder="Your full name" oninput="updateLock()"></div>
+      <div class="id-field"><label>Student number <span class="req">*</span></label><input id="m-id" placeholder="s1234567" oninput="updateLock()"></div>
+      <div class="id-note" id="idNote">Required before you can start</div>
+    </div>
+    <div class="id-warn" id="idWarn">⚠ Add your name and student number to this document before beginning</div>
+
     <div class="sheet-head">
       <div>
         <h2>Project timeline</h2>
         <div class="course">GRAP5405C 2D Design Process · AT1B Planning · Refine 2D design ideas and processes (CUAACD536)</div>
       </div>
       <div class="meta">
-        <label>Name</label><input id="m-name" placeholder="Your name">
-        <label>Student ID</label><input id="m-id" placeholder="s1234567">
         <label>Project</label><input id="m-project" placeholder="e.g. Playing card deck">
         <label>Planned with</label><input id="m-collab" placeholder="Names of collaborators (optional)">
         <label>Date</label><input id="m-date" placeholder="dd/mm/yyyy">
       </div>
     </div>
 
-    <div class="scroll">
-      <table class="gantt" id="ganttTable"></table>
+    <div class="chartwrap locked" id="chartwrap">
+      <div class="lockover" id="lockover" onpointerdown="flashLock()"><div class="lockmsg" id="lockmsg">Add your name and student number above</div></div>
+      <div class="scroll">
+        <table class="gantt" id="ganttTable"></table>
+      </div>
+      <div class="legend" id="legend"></div>
+      <div class="summary">
+        <div></div>
+        <div class="total" id="total"></div>
+      </div>
+      <div class="feedback" id="feedback"></div>
     </div>
-
-    <div class="legend" id="legend"></div>
-
-    <div class="summary">
-      <div></div>
-      <div class="total" id="total"></div>
-    </div>
-    <div class="feedback" id="feedback"></div>
     <div class="foot-note">Bars show when each task runs and for how long (the semester week axis, 1–16; the dashed line is the mid-semester break after week 7). An assessment milestone (◆) marks the week a task is submitted and marked satisfactory — drag each to its due week.</div>
   </div>
+
+  <div class="modal-back" id="modalBack"><div class="modal" id="modal"></div></div>
 </div>
 
 <script>
@@ -164,41 +204,41 @@
 // template leaves them blank. dep is a global task number (1-based, in order).
 var BRIEF_PLAN = [
   {name:"Brief & intake", color:"#3d5a3d", tasks:[
-    {name:"Examine the brief, unit & performance criteria", start:1,dur:2,dep:0, hours:2, typ:[1,3]},
-    {name:"Start contemporary 2D design board", start:1,dur:2,dep:0, hours:2, typ:[1,3]},
-    {name:"Deconstruct a playing card (elements & principles)", start:2,dur:1,dep:1, hours:1, typ:[0.5,2]},
-    {name:"Set up process document & OneDrive", start:2,dur:1,dep:0, hours:1, typ:[0.5,1.5]}
+    {name:"Read the brief and unit requirements", start:1,dur:2,dep:0, hours:2, typ:[1,3]},
+    {name:"Start your contemporary 2D design board", start:1,dur:2,dep:0, hours:2, typ:[1,3]},
+    {name:"Break a playing card down into design elements and principles", start:2,dur:1,dep:1, hours:1, typ:[0.5,2]},
+    {name:"Set up your process document and OneDrive folder", start:2,dur:1,dep:0, hours:1, typ:[0.5,1.5]}
   ]},
   {name:"Planning & research", color:"#5a6e3a", tasks:[
-    {name:"Plan & schedule the project (this timeline)", start:2,dur:2,dep:1, hours:2, typ:[1,3]},
-    {name:"Set up three research boards & cross-tag", start:2,dur:2,dep:0, hours:2, typ:[1,3]},
-    {name:"Image capture (excursion / desk setups)", start:3,dur:1,dep:6, hours:3, typ:[2,5]},
-    {name:"Forced connections: element + principle + subject", start:3,dur:1,dep:7, hours:2, typ:[1,3]}
+    {name:"Plan and schedule your project (this Gantt)", start:2,dur:2,dep:1, hours:2, typ:[1,3]},
+    {name:"Set up your three research boards", start:2,dur:2,dep:0, hours:2, typ:[1,3]},
+    {name:"Capture your source photos (excursion or desk)", start:3,dur:1,dep:6, hours:3, typ:[2,5]},
+    {name:"Use forced connections to turn your element, principle and subject into ideas", start:3,dur:1,dep:7, hours:2, typ:[1,3]}
   ]},
   {name:"Concepts & sign-off", color:"#6a9e6a", tasks:[
-    {name:"Develop two collection concepts on the card grid", start:4,dur:1,dep:8, hours:5, typ:[3,7]},
-    {name:"Moodboard, mind map & idea development", start:4,dur:1,dep:6, hours:3, typ:[2,4]},
-    {name:"Present concepts & gather feedback", start:5,dur:1,dep:9, hours:1, typ:[0.5,2]},
-    {name:"Select & sign off concept; get ePrint quote", start:5,dur:1,dep:11, hours:2, typ:[1,3]}
+    {name:"Develop two different design concepts for the deck", start:4,dur:1,dep:8, hours:5, typ:[3,7]},
+    {name:"Create a moodboard and mind map to develop your ideas", start:4,dur:1,dep:6, hours:3, typ:[2,4]},
+    {name:"Present your two concepts and get feedback", start:5,dur:1,dep:9, hours:1, typ:[0.5,2]},
+    {name:"Choose your final concept and get an ePrint quote", start:5,dur:1,dep:11, hours:2, typ:[1,3]}
   ]},
   {name:"Production", color:"#b87d5a", tasks:[
-    {name:"Colour palette & pip design decisions", start:6,dur:1,dep:12, hours:3, typ:[2,5]},
-    {name:"Typography & full card layout", start:7,dur:1,dep:13, hours:5, typ:[3,7]},
-    {name:"Card-back pattern design", start:8,dur:1,dep:14, hours:3, typ:[2,5]},
-    {name:"Photography (studio / home setup)", start:9,dur:1,dep:12, hours:4, typ:[3,6]},
-    {name:"Produce number & court cards", start:9,dur:3,dep:14, hours:8, typ:[6,11]},
-    {name:"Begin package / dieline setup", start:11,dur:1,dep:17, hours:2, typ:[1,4]}
+    {name:"Choose your colour palette and pip design", start:6,dur:1,dep:12, hours:3, typ:[2,5]},
+    {name:"Choose your typeface and lay out your first full card", start:7,dur:1,dep:13, hours:5, typ:[3,7]},
+    {name:"Design your card-back pattern", start:8,dur:1,dep:14, hours:3, typ:[2,5]},
+    {name:"Photograph your card images (studio or home)", start:9,dur:1,dep:12, hours:4, typ:[3,6]},
+    {name:"Make all your number and court cards", start:9,dur:3,dep:14, hours:8, typ:[6,11]},
+    {name:"Start your package and dieline setup", start:11,dur:1,dep:17, hours:2, typ:[1,4]}
   ]},
   {name:"Review & refinement", color:"#8a5a8a", tasks:[
-    {name:"Formal peer feedback & apply refinements", start:12,dur:1,dep:17, hours:2, typ:[1,4]},
-    {name:"Draft-print & preflight cards + package", start:12,dur:2,dep:18, hours:2, typ:[1,4]},
-    {name:"Finalise package design; fix preflight issues", start:13,dur:1,dep:20, hours:3, typ:[2,5]}
+    {name:"Get peer feedback and refine your designs", start:12,dur:1,dep:17, hours:2, typ:[1,4]},
+    {name:"Print a draft and preflight your cards and package", start:12,dur:2,dep:18, hours:2, typ:[1,4]},
+    {name:"Finalise your package and fix any print issues", start:13,dur:1,dep:20, hours:3, typ:[2,5]}
   ]},
   {name:"Print, submit & present", color:"#3a7a7a", tasks:[
-    {name:"Impose & preflight final print files", start:14,dur:1,dep:21, hours:2, typ:[1,4]},
-    {name:"Build presentation video & voice-over", start:14,dur:2,dep:21, hours:3, typ:[2,5]},
-    {name:"Present final outcomes", start:15,dur:1,dep:23, hours:2, typ:[1,3]},
-    {name:"Respond to feedback; lodge final submission", start:16,dur:1,dep:24, hours:2, typ:[1,3]}
+    {name:"Prepare and check your final print files", start:14,dur:1,dep:21, hours:2, typ:[1,4]},
+    {name:"Build your presentation video and voice-over", start:14,dur:2,dep:21, hours:3, typ:[2,5]},
+    {name:"Present your final outcomes", start:15,dur:1,dep:23, hours:2, typ:[1,3]},
+    {name:"Respond to feedback and lodge your final submission", start:16,dur:1,dep:24, hours:2, typ:[1,3]}
   ]}
 ];
 
@@ -206,6 +246,7 @@ var BRIEF_PLAN = [
 // A milestone here means "this assessment task is submitted and marked satisfactory".
 var ASSESSMENTS = [
   {name:"AT1a — The brief, research & ideation", short:"AT1a", week:4, color:"#c0392b"},
+  {name:"Concept signed off", short:"Concept", week:5, color:"#b83280"},
   {name:"AT1b — Plan work & outline design process", short:"AT1b", week:6, color:"#d68910"},
   {name:"Work in progress submitted", short:"WIP", week:11, color:"#8e44ad"},
   {name:"AT1c — Cards & Package", short:"AT1c·C&P", week:14, color:"#148f77"},
@@ -225,7 +266,8 @@ function buildPhases(withAnswers){
         var id=uid++; order.push(id);
         return {id:id,name:t.name,typ:t.typ.slice(),
           start:withAnswers?t.start:null, dur:withAnswers?t.dur:null,
-          hours:withAnswers?t.hours:"", dep:"", _depNo:t.dep};
+          hours:withAnswers?t.hours:"", dep:"", _depNo:t.dep,
+          _ms:{start:t.start,dur:t.dur,hours:t.hours}};  // model answer for suggestions
       })};
   });
   if(withAnswers){
@@ -236,7 +278,7 @@ function buildPhases(withAnswers){
   return phases;
 }
 function buildMilestones(withAnswers){
-  return ASSESSMENTS.map(function(a){ return {id:uid++,name:a.name,short:a.short,color:a.color,week:withAnswers?a.week:null}; });
+  return ASSESSMENTS.map(function(a){ return {id:uid++,name:a.name,short:a.short,color:a.color,week:withAnswers?a.week:null,_mWeek:a.week}; });
 }
 function loadTemplate(){ state.phases=buildPhases(false); state.milestones=buildMilestones(false); document.getElementById('m-project').value=""; render(); }
 function loadExample(){ state.phases=buildPhases(true); state.milestones=buildMilestones(true); document.getElementById('m-project').value="Playing card deck"; render(); }
@@ -249,16 +291,31 @@ function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
 function round(n){ return Math.round(n*10)/10; }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
 
+/* ---------- lock until name + student number ---------- */
+function isUnlocked(){ return !!(document.getElementById('m-name').value.trim() && document.getElementById('m-id').value.trim()); }
+function updateLock(){
+  var un=isUnlocked();
+  document.getElementById('chartwrap').classList.toggle('locked', !un);
+  document.getElementById('identity').classList.toggle('filled', un);
+  document.getElementById('idWarn').style.display = un ? 'none' : 'block';
+}
+function shakeEl(id){ var e=document.getElementById(id); if(e){ e.classList.remove('shake'); void e.offsetWidth; e.classList.add('shake'); } }
+function flashLock(){
+  shakeEl('idWarn'); shakeEl('identity');
+  var id=document.getElementById('identity'); if(id&&id.scrollIntoView) id.scrollIntoView({behavior:'smooth',block:'center'});
+}
+
 /* ---------- edit handlers ---------- */
 function onName(pi,ti,v){ state.phases[pi].tasks[ti].name=v; }
 function onHours(pi,ti,v){ state.phases[pi].tasks[ti].hours=v; updateFeedback(); }
 function onDep(pi,ti,v){ state.phases[pi].tasks[ti].dep=v?parseInt(v,10):""; render(); }
 function onMsName(mi,v){ state.milestones[mi].name=v; }
-function addTask(pi){ state.phases[pi].tasks.push({id:uid++,name:"",typ:null,start:null,dur:null,hours:"",dep:""}); render(); }
+function addTask(pi){ if(!isUnlocked()){ flashLock(); return; } state.phases[pi].tasks.push({id:uid++,name:"",typ:null,start:null,dur:null,hours:"",dep:""}); render(); }
 function removeTask(pi,ti){ state.phases[pi].tasks.splice(ti,1); render(); }
 
 /* ---------- drag ---------- */
 function placeBar(e,pi,ti){
+  if(!isUnlocked()){ flashLock(); return; }
   var tk=state.phases[pi].tasks[ti];
   var track=e.currentTarget, r=track.getBoundingClientRect(), cw=r.width/state.weeks;
   var wk=clamp(Math.floor((e.clientX-r.left)/cw)+1,1,state.weeks);
@@ -268,6 +325,7 @@ function placeBar(e,pi,ti){
 }
 function clearBar(pi,ti){ var tk=state.phases[pi].tasks[ti]; tk.start=null; tk.dur=null; render(); }
 function startDrag(e,pi,ti,mode){
+  if(!isUnlocked()){ flashLock(); return; }
   e.preventDefault(); e.stopPropagation();
   var tk=state.phases[pi].tasks[ti];
   var track=e.target.closest('.track'), r=track.getBoundingClientRect(), cw=r.width/state.weeks;
@@ -285,6 +343,7 @@ function startDrag(e,pi,ti,mode){
   document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
 }
 function msDown(e,mi){
+  if(!isUnlocked()){ flashLock(); return; }
   e.preventDefault(); e.stopPropagation();
   var m=state.milestones[mi], track=e.target.closest('.mstrack'), r=track.getBoundingClientRect(), cw=r.width/state.weeks;
   if(!e.target.classList.contains('msdiamond')){ m.week=clamp(Math.floor((e.clientX-r.left)/cw)+1,1,state.weeks); render(); return; }
@@ -303,16 +362,15 @@ function gateLines(){
 }
 function render(){
   var W=state.weeks, BK=state.breakAfter, tbl=document.getElementById('ganttTable');
-  var wkPct=(60/W).toFixed(3);  // 16 weeks share ~60% of the width
+  var wkPct=(69/W).toFixed(3);  // 16 weeks share ~69% of the width
   var gl=gateLines();
-  var html="<thead><tr><th class='h-task' style='width:22%'>Task</th><th style='width:5%'>Hrs</th><th style='width:13%'>Depends on</th>";
-  for(var w=1;w<=W;w++) html+="<th class='wk-head"+(w===BK?" brk":"")+"' style='width:"+wkPct+"%'>"+w+"</th>";
-  html+="</tr></thead><tbody>";
+  function wkHeads(withW){ var s=""; for(var w=1;w<=W;w++) s+="<th class='wk-head"+(w===BK?" brk":"")+"'"+(withW?" style='width:"+wkPct+"%'":"")+">"+w+"</th>"; return s; }
+  var html="<thead><tr><th class='h-task' style='width:26%'>Task</th><th style='width:5%'>Hrs</th>"+wkHeads(true)+"</tr></thead><tbody>";
 
   // --- Assessment milestones, shown at the top of the chart ---
-  html+="<tr><td class='phasehd' colspan='"+(3+W)+"' style='background:"+MS_COLOR+"'>Assessment milestones — drag each ◆ to the week it is due &amp; marked satisfactory</td></tr>";
+  html+="<tr><td class='phasehd' colspan='"+(2+W)+"' style='background:"+MS_COLOR+"'>Milestones — drag each ◆ to the week it is due or signed off</td></tr>";
   state.milestones.forEach(function(m,mi){
-    html+="<tr class='msrow'><td class='ms-label' colspan='3'><div class='ms-flex'>"+
+    html+="<tr class='msrow'><td class='ms-label' colspan='2'><div class='ms-flex'>"+
       "<span class='ms-tag' style='color:"+m.color+"'>&#9670; "+esc(m.short)+"</span>"+
       "<input class='ms-name' value=\""+esc(m.name)+"\" oninput=\"onMsName("+mi+",this.value)\"></div></td>";
     html+="<td colspan='"+W+"'><div class='mstrack' onpointerdown='msDown(event,"+mi+")' style='position:relative;height:30px'>";
@@ -321,21 +379,18 @@ function render(){
     if(m.week){ var lx=(m.week-0.5)/W*100;
       html+="<div class='mslabel' style='left:"+lx+"%;color:"+m.color+"'>"+esc(m.short)+"</div>";
       html+="<div class='msdiamond' style='left:"+lx+"%;background:"+m.color+"' onpointerdown='msDown(event,"+mi+")'></div>";
-    } else html+="<div class='mshint'>click the week this is due &amp; marked satisfactory</div>";
+    } else html+="<div class='mshint'>click the week this is due or signed off</div>";
     html+="</div></td></tr>";
   });
 
-  var f=flat();
   state.phases.forEach(function(ph,pi){
-    html+="<tr><td class='phasehd' colspan='"+(3+W)+"' style='background:"+ph.color+"'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
+    html+="<tr><td class='phasehd' colspan='"+(2+W)+"' style='background:"+ph.color+"'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
+    html+="<tr class='colhead'><th class='h-task'>Task</th><th>Hrs</th>"+wkHeads(false)+"</tr>";
     ph.tasks.forEach(function(tk,ti){
-      var opts="<option value=''>—</option>";
-      f.forEach(function(x){ if(x.tk.id!==tk.id) opts+="<option value='"+x.tk.id+"'"+(tk.dep===x.tk.id?" selected":"")+">"+esc(x.tk.name)+"</option>"; });
       html+="<tr>";
       html+="<td class='tk'><div class='tkwrap'><textarea class='tname' rows='1' placeholder='Describe a task…' oninput=\"onName("+pi+","+ti+",this.value);autoGrow(this)\">"+esc(tk.name)+"</textarea>"+
             "<button class='del-btn no-export' title='Delete task' onclick='removeTask("+pi+","+ti+")'>&#10005;</button></div></td>";
       html+="<td class='hr'><input type='number' min='0' step='0.5' value='"+esc(tk.hours)+"' placeholder='—' oninput=\"onHours("+pi+","+ti+",this.value)\"></td>";
-      html+="<td><select class='dep' onchange=\"onDep("+pi+","+ti+",this.value)\">"+opts+"</select></td>";
       html+="<td colspan='"+W+"'><div class='track' onpointerdown='placeBar(event,"+pi+","+ti+")'>";
       if(BK) html+="<div class='brkline'></div>";
       html+=gl;
@@ -351,7 +406,7 @@ function render(){
       html+="</div></td>";
       html+="</tr>";
     });
-    html+="<tr class='addtask no-export'><td colspan='"+(3+W)+"'><button onclick='addTask("+pi+")'>+ Add a task</button></td></tr>";
+    html+="<tr class='addtask no-export'><td colspan='"+(2+W)+"'><button onclick='addTask("+pi+")'>+ Add a task</button></td></tr>";
   });
   html+="</tbody>";
   tbl.innerHTML=html;
@@ -371,7 +426,7 @@ function buildLegend(){
 }
 
 function updateFeedback(){
-  var grand=0, typLo=0, typHi=0, entered=0, onTrack=0, hoursFlags=[], depFlags=[], unscheduled=0;
+  var grand=0, typLo=0, typHi=0, entered=0, onTrack=0, hoursFlags=[], unscheduled=0;
   state.phases.forEach(function(ph){
     ph.tasks.forEach(function(tk){
       if(!(tk.start&&tk.dur)) unscheduled++;
@@ -381,9 +436,6 @@ function updateFeedback(){
         if(tk.typ){ if(h<tk.typ[0]) hoursFlags.push({name:tk.name,h:h,lo:tk.typ[0],hi:tk.typ[1],dir:"under"});
           else if(h>tk.typ[1]) hoursFlags.push({name:tk.name,h:h,lo:tk.typ[0],hi:tk.typ[1],dir:"over"}); else onTrack++; }
       }
-      if(tk.dep && tk.start){ var pred=taskById(tk.dep);
-        if(pred && pred.start && tk.start<pred.start)
-          depFlags.push({an:tk.name,bn:pred.name,as:tk.start,bs:pred.start}); }
     });
   });
   // milestone placement + ordering
@@ -396,21 +448,77 @@ function updateFeedback(){
   var fb="<h4>Plan check</h4>";
   if(unscheduled>0) fb+="<p class='fb-line'>"+unscheduled+" task"+(unscheduled===1?"":"s")+" not yet placed on the timeline.</p>";
   if(msUnplaced>0) fb+="<p class='fb-line'>"+msUnplaced+" assessment milestone"+(msUnplaced===1?"":"s")+" not yet placed.</p>";
-  if(entered===0) fb+="<p class='fb-hint'>Add hours estimates, place your bars and set your milestones to get feedback on effort, order and timing.</p>";
+  if(entered===0) fb+="<p class='fb-hint'>Add hours estimates, place your bars and set your milestones to get feedback on effort and timing.</p>";
   else {
     fb+="<p class='fb-line'><strong>"+onTrack+"</strong> task"+(onTrack===1?"":"s")+" within the typical hours range"+(hoursFlags.length?", <strong>"+hoursFlags.length+"</strong> to review":"")+".</p>";
     if(grand<typLo) fb+="<p class='fb-line warn'>Total hours ("+round(grand)+") are below the typical range — possibly under-estimating.</p>";
     else if(grand>typHi) fb+="<p class='fb-line warn'>Total hours ("+round(grand)+") are above the typical range — check you're not over-scoping.</p>";
   }
-  if(depFlags.length||msOrder.length||hoursFlags.length){
+  if(msOrder.length||hoursFlags.length){
     fb+="<ul class='fb-list'>";
-    depFlags.forEach(function(d){ fb+="<li>⚠ <strong>"+esc(d.an)+"</strong> starts in week "+d.as+" but its dependency <strong>"+esc(d.bn)+"</strong> doesn't start until week "+d.bs+".</li>"; });
     msOrder.forEach(function(n){ fb+="<li>⚠ Milestone <strong>"+esc(n)+"</strong> is placed before an earlier assessment milestone — check the order.</li>"; });
     hoursFlags.forEach(function(f){ fb+="<li>"+(f.dir==="under"?"▼":"▲")+" <strong>"+esc(f.name)+"</strong>: "+round(f.h)+" h — typically "+round(f.lo)+"–"+round(f.hi)+" h.</li>"; });
     fb+="</ul>";
-  } else if(entered>0 && unscheduled===0 && msUnplaced===0){ fb+="<p class='fb-line'>Order, milestones and effort all look consistent. Nice work.</p>"; }
+  } else if(entered>0 && unscheduled===0 && msUnplaced===0){ fb+="<p class='fb-line'>Milestones and effort all look consistent. Nice work.</p>"; }
   document.getElementById('feedback').innerHTML=fb;
 }
+
+/* ---------- completeness gate on download ---------- */
+function checkComplete(){
+  var issues=[];
+  state.phases.forEach(function(ph,pi){
+    ph.tasks.forEach(function(tk,ti){
+      var named=(tk.name||"").trim();
+      if(!named && !(tk.start&&tk.dur) && (tk.hours===""||tk.hours==null)) return; // ignore fully-empty added rows
+      if(tk.hours===""||tk.hours==null||isNaN(parseFloat(tk.hours)))
+        issues.push({type:'hours',pi:pi,ti:ti,name:named,sugg:tk._ms?tk._ms.hours:null});
+      if(!(tk.start&&tk.dur))
+        issues.push({type:'time',pi:pi,ti:ti,name:named,sugg:tk._ms?{start:tk._ms.start,dur:tk._ms.dur}:null});
+    });
+  });
+  state.milestones.forEach(function(m,mi){
+    if(!m.week) issues.push({type:'ms',mi:mi,name:m.short||m.name,sugg:(m._mWeek||null)});
+  });
+  return issues;
+}
+var _issues=[];
+function download(kind){
+  if(!isUnlocked()){ flashLock(); return; }
+  _issues=checkComplete();
+  if(_issues.length){ showIncomplete(_issues); return; }
+  if(kind==='doc') exportDoc(); else if(kind==='pdf') exportPDF(); else if(kind==='png') exportPNG(); else window.print();
+}
+function showIncomplete(issues){
+  var few=issues.length<=2, anySugg=false;
+  var h="<h3>Your plan isn't finished</h3><p>Complete the following before you download:</p><ul class='miss'>";
+  issues.forEach(function(it){
+    var label, sug="";
+    if(it.type==='hours') label="Hours estimate for <strong>"+esc(it.name||"an unnamed task")+"</strong>";
+    else if(it.type==='time') label="A timeline bar for <strong>"+esc(it.name||"an unnamed task")+"</strong>";
+    else label="A due week for milestone <strong>"+esc(it.name)+"</strong>";
+    if(few && it.sugg!=null){ anySugg=true;
+      if(it.type==='hours') sug=" &nbsp;<span class='sugg'>suggested: "+it.sugg+" h</span>";
+      else if(it.type==='time') sug=" &nbsp;<span class='sugg'>suggested: week "+it.sugg.start+(it.sugg.dur>1?("–"+(it.sugg.start+it.sugg.dur-1)):"")+"</span>";
+      else sug=" &nbsp;<span class='sugg'>suggested: week "+it.sugg+"</span>";
+    }
+    h+="<li>"+label+sug+"</li>";
+  });
+  h+="</ul><div class='modal-actions'>";
+  if(anySugg) h+="<button class='primary' onclick='applySuggestions()'>Apply suggestions</button>";
+  h+="<button onclick='closeModal()'>Back to my plan</button></div>";
+  document.getElementById('modal').innerHTML=h;
+  document.getElementById('modalBack').style.display='flex';
+}
+function applySuggestions(){
+  _issues.forEach(function(it){
+    if(it.sugg==null) return;
+    if(it.type==='hours') state.phases[it.pi].tasks[it.ti].hours=it.sugg;
+    else if(it.type==='time'){ state.phases[it.pi].tasks[it.ti].start=it.sugg.start; state.phases[it.pi].tasks[it.ti].dur=it.sugg.dur; }
+    else if(it.type==='ms') state.milestones[it.mi].week=it.sugg;
+  });
+  closeModal(); render();
+}
+function closeModal(){ document.getElementById('modalBack').style.display='none'; }
 
 /* ---------- exports ---------- */
 function fileName(){ var id=(document.getElementById('m-id').value||"AT1B").trim().replace(/[^\w\-]/g,""); return "GRAP5405C_AT1B_Timeline_"+(id||"AT1B"); }
@@ -420,15 +528,13 @@ function rgbToHex(rgb){ var m=rgb&&rgb.match(/\d+/g); if(!m) return null; return
 function exportDoc(){
   var W=state.weeks;
   var t="<table border='1' cellspacing='0' cellpadding='3' style='border-collapse:collapse;font-family:Arial;font-size:9pt'>";
-  t+="<tr><th align='left'>Task</th><th>Hrs</th><th align='left'>Depends on</th>";
+  t+="<tr><th align='left'>Task</th><th>Hrs</th>";
   for(var w=1;w<=W;w++) t+="<th>"+w+"</th>";
   t+="</tr>";
   state.phases.forEach(function(ph){
-    t+="<tr><td colspan='"+(3+W)+"' bgcolor='"+ph.color+"' style='color:#fff;font-weight:bold'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
+    t+="<tr><td colspan='"+(2+W)+"' bgcolor='"+ph.color+"' style='color:#fff;font-weight:bold'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
     ph.tasks.forEach(function(tk){
-      var pred=tk.dep?taskById(tk.dep):null;
-      t+="<tr><td>"+esc(tk.name)+"</td><td align='center'>"+esc(tk.hours)+"</td>"+
-         "<td>"+(pred?esc(pred.name):"")+"</td>";
+      t+="<tr><td>"+esc(tk.name)+"</td><td align='center'>"+esc(tk.hours)+"</td>";
       var s=tk.start, d=tk.dur;
       if(s&&d){ var e=Math.min(W,s+d-1);
         for(var w=1;w<s;w++) t+="<td>&nbsp;</td>";
@@ -439,9 +545,9 @@ function exportDoc(){
     });
   });
   // assessment milestones section
-  t+="<tr><td colspan='"+(3+W)+"' bgcolor='"+MS_COLOR+"' style='color:#fff;font-weight:bold'>Assessment milestones — submitted &amp; marked satisfactory</td></tr>";
+  t+="<tr><td colspan='"+(2+W)+"' bgcolor='"+MS_COLOR+"' style='color:#fff;font-weight:bold'>Milestones — due or signed off</td></tr>";
   state.milestones.forEach(function(m){
-    t+="<tr><td colspan='3'><font color='"+m.color+"'>&#9670;</font> <strong>"+esc(m.name)+"</strong>"+(m.week?(" (wk "+m.week+")"):"")+"</td>";
+    t+="<tr><td colspan='2'><font color='"+m.color+"'>&#9670;</font> <strong>"+esc(m.name)+"</strong>"+(m.week?(" (wk "+m.week+")"):"")+"</td>";
     for(var w=1;w<=W;w++) t+="<td align='center' bgcolor='"+(m.week===w?m.color:"")+"'>"+(m.week===w?"<font color='#ffffff'>&#9670;</font>":"&nbsp;")+"</td>";
     t+="</tr>";
   });
@@ -478,6 +584,10 @@ function exportPDF(){ captureSheet(function(c){ var J=window.jspdf.jsPDF,p=new J
 
 // boot
 loadTemplate();
+document.getElementById('m-project').value="Playing card deck";
+(function(){ var d=new Date(); document.getElementById('m-date').value=
+  String(d.getDate()).padStart(2,'0')+"/"+String(d.getMonth()+1).padStart(2,'0')+"/"+d.getFullYear(); })();
+updateLock();
 </script>
 </body>
 </html>
