@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AT1B Project Timeline (Gantt) — 2D Design Process</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+  :root{--ink:#1d1d1f;--muted:#555;--line:#d9d9de;--bg:#f4f4f6;--card:#fff;--grid:#e3dfd2}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;color:var(--ink);background:var(--bg);line-height:1.45}
+  .wrap{max-width:1180px;margin:0 auto;padding:24px 20px 90px}
+  h1{font-size:1.5rem;margin:0 0 4px}
+  .sub{color:var(--muted);margin:0 0 20px;font-size:.95rem}
+  .bar-tools{position:sticky;top:0;z-index:30;background:var(--bg);padding:12px 0;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border-bottom:1px solid var(--line);margin-bottom:18px}
+  button{font:inherit;border:1px solid var(--line);background:var(--card);padding:8px 14px;border-radius:8px;cursor:pointer}
+  button:hover{background:#eef}
+  button.primary{background:#2b2b30;color:#fff;border-color:#2b2b30}
+  button.primary:hover{background:#000}
+  .spacer{flex:1}
+
+  details.guide{background:var(--card);border:1px solid var(--line);border-radius:10px;margin-bottom:20px;overflow:hidden}
+  details.guide>summary{cursor:pointer;padding:14px 16px;font-weight:600;list-style:none}
+  details.guide>summary::-webkit-details-marker{display:none}
+  details.guide>summary::before{content:"▸ ";color:var(--muted)}
+  details.guide[open]>summary::before{content:"▾ "}
+  .guide-body{padding:0 18px 18px;font-size:.92rem;color:#333}
+  .guide-body h3{font-size:1rem;margin:14px 0 4px}
+  .guide-body ol{margin:6px 0 6px 18px;padding:0}
+  .guide-body li{margin:4px 0}
+  .guide-body p{margin:8px 0}
+
+  #sheet{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:24px;box-shadow:0 1px 4px rgba(0,0,0,.05)}
+  .sheet-head{display:flex;justify-content:space-between;align-items:flex-start;gap:20px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:16px}
+  .sheet-head h2{margin:0 0 2px;font-size:1.25rem}
+  .sheet-head .course{color:var(--muted);font-size:.85rem}
+  .meta{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:.85rem;min-width:300px}
+  .meta label{color:var(--muted);align-self:center}
+  .meta input{border:none;border-bottom:1px solid var(--line);padding:3px 2px;font:inherit;min-width:170px}
+  .meta input:focus{outline:none;border-bottom-color:var(--ink)}
+
+  .scroll{overflow-x:auto}
+  table.gantt{border-collapse:collapse;font-size:.8rem;table-layout:fixed;width:100%;min-width:1060px}
+  table.gantt td,table.gantt th{border-bottom:1px solid #ece9df}
+  thead th{background:#f7f7f9;font-weight:600;text-align:center;padding:6px 2px;font-size:.72rem;border-bottom:1px solid var(--line)}
+  th.h-num,th.h-task{text-align:left;padding-left:8px}
+  th.wk-head{font-size:.66rem;color:#444}
+  th.wk-head.brk{border-right:2px dashed #d0a94e}
+  td.num{text-align:center;color:var(--muted);font-size:.72rem}
+  table.gantt td{vertical-align:middle}
+  td.tk .tkwrap{display:flex;align-items:flex-start;gap:4px}
+  td.tk textarea.tname{flex:1;min-width:0;display:block;width:100%;border:none;padding:6px 4px;font:inherit;line-height:1.25;background:transparent;resize:none;overflow:hidden;white-space:pre-wrap;overflow-wrap:break-word;min-height:30px}
+  td.tk textarea.tname:focus{outline:2px solid #bcd;outline-offset:-2px}
+  td.hr input{width:100%;border:none;padding:6px 2px;text-align:center;font:inherit;background:transparent}
+  td.hr input:focus{outline:2px solid #bcd;outline-offset:-2px}
+  select.dep{width:100%;border:1px solid var(--line);border-radius:5px;padding:3px;font:inherit;font-size:.72rem;background:#fff}
+  .del-btn{border:1px solid #e2b8b8;background:#fff;color:#b23;border-radius:5px;padding:1px 6px;font-size:.78rem;cursor:pointer}
+  .del-btn:hover{background:#fdecec}
+
+  .track{position:relative;height:34px;background-image:repeating-linear-gradient(to right,transparent,transparent calc(6.25% - 1px),var(--grid) calc(6.25% - 1px),var(--grid) 6.25%);touch-action:none}
+  .brkline{position:absolute;top:0;bottom:0;left:43.75%;border-left:2px dashed #d0a94e;pointer-events:none}
+  .placehint{position:absolute;left:8px;top:9px;color:#b3b0a4;font-size:.72rem;pointer-events:none}
+  .bar{position:absolute;top:7px;height:20px;border-radius:10px;cursor:grab;box-shadow:inset 0 0 0 1px rgba(255,255,255,.3);display:flex;align-items:center;justify-content:center;color:#fff;font-size:.68rem;overflow:hidden;user-select:none;z-index:2}
+  .bar:active{cursor:grabbing}
+  .bar .h{position:absolute;top:0;width:9px;height:100%;cursor:ew-resize}
+  .bar .h.l{left:0}.bar .h.r{right:0}
+  .msrow td{background:#f6f4fa}
+  .ms-label{padding:6px 8px}
+  .ms-flex{display:flex;align-items:center;gap:6px;white-space:nowrap}
+  .ms-tag{font-weight:700;font-size:.64rem;letter-spacing:.05em;text-transform:uppercase;flex:0 0 auto}
+  .ms-name{flex:1;min-width:50px;border:none;border-bottom:1px solid var(--line);font:inherit;font-weight:600;background:transparent;padding:2px}
+  .ms-name:focus{outline:none;border-bottom-color:var(--ink)}
+  .mstrack .msdiamond{position:absolute;top:8px;width:16px;height:16px;transform:translateX(-50%) rotate(45deg);border:2px solid #fff;cursor:grab;box-shadow:0 1px 2px rgba(0,0,0,.25);z-index:3}
+  .mstrack .mslabel{position:absolute;top:7px;transform:translateX(calc(-100% - 9px));font-size:.66rem;font-weight:700;white-space:nowrap;pointer-events:none}
+  .mstrack .mshint{position:absolute;left:8px;top:9px;color:#b3b0a4;font-size:.72rem;pointer-events:none}
+  .gate{position:absolute;top:0;bottom:0;width:2px;opacity:.3;pointer-events:none;z-index:1}
+  td.phasehd{color:#fff;font-weight:700;padding:6px 8px;font-size:.82rem;letter-spacing:.02em}
+  .addtask td{padding:5px 8px;background:#fbfbfc}
+  .addtask button{padding:3px 10px;font-size:.78rem}
+
+  .legend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-size:.8rem;align-items:center}
+  .legend .lg{display:flex;align-items:center;gap:6px}
+  .legend .sw{width:16px;height:12px;border-radius:3px}
+  .summary{display:flex;justify-content:space-between;align-items:center;margin-top:12px;padding-top:12px;border-top:1px solid var(--line);flex-wrap:wrap;gap:10px}
+  .total{font-size:.95rem}
+  .feedback{margin-top:12px;font-size:.85rem;background:#fbfbfd;border:1px solid var(--line);border-radius:8px;padding:12px 14px}
+  .feedback h4{margin:0 0 6px;font-size:.82rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted)}
+  .fb-hint{color:var(--muted);font-style:italic;margin:0}
+  .fb-line{margin:4px 0}
+  .fb-line.warn{color:#a33}
+  .fb-list{margin:6px 0 0 18px;padding:0}
+  .fb-list li{margin:3px 0}
+  .foot-note{font-size:.75rem;color:var(--muted);margin-top:10px}
+
+  @media print{ body{background:#fff} .bar-tools,.guide,.no-export{display:none !important} #sheet{border:none;box-shadow:none;padding:0} .wrap{padding:0} .scroll{overflow:visible} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Project timeline (Gantt chart) builder</h1>
+  <p class="sub">AT1B — 2D Design Process. The phases, tasks and milestones are set out across the 16-week semester. You decide how long each task takes, what depends on what, and when each milestone must be finished.</p>
+
+  <div class="bar-tools no-export">
+    <div class="spacer"></div>
+    <button class="primary" onclick="exportDoc()">Download for Word</button>
+    <button onclick="exportPDF()">PDF</button>
+    <button onclick="exportPNG()">PNG</button>
+    <button onclick="window.print()">Print</button>
+  </div>
+
+  <details class="guide no-export">
+    <summary>How to use this &amp; why it matters</summary>
+    <div class="guide-body">
+      <p>Design work follows a predictable order of operations. This chart already lays out the phases, the tasks and the milestones for the deck project. Your job is to turn it into a real plan: decide how long each task takes, what has to happen before what, and when each phase must be signed off.</p>
+      <h3>What to do</h3>
+      <ol>
+        <li>Fill in your name, student ID and anyone you planned with.</li>
+        <li>For each task, click a week on the timeline to place its bar, then drag the bar to move it and drag its ends to make it longer or shorter. Click an empty week to jump the bar there, or double-click a bar to clear it and start again. The length of the bar is how long you think the task will take.</li>
+        <li>Add an hours estimate for each task. The summary tells you if you're under or over typical times.</li>
+        <li>Set each task's "Depends on" — the task that must be underway or done first. The summary flags anything scheduled out of order.</li>
+        <li>At the top, drag each coloured ◆ to the week that assessment is due and marked satisfactory. A matching coloured line runs down the chart so you can see which tasks fall before each gate — use it to check your workload is realistic.</li>
+        <li>Add or delete tasks (✕) if your project needs it, then export to Word and insert it into your AT1B worksheet.</li>
+      </ol>
+      <p>You can plan this with others — list who in the "Planned with" field. Your plan should still reflect your own project. It's assessed, but there's no single right answer: what's checked is that you understand the sequence, the dependencies and realistic effort.</p>
+    </div>
+  </details>
+
+  <div id="sheet">
+    <div class="sheet-head">
+      <div>
+        <h2>Project timeline</h2>
+        <div class="course">GRAP5405C 2D Design Process · AT1B Planning · Refine 2D design ideas and processes (CUAACD536)</div>
+      </div>
+      <div class="meta">
+        <label>Name</label><input id="m-name" placeholder="Your name">
+        <label>Student ID</label><input id="m-id" placeholder="s1234567">
+        <label>Project</label><input id="m-project" placeholder="e.g. Playing card deck">
+        <label>Planned with</label><input id="m-collab" placeholder="Names of collaborators (optional)">
+        <label>Date</label><input id="m-date" placeholder="dd/mm/yyyy">
+      </div>
+    </div>
+
+    <div class="scroll">
+      <table class="gantt" id="ganttTable"></table>
+    </div>
+
+    <div class="legend" id="legend"></div>
+
+    <div class="summary">
+      <div></div>
+      <div class="total" id="total"></div>
+    </div>
+    <div class="feedback" id="feedback"></div>
+    <div class="foot-note">Bars show when each task runs and for how long (the semester week axis, 1–16; the dashed line is the mid-semester break after week 7). An assessment milestone (◆) marks the week a task is submitted and marked satisfactory — drag each to its due week.</div>
+  </div>
+</div>
+
+<script>
+"use strict";
+
+// Phases, tasks and milestones for the deck-of-cards project across the 16-week
+// semester. start/dur/dep/hours are MODEL answers (worked example); the student
+// template leaves them blank. dep is a global task number (1-based, in order).
+var BRIEF_PLAN = [
+  {name:"Brief & intake", color:"#3d5a3d", tasks:[
+    {name:"Examine the brief, unit & performance criteria", start:1,dur:2,dep:0, hours:2, typ:[1,3]},
+    {name:"Start contemporary 2D design board", start:1,dur:2,dep:0, hours:2, typ:[1,3]},
+    {name:"Deconstruct a playing card (elements & principles)", start:2,dur:1,dep:1, hours:1, typ:[0.5,2]},
+    {name:"Set up process document & OneDrive", start:2,dur:1,dep:0, hours:1, typ:[0.5,1.5]}
+  ]},
+  {name:"Planning & research", color:"#5a6e3a", tasks:[
+    {name:"Plan & schedule the project (this timeline)", start:2,dur:2,dep:1, hours:2, typ:[1,3]},
+    {name:"Set up three research boards & cross-tag", start:2,dur:2,dep:0, hours:2, typ:[1,3]},
+    {name:"Image capture (excursion / desk setups)", start:3,dur:1,dep:6, hours:3, typ:[2,5]},
+    {name:"Forced connections: element + principle + subject", start:3,dur:1,dep:7, hours:2, typ:[1,3]}
+  ]},
+  {name:"Concepts & sign-off", color:"#6a9e6a", tasks:[
+    {name:"Develop two collection concepts on the card grid", start:4,dur:1,dep:8, hours:5, typ:[3,7]},
+    {name:"Moodboard, mind map & idea development", start:4,dur:1,dep:6, hours:3, typ:[2,4]},
+    {name:"Present concepts & gather feedback", start:5,dur:1,dep:9, hours:1, typ:[0.5,2]},
+    {name:"Select & sign off concept; get ePrint quote", start:5,dur:1,dep:11, hours:2, typ:[1,3]}
+  ]},
+  {name:"Production", color:"#b87d5a", tasks:[
+    {name:"Colour palette & pip design decisions", start:6,dur:1,dep:12, hours:3, typ:[2,5]},
+    {name:"Typography & full card layout", start:7,dur:1,dep:13, hours:5, typ:[3,7]},
+    {name:"Card-back pattern design", start:8,dur:1,dep:14, hours:3, typ:[2,5]},
+    {name:"Photography (studio / home setup)", start:9,dur:1,dep:12, hours:4, typ:[3,6]},
+    {name:"Produce number & court cards", start:9,dur:3,dep:14, hours:8, typ:[6,11]},
+    {name:"Begin package / dieline setup", start:11,dur:1,dep:17, hours:2, typ:[1,4]}
+  ]},
+  {name:"Review & refinement", color:"#8a5a8a", tasks:[
+    {name:"Formal peer feedback & apply refinements", start:12,dur:1,dep:17, hours:2, typ:[1,4]},
+    {name:"Draft-print & preflight cards + package", start:12,dur:2,dep:18, hours:2, typ:[1,4]},
+    {name:"Finalise package design; fix preflight issues", start:13,dur:1,dep:20, hours:3, typ:[2,5]}
+  ]},
+  {name:"Print, submit & present", color:"#3a7a7a", tasks:[
+    {name:"Impose & preflight final print files", start:14,dur:1,dep:21, hours:2, typ:[1,4]},
+    {name:"Build presentation video & voice-over", start:14,dur:2,dep:21, hours:3, typ:[2,5]},
+    {name:"Present final outcomes", start:15,dur:1,dep:23, hours:2, typ:[1,3]},
+    {name:"Respond to feedback; lodge final submission", start:16,dur:1,dep:24, hours:2, typ:[1,3]}
+  ]}
+];
+
+// Assessment milestones = the real submission gates, placed on the timeline.
+// A milestone here means "this assessment task is submitted and marked satisfactory".
+var ASSESSMENTS = [
+  {name:"AT1a — The brief, research & ideation", short:"AT1a", week:4, color:"#c0392b"},
+  {name:"AT1b — Plan work & outline design process", short:"AT1b", week:6, color:"#d68910"},
+  {name:"Work in progress submitted", short:"WIP", week:11, color:"#8e44ad"},
+  {name:"AT1c — Cards & Package", short:"AT1c·C&P", week:14, color:"#148f77"},
+  {name:"AT1c — Documentation & Presentation video", short:"AT1c·Doc", week:15, color:"#2471a3"},
+  {name:"AT1d — Respond", short:"AT1d", week:16, color:"#7b241c"}
+];
+var MS_COLOR = "#2b2b30";
+
+var state = { weeks:16, breakAfter:7, phases:[], milestones:[] };
+var uid = 1;
+
+function buildPhases(withAnswers){
+  var order=[]; // global order of ids to resolve dep numbers
+  var phases=BRIEF_PLAN.map(function(p){
+    return {name:p.name,color:p.color,
+      tasks:p.tasks.map(function(t){
+        var id=uid++; order.push(id);
+        return {id:id,name:t.name,typ:t.typ.slice(),
+          start:withAnswers?t.start:null, dur:withAnswers?t.dur:null,
+          hours:withAnswers?t.hours:"", dep:"", _depNo:t.dep};
+      })};
+  });
+  if(withAnswers){
+    phases.forEach(function(ph){ ph.tasks.forEach(function(tk){
+      if(tk._depNo>0 && order[tk._depNo-1]) tk.dep=order[tk._depNo-1];
+    });});
+  }
+  return phases;
+}
+function buildMilestones(withAnswers){
+  return ASSESSMENTS.map(function(a){ return {id:uid++,name:a.name,short:a.short,color:a.color,week:withAnswers?a.week:null}; });
+}
+function loadTemplate(){ state.phases=buildPhases(false); state.milestones=buildMilestones(false); document.getElementById('m-project').value=""; render(); }
+function loadExample(){ state.phases=buildPhases(true); state.milestones=buildMilestones(true); document.getElementById('m-project').value="Playing card deck"; render(); }
+
+/* ---------- helpers ---------- */
+function flat(){ var a=[]; state.phases.forEach(function(ph,pi){ ph.tasks.forEach(function(tk,ti){ a.push({ph:ph,pi:pi,tk:tk,ti:ti}); }); }); return a; }
+function numMap(){ var f=flat(),m={}; f.forEach(function(x,i){ m[x.tk.id]=i+1; }); return m; }
+function taskById(id){ var f=flat(); for(var i=0;i<f.length;i++) if(f[i].tk.id===id) return f[i].tk; return null; }
+function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
+function round(n){ return Math.round(n*10)/10; }
+function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
+
+/* ---------- edit handlers ---------- */
+function onName(pi,ti,v){ state.phases[pi].tasks[ti].name=v; }
+function onHours(pi,ti,v){ state.phases[pi].tasks[ti].hours=v; updateFeedback(); }
+function onDep(pi,ti,v){ state.phases[pi].tasks[ti].dep=v?parseInt(v,10):""; render(); }
+function onMsName(mi,v){ state.milestones[mi].name=v; }
+function addTask(pi){ state.phases[pi].tasks.push({id:uid++,name:"",typ:null,start:null,dur:null,hours:"",dep:""}); render(); }
+function removeTask(pi,ti){ state.phases[pi].tasks.splice(ti,1); render(); }
+
+/* ---------- drag ---------- */
+function placeBar(e,pi,ti){
+  var tk=state.phases[pi].tasks[ti];
+  var track=e.currentTarget, r=track.getBoundingClientRect(), cw=r.width/state.weeks;
+  var wk=clamp(Math.floor((e.clientX-r.left)/cw)+1,1,state.weeks);
+  if(!tk.start){ tk.start=wk; tk.dur=1; }        // first placement: 1-week bar
+  else { tk.start=clamp(wk,1,state.weeks-tk.dur+1); }  // click empty track to move the bar
+  render();
+}
+function clearBar(pi,ti){ var tk=state.phases[pi].tasks[ti]; tk.start=null; tk.dur=null; render(); }
+function startDrag(e,pi,ti,mode){
+  e.preventDefault(); e.stopPropagation();
+  var tk=state.phases[pi].tasks[ti];
+  var track=e.target.closest('.track'), r=track.getBoundingClientRect(), cw=r.width/state.weeks;
+  var bar=e.target.closest('.bar'), sx=e.clientX, os=tk.start, od=tk.dur;
+  function mv(ev){
+    var dW=Math.round((ev.clientX-sx)/cw), s=os, d=od;
+    if(mode==='move') s=clamp(os+dW,1,state.weeks-od+1);
+    else if(mode==='l'){ s=clamp(os+dW,1,os+od-1); d=od+(os-s); }
+    else if(mode==='r') d=clamp(od+dW,1,state.weeks-os+1);
+    tk.start=s; tk.dur=d;
+    bar.style.left=((s-1)/state.weeks*100)+'%';
+    bar.style.width=(d/state.weeks*100)+'%';
+  }
+  function up(){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up); render(); }
+  document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
+}
+function msDown(e,mi){
+  e.preventDefault(); e.stopPropagation();
+  var m=state.milestones[mi], track=e.target.closest('.mstrack'), r=track.getBoundingClientRect(), cw=r.width/state.weeks;
+  if(!e.target.classList.contains('msdiamond')){ m.week=clamp(Math.floor((e.clientX-r.left)/cw)+1,1,state.weeks); render(); return; }
+  function mv(ev){ m.week=clamp(Math.floor((ev.clientX-r.left)/cw)+1,1,state.weeks);
+    var dm=track.querySelector('.msdiamond'); if(dm) dm.style.left=((m.week-0.5)/state.weeks*100)+'%'; }
+  function up(){ document.removeEventListener('pointermove',mv); document.removeEventListener('pointerup',up); render(); }
+  document.addEventListener('pointermove',mv); document.addEventListener('pointerup',up);
+}
+
+/* ---------- render ---------- */
+function gateLines(){
+  var W=state.weeks, s="";
+  state.milestones.forEach(function(m){ if(m.week){ var lx=(m.week-0.5)/W*100;
+    s+="<div class='gate' style='left:"+lx+"%;background:"+m.color+"'></div>"; } });
+  return s;
+}
+function render(){
+  var W=state.weeks, BK=state.breakAfter, tbl=document.getElementById('ganttTable');
+  var wkPct=(60/W).toFixed(3);  // 16 weeks share ~60% of the width
+  var gl=gateLines();
+  var html="<thead><tr><th class='h-task' style='width:22%'>Task</th><th style='width:5%'>Hrs</th><th style='width:13%'>Depends on</th>";
+  for(var w=1;w<=W;w++) html+="<th class='wk-head"+(w===BK?" brk":"")+"' style='width:"+wkPct+"%'>"+w+"</th>";
+  html+="</tr></thead><tbody>";
+
+  // --- Assessment milestones, shown at the top of the chart ---
+  html+="<tr><td class='phasehd' colspan='"+(3+W)+"' style='background:"+MS_COLOR+"'>Assessment milestones — drag each ◆ to the week it is due &amp; marked satisfactory</td></tr>";
+  state.milestones.forEach(function(m,mi){
+    html+="<tr class='msrow'><td class='ms-label' colspan='3'><div class='ms-flex'>"+
+      "<span class='ms-tag' style='color:"+m.color+"'>&#9670; "+esc(m.short)+"</span>"+
+      "<input class='ms-name' value=\""+esc(m.name)+"\" oninput=\"onMsName("+mi+",this.value)\"></div></td>";
+    html+="<td colspan='"+W+"'><div class='mstrack' onpointerdown='msDown(event,"+mi+")' style='position:relative;height:30px'>";
+    if(BK) html+="<div class='brkline'></div>";
+    html+=gl;
+    if(m.week){ var lx=(m.week-0.5)/W*100;
+      html+="<div class='mslabel' style='left:"+lx+"%;color:"+m.color+"'>"+esc(m.short)+"</div>";
+      html+="<div class='msdiamond' style='left:"+lx+"%;background:"+m.color+"' onpointerdown='msDown(event,"+mi+")'></div>";
+    } else html+="<div class='mshint'>click the week this is due &amp; marked satisfactory</div>";
+    html+="</div></td></tr>";
+  });
+
+  var f=flat();
+  state.phases.forEach(function(ph,pi){
+    html+="<tr><td class='phasehd' colspan='"+(3+W)+"' style='background:"+ph.color+"'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
+    ph.tasks.forEach(function(tk,ti){
+      var opts="<option value=''>—</option>";
+      f.forEach(function(x){ if(x.tk.id!==tk.id) opts+="<option value='"+x.tk.id+"'"+(tk.dep===x.tk.id?" selected":"")+">"+esc(x.tk.name)+"</option>"; });
+      html+="<tr>";
+      html+="<td class='tk'><div class='tkwrap'><textarea class='tname' rows='1' placeholder='Describe a task…' oninput=\"onName("+pi+","+ti+",this.value);autoGrow(this)\">"+esc(tk.name)+"</textarea>"+
+            "<button class='del-btn no-export' title='Delete task' onclick='removeTask("+pi+","+ti+")'>&#10005;</button></div></td>";
+      html+="<td class='hr'><input type='number' min='0' step='0.5' value='"+esc(tk.hours)+"' placeholder='—' oninput=\"onHours("+pi+","+ti+",this.value)\"></td>";
+      html+="<td><select class='dep' onchange=\"onDep("+pi+","+ti+",this.value)\">"+opts+"</select></td>";
+      html+="<td colspan='"+W+"'><div class='track' onpointerdown='placeBar(event,"+pi+","+ti+")'>";
+      if(BK) html+="<div class='brkline'></div>";
+      html+=gl;
+      if(tk.start&&tk.dur){
+        var left=(tk.start-1)/W*100, wid=tk.dur/W*100;
+        html+="<div class='bar' title='Drag to move · drag ends to resize · double-click to clear' style='left:"+left+"%;width:"+wid+"%;background:"+ph.color+"' onpointerdown=\"startDrag(event,"+pi+","+ti+",'move')\" ondblclick=\"clearBar("+pi+","+ti+")\">"+
+              "<span class='h l' onpointerdown=\"startDrag(event,"+pi+","+ti+",'l')\"></span>"+
+              "<span class='h r' onpointerdown=\"startDrag(event,"+pi+","+ti+",'r')\"></span>"+
+              (tk.dur>=2?("wk "+tk.start+"–"+(tk.start+tk.dur-1)):"")+"</div>";
+      } else {
+        html+="<div class='placehint'>click a week to place this task</div>";
+      }
+      html+="</div></td>";
+      html+="</tr>";
+    });
+    html+="<tr class='addtask no-export'><td colspan='"+(3+W)+"'><button onclick='addTask("+pi+")'>+ Add a task</button></td></tr>";
+  });
+  html+="</tbody>";
+  tbl.innerHTML=html;
+  autoGrowAll();
+  buildLegend();
+  updateFeedback();
+}
+function autoGrow(el){ el.style.height='auto'; el.style.height=(el.scrollHeight||30)+'px'; }
+function autoGrowAll(){ var a=document.querySelectorAll('textarea.tname'); for(var i=0;i<a.length;i++) autoGrow(a[i]); }
+
+function buildLegend(){
+  var html="<span class='lg' style='font-weight:600;color:#555'>Phases:</span>";
+  state.phases.forEach(function(ph){ html+="<span class='lg'><span class='sw' style='background:"+ph.color+"'></span>"+esc(ph.name.replace(/\n/g," "))+"</span>"; });
+  html+="<span class='lg' style='font-weight:600;color:#555;margin-left:6px'>Milestones:</span>";
+  state.milestones.forEach(function(m){ html+="<span class='lg'><span class='sw' style='background:"+m.color+";transform:rotate(45deg);width:11px;height:11px;border-radius:2px'></span>"+esc(m.short)+"</span>"; });
+  document.getElementById('legend').innerHTML=html;
+}
+
+function updateFeedback(){
+  var grand=0, typLo=0, typHi=0, entered=0, onTrack=0, hoursFlags=[], depFlags=[], unscheduled=0;
+  state.phases.forEach(function(ph){
+    ph.tasks.forEach(function(tk){
+      if(!(tk.start&&tk.dur)) unscheduled++;
+      var h=parseFloat(tk.hours);
+      if(tk.typ){ typLo+=tk.typ[0]; typHi+=tk.typ[1]; }
+      if(!isNaN(h)){ grand+=h; entered++;
+        if(tk.typ){ if(h<tk.typ[0]) hoursFlags.push({name:tk.name,h:h,lo:tk.typ[0],hi:tk.typ[1],dir:"under"});
+          else if(h>tk.typ[1]) hoursFlags.push({name:tk.name,h:h,lo:tk.typ[0],hi:tk.typ[1],dir:"over"}); else onTrack++; }
+      }
+      if(tk.dep && tk.start){ var pred=taskById(tk.dep);
+        if(pred && pred.start && tk.start<pred.start)
+          depFlags.push({an:tk.name,bn:pred.name,as:tk.start,bs:pred.start}); }
+    });
+  });
+  // milestone placement + ordering
+  var msUnplaced=state.milestones.filter(function(m){return !m.week;}).length;
+  var msOrder=[], lastWk=0;
+  state.milestones.forEach(function(m){ if(m.week){ if(m.week<lastWk) msOrder.push(m.name); lastWk=m.week; } });
+
+  document.getElementById('total').innerHTML="Estimated hours: <strong>"+round(grand)+" h</strong> &nbsp;·&nbsp; unit is 70 nominal hours &nbsp;·&nbsp; typical range "+round(typLo)+"–"+round(typHi)+" h";
+
+  var fb="<h4>Plan check</h4>";
+  if(unscheduled>0) fb+="<p class='fb-line'>"+unscheduled+" task"+(unscheduled===1?"":"s")+" not yet placed on the timeline.</p>";
+  if(msUnplaced>0) fb+="<p class='fb-line'>"+msUnplaced+" assessment milestone"+(msUnplaced===1?"":"s")+" not yet placed.</p>";
+  if(entered===0) fb+="<p class='fb-hint'>Add hours estimates, place your bars and set your milestones to get feedback on effort, order and timing.</p>";
+  else {
+    fb+="<p class='fb-line'><strong>"+onTrack+"</strong> task"+(onTrack===1?"":"s")+" within the typical hours range"+(hoursFlags.length?", <strong>"+hoursFlags.length+"</strong> to review":"")+".</p>";
+    if(grand<typLo) fb+="<p class='fb-line warn'>Total hours ("+round(grand)+") are below the typical range — possibly under-estimating.</p>";
+    else if(grand>typHi) fb+="<p class='fb-line warn'>Total hours ("+round(grand)+") are above the typical range — check you're not over-scoping.</p>";
+  }
+  if(depFlags.length||msOrder.length||hoursFlags.length){
+    fb+="<ul class='fb-list'>";
+    depFlags.forEach(function(d){ fb+="<li>⚠ <strong>"+esc(d.an)+"</strong> starts in week "+d.as+" but its dependency <strong>"+esc(d.bn)+"</strong> doesn't start until week "+d.bs+".</li>"; });
+    msOrder.forEach(function(n){ fb+="<li>⚠ Milestone <strong>"+esc(n)+"</strong> is placed before an earlier assessment milestone — check the order.</li>"; });
+    hoursFlags.forEach(function(f){ fb+="<li>"+(f.dir==="under"?"▼":"▲")+" <strong>"+esc(f.name)+"</strong>: "+round(f.h)+" h — typically "+round(f.lo)+"–"+round(f.hi)+" h.</li>"; });
+    fb+="</ul>";
+  } else if(entered>0 && unscheduled===0 && msUnplaced===0){ fb+="<p class='fb-line'>Order, milestones and effort all look consistent. Nice work.</p>"; }
+  document.getElementById('feedback').innerHTML=fb;
+}
+
+/* ---------- exports ---------- */
+function fileName(){ var id=(document.getElementById('m-id').value||"AT1B").trim().replace(/[^\w\-]/g,""); return "GRAP5405C_AT1B_Timeline_"+(id||"AT1B"); }
+function rgbToHex(rgb){ var m=rgb&&rgb.match(/\d+/g); if(!m) return null; return "#"+m.slice(0,3).map(function(x){var h=parseInt(x,10).toString(16);return h.length<2?"0"+h:h;}).join(""); }
+
+// Table-Gantt for Word (editable, machine-readable). Bars = merged coloured cells.
+function exportDoc(){
+  var W=state.weeks;
+  var t="<table border='1' cellspacing='0' cellpadding='3' style='border-collapse:collapse;font-family:Arial;font-size:9pt'>";
+  t+="<tr><th align='left'>Task</th><th>Hrs</th><th align='left'>Depends on</th>";
+  for(var w=1;w<=W;w++) t+="<th>"+w+"</th>";
+  t+="</tr>";
+  state.phases.forEach(function(ph){
+    t+="<tr><td colspan='"+(3+W)+"' bgcolor='"+ph.color+"' style='color:#fff;font-weight:bold'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
+    ph.tasks.forEach(function(tk){
+      var pred=tk.dep?taskById(tk.dep):null;
+      t+="<tr><td>"+esc(tk.name)+"</td><td align='center'>"+esc(tk.hours)+"</td>"+
+         "<td>"+(pred?esc(pred.name):"")+"</td>";
+      var s=tk.start, d=tk.dur;
+      if(s&&d){ var e=Math.min(W,s+d-1);
+        for(var w=1;w<s;w++) t+="<td>&nbsp;</td>";
+        t+="<td colspan='"+(e-s+1)+"' bgcolor='"+ph.color+"'>&nbsp;</td>";
+        for(var w=e+1;w<=W;w++) t+="<td>&nbsp;</td>";
+      } else { for(var w=1;w<=W;w++) t+="<td>&nbsp;</td>"; }
+      t+="</tr>";
+    });
+  });
+  // assessment milestones section
+  t+="<tr><td colspan='"+(3+W)+"' bgcolor='"+MS_COLOR+"' style='color:#fff;font-weight:bold'>Assessment milestones — submitted &amp; marked satisfactory</td></tr>";
+  state.milestones.forEach(function(m){
+    t+="<tr><td colspan='3'><font color='"+m.color+"'>&#9670;</font> <strong>"+esc(m.name)+"</strong>"+(m.week?(" (wk "+m.week+")"):"")+"</td>";
+    for(var w=1;w<=W;w++) t+="<td align='center' bgcolor='"+(m.week===w?m.color:"")+"'>"+(m.week===w?"<font color='#ffffff'>&#9670;</font>":"&nbsp;")+"</td>";
+    t+="</tr>";
+  });
+  t+="</table>";
+
+  var meta="";
+  ["Name","Student ID","Project","Planned with","Date"].forEach(function(lab,i){
+    var ids=["m-name","m-id","m-project","m-collab","m-date"];
+    meta+="<div><strong>"+lab+":</strong> "+esc(document.getElementById(ids[i]).value)+"</div>";
+  });
+  var fb=document.getElementById('feedback').innerHTML.replace(/<button[^>]*>.*?<\/button>/g,"");
+  var total=document.getElementById('total').innerHTML;
+
+  var html='<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">'+
+    '<head><meta charset="utf-8"><title>Project timeline</title>'+
+    '<!--[if gte mso 9]><xml><w:WordDocument><w:View>Print</w:View></w:WordDocument></xml><![endif]-->'+
+    '<style>@page{size:A4 landscape;margin:1cm}body{font-family:Arial,sans-serif;font-size:9pt}h2{font-size:14pt;margin:0 0 2pt}.course{color:#555;font-size:9pt}td,th{font-size:8.5pt}</style></head><body>'+
+    '<h2>Project timeline</h2><div class="course">GRAP5405C 2D Design Process · AT1B Planning · CUAACD536</div>'+
+    '<div style="margin:6pt 0">'+meta+'</div>'+t+
+    '<p style="margin-top:6pt">'+total+'</p>'+
+    '<div style="border:1px solid #b8b8bf;padding:6pt;margin-top:6pt">'+fb+'</div></body></html>';
+  var blob=new Blob(['﻿'+html],{type:"application/msword"});
+  var a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=fileName()+".doc"; a.click();
+}
+
+function captureSheet(cb){
+  html2canvas(document.getElementById('sheet'),{scale:2,backgroundColor:"#ffffff",
+    ignoreElements:function(el){return el.classList&&el.classList.contains('no-export');}}).then(cb);
+}
+function exportPNG(){ captureSheet(function(c){ var a=document.createElement('a'); a.download=fileName()+".png"; a.href=c.toDataURL('image/png'); a.click(); }); }
+function exportPDF(){ captureSheet(function(c){ var J=window.jspdf.jsPDF,p=new J({orientation:'landscape',unit:'mm',format:'a4'});
+  var pw=p.internal.pageSize.getWidth()-16, ph=p.internal.pageSize.getHeight()-16, r=Math.min(pw/c.width,ph/c.height),w=c.width*r,h=c.height*r;
+  p.addImage(c.toDataURL('image/png'),'PNG',(p.internal.pageSize.getWidth()-w)/2,8,w,h); p.save(fileName()+".pdf"); }); }
+
+// boot
+loadTemplate();
+</script>
+</body>
+</html>
