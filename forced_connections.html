@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Forced connections generator</title>
+<style>
+  :root{
+    --ink:#2b2b2b; --muted:#6b6b6b; --line:#e2ded6; --paper:#faf8f4;
+    --lav:#7a6ab8; --lav-bg:#efecf8;
+    --sky:#5a8eb8; --sky-bg:#e9f1f7;
+    --sage:#6a9e6a; --sage-bg:#ecf4ec;
+    --peach:#b87d5a; --peach-bg:#f8efe8;
+    --rose:#b8728e; --rose-bg:#f8ecf1;
+  }
+  *{box-sizing:border-box}
+  body{
+    margin:0; padding:24px;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    color:var(--ink); background:#fff; line-height:1.55;
+  }
+  .wrap{max-width:820px; margin:0 auto}
+  h1{font-size:1.5rem; margin:0 0 .3rem; font-weight:600}
+  .lede{color:var(--muted); margin:0 0 1.4rem; font-size:.98rem}
+  .step-label{font-size:.8rem; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); margin:1.4rem 0 .6rem}
+  .principles{display:flex; flex-wrap:wrap; gap:8px}
+  .principles button{
+    border:1px solid var(--line); background:var(--paper); color:var(--ink);
+    padding:9px 15px; border-radius:999px; font-size:.95rem; cursor:pointer; transition:all .12s;
+  }
+  .principles button:hover{border-color:var(--lav)}
+  .principles button[aria-pressed="true"]{background:var(--lav); border-color:var(--lav); color:#fff}
+  .board{display:none; margin-top:.4rem}
+  .board.on{display:block}
+  .cols{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:.4rem}
+  @media(max-width:660px){.cols{grid-template-columns:1fr}}
+  .col{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff; display:flex; flex-direction:column; min-height:170px}
+  .col-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px}
+  .col-title{font-size:.82rem; font-weight:600}
+  .col.lav .col-title{color:var(--lav)} .col.sky .col-title{color:var(--sky)} .col.sage .col-title{color:var(--sage)}
+  .val{flex:1; display:flex; align-items:center; font-size:1.08rem; font-weight:500}
+  .col.lav .val{color:#3f3663} .col.sky .val{color:#2f4c63} .col.sage .val{color:#365336}
+  .col-foot{display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:8px}
+  .mini{border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:6px 10px; font-size:.82rem; cursor:pointer; color:var(--ink)}
+  .mini:hover{border-color:#bdbdbd}
+  .lock{display:inline-flex; align-items:center; gap:5px; font-size:.78rem; color:var(--muted); cursor:pointer; user-select:none}
+  .lock input{accent-color:var(--lav)}
+  .force{
+    margin:20px 0 6px; width:100%; border:none; border-radius:12px; cursor:pointer;
+    background:var(--ink); color:#fff; padding:15px; font-size:1.05rem; font-weight:600; transition:transform .08s;
+  }
+  .force:hover{background:#000} .force:active{transform:scale(.99)}
+  .result{border:1px solid var(--line); border-left:5px solid var(--peach); border-radius:12px; padding:18px 20px; margin-top:16px; background:var(--peach-bg)}
+  .result.empty{background:var(--paper); border-left-color:var(--line); color:var(--muted)}
+  .collision{font-size:1.12rem; line-height:1.5; margin:0 0 12px}
+  .collision b{font-weight:600}
+  .chip{display:inline-block; padding:1px 7px; border-radius:6px; font-weight:600; white-space:nowrap}
+  .chip.lav{background:var(--lav-bg); color:#3f3663} .chip.sky{background:var(--sky-bg); color:#2f4c63} .chip.sage{background:var(--sage-bg); color:#365336}
+  .leap{border-top:1px dashed #d8cdbf; padding-top:12px; margin-top:4px}
+  .leap p{margin:0 0 6px}
+  .leap .q{font-size:1.15rem; font-weight:600; color:var(--peach)}
+  .note{font-size:.85rem; color:var(--muted); margin:.4rem 0 0}
+  .hint{color:var(--muted); font-style:italic}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="step-label">1 · Your assigned principle</p>
+  <div class="principles" id="principles"></div>
+
+  <div class="board" id="board">
+    <p class="step-label">2 · Shuffle each column, or lock the ones you like</p>
+    <div class="cols">
+      <div class="col lav" data-col="angle">
+        <div class="col-head"><span class="col-title">A way to read your principle</span></div>
+        <div class="val" id="val-angle"></div>
+        <div class="col-foot">
+          <button class="mini" data-shuffle="angle">Shuffle</button>
+          <label class="lock"><input type="checkbox" data-lock="angle"> lock</label>
+        </div>
+      </div>
+      <div class="col sky" data-col="method">
+        <div class="col-head"><span class="col-title">A way to capture it</span></div>
+        <div class="val" id="val-method"></div>
+        <div class="col-foot">
+          <button class="mini" data-shuffle="method">Shuffle</button>
+          <label class="lock"><input type="checkbox" data-lock="method"> lock</label>
+        </div>
+      </div>
+      <div class="col sage" data-col="subject">
+        <div class="col-head"><span class="col-title">Something to point it at</span></div>
+        <div class="val" id="val-subject"></div>
+        <div class="col-foot">
+          <button class="mini" data-shuffle="subject">Shuffle</button>
+          <label class="lock"><input type="checkbox" data-lock="subject"> lock</label>
+        </div>
+      </div>
+    </div>
+
+    <button class="force" id="force">Force a connection</button>
+
+    <div class="result empty" id="result">
+      <p class="collision">Hit <b>force a connection</b> to collide your three cards.</p>
+    </div>
+    <p class="note">Subjects are starting points, not rules. Shoot wherever suits you, or build it on your desk. Every method is cheap or free, and it's all phone-achievable.</p>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  angles: {
+    "Contrast": [
+      "Something bright next to something dark","One big thing next to lots of small things","Something smooth next to something rough",
+      "One part sharp, the rest blurry","A warm colour next to a cool colour","Something old and worn next to something new and clean"
+    ],
+    "Repetition": [
+      "The same shape over and over","One colour that shows up again and again","Lines running the same way, evenly spaced",
+      "A pattern that fills the whole photo","The same thing repeated big and small","Rows of almost-identical objects"
+    ],
+    "Balance": [
+      "The left and right sides mirror each other","One big thing on one side, a few small things on the other","Everything spread evenly around the middle",
+      "A small bright spot balancing a big plain area","Weight shared between the top and the bottom","The subject off to one side, empty space filling the rest"
+    ],
+    "Negative space": [
+      "A small subject with lots of empty space around it","Plain sky, wall or ground giving the subject room to breathe","A dark shape against a plain, empty background",
+      "The empty space between two objects makes a shape you notice","Empty space pushed to one side of the photo","The empty space is the main thing, not the object"
+    ],
+    "Hierarchy": [
+      "One clear main thing, everything else quieter","A line, path or rail that leads your eye in","The biggest thing noticed first, the smallest last",
+      "The main thing sharp, everything else soft","One splash of colour your eye lands on first","Clear front, middle and back layers"
+    ],
+    "Colour": [
+      "One colour taking over the whole photo","Two opposite colours side by side, like blue and orange","Colours that sit next to each other on the colour wheel",
+      "One bright colour against greys and neutrals","Warm colours against cool colours","Flat blocks of solid colour"
+    ]
+  },
+  methods: [
+    "Your phone's normal camera","Your phone's selfie camera","The worst old digital camera you can find","A disposable film camera",
+    "A film camera you borrow","A camera borrowed from RMIT","A flatbed scanner instead of a lens","A webcam or laptop camera",
+    "Tape coloured cellophane over the lens","Smear a little vaseline on a clear case for a dreamy blur","Shoot through glass, water or a plastic bag","Shoot through a prism or an old CD for rainbows",
+    "A clip-on macro or fisheye lens","Breathe on the lens for fog","Shoot into a mirror or reflective surface","A long exposure or deliberate motion blur",
+    "Deliberately out of focus","Extreme close-up, right up against it","Flash on, in daylight","No flash, in near dark",
+    "A retro-film app like VSCO, Huji or Kujicam","An instant or vintage app like NOMO or Dazz Cam","A manual-control app like Open Camera or Lightroom","An AR-lens app like Snapchat or Photoshop Camera",
+    "Push it afterwards in a free editor like Snapseed or PicsArt"
+  ],
+  subjects: [
+    "tram tracks and overhead wires","shopfront awnings and signage","stacked produce at a grocer","brickwork and rendered walls",
+    "a train platform and its canopy","a bike path and its fence lines","wrought-iron gates and terrace fronts","bread, fruit and pastries",
+    "fabric bolts and textiles","rows of trees along a trail","powerlines against the sky","one bold mural detail",
+    "cups, plates and cutlery on a table","rust, peeling paint and weathered metal","bike racks and fence palings","tiles, pavers and footpath patterns",
+    "a still life built from grocer ingredients","one tactile surface filling the frame","a reflection in water or a shop window","scaffolding, railings and cranes",
+    "bottles, jars and tins on a shelf","plasticine or clay models on your desk","woven baskets, rugs or fabrics","a long laneway to a single focal point",
+    "a selfie","the ugliest house on your street","a parked car, or just its details","someone's pet",
+    "native flora (gum leaves, wattle, banksia)","food, half-eaten","a handmade object","found objects from your pockets",
+    "your own hands","shadows on the footpath","a reflection in a puddle","graffiti and handwriting",
+    "the contents of your bag","rubbish and recycling","house plants","bugs and insects",
+    "op-shop finds","power boxes and meter boxes","weeds growing through concrete","someone's messy desk",
+    "old technology (a cassette, a remote)","neon signs at night","a wet street at night","toys"
+  ],
+  cards: [
+    "the Jack of Clubs","the Queen of Clubs","the King of Clubs",
+    "the Jack of Diamonds","the Queen of Diamonds","the King of Diamonds",
+    "the Jack of Hearts","the Queen of Hearts","the King of Hearts",
+    "the Jack of Spades","the Queen of Spades","the King of Spades",
+    "the Ace of Spades"
+  ]
+};
+
+const state = { principle:null, angle:"", method:"", subject:"", card:"", locked:{angle:false,method:false,subject:false} };
+const pick = a => a[Math.floor(Math.random()*a.length)];
+
+const pEl = document.getElementById('principles');
+Object.keys(DATA.angles).forEach(name=>{
+  const b=document.createElement('button');
+  b.textContent=name; b.setAttribute('aria-pressed','false');
+  b.onclick=()=>selectPrinciple(name,b);
+  pEl.appendChild(b);
+});
+
+function selectPrinciple(name,btn){
+  state.principle=name;
+  [...pEl.children].forEach(c=>c.setAttribute('aria-pressed', c===btn?'true':'false'));
+  document.getElementById('board').classList.add('on');
+  state.angle=pick(DATA.angles[name]);
+  state.method=pick(DATA.methods);
+  state.subject=pick(DATA.subjects);
+  paintCols();
+  resetResult();
+}
+
+function paintCols(){
+  document.getElementById('val-angle').textContent=state.angle||"–";
+  document.getElementById('val-method').textContent=state.method||"–";
+  document.getElementById('val-subject').textContent=state.subject||"–";
+}
+function resetResult(){
+  const r=document.getElementById('result');
+  r.className='result empty';
+  r.innerHTML='<p class="collision">Hit <b>force a connection</b> to collide your three cards.</p>';
+}
+
+document.querySelectorAll('[data-shuffle]').forEach(b=>{
+  b.onclick=()=>{
+    const col=b.dataset.shuffle;
+    if(col==='angle') state.angle=pick(DATA.angles[state.principle]);
+    if(col==='method') state.method=pick(DATA.methods);
+    if(col==='subject') state.subject=pick(DATA.subjects);
+    paintCols();
+  };
+});
+document.querySelectorAll('[data-lock]').forEach(c=>{
+  c.onchange=()=>{ state.locked[c.dataset.lock]=c.checked; };
+});
+
+document.getElementById('force').onclick=()=>{
+  if(!state.locked.angle) state.angle=pick(DATA.angles[state.principle]);
+  if(!state.locked.method) state.method=pick(DATA.methods);
+  if(!state.locked.subject) state.subject=pick(DATA.subjects);
+  state.card=pick(DATA.cards);
+  paintCols();
+  showResult();
+};
+
+function showResult(){
+  const r=document.getElementById('result');
+  r.className='result';
+  r.innerHTML =
+    '<p class="collision"><span class="chip lav">'+lc(state.angle)+'</span> &nbsp;+&nbsp; <span class="chip sky">'+state.method+'</span> &nbsp;+&nbsp; <span class="chip sage">'+state.subject+'</span></p>'+
+    '<div class="leap"><p class="q">Now draw the link: what would '+state.card+' look like, made from this combination?</p>'+
+    '<p>Sketch it in your sketchbook. Odd, forced links are where the fresh ideas hide, so don\'t wait for it to make sense.</p></div>';
+}
+function lc(s){ return s.charAt(0).toLowerCase()+s.slice(1); }
+</script>
+</body>
+</html>
