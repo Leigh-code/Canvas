@@ -82,7 +82,7 @@
 </head>
 <body>
 <div class="wrap">
-  <h1>Find your assigned topic</h1>
+  <h1>Find your assigned design principle</h1>
   <p class="sub">Enter your student number to see your assigned section and design principle.</p>
 
   <form id="lookup-form" autocomplete="off">
@@ -92,7 +92,7 @@
 
   <div id="result"></div>
 
-  <p class="footnote">If your number isn't found, double-check for typos or contact your instructor.</p>
+  <p class="footnote">If your number isn't there, check for typos or ask your instructor.</p>
 </div>
 
 <script>
@@ -177,7 +177,7 @@
         "Topic: " + match.principle;
     } else {
       result.className = "notfound";
-      result.innerHTML = "<strong>Not found</strong>No match for that student number. Check for typos or contact your instructor.";
+      result.innerHTML = "<strong>Not found</strong>No match. Check for typos or ask your instructor.";
     }
   });
 </script>
