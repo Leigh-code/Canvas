@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMYK Grey Balance — Coated FOGRA39</title>
+<style>
+  :root{
+    --c:#009de0; --m:#c4007a; --y:#ffed00; --k:#222221;
+    --ink:#222221; --line:#d9d9d6; --bg:#ffffff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:640px; margin:0 auto; padding:16px;}
+  h1{font-size:1.1rem; font-weight:600; margin:0 0 2px;}
+  .sub{font-size:.8rem; color:#6b6b6b; margin:0 0 14px;}
+  .stage{position:relative; touch-action:none; cursor:ew-resize;}
+  svg{display:block; width:100%; height:auto; user-select:none;}
+  .scrub{stroke:#222221; stroke-width:1.5; stroke-dasharray:4 3;}
+  .dot{stroke:#fff; stroke-width:2.5;}
+  .readout{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:8px;
+    margin-top:14px;
+  }
+  .cell{
+    border-radius:8px; padding:8px 6px; text-align:center;
+    background:#f5f5f3; border:1px solid var(--line);
+  }
+  .cell .lab{font-size:.72rem; font-weight:600; letter-spacing:.04em; opacity:.8;}
+  .cell .val{font-size:1.15rem; font-weight:700; margin-top:2px; font-variant-numeric:tabular-nums;}
+  .cell.c .lab{color:var(--c);} .cell.m .lab{color:var(--m);}
+  .cell.y .lab{color:#c9b800;} .cell.k .lab{color:var(--k);}
+  .cell.g{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .cell.g .lab{color:#fff; opacity:.85;}
+  .hint{font-size:.75rem; color:#8a8a8a; margin-top:10px; text-align:center;}
+  .legend{display:flex; flex-wrap:wrap; gap:12px; margin-top:12px; font-size:.75rem;}
+  .legend span{display:inline-flex; align-items:center; gap:5px;}
+  .legend i{width:14px; height:3px; border-radius:2px; display:inline-block;}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>CMYK grey balance</h1>
+  <p class="sub">Coated FOGRA39. The curves show the ink combination needed to print a visually neutral grey at each step of the ramp. Drag across the ramp to read the values.</p>
+
+  <div class="stage" id="stage">
+    <svg id="chart" viewBox="0 0 322 392.49" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wb" x1="2.5" y1="364" x2="319.5" y2="364" gradientUnits="userSpaceOnUse">
+          <stop offset="0" stop-color="#fff"/><stop offset="1" stop-color="#222221"/>
+        </linearGradient>
+      </defs>
+      <!-- plot background + grid -->
+      <rect x="2.5" y="2.5" width="317" height="317" fill="#fff"/>
+      <g stroke="#e6e6e3" stroke-width="1">
+        <line x1="81.75" y1="2.5" x2="81.75" y2="319.5"/>
+        <line x1="161" y1="2.5" x2="161" y2="319.5"/>
+        <line x1="240.25" y1="2.5" x2="240.25" y2="319.5"/>
+        <line x1="2.5" y1="81.75" x2="319.5" y2="81.75"/>
+        <line x1="2.5" y1="161" x2="319.5" y2="161"/>
+        <line x1="2.5" y1="240.25" x2="319.5" y2="240.25"/>
+      </g>
+      <!-- curves (original geometry) -->
+      <path id="pC" d="M319.5,127.5S233.5,91.5,2.5,319.5" fill="none" stroke="#009de0" stroke-width="5" stroke-miterlimit="10"/>
+      <path id="pM" d="M319.5,172.09s-59.42-29.75-317,147.41" fill="none" stroke="#c4007a" stroke-width="5" stroke-miterlimit="10"/>
+      <path id="pY" d="M319.5,181.26s-59.42-27.9-317,138.24" fill="none" stroke="#ffed00" stroke-width="5" stroke-miterlimit="10"/>
+      <path id="pK" d="M2.5,319.5s146.65.25,198.65-78.75C249.46,167.35,300.5,59.5,319.5,2.5" fill="none" stroke="#222221" stroke-width="5" stroke-miterlimit="10"/>
+      <rect x="2.5" y="2.5" width="317" height="317" fill="none" stroke="#222221" stroke-width="5" stroke-miterlimit="10"/>
+      <!-- grey ramp -->
+      <rect x="2.5" y="338" width="317" height="51.99" fill="url(#wb)" stroke="#222221" stroke-width="5" stroke-miterlimit="10"/>
+      <!-- interactive layer -->
+      <g id="marker">
+        <line class="scrub" id="scrub" x1="161" y1="2.5" x2="161" y2="389.99"/>
+        <circle class="dot" id="dK" r="7" fill="#222221"/>
+        <circle class="dot" id="dC" r="7" fill="#009de0"/>
+        <circle class="dot" id="dM" r="7" fill="#c4007a"/>
+        <circle class="dot" id="dY" r="7" fill="#ffed00"/>
+      </g>
+      <!-- axis labels -->
+      <text x="2.5" y="333" font-size="11" fill="#6b6b6b">white</text>
+      <text x="319.5" y="333" font-size="11" fill="#6b6b6b" text-anchor="end">black</text>
+    </svg>
+  </div>
+
+  <div class="readout">
+    <div class="cell g"><div class="lab">GREY</div><div class="val" id="vG">50%</div></div>
+    <div class="cell c"><div class="lab">CYAN</div><div class="val" id="vC">—</div></div>
+    <div class="cell m"><div class="lab">MAGENTA</div><div class="val" id="vM">—</div></div>
+    <div class="cell y"><div class="lab">YELLOW</div><div class="val" id="vY">—</div></div>
+    <div class="cell k"><div class="lab">BLACK</div><div class="val" id="vK">—</div></div>
+  </div>
+
+  <div class="legend">
+    <span><i style="background:#009de0"></i>Cyan</span>
+    <span><i style="background:#c4007a"></i>Magenta</span>
+    <span><i style="background:#ffed00"></i>Yellow</span>
+    <span><i style="background:#222221"></i>Black (K)</span>
+  </div>
+  <p class="hint">Notice cyan sits highest — a neutral grey needs more cyan than magenta or yellow to counter the warm cast of the inks.</p>
+</div>
+
+<script>
+(function(){
+  var X0=2.5, X1=319.5, SPAN=317;      // plot horizontal range
+  var Y0=2.5, Y1=319.5;                 // plot vertical range (Y0=100% ink, Y1=0%)
+  var svg=document.getElementById('chart');
+  var keys=['C','M','Y','K'];
+  var paths={C:document.getElementById('pC'),M:document.getElementById('pM'),Y:document.getElementById('pY'),K:document.getElementById('pK')};
+  var dots={C:document.getElementById('dC'),M:document.getElementById('dM'),Y:document.getElementById('dY'),K:document.getElementById('dK')};
+  var out={C:document.getElementById('vC'),M:document.getElementById('vM'),Y:document.getElementById('vY'),K:document.getElementById('vK')};
+  var vG=document.getElementById('vG');
+  var scrub=document.getElementById('scrub');
+
+  // pre-sample each path (direction-agnostic) into x/y point lists
+  var samples={};
+  keys.forEach(function(k){
+    var path=paths[k], len=path.getTotalLength(), pts=[];
+    var N=300;
+    for(var i=0;i<=N;i++){ var p=path.getPointAtLength(len*i/N); pts.push([p.x,p.y]); }
+    samples[k]=pts;
+  });
+  // linear-interp y for a given x by scanning the sampled polyline
+  function yAtX(k,x){
+    var pts=samples[k], best=null;
+    for(var i=0;i<pts.length-1;i++){
+      var a=pts[i], b=pts[i+1];
+      var lo=Math.min(a[0],b[0]), hi=Math.max(a[0],b[0]);
+      if(x>=lo && x<=hi){
+        var t=(b[0]===a[0])?0:(x-a[0])/(b[0]-a[0]);
+        return a[1]+t*(b[1]-a[1]);
+      }
+      if(best===null || Math.abs(a[0]-x)<best.d) best={d:Math.abs(a[0]-x),y:a[1]};
+    }
+    return best?best.y:pts[0][1];
+  }
+  function inkPct(y){ return Math.max(0,Math.min(100, (Y1-y)/SPAN*100)); }
+
+  function update(x){
+    x=Math.max(X0,Math.min(X1,x));
+    scrub.setAttribute('x1',x); scrub.setAttribute('x2',x);
+    vG.textContent=Math.round((x-X0)/SPAN*100)+'%';
+    keys.forEach(function(k){
+      var y=yAtX(k,x);
+      dots[k].setAttribute('cx',x); dots[k].setAttribute('cy',y);
+      out[k].textContent=Math.round(inkPct(y))+'%';
+    });
+  }
+
+  function xFromEvent(e){
+    var pt=svg.createSVGPoint();
+    var cx=(e.touches?e.touches[0].clientX:e.clientX);
+    pt.x=cx; pt.y=0;
+    var m=svg.getScreenCTM().inverse();
+    return pt.matrixTransform(m).x;
+  }
+  var stage=document.getElementById('stage'), dragging=false;
+  function handle(e){ update(xFromEvent(e)); }
+  stage.addEventListener('mousedown',function(e){dragging=true;handle(e);});
+  window.addEventListener('mousemove',function(e){if(dragging)handle(e);});
+  window.addEventListener('mouseup',function(){dragging=false;});
+  stage.addEventListener('mousemove',function(e){if(!dragging)handle(e);}); // hover
+  stage.addEventListener('touchstart',function(e){handle(e);e.preventDefault();},{passive:false});
+  stage.addEventListener('touchmove',function(e){handle(e);e.preventDefault();},{passive:false});
+
+  update(161); // midpoint start
+})();
+</script>
+</body>
+</html>
