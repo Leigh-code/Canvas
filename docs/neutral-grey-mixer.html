@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mix a neutral grey</title>
+<style>
+  :root {
+    --ink: #2d3b45;
+    --ink-soft: #6b7780;
+    --line: #c7cdd1;
+    --panel: #f5f5f5;
+    --accent: #7a6ab8;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    padding: 16px;
+    font-family: "Lato", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--ink);
+    background: #fff;
+  }
+  h1 { font-size: 18px; font-weight: 700; margin: 0 0 4px; }
+  .lede { font-size: 14px; color: var(--ink-soft); margin: 0 0 18px; max-width: 60ch; }
+  .stage { display: flex; gap: 24px; align-items: flex-start; flex-wrap: wrap; }
+  .pixel-wrap { width: 120px; flex: 0 0 auto; }
+  .pixel { display: flex; gap: 4px; height: 120px; background: #111; padding: 6px; border-radius: 6px; }
+  .pixel div { flex: 1; border-radius: 2px; }
+  .patches-wrap { flex: 1 1 300px; min-width: 260px; }
+  .patches { display: flex; height: 120px; border-radius: 6px; overflow: hidden; border: 1px solid var(--line); }
+  .patches div { flex: 1; }
+  .names { display: flex; margin-top: 8px; }
+  .names > div { flex: 1; }
+  .tone { font-size: 15px; font-weight: 700; margin: 0; }
+  .caption { font-size: 12px; color: var(--ink-soft); margin: 2px 0 0; }
+  .sliders { margin-top: 22px; max-width: 520px; }
+  .row { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .row label { width: 16px; font-size: 15px; font-weight: 700; }
+  .row input[type=range] { flex: 1; height: 22px; accent-color: var(--accent); }
+  .val { width: 34px; text-align: right; font-family: ui-monospace, Menlo, Consolas, monospace; font-size: 14px; color: var(--ink-soft); }
+  #verdict { background: var(--panel); border-radius: 6px; padding: 12px 14px; font-size: 15px; margin-top: 18px; max-width: 640px; }
+  .buttons { display: flex; gap: 10px; margin-top: 14px; flex-wrap: wrap; }
+  button {
+    font-family: inherit; font-size: 14px; padding: 9px 14px;
+    background: #fff; color: var(--ink);
+    border: 1px solid var(--line); border-radius: 6px; cursor: pointer;
+  }
+  button:hover { background: var(--panel); }
+  button:focus-visible, input:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .sr-only {
+    position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+  }
+</style>
+</head>
+<body>
+<h1>Mix a neutral grey</h1>
+<p class="lede">Drag the three sliders. The magnified pixel on the left shows how much red, green and blue light is switched on. Your mix sits on the left of the patch, a true neutral of the same brightness on the right. Make the seam between them disappear.</p>
+
+<div class="stage">
+  <div class="pixel-wrap">
+    <div class="pixel" aria-hidden="true">
+      <div id="sr" style="background: rgb(128,0,0);"></div>
+      <div id="sg" style="background: rgb(0,128,0);"></div>
+      <div id="sb" style="background: rgb(0,0,128);"></div>
+    </div>
+    <p class="caption" style="text-align: center;">one pixel, magnified</p>
+  </div>
+  <div class="patches-wrap">
+    <div class="patches" aria-hidden="true">
+      <div id="mix" style="background: rgb(128,128,128);"></div>
+      <div id="ref" style="background: rgb(128,128,128);"></div>
+    </div>
+    <div class="names">
+      <div>
+        <p class="tone" id="mixname">middle grey</p>
+        <p class="caption">your mix</p>
+      </div>
+      <div>
+        <p class="tone" id="refname">middle grey</p>
+        <p class="caption">true neutral, same brightness</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sliders">
+  <div class="row">
+    <label for="r">R</label>
+    <input type="range" id="r" min="0" max="255" step="1" value="128" aria-describedby="verdict">
+    <span class="val" id="ro">128</span>
+  </div>
+  <div class="row">
+    <label for="g">G</label>
+    <input type="range" id="g" min="0" max="255" step="1" value="128" aria-describedby="verdict">
+    <span class="val" id="go">128</span>
+  </div>
+  <div class="row">
+    <label for="b">B</label>
+    <input type="range" id="b" min="0" max="255" step="1" value="128" aria-describedby="verdict">
+    <span class="val" id="bo">128</span>
+  </div>
+</div>
+
+<div id="verdict" role="status" aria-live="polite">The seam has vanished. All three channels match, so this is neutral.</div>
+
+<div class="buttons">
+  <button type="button" id="cast">Hide a cast in it</button>
+  <button type="button" id="fix">Make it neutral</button>
+</div>
+
+<script>
+(function () {
+  var r = document.getElementById('r'), g = document.getElementById('g'), b = document.getElementById('b');
+  var mix = document.getElementById('mix'), ref = document.getElementById('ref');
+  var sr = document.getElementById('sr'), sg = document.getElementById('sg'), sb = document.getElementById('sb');
+  var mixname = document.getElementById('mixname'), refname = document.getElementById('refname');
+  var verdict = document.getElementById('verdict');
+
+  function tone(x) {
+    if (x < 20) return 'black';
+    if (x < 70) return 'shadow';
+    if (x < 108) return 'dark midtone';
+    if (x <= 148) return 'middle grey';
+    if (x < 190) return 'light midtone';
+    if (x < 238) return 'highlight';
+    return 'white';
+  }
+
+  function update() {
+    var R = +r.value, G = +g.value, B = +b.value;
+    var avg = Math.round((R + G + B) / 3);
+
+    document.getElementById('ro').textContent = R;
+    document.getElementById('go').textContent = G;
+    document.getElementById('bo').textContent = B;
+
+    sr.style.background = 'rgb(' + R + ',0,0)';
+    sg.style.background = 'rgb(0,' + G + ',0)';
+    sb.style.background = 'rgb(0,0,' + B + ')';
+    mix.style.background = 'rgb(' + R + ',' + G + ',' + B + ')';
+    ref.style.background = 'rgb(' + avg + ',' + avg + ',' + avg + ')';
+
+    var t = tone(avg);
+    refname.textContent = t;
+
+    var mx = Math.max(R, G, B), mn = Math.min(R, G, B), spread = mx - mn;
+    var cast = '', msg;
+
+    if (spread === 0) {
+      msg = 'The seam has vanished. All three channels match, so this is neutral.';
+    } else if (spread <= 4) {
+      msg = 'Almost gone. The channels are within ' + spread + ', close enough to call neutral.';
+    } else if (R === mx) {
+      cast = 'warm';
+      msg = 'You can see the seam. Red is highest, so the left side reads warm.';
+    } else if (B === mx) {
+      cast = 'cool';
+      msg = 'You can see the seam. Blue is highest, so the left side reads cool.';
+    } else {
+      cast = 'green';
+      msg = 'You can see the seam. Green is highest, which usually means fluorescent light.';
+    }
+
+    if (!cast) mixname.textContent = t;
+    else if (t === 'middle grey') mixname.textContent = cast + ' grey';
+    else mixname.textContent = cast + ' ' + t;
+
+    verdict.textContent = msg;
+  }
+
+  [r, g, b].forEach(function (s) { s.addEventListener('input', update); });
+
+  document.getElementById('cast').addEventListener('click', function () {
+    var base = 95 + Math.floor(Math.random() * 80);
+    var channel = Math.floor(Math.random() * 3);
+    var amount = 10 + Math.floor(Math.random() * 35);
+    var v = [base, base, base];
+    v[channel] = Math.min(255, base + amount);
+    r.value = v[0]; g.value = v[1]; b.value = v[2];
+    update();
+  });
+
+  document.getElementById('fix').addEventListener('click', function () {
+    var avg = Math.round((+r.value + +g.value + +b.value) / 3);
+    r.value = avg; g.value = avg; b.value = avg;
+    update();
+  });
+
+  update();
+})();
+</script>
+</body>
+</html>
