@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Forced connections generator</title>
+<title>Forced connections — deck direction</title>
 <style>
   :root{
     --ink:#2b2b2b; --muted:#6b6b6b; --line:#e2ded6; --paper:#faf8f4;
@@ -19,10 +19,10 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     color:var(--ink); background:#fff; line-height:1.55;
   }
-  .wrap{max-width:820px; margin:0 auto}
-  h1{font-size:1.5rem; margin:0 0 .3rem; font-weight:600}
-  .lede{color:var(--muted); margin:0 0 1.4rem; font-size:.98rem}
-  .step-label{font-size:.8rem; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); margin:1.4rem 0 .6rem}
+  .wrap{max-width:940px; margin:0 auto}
+  .step-label{font-size:.8rem; letter-spacing:.03em; text-transform:uppercase; color:var(--muted); margin:1.6rem 0 .5rem}
+  .step-hint{font-size:.9rem; color:var(--muted); margin:0 0 .9rem}
+
   .principles{display:flex; flex-wrap:wrap; gap:8px}
   .principles button{
     border:1px solid var(--line); background:var(--paper); color:var(--ink);
@@ -30,79 +30,187 @@
   }
   .principles button:hover{border-color:var(--lav)}
   .principles button[aria-pressed="true"]{background:var(--lav); border-color:var(--lav); color:#fff}
-  .board{display:none; margin-top:.4rem}
+
+  .board{display:none}
   .board.on{display:block}
-  .cols{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:.4rem}
-  @media(max-width:660px){.cols{grid-template-columns:1fr}}
-  .col{border:1px solid var(--line); border-radius:12px; padding:14px; background:#fff; display:flex; flex-direction:column; min-height:170px}
-  .col-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:10px}
-  .col-title{font-size:.82rem; font-weight:600}
+
+  .cols{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; align-items:start}
+  @media(max-width:820px){.cols{grid-template-columns:1fr}}
+  /* each column is a card: white face, thin inner frame, a pip in the corner */
+  .col{
+    position:relative;
+    border:1px solid var(--line); border-top:4px solid var(--line); border-radius:14px;
+    padding:16px; background:#fff; display:flex; flex-direction:column; transition:box-shadow .2s;
+  }
+  .col::before{
+    content:""; position:absolute; inset:6px; border:1px solid rgba(0,0,0,.04);
+    border-radius:10px; pointer-events:none;
+  }
+  .col.lav{border-top-color:var(--lav)} .col.sky{border-top-color:var(--sky)} .col.sage{border-top-color:var(--sage)}
+  .col.rolling{box-shadow:0 0 0 3px var(--paper), 0 4px 16px rgba(0,0,0,.07)}
+  .col-head{display:flex; align-items:flex-start; justify-content:space-between; gap:8px}
+  .col-title{font-size:.9rem; font-weight:600; margin:0 0 2px}
   .col.lav .col-title{color:var(--lav)} .col.sky .col-title{color:var(--sky)} .col.sage .col-title{color:var(--sage)}
-  .val{flex:1; display:flex; align-items:center; font-size:1.08rem; font-weight:500}
-  .col.lav .val{color:#3f3663} .col.sky .val{color:#2f4c63} .col.sage .val{color:#365336}
-  .col-foot{display:flex; align-items:center; justify-content:space-between; margin-top:12px; gap:8px}
-  .mini{border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:6px 10px; font-size:.82rem; cursor:pointer; color:var(--ink)}
+  .pip{flex:none; font-size:1.1rem; line-height:1; opacity:.3}
+  .col.lav .pip{color:var(--lav)} .col.sky .pip{color:var(--sky)} .col.sage .pip{color:var(--sage)}
+  .col-brief{font-size:.83rem; color:var(--muted); margin:0 0 10px}
+
+  .adder{display:flex; gap:6px; margin-bottom:10px}
+  .adder input{
+    flex:1; min-width:0; border:1px solid var(--line); border-radius:8px; padding:8px 10px;
+    font-size:.9rem; font-family:inherit; color:var(--ink); background:var(--paper);
+  }
+  .adder input:focus{outline:none; border-color:#bdbdbd; background:#fff}
+  .adder input:disabled, .adder button:disabled{opacity:.45}
+  .adder button{border:1px solid var(--line); background:var(--paper); border-radius:8px; padding:8px 12px; font-size:.9rem; cursor:pointer; font-weight:600; color:var(--ink)}
+  .adder button:hover{border-color:#bdbdbd}
+
+  /* the list IS the reel */
+  .items{list-style:none; margin:0 0 10px; padding:0; display:flex; flex-direction:column; gap:6px}
+  .items li{
+    position:relative; display:flex; align-items:center; gap:9px;
+    font-size:.9rem; padding:9px 10px; border-radius:10px;
+    background:var(--paper); border:1px solid var(--line);
+    transition:transform .12s ease, background .12s ease, box-shadow .12s ease, opacity .12s ease;
+  }
+  .items li.borrowed{border-style:dashed}
+  .items li .n{
+    flex:none; width:22px; height:22px; border-radius:50%; display:grid; place-items:center;
+    font-size:.72rem; font-weight:700; color:#fff; transition:transform .12s ease;
+  }
+  .items li .t{flex:1; min-width:0; color:var(--ink)}
+  .items li .x{border:none; background:none; cursor:pointer; color:var(--muted); font-size:1.05rem; line-height:1; padding:0 2px; flex:none}
+  .items li .x:hover{color:var(--rose)}
+  .rolling .items li .x{visibility:hidden}
+
+  /* travelling highlight */
+  .rolling .items li{opacity:.5}
+  .items li.lit{opacity:1; background:#fff; transform:translateX(3px) scale(1.015)}
+  .col.lav .items li.lit{box-shadow:0 0 0 2px var(--lav) inset, 0 2px 8px rgba(122,106,184,.18)}
+  .col.sky .items li.lit{box-shadow:0 0 0 2px var(--sky) inset, 0 2px 8px rgba(90,142,184,.18)}
+  .col.sage .items li.lit{box-shadow:0 0 0 2px var(--sage) inset, 0 2px 8px rgba(106,158,106,.18)}
+  .items li.lit .n{transform:scale(1.12)}
+
+  /* the landed winner */
+  .items li.win{opacity:1; background:#fff}
+  .col.lav .items li.win{box-shadow:0 0 0 2px var(--lav) inset} .col.lav .items li.win .t{color:#3f3663; font-weight:600}
+  .col.sky .items li.win{box-shadow:0 0 0 2px var(--sky) inset} .col.sky .items li.win .t{color:#2f4c63; font-weight:600}
+  .col.sage .items li.win{box-shadow:0 0 0 2px var(--sage) inset} .col.sage .items li.win .t{color:#365336; font-weight:600}
+  .items li.win.pop{animation:pop .45s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pop{0%{transform:scale(1.06)} 60%{transform:scale(.985)} 100%{transform:scale(1)}}
+  .items li.win::after{
+    content:"✓"; position:absolute; right:8px; font-size:.8rem; font-weight:700; color:inherit;
+  }
+  .col.lav .items li.win::after{color:var(--lav)} .col.sky .items li.win::after{color:var(--sky)} .col.sage .items li.win::after{color:var(--sage)}
+
+  .empty-note{font-size:.83rem; color:var(--muted); font-style:italic; margin:0 0 8px}
+  .counter{font-size:.78rem; color:var(--muted); margin:0 0 10px}
+  .counter.done{color:var(--sage); font-weight:600}
+
+  .col-tools{display:flex; flex-wrap:wrap; gap:6px; margin-top:auto}
+  .mini{border:1px solid var(--line); background:#fff; border-radius:8px; padding:6px 10px; font-size:.8rem; cursor:pointer; color:var(--ink)}
   .mini:hover{border-color:#bdbdbd}
+  .mini:disabled{opacity:.45; cursor:default}
+  .col-foot{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-top:12px; border-top:1px dashed #ece8e0; padding-top:12px}
   .lock{display:inline-flex; align-items:center; gap:5px; font-size:.78rem; color:var(--muted); cursor:pointer; user-select:none}
   .lock input{accent-color:var(--lav)}
-  .force{
-    margin:20px 0 6px; width:100%; border:none; border-radius:12px; cursor:pointer;
-    background:var(--ink); color:#fff; padding:15px; font-size:1.05rem; font-weight:600; transition:transform .08s;
+
+  /* the spin buttons are the deck: filled, card-back lattice, suit pip */
+  .deck-back{
+    border:none; border-radius:10px; cursor:pointer; color:#fff; font-weight:700;
+    background-color:var(--ink);
+    background-image:
+      repeating-linear-gradient(45deg, rgba(255,255,255,.09) 0 5px, transparent 5px 10px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,.09) 0 5px, transparent 5px 10px);
+    box-shadow:0 0 0 1px rgba(255,255,255,.35) inset, 0 1px 3px rgba(0,0,0,.18);
+    transition:transform .08s, filter .12s;
   }
-  .force:hover{background:#000} .force:active{transform:scale(.99)}
-  .result{border:1px solid var(--line); border-left:5px solid var(--peach); border-radius:12px; padding:18px 20px; margin-top:16px; background:var(--peach-bg)}
+  .deck-back:hover{filter:brightness(1.08)}
+  .deck-back:active{transform:scale(.98)}
+  .deck-back:disabled{background-color:#a9a5a0; box-shadow:none; cursor:default; filter:none}
+  .deck-back .suit{opacity:.75; margin-left:5px}
+
+  .spin-col{flex:1; padding:10px 12px; font-size:.86rem; letter-spacing:.01em}
+  .col.lav .spin-col{background-color:#5f5199} .col.sky .spin-col{background-color:#42749b}
+  .col.sage .spin-col{background-color:#4f8250}
+
+  .spin-all{
+    margin:18px 0 6px; width:100%; padding:17px; font-size:1.1rem; border-radius:14px;
+    letter-spacing:.02em;
+  }
+  .spin-all .suit{opacity:.55; margin:0 3px}
+  .spin-all{background-color:#96413f}
+
+  .result{border:1px solid var(--line); border-left:5px solid var(--peach); border-radius:14px; padding:18px 20px; margin-top:10px; background:var(--peach-bg)}
   .result.empty{background:var(--paper); border-left-color:var(--line); color:var(--muted)}
-  .collision{font-size:1.12rem; line-height:1.5; margin:0 0 12px}
+  .result.reveal{animation:rise .4s ease-out}
+  @keyframes rise{0%{transform:translateY(8px); opacity:0} 100%{transform:translateY(0); opacity:1}}
+  .collision{font-size:1.1rem; line-height:1.7; margin:0 0 12px}
   .collision b{font-weight:600}
-  .chip{display:inline-block; padding:1px 7px; border-radius:6px; font-weight:600; white-space:nowrap}
+  .chip{display:inline-block; padding:2px 8px; border-radius:7px; font-weight:600}
   .chip.lav{background:var(--lav-bg); color:#3f3663} .chip.sky{background:var(--sky-bg); color:#2f4c63} .chip.sage{background:var(--sage-bg); color:#365336}
-  .leap{border-top:1px dashed #d8cdbf; padding-top:12px; margin-top:4px}
+  .leap{border-top:1px dashed #d8cdbf; padding-top:12px; margin-top:4px; display:flex; gap:16px; align-items:flex-start}
+  .leap-txt{flex:1; min-width:0}
   .leap p{margin:0 0 6px}
-  .leap .q{font-size:1.15rem; font-weight:600; color:var(--peach)}
-  .note{font-size:.85rem; color:var(--muted); margin:.4rem 0 0}
-  .hint{color:var(--muted); font-style:italic}
+  .leap .q{font-size:1.12rem; font-weight:600; color:var(--peach)}
+
+  /* the drawn playing card: Unicode glyph where the font has it */
+  .card-glyph{
+    flex:none; font-size:5.6rem; line-height:.85; color:var(--ink);
+    font-family:"Apple Symbols","Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",sans-serif;
+    animation:deal .45s cubic-bezier(.2,1.3,.3,1); margin:-6px 0 -10px;
+  }
+  .card-glyph.red{color:#a83c3c}
+  .card-face{
+    flex:none; width:62px; height:88px; background:#fff; border:1px solid #ddd7cc; border-radius:7px;
+    position:relative; box-shadow:0 2px 6px rgba(0,0,0,.1); color:var(--ink);
+    animation:deal .45s cubic-bezier(.2,1.3,.3,1);
+  }
+  .card-face.red{color:#a83c3c}
+  .card-face .r{position:absolute; top:5px; left:7px; font-size:.85rem; font-weight:700; line-height:1}
+  .card-face .r small{display:block; font-size:.7rem; font-weight:700}
+  .card-face .big{position:absolute; inset:0; display:grid; place-items:center; font-size:1.9rem; opacity:.92}
+  .card-face .r.flip{top:auto; left:auto; bottom:5px; right:7px; transform:rotate(180deg)}
+  @keyframes deal{0%{transform:translateY(-10px) rotate(-6deg); opacity:0} 100%{transform:none; opacity:1}}
+  @media(max-width:520px){ .leap{flex-direction:column-reverse; align-items:flex-start} }
+  .res-label{font-size:.72rem; text-transform:uppercase; letter-spacing:.05em; font-weight:700; color:var(--peach); margin:0 0 6px}
+  .res-sub{font-size:.85rem; color:#8a7a6c; margin:0 0 4px}
+  .res-note{font-size:.82rem; color:#8a7a6c; margin:10px 0 0}
+  .deal-row{display:flex; flex-wrap:wrap; align-items:center; gap:10px; margin-top:12px}
+  .tested{font-size:.78rem; color:var(--muted); display:inline-flex; align-items:center; gap:4px}
+  .mini-card{font-size:1.5rem; line-height:1; color:var(--ink);
+    font-family:"Apple Symbols","Segoe UI Symbol","Noto Sans Symbols 2","DejaVu Sans",sans-serif;}
+  .mini-card.red{color:#a83c3c}
+  .note{font-size:.85rem; color:var(--muted); margin:.6rem 0 0}
+  .fallback-flag{font-size:.8rem; color:var(--muted); margin:8px 0 0}
+
+  @media (prefers-reduced-motion:reduce){
+    .items li, .items li .n{transition:none}
+    .items li.win.pop{animation:none}
+    .result.reveal{animation:none}
+    .rolling .items li{opacity:1}
+  }
 </style>
 </head>
 <body>
 <div class="wrap">
+
   <p class="step-label">1 · Your assigned principle</p>
   <div class="principles" id="principles"></div>
 
   <div class="board" id="board">
-    <p class="step-label">2 · Shuffle each column, or lock the ones you like</p>
-    <div class="cols">
-      <div class="col lav" data-col="angle">
-        <div class="col-head"><span class="col-title">A way to read your principle</span></div>
-        <div class="val" id="val-angle"></div>
-        <div class="col-foot">
-          <button class="mini" data-shuffle="angle">Shuffle</button>
-          <label class="lock"><input type="checkbox" data-lock="angle"> lock</label>
-        </div>
-      </div>
-      <div class="col sky" data-col="method">
-        <div class="col-head"><span class="col-title">A way to capture it</span></div>
-        <div class="val" id="val-method"></div>
-        <div class="col-foot">
-          <button class="mini" data-shuffle="method">Shuffle</button>
-          <label class="lock"><input type="checkbox" data-lock="method"> lock</label>
-        </div>
-      </div>
-      <div class="col sage" data-col="subject">
-        <div class="col-head"><span class="col-title">Something to point it at</span></div>
-        <div class="val" id="val-subject"></div>
-        <div class="col-foot">
-          <button class="mini" data-shuffle="subject">Shuffle</button>
-          <label class="lock"><input type="checkbox" data-lock="subject"> lock</label>
-        </div>
-      </div>
-    </div>
 
-    <button class="force" id="force">Force a connection</button>
+    <p class="step-label">2 · Write five options in each column, then force the connection</p>
+    <p class="step-hint">Three rules for a whole deck of cards, then one card dealt to prove they work. Write your own options, five per column. If you're stuck, borrow one idea or fill the column at random and edit what you get. Spin a column on its own, or let the button spin whatever is still empty.</p>
+
+    <div class="cols" id="cols"></div>
+
+    <button class="deck-back spin-all" id="spinAll">Force the connection<span class="suit" aria-hidden="true">♠</span><span class="suit" aria-hidden="true">♦</span><span class="suit" aria-hidden="true">♣</span></button>
 
     <div class="result empty" id="result">
-      <p class="collision">Hit <b>force a connection</b> to collide your three cards.</p>
+      <p class="collision">Write your options, then <b>force the connection</b> to set your deck direction.</p>
     </div>
-    <p class="note">Subjects are starting points, not rules. Shoot wherever suits you, or build it on your desk. Every method is cheap or free, and it's all phone-achievable.</p>
+    <p class="note">A subject has to be a category, not a single object: it needs to carry a whole deck. Everything in it must be your own work, your own photos, your own objects, things you make. Never someone else's artwork, characters, murals or designs. Subjects are starting points, not rules. Shoot wherever suits you, or build it on your desk. If a method mentions gear you don't have, use the fallback after the comma. You can also build or draw the thing and photograph that, it doesn't have to be found in the street.</p>
   </div>
 </div>
 
@@ -110,126 +218,643 @@
 const DATA = {
   angles: {
     "Contrast": [
-      "Something bright next to something dark","One big thing next to lots of small things","Something smooth next to something rough",
-      "One part sharp, the rest blurry","A warm colour next to a cool colour","Something old and worn next to something new and clean"
+      "Something bright next to something dark",
+      "One big thing next to lots of small things",
+      "Something smooth next to something rough",
+      "One part sharp, the rest blurry",
+      "A warm colour next to a cool colour",
+      "Something old and worn next to something new and clean",
+      "Something soft next to something hard",
+      "A tiny thing next to a huge thing",
+      "Something messy next to something neat",
+      "One thing in colour, everything else grey",
+      "Something straight next to something curved",
+      "Something wet next to something dry",
+      "Something handmade next to something machine-made",
+      "A shiny thing next to a dull thing"
     ],
     "Repetition": [
-      "The same shape over and over","One colour that shows up again and again","Lines running the same way, evenly spaced",
-      "A pattern that fills the whole photo","The same thing repeated big and small","Rows of almost-identical objects"
+      "The same shape over and over",
+      "One colour that shows up again and again",
+      "Lines running the same way, evenly spaced",
+      "A pattern that fills the whole photo",
+      "The same thing repeated big and small",
+      "Rows of almost-identical objects",
+      "The same object shot five times, moved slightly each time",
+      "A grid of squares or tiles",
+      "Something stacked in a pile",
+      "The same shape in different colours",
+      "A pattern that breaks in exactly one spot",
+      "Circles repeated across the frame",
+      "One texture everywhere, edge to edge",
+      "The same thing getting smaller as it goes back"
     ],
     "Balance": [
-      "The left and right sides mirror each other","One big thing on one side, a few small things on the other","Everything spread evenly around the middle",
-      "A small bright spot balancing a big plain area","Weight shared between the top and the bottom","The subject off to one side, empty space filling the rest"
+      "The left and right sides mirror each other",
+      "One big thing on one side, a few small things on the other",
+      "Everything spread evenly around the middle",
+      "A small bright spot balancing a big plain area",
+      "Weight shared between the top and the bottom",
+      "The subject off to one side, empty space filling the rest",
+      "Two things of equal weight, one either side",
+      "Something heavy at the bottom, something light at the top",
+      "Deliberately unbalanced, everything crowded into one corner",
+      "A single object dead centre",
+      "Three things arranged in a triangle",
+      "Balanced by colour rather than by size",
+      "One dark shape holding up a lot of light space",
+      "Balanced by how busy each half is"
     ],
     "Negative space": [
-      "A small subject with lots of empty space around it","Plain sky, wall or ground giving the subject room to breathe","A dark shape against a plain, empty background",
-      "The empty space between two objects makes a shape you notice","Empty space pushed to one side of the photo","The empty space is the main thing, not the object"
+      "A small subject with lots of empty space around it",
+      "Plain sky, wall or ground giving the subject room to breathe",
+      "A dark shape against a plain, empty background",
+      "The empty space between two objects makes a shape you notice",
+      "Empty space pushed to one side of the photo",
+      "The empty space is the main thing, not the object",
+      "The subject in the very bottom corner, empty above it",
+      "A gap or a hole you look through",
+      "A silhouette, all shape and no detail",
+      "The shadow instead of the object",
+      "Half the photo empty, half of it full",
+      "One object, one colour, nothing else",
+      "So much empty space you almost miss the subject",
+      "The space around the object makes a letter or a shape"
     ],
     "Hierarchy": [
-      "One clear main thing, everything else quieter","A line, path or rail that leads your eye in","The biggest thing noticed first, the smallest last",
-      "The main thing sharp, everything else soft","One splash of colour your eye lands on first","Clear front, middle and back layers"
+      "One clear main thing, everything else quieter",
+      "A line, path or rail that leads your eye in",
+      "The biggest thing noticed first, the smallest last",
+      "The main thing sharp, everything else soft",
+      "One splash of colour your eye lands on first",
+      "Clear front, middle and back layers",
+      "The brightest thing is the most important thing",
+      "Something in the photo pointing at the main subject",
+      "The main thing framed by everything around it",
+      "One thing facing a different way to all the rest",
+      "The main thing lit, the rest in shadow",
+      "Big, then medium, then small, in that order",
+      "The only thing in focus is the only thing that matters",
+      "The main thing is the smallest thing, and still wins"
     ],
     "Colour": [
-      "One colour taking over the whole photo","Two opposite colours side by side, like blue and orange","Colours that sit next to each other on the colour wheel",
-      "One bright colour against greys and neutrals","Warm colours against cool colours","Flat blocks of solid colour"
+      "One colour taking over the whole photo",
+      "Two opposite colours side by side, like blue and orange",
+      "Colours that sit next to each other on the colour wheel",
+      "One bright colour against greys and neutrals",
+      "Warm colours against cool colours",
+      "Flat blocks of solid colour",
+      "Almost no colour, then one hit of it",
+      "Only colours that look cheap or plastic",
+      "Colours that clash and look wrong together",
+      "All one colour, but light to dark",
+      "Black, white, and one other colour",
+      "Everything lit by one coloured light or a screen",
+      "Colours you'd find in a supermarket aisle",
+      "Colours that have faded or gone off"
     ]
   },
   methods: [
-    "Your phone's normal camera","Your phone's selfie camera","The worst old digital camera you can find","A disposable film camera",
-    "A film camera you borrow","A camera borrowed from RMIT","A flatbed scanner instead of a lens","A webcam or laptop camera",
-    "Tape coloured cellophane over the lens","Smear a little vaseline on a clear case for a dreamy blur","Shoot through glass, water or a plastic bag","Shoot through a prism or an old CD for rainbows",
-    "A clip-on macro or fisheye lens","Breathe on the lens for fog","Shoot into a mirror or reflective surface","A long exposure or deliberate motion blur",
-    "Deliberately out of focus","Extreme close-up, right up against it","Flash on, in daylight","No flash, in near dark",
-    "A retro-film app like VSCO, Huji or Kujicam","An instant or vintage app like NOMO or Dazz Cam","A manual-control app like Open Camera or Lightroom","An AR-lens app like Snapchat or Photoshop Camera",
-    "Push it afterwards in a free editor like Snapseed or PicsArt"
+    "Your phone's normal camera",
+    "Your phone's selfie camera",
+    "A film camera, or a free film-look app like Huji or Kujicam",
+    "A cheap old digital camera, or your phone set to its lowest quality",
+    "A camera borrowed from RMIT, or a free manual app like Open Camera",
+    "A flatbed scanner if it fits, or your phone pressed right up against it",
+    "A webcam or laptop camera, or your selfie camera",
+    "Tape coloured cellophane over the lens, or use a lolly wrapper",
+    "Smear a little vaseline on a clear case, or on cling wrap held in front",
+    "Shoot through glass, water or a plastic bag",
+    "Shoot through a prism, an old CD, or a glass of water",
+    "A clip-on macro lens, or your phone's zoom as close as it will focus",
+    "Breathe on the lens for fog",
+    "Shoot into a mirror, a window, or a phone screen turned off",
+    "Reflect it in a spoon, a screen or a pair of sunglasses",
+    "A long exposure, or just move the phone while it takes the shot",
+    "Deliberately out of focus",
+    "Extreme close-up, right up against it",
+    "So close it stops being recognisable",
+    "Further back than feels right",
+    "Flash on, in daylight",
+    "No flash, in near dark",
+    "One light source only, a lamp or a phone torch",
+    "Your phone screen turned up bright, used as the light",
+    "In the harshest midday sun",
+    "In the last hour of daylight",
+    "At night, with only the light that's already there",
+    "Backlit, with the light coming from behind it",
+    "From as low as you can get, camera on the ground",
+    "From as high as you can reach",
+    "From directly overhead, looking straight down",
+    "On a deliberate tilt, nothing level",
+    "Upside down, and leave it that way",
+    "In black and white only",
+    "Something held in front of the lens, half blocking the shot",
+    "Shoot through a hole torn in paper",
+    "The same thing from five different distances",
+    "Twenty photos, and you keep the worst one",
+    "A free instant-camera app like NOMO or Dazz Cam",
+    "An AR lens in Snapchat or Instagram",
+    "Push it afterwards in a free editor like Snapseed or PicsArt",
+    "Photograph one of your own photos, off a screen or a print",
+    "Print your own shot, crumple it, then photograph it again",
+    "Draw or write on the print, then photograph it again"
   ],
   subjects: [
-    "tram tracks and overhead wires","shopfront awnings and signage","stacked produce at a grocer","brickwork and rendered walls",
-    "a train platform and its canopy","a bike path and its fence lines","wrought-iron gates and terrace fronts","bread, fruit and pastries",
-    "fabric bolts and textiles","rows of trees along a trail","powerlines against the sky","one bold mural detail",
-    "cups, plates and cutlery on a table","rust, peeling paint and weathered metal","bike racks and fence palings","tiles, pavers and footpath patterns",
-    "a still life built from grocer ingredients","one tactile surface filling the frame","a reflection in water or a shop window","scaffolding, railings and cranes",
-    "bottles, jars and tins on a shelf","plasticine or clay models on your desk","woven baskets, rugs or fabrics","a long laneway to a single focal point",
-    "a selfie","the ugliest house on your street","a parked car, or just its details","someone's pet",
-    "native flora (gum leaves, wattle, banksia)","food, half-eaten","a handmade object","found objects from your pockets",
-    "your own hands","shadows on the footpath","a reflection in a puddle","graffiti and handwriting",
-    "the contents of your bag","rubbish and recycling","house plants","bugs and insects",
-    "op-shop finds","power boxes and meter boxes","weeds growing through concrete","someone's messy desk",
-    "old technology (a cassette, a remote)","neon signs at night","a wet street at night","toys"
+    "nature by scale: tree for king, branch for queen, leaf for jack",
+    "a plant's parts, big rank to small: trunk, limb, leaf, bud",
+    "water by size: ocean, river, puddle, drop",
+    "light sources, strongest to weakest: sun, lamp, torch, match",
+    "your street by scale: block, house, door, doorknob",
+    "buildings by size, tower down to letterbox",
+    "your tools, the biggest tool as the highest rank",
+    "clothing in layers: coat, jumper, shirt, singlet",
+    "food in stages: whole, cut, cooked, crumbs",
+    "one object at four stages of wearing out",
+    "weather by force: storm, wind, drizzle, still air",
+    "your household as a royal family, told in objects",
+    "hands by age, the oldest as kings",
+    "rubbish by size: skip, bin, wrapper, crumb",
+    "your plants, biggest to smallest",
+    "the pecking order of your share house, in objects",
+    "13 sizes of the same kind of thing, smallest to largest",
+    "13 shades of one colour, light to dark",
+    "one object per year of your life",
+    "four rooms of your house, one per suit",
+    "four materials: wood, metal, plastic, fabric",
+    "four kinds of weather, one per suit",
+    "four times of day, one per suit",
+    "four seasons of the same tree",
+    "kitchen, office, garage and bathroom tools, one set per suit",
+    "court cards built from Lego or bootleg Lego, a figure each",
+    "figures made from wire, pipe cleaners or bread tags",
+    "characters made out of vegetables, one per court card",
+    "a king, a queen and a jack built from bottle caps and junk",
+    "a crown, a sceptre and a throne, made from rubbish",
+    "13 masks made from things in your kitchen",
+    "13 shapes cut from felt, fabric or old clothes",
+    "13 small scenes built from paper and cardboard",
+    "models made from plasticine, clay or Blu Tack",
+    "13 characters built out of kitchen things",
+    "13 shadows you cast on purpose",
+    "shapes folded or creased from paper",
+    "13 things built from blocks, bricks or whatever stacks",
+    "tape shapes on a wall or a window, one per card",
+    "13 monsters assembled from op-shop parts",
+    "your own drawings, taken outside and photographed there",
+    "letters and numbers built out of objects",
+    "13 stencils you cut, and whatever you sprayed through them",
+    "one object remade 13 times, badly",
+    "13 tiny things made to look huge",
+    "things you sew, staple or tape together, one per card",
+    "13 knots, folds or tangles you tie yourself",
+    "your wardrobe, one garment per card",
+    "your most important possessions, one per card",
+    "everything in your bag, item by item",
+    "the contents of your bin, one thing per card",
+    "one corner of your room per card",
+    "everything you ate this week, one meal per card",
+    "the objects of your morning routine",
+    "13 things you've never been able to throw out",
+    "the view from every window where you live",
+    "your shoes, one pair per card",
+    "13 things you've broken and kept anyway",
+    "every mug and cup in the house",
+    "the contents of one drawer, spread across the deck",
+    "your keys, cards and everyday carry",
+    "self portraits, none of them showing your face",
+    "your hands doing 13 different jobs",
+    "each stop on your trip to class",
+    "13 things you own that you'd never admit to",
+    "everything your hobby involves, one item per card",
+    "your collection, whatever it is you collect",
+    "the sport you play, one piece of kit per card",
+    "your instruments, tools or brushes",
+    "a world you invent, one object per card",
+    "a story you make up, one character per card",
+    "13 objects that stand in for people you know",
+    "the objects of a job you'd like to do",
+    "everyone you live with, one card each",
+    "the same friend in 13 different moods",
+    "your friends, posed however they like",
+    "13 people doing what they're best at",
+    "hands, one pair per card",
+    "your team, band, club or crew, one member per card",
+    "the people of your household, asleep",
+    "the fences of your suburb",
+    "the ugliest buildings in your suburb",
+    "the best buildings in your suburb",
+    "the front doors of your street",
+    "the letterboxes of one street",
+    "the parked cars of one block",
+    "every plant on your street",
+    "the shortcuts and worn tracks near you",
+    "13 walls, all different",
+    "the bits of your suburb nobody photographs",
+    "your suburb after dark, one place per card",
+    "13 pieces of rubbish you'd normally ignore",
+    "the empty shopfronts of your nearest strip",
+    "only orange things, hunted not arranged",
+    "only green things, hunted not arranged",
+    "one colour, collected from all over the house",
+    "13 shades of a colour you dislike",
+    "clashing colour pairs, found in the wild",
+    "13 things you find genuinely ugly",
+    "13 things you're embarrassed to like",
+    "the most boring objects in your house",
+    "13 objects that have outlived their purpose",
+    "over-designed things, one per card",
+    "under-designed things, one per card",
+    "13 things that will be gone within a month",
+    "13 things that mean nothing to anyone but you",
+    "the things your household argues about"
   ],
+  // glyphs are the Unicode playing cards (U+1F0A0 block)
   cards: [
-    "the Jack of Clubs","the Queen of Clubs","the King of Clubs",
-    "the Jack of Diamonds","the Queen of Diamonds","the King of Diamonds",
-    "the Jack of Hearts","the Queen of Hearts","the King of Hearts",
-    "the Jack of Spades","the Queen of Spades","the King of Spades",
-    "the Ace of Spades"
+    { rank:"J", name:"Jack",  suit:"♣", of:"Clubs",    red:false, glyph:"\u{1F0DB}" },
+    { rank:"Q", name:"Queen", suit:"♣", of:"Clubs",    red:false, glyph:"\u{1F0DD}" },
+    { rank:"K", name:"King",  suit:"♣", of:"Clubs",    red:false, glyph:"\u{1F0DE}" },
+    { rank:"J", name:"Jack",  suit:"♦", of:"Diamonds", red:true,  glyph:"\u{1F0CB}" },
+    { rank:"Q", name:"Queen", suit:"♦", of:"Diamonds", red:true,  glyph:"\u{1F0CD}" },
+    { rank:"K", name:"King",  suit:"♦", of:"Diamonds", red:true,  glyph:"\u{1F0CE}" },
+    { rank:"J", name:"Jack",  suit:"♥", of:"Hearts",   red:true,  glyph:"\u{1F0BB}" },
+    { rank:"Q", name:"Queen", suit:"♥", of:"Hearts",   red:true,  glyph:"\u{1F0BD}" },
+    { rank:"K", name:"King",  suit:"♥", of:"Hearts",   red:true,  glyph:"\u{1F0BE}" },
+    { rank:"J", name:"Jack",  suit:"♠", of:"Spades",   red:false, glyph:"\u{1F0AB}" },
+    { rank:"Q", name:"Queen", suit:"♠", of:"Spades",   red:false, glyph:"\u{1F0AD}" },
+    { rank:"K", name:"King",  suit:"♠", of:"Spades",   red:false, glyph:"\u{1F0AE}" },
+    { rank:"A", name:"Ace",   suit:"♠", of:"Spades",   red:false, glyph:"\u{1F0A1}" }
   ]
 };
 
-const state = { principle:null, angle:"", method:"", subject:"", card:"", locked:{angle:false,method:false,subject:false} };
-const pick = a => a[Math.floor(Math.random()*a.length)];
+const TARGET = 5;
+const MAXITEMS = 10;
+const MIN_CYCLES = 2;     // whole passes down the list before it can land
+const MIN_STEPS = 12;     // so a short list still travels far enough to read as a spin
+const SPIN_MS = 2100;     // rough total travel time
 
-const pEl = document.getElementById('principles');
-Object.keys(DATA.angles).forEach(name=>{
-  const b=document.createElement('button');
-  b.textContent=name; b.setAttribute('aria-pressed','false');
-  b.onclick=()=>selectPrinciple(name,b);
-  pEl.appendChild(b);
-});
+const COLS = [
+  { key:"angle", colour:"lav", hue:255, sat:32, suit:"♠", title:"A way to use your principle",
+    brief:"Five ways your principle could show up in the photo.",
+    placeholder:"e.g. one part sharp, the rest blurry" },
+  { key:"method", colour:"sky", hue:205, sat:36, suit:"♦", title:"A way to capture it",
+    brief:"Five ways you could shoot it. How the camera behaves, not what it is pointed at.",
+    placeholder:"e.g. shoot through a glass of water" },
+  { key:"subject", colour:"sage", hue:120, sat:22, suit:"♣", title:"Subject matter for the deck",
+    brief:"Five subjects big enough to fill a deck, all your own work. The best ones map onto the deck: a hierarchy for the ranks, four groups for the suits.",
+    placeholder:"e.g. tree for king, branch for queen, leaf for jack" }
+];
+const COL = {}; COLS.forEach(c => COL[c.key] = c);
 
-function selectPrinciple(name,btn){
-  state.principle=name;
-  [...pEl.children].forEach(c=>c.setAttribute('aria-pressed', c===btn?'true':'false'));
-  document.getElementById('board').classList.add('on');
-  state.angle=pick(DATA.angles[name]);
-  state.method=pick(DATA.methods);
-  state.subject=pick(DATA.subjects);
-  paintCols();
-  resetResult();
-}
-
-function paintCols(){
-  document.getElementById('val-angle').textContent=state.angle||"–";
-  document.getElementById('val-method').textContent=state.method||"–";
-  document.getElementById('val-subject').textContent=state.subject||"–";
-}
-function resetResult(){
-  const r=document.getElementById('result');
-  r.className='result empty';
-  r.innerHTML='<p class="collision">Hit <b>force a connection</b> to collide your three cards.</p>';
-}
-
-document.querySelectorAll('[data-shuffle]').forEach(b=>{
-  b.onclick=()=>{
-    const col=b.dataset.shuffle;
-    if(col==='angle') state.angle=pick(DATA.angles[state.principle]);
-    if(col==='method') state.method=pick(DATA.methods);
-    if(col==='subject') state.subject=pick(DATA.subjects);
-    paintCols();
-  };
-});
-document.querySelectorAll('[data-lock]').forEach(c=>{
-  c.onchange=()=>{ state.locked[c.dataset.lock]=c.checked; };
-});
-
-document.getElementById('force').onclick=()=>{
-  if(!state.locked.angle) state.angle=pick(DATA.angles[state.principle]);
-  if(!state.locked.method) state.method=pick(DATA.methods);
-  if(!state.locked.subject) state.subject=pick(DATA.subjects);
-  state.card=pick(DATA.cards);
-  paintCols();
-  showResult();
+const state = {
+  principle: null,
+  lists: { angle:[], method:[], subject:[] },
+  slots: { angle:"", method:"", subject:"" },
+  winIdx: { angle:-1, method:-1, subject:-1 },
+  lit: { angle:-1, method:-1, subject:-1 },
+  locked: { angle:false, method:false, subject:false },
+  fromPool: { angle:false, method:false, subject:false },
+  spinning: { angle:false, method:false, subject:false },
+  revealed: false,
+  dealt: []
 };
 
-function showResult(){
-  const r=document.getElementById('result');
-  r.className='result';
-  r.innerHTML =
-    '<p class="collision"><span class="chip lav">'+lc(state.angle)+'</span> &nbsp;+&nbsp; <span class="chip sky">'+state.method+'</span> &nbsp;+&nbsp; <span class="chip sage">'+state.subject+'</span></p>'+
-    '<div class="leap"><p class="q">Now draw the link: what would '+state.card+' look like, made from this combination?</p>'+
-    '<p>Sketch it in your sketchbook. Odd, forced links are where the fresh ideas hide, so don\'t wait for it to make sense.</p></div>';
+const pick = a => a[Math.floor(Math.random()*a.length)];
+const pool = key => key === "angle"
+  ? (state.principle ? DATA.angles[state.principle] : [])
+  : DATA[key === "method" ? "methods" : "subjects"];
+const reduced = () => !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
+const busy = () => Object.values(state.spinning).some(Boolean);
+
+/* ---------- step 1 ---------- */
+const pEl = document.getElementById('principles');
+Object.keys(DATA.angles).forEach(name => {
+  const b = document.createElement('button');
+  b.type = 'button'; b.textContent = name; b.setAttribute('aria-pressed','false');
+  b.onclick = () => selectPrinciple(name, b);
+  pEl.appendChild(b);
+});
+function selectPrinciple(name, btn){
+  if (busy()) return;
+  const changed = state.principle !== name;
+  state.principle = name;
+  [...pEl.children].forEach(c => c.setAttribute('aria-pressed', c === btn ? 'true' : 'false'));
+  document.getElementById('board').classList.add('on');
+  if (changed){ state.lists.angle = []; clearWin('angle'); state.locked.angle = false; }
+  render(); resetResult();
 }
-function lc(s){ return s.charAt(0).toLowerCase()+s.slice(1); }
+
+/* ---------- columns ---------- */
+const colsEl = document.getElementById('cols');
+COLS.forEach(c => {
+  const d = document.createElement('div');
+  d.className = 'col ' + c.colour;
+  d.id = 'col-' + c.key;
+  d.innerHTML =
+    '<div class="col-head"><p class="col-title">' + c.title + '</p>' +
+    '<span class="pip" aria-hidden="true">' + c.suit + '</span></div>' +
+    '<p class="col-brief">' + c.brief + '</p>' +
+    '<div class="adder">' +
+      '<input type="text" id="in-' + c.key + '" placeholder="' + c.placeholder + '" aria-label="Add to ' + c.title + '">' +
+      '<button type="button" data-add="' + c.key + '">Add</button>' +
+    '</div>' +
+    '<ul class="items" id="items-' + c.key + '" aria-live="polite"></ul>' +
+    '<p class="empty-note" id="none-' + c.key + '">Nothing here yet.</p>' +
+    '<p class="counter" id="count-' + c.key + '"></p>' +
+    '<div class="col-tools">' +
+      '<button class="mini" type="button" data-borrow="' + c.key + '">Borrow an idea</button>' +
+      '<button class="mini" type="button" data-fill="' + c.key + '">Random fill</button>' +
+      '<button class="mini" type="button" data-clear="' + c.key + '">Clear</button>' +
+    '</div>' +
+    '<div class="col-foot">' +
+      '<button class="deck-back spin-col" type="button" data-spin="' + c.key + '">Spin this column' +
+      '<span class="suit" aria-hidden="true">' + c.suit + '</span></button>' +
+      '<label class="lock"><input type="checkbox" data-lock="' + c.key + '"> hold</label>' +
+    '</div>';
+  colsEl.appendChild(d);
+});
+
+/* ---------- list handling ---------- */
+function addItem(key, text, borrowed){
+  const v = (text || "").trim();
+  if (!v) return false;
+  if (state.lists[key].length >= MAXITEMS) return false;
+  if (state.lists[key].some(i => i.text.toLowerCase() === v.toLowerCase())) return false;
+  state.lists[key].push({ text:v, borrowed: !!borrowed });
+  return true;
+}
+function borrow(key){
+  const unused = pool(key).filter(t => !state.lists[key].some(i => i.text.toLowerCase() === t.toLowerCase()));
+  if (!unused.length) return false;
+  const added = addItem(key, pick(unused), true);
+  if (added) state.fromPool[key] = true;
+  return added;
+}
+function randomFill(key){
+  let guard = 0, added = false;
+  while (state.lists[key].length < TARGET && guard++ < 200){ if (!borrow(key)) break; added = true; }
+  return added;
+}
+// editing a list makes any drawn collision stale
+function clearWin(key){ state.slots[key] = ""; state.winIdx[key] = -1; state.lit[key] = -1; resetResult(); }
+function afterEdit(key){ clearWin(key); renderCol(key); setButtons(); }
+
+colsEl.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  const k = b.dataset.add || b.dataset.borrow || b.dataset.fill || b.dataset.clear || b.dataset.col || b.dataset.spin;
+  if (k && state.spinning[k]) return;
+  if (b.dataset.add){
+    const inp = document.getElementById('in-' + k);
+    if (addItem(k, inp.value, false)) { inp.value = ''; afterEdit(k); }
+    inp.focus(); return;
+  }
+  if (b.dataset.borrow){ if (borrow(k)) afterEdit(k); return; }
+  if (b.dataset.fill){ if (randomFill(k)) afterEdit(k); return; }
+  if (b.dataset.clear){ state.lists[k] = []; state.fromPool[k] = false; afterEdit(k); return; }
+  if (b.dataset.remove !== undefined && b.dataset.col){
+    state.lists[k].splice(Number(b.dataset.remove), 1); afterEdit(k); return;
+  }
+  if (b.dataset.spin){ spin(k, 0).then(() => {}); return; }
+});
+colsEl.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && e.target.matches('input[type="text"]')){
+    e.preventDefault();
+    const key = e.target.id.replace('in-','');
+    if (state.spinning[key]) return;
+    if (addItem(key, e.target.value, false)) { e.target.value = ''; afterEdit(key); }
+  }
+});
+colsEl.addEventListener('change', e => {
+  if (e.target.dataset.lock) state.locked[e.target.dataset.lock] = e.target.checked;
+});
+
+/* ---------- the spin: a highlight travelling down the rows ---------- */
+function spin(key, stagger){
+  return new Promise(resolve => {
+    if (state.spinning[key]) return resolve(false);
+    if (state.locked[key] && state.slots[key]) return resolve(false);
+    if (!state.lists[key].length){ randomFill(key); renderCol(key); }
+    const items = state.lists[key];
+    if (!items.length) return resolve(false);
+
+    const n = items.length;
+    const target = Math.floor(Math.random()*n);
+    const start = state.winIdx[key] >= 0 ? state.winIdx[key] : 0;
+    const delta = ((target - start) % n + n) % n;
+    // whole cycles only, so the last step always lands on the target
+    const cycles = Math.max(MIN_CYCLES, Math.ceil(MIN_STEPS / n)) + Math.floor(Math.random()*2);
+    const steps = cycles*n + delta;
+
+    state.spinning[key] = true;
+    state.slots[key] = "";   // this column has no result until it lands
+    resetResult();           // and whatever was drawn before is out of date
+    setButtons();
+
+    const land = () => {
+      state.spinning[key] = false;
+      state.lit[key] = -1;
+      state.winIdx[key] = target;
+      state.slots[key] = items[target].text;
+      state.fromPool[key] = !!items[target].borrowed;
+      document.getElementById('col-' + key).classList.remove('rolling');
+      renderCol(key); resetResult(); setButtons();
+      const row = document.getElementById('items-' + key).children[target];
+      if (row && !reduced()){ row.classList.remove('pop'); void row.offsetWidth; row.classList.add('pop'); }
+      resolve(true);
+    };
+
+    if (reduced()){ land(); return; }
+
+    // step delays ease out, so the highlight visibly slows into its landing
+    const delays = [];
+    for (let k = 1; k <= steps; k++){
+      const p = k / steps;
+      delays.push(34 + Math.pow(p, 3.2) * 290);
+    }
+    const scale = SPIN_MS / delays.reduce((a,b) => a+b, 0);
+    let k = 0;
+    const tick = () => {
+      if (k >= steps) return land();
+      state.lit[key] = (start + k + 1) % n;
+      paintLit(key);
+      k++;
+      setTimeout(tick, delays[k-1] * scale);
+    };
+    // the stagger runs before this column shows any movement at all
+    setTimeout(() => {
+      state.winIdx[key] = -1;
+      state.lit[key] = start;
+      renderCol(key);
+      document.getElementById('col-' + key).classList.add('rolling');
+      tick();
+    }, stagger || 0);
+  });
+}
+
+function paintLit(key){
+  const ul = document.getElementById('items-' + key);
+  [...ul.children].forEach((li, i) => li.classList.toggle('lit', i === state.lit[key]));
+}
+
+const SUITS_HTML = '<span class="suit" aria-hidden="true">♠</span><span class="suit" aria-hidden="true">♦</span><span class="suit" aria-hidden="true">♣</span>';
+
+// all three columns have landed and the collision hasn't been drawn yet
+const canForce = () => COLS.every(c => !!state.slots[c.key]) && !state.revealed;
+
+function setButtons(){
+  const b = busy();
+  const btn = document.getElementById('spinAll');
+  btn.disabled = b;
+  btn.innerHTML = b ? 'Spinning…' : 'Force the connection' + SUITS_HTML;
+  COLS.forEach(c => {
+    const on = state.spinning[c.key];
+    document.querySelectorAll('#col-' + c.key + ' .mini, #col-' + c.key + ' .spin-col')
+      .forEach(m => { m.disabled = on || b; });
+    document.querySelectorAll('#col-' + c.key + ' .adder input, #col-' + c.key + ' .adder button')
+      .forEach(m => { m.disabled = on; });
+  });
+}
+
+document.getElementById('spinAll').onclick = () => {
+  if (!state.principle || busy()) return;
+
+  // columns already spun on their own: just draw the card and collide them
+  if (canForce()){ reveal(); return; }
+
+  // otherwise spin what still needs spinning, then collide
+  const missing = COLS.filter(c => !state.slots[c.key]);
+  const toSpin = missing.length ? missing : COLS.filter(c => !state.locked[c.key]);
+  if (!toSpin.length){ reveal(); return; }
+  resetResult();
+  Promise.all(toSpin.map((c, i) => spin(c.key, i * 280))).then(() => {
+    if (COLS.some(c => !state.slots[c.key])) { setButtons(); return; }
+    reveal();
+  });
+};
+
+function reveal(){
+  state.dealt = [pick(DATA.cards)];   // a fresh direction gets a fresh test card
+  state.revealed = true;
+  showResult();
+  setButtons();
+}
+
+/* ---------- render ---------- */
+function render(){ COLS.forEach(c => renderCol(c.key)); }
+
+function renderCol(key){
+  const c = COL[key], items = state.lists[key];
+  const ul = document.getElementById('items-' + key);
+  ul.innerHTML = items.map((item, i) => {
+    const cls = [item.borrowed ? 'borrowed' : '', state.winIdx[key] === i ? 'win' : '', state.lit[key] === i ? 'lit' : ''].filter(Boolean).join(' ');
+    return '<li' + (cls ? ' class="' + cls + '"' : '') + '>' +
+      '<span class="n" style="background:' + badge(c, i) + '">' + (i+1) + '</span>' +
+      '<span class="t">' + esc(item.text) + '</span>' +
+      '<button class="x" type="button" data-remove="' + i + '" data-col="' + key + '" aria-label="Remove">&times;</button></li>';
+  }).join('');
+  document.getElementById('none-' + key).style.display = items.length ? 'none' : 'block';
+
+  const n = items.length;
+  const cnt = document.getElementById('count-' + key);
+  if (n >= TARGET){ cnt.className = 'counter done'; cnt.textContent = n + ' options in the spin.'; }
+  else { cnt.className = 'counter'; cnt.textContent = n + ' of ' + TARGET + ' — ' + (n === 0 ? 'spin and it fills itself, or write your own.' : (TARGET - n) + ' to go.'); }
+
+  const lockBox = colsEl.querySelector('[data-lock="' + key + '"]');
+  if (lockBox) lockBox.checked = state.locked[key];
+}
+
+function badge(c, i){
+  const steps = [58, 72, 64, 80, 68, 76, 61, 84, 70, 66];
+  return 'hsl(' + c.hue + ' ' + c.sat + '% ' + steps[i % steps.length] + '%)';
+}
+
+function resetResult(){
+  state.revealed = false;
+  state.dealt = [];
+  const r = document.getElementById('result');
+  r.className = 'result empty';
+  r.innerHTML = COLS.every(c => !!state.slots[c.key])
+    ? '<p class="collision">Three columns have landed. Hit <b>force the connection</b> to set the direction and deal a card.</p>'
+    : '<p class="collision">Write your options, then <b>force the connection</b>. It spins anything you haven\'t spun yet.</p>';
+}
+/* the Unicode card glyphs are lovely where they exist and tofu where they don't,
+   so check once and fall back to a drawn card face */
+let glyphSupport = null;
+function supportsCardGlyphs(){
+  if (glyphSupport !== null) return glyphSupport;
+  try {
+    const ctx = document.createElement('canvas').getContext('2d');
+    if (!ctx) return (glyphSupport = false);
+    ctx.font = '32px sans-serif';
+    const card = ctx.measureText('\u{1F0A1}').width;
+    const tofu = ctx.measureText('\u{10FFFD}').width;   // guaranteed missing
+    glyphSupport = card > 0 && Math.abs(card - tofu) > 0.5;
+  } catch(e){ glyphSupport = false; }
+  return glyphSupport;
+}
+
+function cardFace(card){
+  const label = card.name + ' of ' + card.of;
+  if (supportsCardGlyphs()){
+    return '<div class="card-glyph' + (card.red ? ' red' : '') + '" role="img" aria-label="' + label + '">' +
+      card.glyph + '</div>';
+  }
+  const rank = '<span class="r">' + card.rank + '<small>' + card.suit + '</small></span>';
+  const flip = '<span class="r flip">' + card.rank + '<small>' + card.suit + '</small></span>';
+  return '<div class="card-face' + (card.red ? ' red' : '') + '" role="img" aria-label="' + label + '">' +
+    rank + '<span class="big">' + card.suit + '</span>' + flip + '</div>';
+}
+
+function showResult(){
+  const r = document.getElementById('result');
+  const c = state.dealt[state.dealt.length - 1];
+  const tested = state.dealt.slice(0, -1);
+  r.className = 'result reveal';
+  const borrowed = COLS.filter(x => state.fromPool[x.key]).length;
+
+  r.innerHTML =
+    '<p class="res-label">Your deck direction</p>' +
+    '<p class="collision"><span class="chip lav">' + esc(lc(state.slots.angle)) + '</span> &nbsp;+&nbsp; ' +
+    '<span class="chip sky">' + esc(state.slots.method) + '</span> &nbsp;+&nbsp; ' +
+    '<span class="chip sage">' + esc(state.slots.subject) + '</span></p>' +
+    '<p class="res-sub">These three rules hold for every card in the deck. Only the imagery changes from card to card.</p>' +
+
+    '<div class="leap">' + cardFace(c) + '<div class="leap-txt">' +
+    '<p class="res-label">Proof of concept</p>' +
+    '<p class="q">Make the ' + c.name + ' of ' + c.of + ' under all three rules.</p>' +
+    '<p>One card, made properly, tells you whether the direction actually works. Sketch it first. Odd, forced links are where the fresh ideas hide, so don\'t wait for it to make sense.</p>' +
+    '<div class="deal-row">' +
+      '<button class="mini" type="button" id="dealAgain">Deal another card to test it against</button>' +
+      (tested.length ? '<span class="tested">Tested: ' + tested.map(t =>
+        '<span class="mini-card' + (t.red ? ' red' : '') + '" title="' + t.name + ' of ' + t.of + '">' +
+        (supportsCardGlyphs() ? t.glyph : t.rank + t.suit) + '</span>').join('') + '</span>' : '') +
+    '</div>' +
+    '<p class="res-note">If your direction only works on one card, it isn\'t a system yet. Change the direction, not the card. And if a combination is genuinely impossible rather than just awkward, hold two columns and spin the third.</p>' +
+    '</div></div>' +
+    (borrowed ? '<p class="fallback-flag">' + borrowed + ' of these came from the suggestion list rather than your own writing.</p>' : '');
+}
+
+// deal a fresh card without touching the direction
+document.getElementById('result').addEventListener('click', e => {
+  if (!e.target.closest('#dealAgain')) return;
+  const unused = DATA.cards.filter(c => !state.dealt.includes(c));
+  state.dealt.push(unused.length ? pick(unused) : pick(DATA.cards));
+  showResult();
+});
+function lc(s){ return s ? s.charAt(0).toLowerCase() + s.slice(1) : s; }
+function esc(s){ return String(s).replace(/[&<>"]/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[ch])); }
+
+render();
+setButtons();
+
+/* test hook */
+window.__fc = {
+  state: state, addItem: addItem, randomFill: randomFill, render: render, renderCol: renderCol, spin: spin,
+  MIN_CYCLES: MIN_CYCLES,
+  litRow: key => [...document.getElementById('items-' + key).children].findIndex(li => li.classList.contains('lit')),
+  winRow: key => [...document.getElementById('items-' + key).children].findIndex(li => li.classList.contains('win'))
+};
 </script>
 </body>
 </html>
