@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AT2 concept generator — Sportsgirl SS26</title>
+<title>AT2 concept generator — Sportsgirl SS26 Blurred Summer</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body {
@@ -228,9 +228,9 @@ details.others[open] summary::before { content: '▾  '; }
 <div class="wrap">
   <div class="header">
     <h1>AT2 concept generator</h1>
-    <div class="sub">Sportsgirl SS26 &nbsp;·&nbsp; GRAP6344C</div>
+    <div class="sub">Sportsgirl SS26 &nbsp;·&nbsp; Blurred Summer &nbsp;·&nbsp; GRAP6344C</div>
     <div class="brief-note">
-      Each generate gives you one example of how you might approach a concept across three steps. Take what's useful — adapt it, use it verbatim, or ignore the parts that don't fit. Run it again for a different starting point.
+      Everything here reads off the <strong>Blurred Summer</strong> mood board and applies to the three packages in the brief: the drink bottle carton, the bath set, and the perfume gift set.<br><br>Each generate gives you one example of how you might approach a concept across three steps. Take what's useful, adapt it, use it verbatim, or ignore the parts that don't fit. Run it again for a different starting point.
     </div>
   </div>
   <button class="btn-gen" onclick="generate()">Generate concept direction ♡</button>
@@ -260,7 +260,7 @@ details.others[open] summary::before { content: '▾  '; }
       <div class="card-head c-thinking"><span class="step-badge">Step 2</span>Ideation</div>
       <div class="card-body">
         <div class="field-label">Core sketching task</div>
-        <div class="sketch-core">Sketch the package 12 times — quick thumbnails, not finished drawings. In each one, try a different arrangement of the four essential elements: Sportsgirl brand, product title, product identification (window, illustration, or label), and the re-use idea from Step 1. Keep moving; don't refine until you have a direction you like.</div>
+        <div class="sketch-core">Sketch one package 12 times. Quick thumbnails, not finished drawings. In each one, try a different arrangement of the four essential elements: the Sportsgirl brand (or Sportsgirl Beauty on the bath set and perfume set), the product title, product identification through a window, illustration or label, and the re-use idea from Step 1. Keep moving, and don't refine until you have a direction you like.</div>
         <div class="field-label" style="margin-top:0.85rem;">Then try this</div>
         <div class="field-value" id="f-thinking"></div>
         <hr class="step-rule">
@@ -268,7 +268,7 @@ details.others[open] summary::before { content: '▾  '; }
         <div class="field-value" id="f-colour"></div>
         <div class="field-label" style="margin-top:0.75rem;">Type direction</div>
         <div class="field-value" id="f-type"></div>
-        <div class="field-label" style="margin-top:0.75rem;">Print finish — optional</div>
+        <div class="field-label" style="margin-top:0.75rem;">Print finish: optional</div>
         <div class="field-value" id="f-pantone"></div>
       </div>
     </div>
@@ -289,223 +289,232 @@ details.others[open] summary::before { content: '▾  '; }
 
     <button class="btn-reset" onclick="generate()">Generate a different direction ↺</button>
   </div>
-</div>
-<script>
+</div><script>
 // ── Data ──────────────────────────────────────────────────────────────────
+// Mood board: Sportsgirl SS26 "Blurred Summer"
+// Packages in the brief: drink bottle carton, bath set, perfume gift set.
 var concepts = [
   {
-    name: "Y2K sticker bomb",
-    body: "The mood board is full of sticker energy — hearts, butterflies, stars, smiley faces, rhinestone clusters. Build a concept where sticker-style graphic elements scatter across the packaging surface. They don't have to be literally circular stickers; it's more about the layered, collected, 'I put this together myself' feeling. Think of your packaging range as a Lisa Frank diary that got into a Sportsgirl store."
+    name: "Out of focus",
+    body: "Take the mood board title literally. Almost every image on the board has been softened, blurred, or shot out of focus, and nothing has a crisp edge. Build a concept where blur <em>is</em> the design language: soft-edged shapes, imagery that never resolves, type that sits sharp against a background that doesn't. The real design problem is control. Uncontrolled blur reads as a printing fault, so you need at least one hard edge on the package (usually the type or the Sportsgirl wordmark) for the soft areas to read as deliberate."
   },
   {
-    name: "Jelly and transparent",
-    body: "The mood board has a lot of translucent, iridescent, jelly-like surfaces — lip glosses, the clear phone, the holographic hearts. Explore a palette and graphic language that references this quality: soft holographic colour shifts, frosted-looking backgrounds, graphics that feel light and dimensional without using foil or glitter. The challenge is achieving a 'sheer' feeling using only ink on paper."
+    name: "Aura glow",
+    body: "The glowing hearts on the board have a radial halo bleeding outward, pink through orange through blue, with no outline at all. Build a system where every graphic element carries its own glow: shapes float on a coloured aura rather than sitting on a background. Works especially well on the perfume gift set, where three scents can be three different auras across one wrap."
   },
   {
-    name: "Flip phone and pixel",
-    body: "The early 2000s tech objects in the mood board — the see-through phones, the Tamagotchis, the digital cameras, the Game Boys — suggest a lo-fi pixel or screen aesthetic. Use pixelated or grid-based type and graphics, flat colour blocking, and maybe references to UI elements like battery bars, signal icons, or early mobile wallpaper patterns. Sweet and slightly nerdy."
+    name: "Poured resin",
+    body: "The swirled translucent discs on the left of the board are poured resin, with colours pulled through each other and never fully mixed. Explore a marbled, poured, liquid graphic language: colours that bleed and swirl rather than sit in defined shapes. Each package in the range gets a different pour from the same palette, so the range reads as a set without repeating a single pattern."
   },
   {
-    name: "Diary and journal collage",
-    body: "The mood board includes a journal page covered in stickers and handwriting. Design a packaging range that looks like a page from someone's diary — hand-lettered annotations, taped-on elements, layered ephemera. Use a mix of handwritten and printed type. The effect should feel personal, not rough. Think: lovingly curated rather than chaotic."
+    name: "Jelly and gummy",
+    body: "The coloured ice cubes on the board are translucent, chunky, and glossy, and you can see through one to the one behind. Build a graphic language around stacked transparent forms: overlapping shapes where the overlap creates a third colour, highlights suggesting a wet surface, and a sense of depth built from flat ink. The challenge is achieving a 'you could squeeze it' quality using only CMYK on board."
   },
   {
-    name: "Heart maximalism",
-    body: "Hearts dominate the mood board — rhinestone hearts, glitter hearts, heart-shaped packaging, heart motifs everywhere. Make the heart your system: use it as a pattern unit, a structural shape, a type element, a framing device. Across the range, explore what happens when you do the same thing many different ways: outlined, filled, oversized, tiny, stacked."
+    name: "Puffy type",
+    body: "The CHULA MARKET lettering on the board is inflated, glossy, and dimensional, with a green keyline holding the pink together. Make typography the hero on every package: swollen letterforms with highlights and soft shadows, treated as objects rather than text. Every other element stays flat so the type does all the work. Note that the Sportsgirl wordmark must stay unmodified, so your display type has to sit alongside it without fighting it."
   },
   {
-    name: "Butterfly effect",
-    body: "Butterflies appear repeatedly in the mood board as both motif and texture — on denim, as rhinestone appliqués, as standalone imagery. Build a concept where the butterfly form generates the design language. It doesn't have to be literal illustration; think about the symmetry, the wing shapes, the colour gradations, as a source of pattern, layout structure, and graphic form."
+    name: "Hibiscus and tropical bloom",
+    body: "Hibiscus flowers appear across the board in pink, orange, yellow, and white, sometimes photographic, sometimes rendered with a glow. Use the flower as the generating form for the whole range: as a repeat pattern, an oversized single bloom, a die-cut window shape, or a container frame for type. Change scale rather than motif between packages to keep the range cohesive."
   },
   {
-    name: "Nostalgia pink",
-    body: "Hot pink and dusty mauve are everywhere in the mood board. Go deep into this palette: explore what a range looks like when it commits fully to a narrow, saturated pink-to-lilac spectrum. This isn't one pink on a white background — it's a study in how many pinks can work together without clashing. Let the palette do the work; keep graphics minimal."
+    name: "Pool water",
+    body: "The board has turquoise water, white sand, and an inflatable lounger with light refracting through it. Build a concept around water: ripple distortion, the wobble of something seen through a pool surface, the specific turquoise-to-white gradient of shallow water over sand. Distortion is your pattern system. Consider what happens when you push the product name through the same ripple."
   },
   {
-    name: "Cutie typography",
-    body: "The mood board has multiple examples of text being used as decoration — the jumbled 'you became the sign' type, the brand lettering on stickers, the expressive mixed-font collage. Build a concept where typography is the hero visual on every package. Custom letterforms, mixed cases, playful hierarchy, maybe letters that are also illustrations. No plain sans-serif system fonts."
+    name: "Sunset gradient",
+    body: "The rainbow skies on the board are not rainbows. They're a specific sequence, pink into orange into yellow into turquoise, with soft transitions and no banding. Commit your whole range to gradient: no flat colour anywhere. Every surface transitions. The discipline here is print, because a gradient this wide will band badly if you don't build it properly, so this concept comes with a real technical problem to solve."
   },
   {
-    name: "Handmade and handwritten",
-    body: "Not everything in Y2K is glossy — there's also the handmade, the personal, the scrapbook. Design a range that looks like it was drawn and lettered by hand: wobbly outlines, hand-lettered product names, illustrated details that feel personal rather than polished. The trick is making 'handmade' feel intentional and beautiful rather than unfinished."
+    name: "Tropical animal print",
+    body: "The board has a hot orange and pink leopard print that has been pushed well past anything naturalistic. Take an animal print and recolour it entirely into the Blurred Summer palette until the source is barely readable. Vary the scale across the three packages: enormous on the drink bottle, fine on the perfume wrap. The test is whether it still reads as a Sportsgirl product and not a novelty item."
   },
   {
-    name: "Object flat-lay system",
-    body: "The mood board includes flat-lay arrangements of objects — the sticker sheet, the accessories collection, the Game Boys in a grid. Design packaging that treats the object arrangement itself as the graphic system: everything laid out on a flat surface, viewed from above, creating a pattern from real things. Consider how this works across multiple packages while remaining cohesive."
+    name: "Concentric rings",
+    body: "One image on the board is nothing but concentric pink, orange, and yellow rings. It is the simplest thing there and it holds its own against everything else. Build a range from concentric or radiating repeats: rings, ripples, sunbursts. A radial system behaves very differently to a grid when it wraps around a package corner, which is worth exploring on the drink bottle carton."
   },
   {
-    name: "Rhinestone and gem",
-    body: "Rhinestones, crystals, and gem-like surfaces appear constantly in the mood board. Build a graphic language around this aesthetic without using foil or glitter: faceted geometric shapes, sparkle marks rendered in flat ink, jewel-like colour arrangements. The look should read as 'gem-encrusted' while being entirely achievable in standard CMYK print."
+    name: "Star and sparkle",
+    body: "Stars on this board are outlined and glowing rather than solid, scattered as punctuation across other imagery. Build a design system from star and sparkle marks at every scale, from tiny accents used like commas to large soft-edged stars as background structure. Keep them glowing rather than flat, so they stay in the Blurred Summer world rather than sliding back into Y2K."
   },
   {
-    name: "Y2K graphic language",
-    body: "The early 2000s had a very specific visual language — and you'll find it most clearly in print advertising, software packaging, games, and teen catalogues from that era, rather than in cosmetics specifically. Look at how magazine ads from that period used type: stretched, layered, mixed weights on the same line, often with a very particular relationship between photography and graphic elements. Software boxes had bold, confident colour and a certain kind of futurism that aged quickly but feels distinctive now. Teen catalogues like Diva or Supré used layout conventions that were completely of their moment. Research the graphic sensibility — the type choices, the colour confidence, the way imagery and text sat together — and apply it to the Sportsgirl brief. Don't research beauty packaging directly; you'll end up copying rather than referencing. Start by looking at: <a href='https://www.google.com/search?tbm=isch&q=early+2000s+magazine+print+advertising+typography' target='_blank' rel='noopener'>early 2000s print advertising</a> · <a href='https://www.google.com/search?tbm=isch&q=y2k+software+box+packaging+design+2000s' target='_blank' rel='noopener'>Y2K software packaging</a> · <a href='https://www.google.com/search?tbm=isch&q=2000s+teen+magazine+layout+design+australia' target='_blank' rel='noopener'>2000s teen magazine layouts</a> · <a href='https://www.google.com/search?tbm=isch&q=playstation+magazine+2000s+print+ads' target='_blank' rel='noopener'>PS1/PS2 magazine ads</a>."
+    name: "Sheer layers",
+    body: "A lot of the board reads as layers of translucent colour stacked over one another, so where two overlap you get a third colour. Design your range as overlapping transparent panels: no element fully opaque, and the composition built from the intersections. In print this means thinking carefully about ink overprint and how your colours actually multiply, which is a genuine technical exercise as well as a visual one."
   },
   {
-    name: "Pattern from one source",
-    body: "Go into the mood board and find one specific image that you find genuinely interesting — not the most obvious one. Extract a graphic quality from it and use that quality to build all the pattern work for your range: the repeat unit, the colour palette, the scale decisions. One source, consistently interpreted, across five packages."
+    name: "Woven and beaded",
+    body: "The pastel diamond knit with the beaded fringe is the only texture on the board that isn't smooth. Build a concept from craft texture: woven grids, crochet structure, beading rendered as repeated dots, fringe as a border device. It's the quietest direction on this board, which makes it stand out. Take care that it still reads as summer and not as winter knitwear."
   },
   {
-    name: "Holographic colour story",
-    body: "The iridescent, colour-shifting quality of holographic surfaces appears throughout the mood board. Develop a colour palette that evokes this: not rainbow, but the specific sequence of pinks, mauves, and sky blues that appear when light hits a holographic sticker. Apply this colour story systematically — backgrounds, type, patterns, accents — keeping everything within the palette."
+    name: "Blob containment",
+    body: "The lip balm packaging on the board holds its type inside soft flower and blob shaped frames with glowing edges. Make the container shape your system: every piece of information on the package sits inside a soft organic frame, and the frames vary in shape but share one visual logic. This solves a real problem on the bath set and perfume set, where the required legal and ingredient copy has to go somewhere."
   },
   {
-    name: "Star system",
-    body: "Stars, sparkles, and shine marks are scattered through the mood board. Build a design system around star shapes at every scale — from tiny sparkle marks used as punctuation to large decorative stars as background elements. Stars are a simple shape with a lot of variation: five-point, four-point, burst, outlined, filled, scattered, in formation."
+    name: "Market signage",
+    body: "The CHULA MARKET graphic points somewhere useful. Hand-painted market and beach kiosk signage has its own conventions: enthusiastic lettering, colour used with total confidence, and information hierarchy that a designer would never plan but that somehow works. Research the vernacular rather than the mood board on this one, then bring it back to Sportsgirl with more discipline than the source has. Start by looking at: <a href='https://www.google.com/search?tbm=isch&q=hand+painted+beach+kiosk+signage+tropical' target='_blank' rel='noopener'>hand-painted beach signage</a> · <a href='https://www.google.com/search?tbm=isch&q=mercado+market+sign+lettering+latin+america' target='_blank' rel='noopener'>market lettering</a> · <a href='https://www.google.com/search?tbm=isch&q=surf+shop+signage+1990s+australia' target='_blank' rel='noopener'>surf shop signage</a> · <a href='https://www.google.com/search?tbm=isch&q=inflatable+3d+chrome+type+design' target='_blank' rel='noopener'>inflated 3D lettering</a>."
+  },
+  {
+    name: "One image, one range",
+    body: "Go into the mood board and find one image you find genuinely interesting, not the most obvious one. Extract a single graphic quality from it, then use only that quality to build all three packages: the repeat unit, the palette, and the scale decisions. One source, consistently interpreted. This is the fastest route to a range that looks designed rather than assembled."
   }
 ];
 var sketchingPrompts = [
   "Pick one element from your visual research and make it fill the entire package face. Too big, too close, no margins. Now work backwards from there.",
-  "Write down five words that describe what this concept feels like — not what it looks like. Sketch one thumbnail for each word.",
-  "Find the smallest detail in the mood board that interests you. Blow it up. What happens?",
+  "Write down five words that describe what this concept feels like, not what it looks like. Sketch one thumbnail for each word.",
+  "Find the smallest detail on the mood board that interests you. Blow it up. What happens?",
   "What's the most obvious version of this concept? Sketch it and set it aside. Now sketch the version that surprises you.",
-  "Pick two images from your research that seem unrelated. What would a design look like that somehow referenced both?",
+  "Pick two images from the mood board that seem unrelated. What would a design look like that somehow referenced both?",
   "Start with type, not imagery. Set the product name in a way that feels right for this concept. Does it need anything else?",
-  "Think about what this concept looks like on the package back, not the front. Sometimes that's the more interesting surface.",
-  "What's the version of this concept with only two colours? Sketch it.",
-  "Design the package like a flip phone ad from 1999 — not too literally. Just the same style.",
+  "Sketch the back of the package before the front. On the bath set and the perfume set the back has to carry ingredient copy, so solving that first often decides the front.",
+  "What's the version of this concept with only two colours? Sketch it. Blurred Summer is a loud palette, and restraint can be the thing that makes a concept stand out.",
+  "Try the whole concept with no hard edges at all, then try it with one. Compare them. The one hard edge usually makes the soft areas read as intentional.",
   "Sketch the pattern or repeat element first, before you think about layout. Once you have a pattern you like, place it into a package.",
-  "Screenshot the 3D model of the package from the Sportsgirl Assets page on Canvas at an angle you like. Trace over it — on a light table or digitally — to use as a template. Drawing from the actual 3D form is faster than constructing perspective from scratch, and it stops the rough looking like a flat diagram.",
-  "Before you start sketching: open the 3D model on the Sportsgirl Assets page and rotate it. Screenshot it from three different angles. Which one makes your design most legible? Sketch your thumbnails from that angle.",
-  "Sketch the package in three-quarter view — front face, one side panel, and the top all visible. What needs to move or change when your layout wraps around a corner? Sometimes the answer is nothing. Sometimes it changes the whole layout.",
-  "Think about the package in someone's hand. She picks it up, turns it over, puts it down. Sketch it from the angle she'd naturally look at it — not the angle that makes your flat layout easiest to draw.",
-  "Print your rough onto the dieline, score it, and assemble the package by hand. Photograph it against a plain background for the presentation. You'll immediately see things — proportion, how colour reads on a corner, what the top looks like — that never show up in a flat layout."
+  "Screenshot the 3D model of the package from the Sportsgirl Assets page on Canvas at an angle you like. Trace over it, on a light table or digitally, to use as a template. Drawing from the actual 3D form is faster than constructing perspective from scratch, and it stops the rough looking like a flat diagram.",
+  "Before you start sketching, open the 3D model on the Sportsgirl Assets page and rotate it. Screenshot it from three different angles. Which one makes your design most legible? Sketch your thumbnails from that angle.",
+  "Sketch the package in three-quarter view, with the front face, one side panel, and the top all visible. What needs to move or change when your layout wraps around a corner? Sometimes the answer is nothing. Sometimes it changes the whole layout.",
+  "Think about the package in someone's hand. She picks it up, turns it over, puts it down. Sketch it from the angle she'd naturally look at it, not the angle that makes your flat layout easiest to draw.",
+  "The perfume gift set is a tray and a separate wrap. Sketch the wrap flat, then sketch it wrapped. Designs that look balanced flat often don't survive being folded around a tray.",
+  "Print your rough onto the dieline, score it, and assemble the package by hand. Photograph it against a plain background for the presentation. You'll immediately see things, like proportion, how colour reads on a corner, and what the top looks like, that never show up in a flat layout."
 ];
 var colours = [
   {
-    colour: "Commit to the pink spectrum — dusty rose through hot pink, three or four steps. Add one dark (near-black or deep plum) for type and white for breathing room. Nothing outside the pink family.",
-    type: "Look for a typeface with a personality: a script that feels handwritten, a serif with slightly unusual letterforms, or a sans-serif with a quirky detail. The Sportsgirl wordmark must appear — choose your supporting typeface to feel different from it, not to compete."
+    colour: "Full tropical saturation, straight off the board: hot pink, orange, yellow, turquoise, and lime, all at high intensity. Nothing muted, nothing greyed. The discipline is not in restraint but in proportion, so decide which colour dominates each package and stick to it.",
+    type: "The type has to survive a very loud background. Go heavy and simple, with a bold sans or a rounded display face, and let the colour do the shouting. Keep the Sportsgirl wordmark clear of any busy area."
   },
   {
-    colour: "A holographic palette in ink: a soft pink, a lilac, and a sky blue that create a colour-shift effect when used together in small amounts. Avoid large blocks of any single colour — the effect comes from the combination, not any one hue.",
-    type: "Mixed type treatment: the product name in an expressive display face or hand-lettered; ingredient and usage information in a clean, neutral secondary. Don't let the secondary compete with the hero."
+    colour: "Gradient only, no flat fills anywhere. Every surface transitions, following the sunset sequence on the board: pink into orange into yellow, or turquoise into pink. Build gradients with enough steps to avoid banding, and check them at actual size before you commit.",
+    type: "Type in a single flat colour so it stays legible against the shifting background. A near-black or a clean white. Resist gradient-filled type unless it's the hero word only."
   },
   {
-    colour: "One saturated background colour per package — hot pink, lilac, teal, baby blue, or lime — with graphic elements in white and black only. The colour is the personality; the graphics stay clean.",
-    type: "Bold and graphic: all caps, wide-tracked, or an oversized initial. Let letterforms become part of the pattern or repeat system."
+    colour: "Water palette: turquoise, aqua, and pale sky as the base, with hot pink as the single accent used sparingly. This is the coolest reading of the board and gives you somewhere to go if the other concepts are all warm.",
+    type: "Something with a liquid or rounded quality to match. Look at type with soft terminals or slight distortion. Avoid anything with sharp serifs, which will fight the palette."
   },
   {
-    colour: "Restraint: cream or off-white background across all packages. Colour appears only in specific, intentional places — pattern elements, the product name, a single accent. More Glossier than Lisa Frank.",
-    type: "Elegant and slightly unexpected — a thin-weight serif or a display font that looks more fashion than toy. Keep the Sportsgirl wordmark as the loudest typographic element; everything else defers to it."
+    colour: "Blurred pastels: take the board's colours and drop the saturation until everything is soft and hazy, then bring exactly one element back to full intensity. The contrast between the haze and the one saturated element becomes the design.",
+    type: "Sharp and confident, as the counterweight to a soft background. A tight, high-contrast face works well here. The type is what stops the package looking underexposed."
   },
   {
-    colour: "Work from one specific mood board image. Extract a palette from that image alone using the eyedropper. Use those colours across all five packages. The discipline of one source creates unity without you having to engineer it.",
-    type: "Find lettering in the mood board — the sticker text, the journal handwriting, the brand fonts on products. Use those as reference for your type decisions. Consider having the product name hand-lettered or drawn rather than typeset."
+    colour: "Work from one specific mood board image. Extract a palette from that image alone using the eyedropper, then use only those colours across all three packages. The discipline of a single source creates unity without you having to engineer it.",
+    type: "Find lettering on the board, in the market graphic or the lip balm packaging, and use it as reference. Consider drawing or hand-lettering the product name rather than typesetting it."
   },
   {
-    colour: "Black as the base — deep black background on some or all packages. The Y2K palette used as bright accent colours on black. Stars, hearts, and type elements in pink, lilac, or a fluorescent colour on black reads as cool rather than sweet.",
-    type: "Neon or high-contrast: if the background is dark, type needs to be bright and confident. A chunky display face or something with a retro-tech feel — think early mobile phone UI, pixelated or grid-based."
+    colour: "Off-white or warm sand as the base across all three packages, with the tropical brights used only in specific, intentional places. More resort than theme park. This is the most commercially safe reading of the board, and it will look expensive.",
+    type: "Elegant and slightly unexpected, such as a light-weight serif or a fashion display face. Let the Sportsgirl wordmark be the loudest typographic element and have everything else defer to it."
   }
 ];
 var finishes = [
-  "<strong>CMYK, no added finish</strong> — Just ink on the substrate, nothing extra. The most sustainable option and completely valid. The substrate itself — coated, uncoated, or textured — does the visual and tactile work. Look at examples on <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs</a> or search 'uncoated packaging design' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a>.",
-  "<strong>Blind emboss</strong> — A die presses a raised relief into the board with no ink: texture and dimension without colour. Good for pattern elements, brand marks, or any area you want to feel different from the printed surface. Search 'blind emboss packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest for examples.",
-  "<strong>Deboss</strong> — Like emboss but pressed inward, creating a shadow-relief effect. Good for small brand marks, pattern details, or type that needs tactile presence without added colour. Search 'deboss packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest.",
-  "<strong>Water-based (aqueous) varnish</strong> — Applied over print like an ink, dries without solvents, and protects the surface without a plastic film. Can be flood (all over) or spot (selected areas only). A sustainable alternative to laminate when waterproofing isn't essential. Search 'aqueous coating packaging' on The Dieline, or look up Heidelberg or Konica Minolta aqueous coating.",
-  "<strong>Compostable laminate</strong> — A plant-based (PLA) film that looks like standard laminate but biodegrades under composting conditions. Same protective and visual function, lower environmental impact. Search 'compostable laminate packaging Australia' — suppliers include <a href='https://www.detmold.com' target='_blank' rel='noopener'>Detmold</a> and Amcor.",
-  "<strong>Soy-based inks</strong> — A drop-in substitute for standard CMYK petroleum inks: lower VOCs, more biodegradable, and easier to de-ink during paper recycling. Visually indistinguishable from standard inks. Search 'soy based ink packaging' or look up <a href='https://www.toyoink.com.au' target='_blank' rel='noopener'>Toyo Ink Australia</a> or Sun Chemical for local suppliers.",
-  "<strong>Pantone Metallic inks</strong> — Gives a shimmer effect using ink alone, no hot-stamp foil and no additional process. Less reflective than foil but significantly less material use. Look up the Pantone Metallic Coated swatch book at <a href='https://www.pantone.com' target='_blank' rel='noopener'>pantone.com</a>, or search 'metallic ink packaging no foil' on The Dieline.",
-  "<strong>Spot UV varnish</strong> — A gloss coating applied only to selected areas, creating a matte/gloss contrast or adding dimension to specific graphic elements. Water-based UV options are more eco-friendly than solvent-based. Search 'spot UV packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest for examples."
+  "<strong>CMYK, no added finish.</strong> Just ink on the substrate, nothing extra. The most sustainable option and completely valid. The substrate does the visual and tactile work. If your concept relies on gradients, this is also where you need to be most careful, so build them with enough tonal steps and check a printed proof for banding. Look at examples on <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs</a> or search 'uncoated packaging design' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a>.",
+  "<strong>Blind emboss.</strong> A die presses a raised relief into the board with no ink, giving texture and dimension without colour. Useful on this brief for adding a hard, tactile edge to a concept that is otherwise entirely soft. Search 'blind emboss packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest.",
+  "<strong>Deboss.</strong> Like emboss but pressed inward, creating a shadow-relief effect. Good for small brand marks, pattern details, or type that needs tactile presence without added colour. Search 'deboss packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a> or Pinterest.",
+  "<strong>Water-based (aqueous) varnish.</strong> Applied over print like an ink, dries without solvents, and protects the surface without a plastic film. Can be flood (all over) or spot (selected areas only). A sustainable alternative to laminate when waterproofing isn't essential. Relevant to the bath set, which will live in a wet room. Search 'aqueous coating packaging' on The Dieline.",
+  "<strong>Compostable laminate.</strong> A plant-based (PLA) film that looks like standard laminate but biodegrades under composting conditions. Same protective and visual function, lower environmental impact. Search 'compostable laminate packaging Australia'. Suppliers include <a href='https://www.detmold.com' target='_blank' rel='noopener'>Detmold</a> and Amcor.",
+  "<strong>Soy-based inks.</strong> A drop-in substitute for standard CMYK petroleum inks, with lower VOCs, better biodegradability, and easier de-inking during paper recycling. Visually indistinguishable from standard inks. Search 'soy based ink packaging' or look up <a href='https://www.toyoink.com.au' target='_blank' rel='noopener'>Toyo Ink Australia</a> or Sun Chemical.",
+  "<strong>Pantone Metallic inks.</strong> Gives a shimmer using ink alone, with no hot-stamp foil and no additional process. Less reflective than foil but significantly less material use. Worth considering if your concept references the wet, glossy quality on the mood board. Look up the Pantone Metallic Coated swatch book at <a href='https://www.pantone.com' target='_blank' rel='noopener'>pantone.com</a>.",
+  "<strong>Spot UV varnish.</strong> A gloss coating applied only to selected areas, creating a matte and gloss contrast or adding dimension to specific elements. On this brief it's an obvious fit for the jelly, resin, and water concepts, where you want a wet-looking surface without extra colour. Water-based UV options are more eco-friendly than solvent-based. Search 'spot UV packaging' on <a href='https://www.thedieline.com' target='_blank' rel='noopener'>The Dieline</a>."
 ];
 var researchPrompts = [
-  "Look for eco-friendly inks available from Australian suppliers — search for soy-based or water-based options. Note one or two products that could work for this concept and flag them in your rationale.",
-  "Browse the <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs</a> range and find two or three substrates that could suit this concept. Note the stock name, weight, and finish. There are also physical samplers in the studio.",
-  "Search the <a href='https://www.spicers.com.au/collections/packaging' target='_blank' rel='noopener'>Spicers packaging range</a> and find a board stock that matches the surface quality this concept calls for — coated, uncoated, textured, or natural. Note the specific product name.",
-  "Search 'recycled board packaging Australia' and find a supplier. Note what GSM weights and surface finishes are available — could any of them work for this range?",
-  "Search 'sustainable cosmetics packaging Australia' and find two real commercial examples — not student work. What specific material or production choices do they mention?",
+  "Look for eco-friendly inks available from Australian suppliers, searching for soy-based or water-based options. Note one or two products that could work for this concept and flag them in your rationale.",
+  "Browse the <a href='https://www.spicers.com.au/environs' target='_blank' rel='noopener'>Spicers Environs</a> range and find two or three substrates that could suit this concept. Note the stock name, weight, and finish. There are physical samplers in the studio.",
+  "Search the <a href='https://www.spicers.com.au/collections/packaging' target='_blank' rel='noopener'>Spicers packaging range</a> and find a board stock that matches the surface quality this concept calls for, whether coated, uncoated, textured, or natural. Note the specific product name.",
+  "This palette is very saturated. Find out how the substrate you're proposing affects colour: search 'uncoated vs coated stock colour saturation' and note what happens to bright colours on an uncoated sheet. Does it change your substrate choice?",
+  "Search 'recycled board packaging Australia' and find a supplier. Note what GSM weights and surface finishes are available. Could any of them work for this range?",
+  "Search 'sustainable cosmetics packaging Australia' and find two real commercial examples, not student work. What specific material or production choices do they mention?",
   "Search 'seed paper supplier Australia' and find a real supplier. What formats and sizes do they offer? Could a seed paper element work as part of this concept?",
-  "Look up 'aqueous laminate vs standard laminate packaging' and make sure you understand the difference. Is eco-friendly laminate relevant to this concept? Note your reasoning.",
-  "Search for 'FSC certified packaging board Australia' — what does FSC certification mean, and does it apply to this concept? Find one Australian supplier that carries it."
+  "Look up 'aqueous laminate vs standard laminate packaging' and make sure you understand the difference. The bath set has to cope with a humid bathroom, so is eco-friendly laminate relevant here? Note your reasoning.",
+  "Search 'FSC certified packaging board Australia'. What does FSC certification mean, and does it apply to this concept? Find one Australian supplier that carries it."
 ];
 var roughContent = [
   { intro: "A rough for this concept might include:", list: [
-    "Logo placement — where the Sportsgirl wordmark sits and approximately how large",
-    "Colour distribution — which areas, how much, which colours",
-    "The main visual language — pattern, image, type, or a combination",
-    "How the customer knows what the product is — window cutout, illustration, or label",
-    "The re-use or sustainability idea, even as a quick sketch or annotation"
+    "Logo placement: where the Sportsgirl wordmark sits and approximately how large. Remember the bath set and perfume gift set use Sportsgirl Beauty",
+    "Colour distribution: which areas, how much, which colours",
+    "The main visual language: pattern, image, type, or a combination",
+    "How the customer knows what the product is: window cutout, illustration, or label",
+    "The re-use or sustainability idea, even as a quick sketch or annotation",
+    "A white rectangle where the barcode goes: 40 x 30mm regular, 20 x 30mm small"
   ]}
 ];
 var materialsSuggestions = [
-  "Marker pens (Copic or Posca) for colour blocking and backgrounds, fine liner for graphic detail and type. Scan and bring into Illustrator to clean up if needed.",
-  "Adobe Illustrator for vector work, type, and pattern. Keep layers organised — background, graphics, and type on separate layers so you can adjust each without redrawing.",
+  "Marker pens (Copic or Posca) for colour blocking and backgrounds, fine liner for graphic detail and type. Copics blend wet-into-wet, which suits the soft-edged look on this board. Scan and clean up in Illustrator if needed.",
+  "Adobe Illustrator for vector work, type, and pattern. Gradient mesh and the blend tool will get you further than a plain linear gradient on this brief. Keep background, graphics, and type on separate layers.",
   "Digital sketch in Procreate or Fresco for the initial composition, then trace and refine in Illustrator. Export the sketch as a reference layer.",
-  "Watercolour or gouache for colour washes and background tone, fine liner over the top for graphic elements and hand-lettered type. Works especially well for looser, more personal aesthetics.",
-  "Print a digital layout at A4, then rework it by hand — coloured pencils for shading, fine liner for outlines or annotations, hand-lettering directly onto the printout. Scan and include the reworked version.",
-  "Collage: cut and arrange printed elements, coloured paper, and magazine fragments, then photograph or scan the result. Particularly effective for diary, sticker-bomb, or flat-lay concepts.",
-  "Procreate for a fully digital rough — use separate layers for pattern, type, and colour so you can swap elements independently. Export at high resolution.",
-  "Adobe Illustrator for structure, type, and colour. Photoshop for any photographic elements or texture overlays — place them as linked files to keep the Illustrator document clean."
+  "Watercolour or gouache for colour washes and background tone, with fine liner over the top for graphic elements and hand-lettered type. Wet-into-wet watercolour gives you genuine soft edges rather than a filter imitating them.",
+  "Airbrush or soft pastel for gradients and glow, with hard graphic elements added over the top digitally. This is the most direct route to the aura and blur quality on the board.",
+  "Print a digital layout at A4, then rework it by hand with coloured pencils for shading, fine liner for outlines, and hand-lettering directly onto the printout. Scan and include the reworked version.",
+  "Collage: cut and arrange printed elements, coloured paper, and magazine fragments, then photograph or scan the result. Photograph it slightly out of focus if the concept calls for it.",
+  "Procreate for a fully digital rough, using separate layers for pattern, type, and colour so you can swap elements independently. Export at high resolution.",
+  "Adobe Illustrator for structure, type, and colour, with Photoshop for photographic elements or texture overlays. Place them as linked files to keep the Illustrator document clean."
 ];
 var sustainability = [
   {
-    tag: "Re-use — pot plant holder",
-    body: "Finish the package with an eco-friendly matte aqueous laminate instead of standard gloss — it's waterproof enough to hold a small succulent or herb pot directly inside. The laminate becomes a design feature, changing the surface feel in a way that reads as intentional. Sketch the package with a plant in it and note the laminate spec in your rationale.",
-    note: "Show the package with a plant in it alongside the on-shelf version. A call-out naming the laminate type (e.g., aqueous matte) and explaining why it makes waterproofing possible will strengthen the rationale in your presentation."
+    tag: "Re-use: pot plant holder",
+    body: "Finish the drink bottle carton with an eco-friendly matte aqueous laminate instead of standard gloss, so it's waterproof enough to hold a small succulent or herb pot directly inside. The laminate becomes a design feature, changing the surface feel in a way that reads as intentional. Sketch the carton with a plant in it and note the laminate spec in your rationale.",
+    note: "Show the carton with a plant in it alongside the on-shelf version. A call-out naming the laminate type, such as aqueous matte, and explaining why it makes waterproofing possible will strengthen the rationale in your presentation."
   },
   {
-    tag: "Re-use — stash box",
-    body: "An innocent-looking cosmetics box with a secret compartment — a false bottom, a hinged inner panel, or a sliding tray hidden behind the product cavity. The exterior design gives nothing away. The interior could have a contrasting colour treatment or a small printed message only visible when you know where to look.",
-    note: "Show the secret compartment in your presentation — a closed/open pair of sketches or a cutaway view. Part of the appeal is the discovery; let the viewer understand how it works and where the hidden space is."
+    tag: "Re-use: jewellery tray",
+    body: "The perfume gift set already has a tray drawer, so the re-use is sitting right there. After the bottles are gone it becomes a ring dish, earring tray, or pin holder. The design challenge is the branding, because product info and barcodes don't belong on a keepsake. Put all of that on the outer wrap and keep the tray itself clean enough to sit on a dresser.",
+    note: "Show the tray in use, out of its wrap, alongside the full package. Make the split visible in your rough: everything disposable on the wrap, everything beautiful on the tray. That's the design problem you've solved."
   },
   {
-    tag: "Re-use — photo frame",
-    body: "The heart-shaped window cutout (or another cutout shape) doubles as a photo frame after use. Design the surround so it works both ways — as packaging on-shelf and as something to hang or stand on a desk. Include a fold-out or press-out tab as a stand, and print the back of the window panel as the frame's display face.",
-    note: "Show both states in your presentation: the package on-shelf and the frame standing on a desk or hanging on a wall. Sketch the fold-out stand and label it, even roughly — it shows you've thought through the structure."
+    tag: "Re-use: soap dish",
+    body: "The bath set has a lid and a base. Design the base so it works as a soap dish or shower tray once the products are gone. That means a water-resistant finish, and it means thinking about drainage, either as die-cut slots or a raised ridge pattern. Keep the ingredient and legal copy on the lid so the base stays usable.",
+    note: "Show the base in use in a bathroom setting, with soap in it. Sketch and label the drainage detail even roughly, because it's the thing that turns a nice idea into a considered one."
   },
   {
-    tag: "Re-use — jewellery tray",
-    body: "After the product is gone, the package becomes a ring dish, earring tray, or pin holder. The design challenge is the branding: product info and barcodes don't belong on a keepsake. Move them to an inner flap or a perforated tear-off strip so the exterior stays clean enough to sit on a dresser.",
-    note: "Show the tray in use alongside the package design. In your rough, sketch the perforated strip or inner flap that hides the product info — that's the design problem you've solved, and it's worth making visible."
+    tag: "Re-use: poster or print",
+    body: "The perfume gift set wrap unfolds into a single flat sheet. Design its inner face as a small poster: a pattern, illustration, or typographic piece good enough to pin up. All product information goes on the outer face only, leaving the interior clean and full-bleed. The customer has to unwrap it to find it.",
+    note: "Show the interior in your presentation. Three quick sketches work well: wrapped, unwrapping, and the sheet pinned up on a wall. The reveal is part of the concept, so let the viewer experience it."
   },
   {
-    tag: "Re-use — phone or tablet stand",
-    body: "The package structure scores and folds into a small phone or tablet stand. The dieline already has fold lines — extend the thinking so the scores guide a second transformation. Sketch the assembled stand, mark the fold sequence on the package itself as part of the design, and show both states in your rough.",
-    note: "Show the fold sequence in your presentation — even two or three quick steps. Annotate the fold marks in the package design itself so the viewer can see they're integrated, not added on as an afterthought."
+    tag: "Re-use: desk organiser",
+    body: "The drink bottle carton has the volume to become a pencil cup, brush holder, or desk organiser. The exterior graphic needs to look as strong upright and empty as it does on-shelf. Think about what disappears when the top is removed, and keep product information off the main display faces.",
+    note: "Show the organiser in use, holding pencils or brushes so the scale and function read clearly. Note how product information has been kept off the display faces, because that decision should be visible in your rough."
   },
   {
-    tag: "Re-use — origami",
-    body: "Unfolded flat, the package blank becomes an origami starting point. Instructions printed on the inside guide the customer through folding it into a crane, star, or heart. The graphic on the outside becomes the pattern face of the finished form. Works best on a flat, single-face package — the drink bottle carton or a flat pouch.",
-    note: "Show the finished origami form alongside the flat package. Note which face becomes the visible pattern side. A small fold-step diagram is worth including — just enough to show the idea."
+    tag: "Re-use: origami",
+    body: "Unfolded flat, the perfume wrap becomes an origami starting point. Instructions printed on the inside guide the customer through folding it into a star, flower, or heart. The graphic on the outside becomes the pattern face of the finished form. The wrap is the best candidate here because it's already a single flat sheet.",
+    note: "Show the finished origami form alongside the flat wrap, and note which face becomes the visible pattern side. A small fold-step diagram is worth including, just enough to show the idea works."
   },
   {
-    tag: "Re-use — hanging decoration",
-    body: "A die-cut shape or a scored fold converts part of the package into a hanging ornament — a star, heart, or butterfly that can be cut free and hung from a bag or mirror. A small punched hole is all it needs. Design the ornament face as part of the package graphic so it looks like a feature, not an afterthought.",
-    note: "Show the ornament cut free and hanging alongside the closed package. The viewer should be able to see which part of the graphic becomes the ornament — make sure it reads clearly in the package design itself."
+    tag: "Re-use: hanging decoration",
+    body: "A die-cut shape or scored fold converts part of a package into a hanging ornament, such as a hibiscus, star, or heart that can be cut free and hung from a bag or a mirror. A small punched hole is all it needs. Design the ornament face as part of the package graphic so it looks like a feature rather than an afterthought.",
+    note: "Show the ornament cut free and hanging alongside the closed package. The viewer should be able to see which part of the graphic becomes the ornament, so make sure it reads clearly in the package design itself."
   },
   {
-    tag: "Re-use — poster or print",
-    body: "The inside of the box is designed as a small poster — a pattern, illustration, or typographic piece good enough to cut out and pin up. Product info goes on the exterior only. The interior is clean, full-bleed, and designed to live on a wall. The customer has to open the box to find it.",
-    note: "Show the interior design in your presentation. Three quick sketches work well: box closed, box opened, interior cut out and pinned up. The reveal is part of the concept — let the viewer experience it."
+    tag: "Re-use: photo frame",
+    body: "A window cutout doubles as a photo frame after use. Design the surround so it works both ways, as packaging on-shelf and as something to stand on a desk. Include a press-out tab as a stand, and print the back of the window panel as the frame's display face. The bath set lid is the most workable candidate.",
+    note: "Show both states: the package on-shelf and the frame standing on a desk. Sketch the fold-out stand and label it, even roughly, because it shows you've thought through the structure."
   },
   {
-    tag: "Re-use — desk organiser",
-    body: "A larger package (the drink bottle carton or a similar volume) converts into a pencil cup, brush holder, or desk organiser. The exterior graphic needs to look as strong upright and empty as it does on-shelf. Think about what disappears when the lid is removed — keep all product info off the main exterior faces.",
-    note: "Show the organiser in use — sketch it holding pencils or brushes so the scale and function are clear. Note how the product information has been kept off the display faces; that decision should be visible in your rough."
+    tag: "Re-use: seed paper insert",
+    body: "The package includes a small seed paper card that grows wildflowers or herbs when planted. Seed paper is a real substrate available from specialty suppliers, so note it in the rationale as a material choice. The card design becomes part of the system, with illustrated planting instructions on one side and a clean decorative print on the other.",
+    note: "Include the seed paper card in your rough, showing both sides and the planting instructions. A call-out naming a real Australian supplier, found by searching 'seed paper Australia', strengthens the sustainability argument considerably."
   },
   {
-    tag: "Re-use — seed paper insert",
-    body: "The package includes a small seed paper card — plant it in a pot and it grows wildflowers or herbs. Seed paper is a real substrate available from specialty suppliers; note it in the rationale as a material choice. The card design becomes part of the system: illustrated planting instructions on one side, a clean decorative print on the other.",
-    note: "Include the seed paper card in your rough — show both sides and the planting instructions. A call-out naming a real Australian supplier (search 'seed paper Australia') strengthens the sustainability argument considerably."
+    tag: "Re-use: perforated tear-away",
+    body: "A perforated strip or panel lets the customer remove the product information after purchase, leaving the exterior clean for display or re-use. The perforation line can be part of the graphic, reading as a decorative dotted line until it's used. No extra production cost, just a scored cut in the dieline. This solves the ingredient copy problem on the bath set and perfume set neatly.",
+    note: "Show the package before and after the strip is removed. The perforation line should appear in your rough as a designed graphic element, so annotate it and explain what it does."
   },
   {
-    tag: "Re-use — perforated tear-away",
-    body: "A perforated strip or panel lets the customer remove the product information after purchase, leaving the exterior clean for display or re-use. The perforation line can be part of the graphic — a dotted line that reads as decorative until it's used. No extra production cost; just a scored cut in the dieline.",
-    note: "Show the package before and after the strip is removed. The perforation line should appear in your rough as a designed graphic element — annotate it so the viewer understands what it does and why."
+    tag: "Re-use: stash box",
+    body: "An innocent-looking carton with a secret compartment: a false bottom, a hinged inner panel, or a sliding tray hidden behind the product cavity. The exterior gives nothing away. The interior could carry a contrasting colour treatment or a small printed message only visible when you know where to look. The drink bottle carton has the depth for it.",
+    note: "Show the secret compartment in your presentation as a closed and open pair of sketches, or a cutaway view. Part of the appeal is the discovery, so let the viewer understand how it works and where the hidden space is."
   },
   {
     tag: "Eco-friendly laminate",
-    body: "Specify a water-based or biodegradable aqueous laminate as a direct substitute for standard gloss laminate — same protective function, lower environmental impact, worth noting in the rationale as a specific material decision. If you're using matte versus gloss as a design contrast, flag which areas get which treatment and why.",
-    note: "Include a call-out on your presentation page naming the laminate type (e.g., aqueous matte) and why you chose it. One or two sentences — the point is to show you've thought about the material, not just the graphic."
+    body: "Specify a water-based or biodegradable aqueous laminate as a direct substitute for standard gloss laminate: same protective function, lower environmental impact, and worth naming in the rationale as a specific material decision. If you're using matte against gloss as a design contrast, flag which areas get which treatment and why.",
+    note: "Include a call-out on your presentation page naming the laminate type, such as aqueous matte, and why you chose it. One or two sentences. The point is to show you've thought about the material, not just the graphic."
   },
   {
     tag: "Minimal print",
-    body: "Less ink coverage means less material use and easier recycling. Try a package where most of the surface is raw or lightly tinted board, with colour concentrated in one or two areas. The unprinted areas aren't empty — they're part of the composition. Works especially well on natural kraft or uncoated stock.",
-    note: "Annotate the unprinted areas in your rough — label them as intentional negative space. On your presentation page, a brief note about the recycling benefit of reduced ink coverage is worth including. Make the design decision visible, not just the outcome."
+    body: "Less ink coverage means less material use and easier recycling. This is a genuinely difficult, and therefore interesting, choice against a mood board this saturated. Try a package where most of the surface is raw or lightly tinted board with colour concentrated in one or two areas. The unprinted areas aren't empty, they're part of the composition. Works well on natural kraft or uncoated stock.",
+    note: "Annotate the unprinted areas in your rough and label them as intentional negative space. On your presentation page, a brief note about the recycling benefit of reduced ink coverage is worth including. Make the decision visible, not just the outcome."
   },
   {
     tag: "Substrate choice",
-    body: "The substrate is a design decision. Uncoated board feels different to coated; natural kraft reads differently to bright white; a textured stock adds surface interest without embellishment. Note the intended substrate in the rationale — it's a real sustainability consideration. There are Spicers samplers in the studio worth handling before you decide.",
-    note: "Include a call-out on your presentation page naming the substrate you're proposing and why it suits the concept. If you can get a small swatch of the actual stock from the studio, photograph it — a physical reference makes the argument more concrete."
+    body: "The substrate is a design decision, and on this brief it's a significant one. Uncoated board will knock the saturation out of these tropical brights, coated will hold them, and a natural kraft will shift the whole palette warmer. Name the intended substrate in the rationale. There are Spicers samplers in the studio worth handling before you decide.",
+    note: "Include a call-out on your presentation page naming the substrate you're proposing and why it suits the concept. If you can get a small swatch of the actual stock from the studio, photograph it, because a physical reference makes the argument more concrete."
   }
 ];
 // ── Generator ──────────────────────────────────────────────────────────────
