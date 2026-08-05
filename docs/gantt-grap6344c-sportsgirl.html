@@ -103,6 +103,9 @@
   .mstrack .mslabel{position:absolute;top:7px;transform:translateX(calc(-100% - 9px));font-size:.66rem;font-weight:700;white-space:nowrap;pointer-events:none}
   .gate{position:absolute;top:0;bottom:0;width:2px;opacity:.3;pointer-events:none;z-index:1}
   td.phasehd{color:#fff;font-weight:700;padding:6px 8px;font-size:.82rem;letter-spacing:.02em}
+  .phasehint td{padding:8px 10px;background:#fffaf0;border-bottom:1px solid var(--line);font-size:.8rem;color:#5a4a2a}
+  .phasehint .ph-ask{font-weight:600;color:#8a6d1f}
+  .worked td{padding:8px 10px;background:#f1f8f1;border-bottom:1px solid var(--line);font-size:.8rem;color:#2f5a2f}
   .addtask td{padding:5px 8px;background:#fbfbfc}
   .addtask button{padding:3px 10px;font-size:.78rem}
   .del-btn{border:1px solid #e2b8b8;background:#fff;color:#b23;border-radius:5px;padding:1px 6px;font-size:.78rem;cursor:pointer}
@@ -126,7 +129,7 @@
 <body>
 <div class="wrap">
   <h1>Project timeline (Gantt chart) builder</h1>
-  <p class="sub">AT1b: Plan and Develop · Sportsgirl packaging project. The phases, jobs and assessment milestones are mapped out for you. You build the schedule: place each job on the timeline, decide how long it takes, and estimate the hours.</p>
+  <p class="sub">AT1b: Plan and Develop · Sportsgirl packaging project. The phases, most of the jobs and the assessment deadlines are set for you. You fill in the first phase, place every job on the timeline, and estimate the hours.</p>
 
   <div class="bar-tools no-export">
     <div class="spacer"></div>
@@ -139,15 +142,18 @@
   <details class="guide no-export">
     <summary>How to use this &amp; why it matters</summary>
     <div class="guide-body">
-      <p>A production schedule is how a designer works out whether a job fits the time available before committing to it. The phases, the jobs and the assessment deadlines are set for you. Turning them into a real plan is your job.</p>
+      <p>A production schedule is how a designer works out whether a job fits the time available before committing to it. Most of the jobs and all of the assessment deadlines are set for you. The first phase is yours to fill in, and the whole timeline is yours to build.</p>
       <h3>What to do</h3>
       <ol>
         <li>Fill in your name, student number and anyone you planned with.</li>
+        <li><strong>Look at the phases below 'Brief, IP &amp; research'. They are mapped out for you.</strong> Read a few jobs to see how specific one should be.</li>
+        <li><strong>Then write the jobs for 'Brief, IP &amp; research' yourself</strong> with the <em>+ Add a job</em> button, at least three. That phase covers weeks 1 to 4, so you have already done it. Write down what you actually did.</li>
         <li>For each job, click a week on the timeline to place its bar, then drag the bar to move it or drag its ends to make it longer or shorter. Double-click a bar to clear it and start again. The length of the bar is how long you think the job will run.</li>
         <li>Add an hours estimate for each job. Your total feeds straight into your AT1c costings.</li>
         <li>The coloured ◆ diamonds along the top are the assessment deadlines. They're fixed, so use them to check your workload lands before each one.</li>
-        <li>Reword, add or delete jobs (✕) so the plan matches your project. <strong>Add at least two jobs of your own</strong>, then export to Word for your AT1b worksheet.</li>
+        <li>When the plan check at the bottom is clear, export to Word for your AT1b worksheet.</li>
       </ol>
+      <p>Your 3c answer describes what happens in each phase. This is where you turn that description into actual jobs.</p>
       <p>You can plan this with others, so list who in the "Planned with" field. There's no single right answer: what's assessed is that you understand the sequence, place the work sensibly and estimate effort realistically.</p>
     </div>
   </details>
@@ -197,40 +203,38 @@
 // 16-week syllabus. Bars (start/dur) and hours are left BLANK — the student
 // places the bars and estimates the hours.
 var BRIEF_PLAN = [
-  {name:"Brief, IP & research", color:"#3d5a3d", tasks:[
-    "Read the brief and review the unit requirements",
-    "Complete AT1a: Safety",
-    "Research intellectual property and font licensing",
-    "Apply critical thinking techniques with a peer",
-    "Compile your list of project resources and assets"
-  ]},
-  {name:"Analysis & ideation", color:"#5a6e3a", tasks:[
+  {name:"Brief, IP & research", color:"#3d5a3d", min:3,
+   hint:"This is the one you write. The phase covers weeks 1 to 4, so you have already done it. Look back at what you actually did: the brief, the safety task, licensing, working with a peer, gathering what you need to start. Match the level of detail in the phases below.",
+   tasks:[]},
+  {name:"Analysis & ideation", color:"#5a6e3a", min:0, worked:true,
+   note:"The remaining phases are mapped out for you. Use them as the model for how specific a job should be: something you sit down and do, not a whole stage of the project.",
+   tasks:[
     "Analyse existing design, typography and branding",
     "Research and apply a formal creative thinking technique",
     "Develop thumbnails and concept sketches"
   ]},
-  {name:"Plan & develop (AT1b)", color:"#6a9e6a", tasks:[
+  {name:"Plan & develop (AT1b)", color:"#6a9e6a", min:0, tasks:[
     "Investigate how to document your design process (folio)",
     "Complete your production schedule (this timeline)",
     "Summarise the key requirements of the brief with peers",
     "Break the brief down into design deliverables",
     "Calculate your job quote and hourly rate (AT1c)"
   ]},
-  {name:"Concepts & presentation", color:"#b87d5a", tasks:[
+  {name:"Concepts & presentation", color:"#b87d5a", min:0, tasks:[
     "Produce your first design concept",
     "Produce your second design concept",
     "Build your AT2a Ideas / concept document",
     "Select and refine your final concept",
     "Present your concepts and record feedback (AT2b)"
   ]},
-  {name:"Production", color:"#8a5a8a", tasks:[
+  {name:"Production", color:"#8a5a8a", min:0, tasks:[
     "Set up branding and mandatory elements (barcode, ingredients)",
     "Develop your primary packaging artwork",
     "Preflight your most complete design (AT3a)",
     "Refine your designs after the progress review",
     "Add all key components: brand, product info, bleed, print-safe area"
   ]},
-  {name:"Finalise & submit", color:"#3a7a7a", tasks:[
+  {name:"Finalise & submit", color:"#3a7a7a", min:0, tasks:[
     "Build your digital 3D mock-up",
     "Create a range of 3D renders for your folio",
     "Finalise 2D artwork as PDF/X files (AT3b)",
@@ -258,7 +262,7 @@ var uid = 1;
 
 function buildPhases(){
   return BRIEF_PLAN.map(function(p){
-    return {name:p.name,color:p.color,
+    return {name:p.name,color:p.color,worked:!!p.worked,note:p.note||"",hint:p.hint||"",min:p.min||0,
       tasks:p.tasks.map(function(name){
         return {id:uid++,name:name,start:null,dur:null,hours:""};
       })};
@@ -270,6 +274,17 @@ function buildMilestones(){
 function loadPlan(){ state.phases=buildPhases(); state.milestones=buildMilestones(); render(); }
 
 /* ---------- helpers ---------- */
+function countNamed(ph){ var n=0; ph.tasks.forEach(function(t){ if((t.name||"").trim()) n++; }); return n; }
+function hintHTML(ph){
+  var got=countNamed(ph), need=Math.max(0,ph.min-got);
+  var ask = need>0 ? ("Add at least "+need+" more job"+(need===1?"":"s")+" here.")
+                   : ("Done: "+got+" job"+(got===1?"":"s")+" in this phase.");
+  return "<span class='ph-ask'>"+ask+"</span> "+esc(ph.hint);
+}
+function refreshHint(pi){
+  var el=document.getElementById('hint-'+pi);
+  if(el) el.innerHTML=hintHTML(state.phases[pi]);
+}
 function clamp(v,lo,hi){ return Math.max(lo,Math.min(hi,v)); }
 function round(n){ return Math.round(n*10)/10; }
 function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/"/g,"&quot;").replace(/</g,"&lt;"); }
@@ -289,7 +304,7 @@ function flashLock(){
 }
 
 /* ---------- edit handlers ---------- */
-function onName(pi,ti,v){ state.phases[pi].tasks[ti].name=v; }
+function onName(pi,ti,v){ state.phases[pi].tasks[ti].name=v; refreshHint(pi); updateFeedback(); }
 function onHours(pi,ti,v){ state.phases[pi].tasks[ti].hours=v; updateFeedback(); }
 function addTask(pi){ if(!isUnlocked()){ flashLock(); return; } state.phases[pi].tasks.push({id:uid++,name:"",start:null,dur:null,hours:""}); render(); }
 function removeTask(pi,ti){ state.phases[pi].tasks.splice(ti,1); render(); }
@@ -356,6 +371,11 @@ function render(){
 
   state.phases.forEach(function(ph,pi){
     html+="<tr><td class='phasehd' colspan='"+(2+W)+"' style='background:"+ph.color+"'>"+esc(ph.name.replace(/\n/g," "))+"</td></tr>";
+    if(ph.worked && ph.note){
+      html+="<tr class='worked'><td colspan='"+(2+W)+"'>"+esc(ph.note)+"</td></tr>";
+    } else if(ph.hint){
+      html+="<tr class='phasehint'><td colspan='"+(2+W)+"' id='hint-"+pi+"'>"+hintHTML(ph)+"</td></tr>";
+    }
     html+="<tr class='colhead'><th class='h-task'>Job</th><th>Hrs</th>"+wkHeads(false)+"</tr>";
     ph.tasks.forEach(function(tk,ti){
       html+="<tr>";
@@ -410,10 +430,16 @@ function updateFeedback(){
 
   document.getElementById('total').innerHTML="Estimated total: <strong>"+round(grand)+" h</strong> across "+entered+" of "+totalTasks+" jobs &nbsp;·&nbsp; this total feeds your AT1c costings";
 
+  var shortPhases=[];
+  state.phases.forEach(function(ph){
+    if(ph.min>0 && countNamed(ph)<ph.min) shortPhases.push(ph.name+" (needs "+(ph.min-countNamed(ph))+" more)");
+  });
+
   var fb="<h4>Plan check</h4>";
-  if(unscheduled===0 && missingHrs===0 && totalTasks>0){
-    fb+="<p class='fb-line'>Every job is placed on the timeline and has an hours estimate. Check it lands sensibly against each deadline before you export.</p>";
+  if(shortPhases.length===0 && unscheduled===0 && missingHrs===0 && totalTasks>0){
+    fb+="<p class='fb-line'>Every phase has its jobs, and every job is placed on the timeline with an hours estimate. Check it lands sensibly against each deadline before you export.</p>";
   } else {
+    if(shortPhases.length>0) fb+="<p class='fb-line'>Jobs still needed in: "+esc(shortPhases.join("; "))+".</p>";
     if(unscheduled>0) fb+="<p class='fb-line'>"+unscheduled+" job"+(unscheduled===1?"":"s")+" not yet placed on the timeline.</p>";
     if(missingHrs>0) fb+="<p class='fb-line'>"+missingHrs+" job"+(missingHrs===1?"":"s")+" still need"+(missingHrs===1?"s":"")+" an hours estimate.</p>";
     if(unscheduled===totalTasks && missingHrs===totalTasks) fb+="<p class='fb-hint'>Place each bar on the week it runs and add its hours to build your plan.</p>";
@@ -424,6 +450,9 @@ function updateFeedback(){
 /* ---------- completeness gate on download ---------- */
 function checkComplete(){
   var issues=[];
+  state.phases.forEach(function(ph){
+    if(ph.min>0 && countNamed(ph)<ph.min) issues.push({type:'phase',name:ph.name,need:ph.min-countNamed(ph)});
+  });
   state.phases.forEach(function(ph,pi){
     ph.tasks.forEach(function(tk,ti){
       var named=(tk.name||"").trim();
@@ -445,7 +474,8 @@ function download(kind){
 function showIncomplete(issues){
   var h="<h3>Your plan isn't finished</h3><p>Complete the following before you download:</p><ul class='miss'>";
   issues.forEach(function(it){
-    if(it.type==='hours') h+="<li>Hours estimate for <strong>"+esc(it.name||"an unnamed job")+"</strong></li>";
+    if(it.type==='phase') h+="<li>"+it.need+" more job"+(it.need===1?"":"s")+" in <strong>"+esc(it.name)+"</strong></li>";
+    else if(it.type==='hours') h+="<li>Hours estimate for <strong>"+esc(it.name||"an unnamed job")+"</strong></li>";
     else h+="<li>A timeline bar for <strong>"+esc(it.name||"an unnamed job")+"</strong></li>";
   });
   h+="</ul><div class='modal-actions'><button onclick='closeModal()'>Back to my plan</button></div>";
