@@ -129,7 +129,7 @@
 <body>
 <div class="wrap">
   <h1>Project timeline (Gantt chart) builder</h1>
-  <p class="sub">AT1b: Plan and Develop · Sportsgirl packaging project. The phases, most of the jobs and the assessment deadlines are set for you. You fill in the first phase, place every job on the timeline, and estimate the hours.</p>
+  <p class="sub">AT1b: Plan and Develop · Sportsgirl packaging project. The phases, most of the tasks and the assessment deadlines are set for you. You fill in the first phase, place every task on the timeline, and estimate the hours.</p>
 
   <div class="bar-tools no-export">
     <div class="spacer"></div>
@@ -142,18 +142,18 @@
   <details class="guide no-export">
     <summary>How to use this &amp; why it matters</summary>
     <div class="guide-body">
-      <p>A production schedule is how a designer works out whether a job fits the time available before committing to it. Most of the jobs and all of the assessment deadlines are set for you. The first phase is yours to fill in, and the whole timeline is yours to build.</p>
+      <p>A production schedule is how a designer works out whether a job fits the time available before committing to it. Most of the tasks and all of the assessment deadlines are set for you. The first phase is yours to fill in, and the whole timeline is yours to build.</p>
       <h3>What to do</h3>
       <ol>
         <li>Fill in your name, student number and anyone you planned with.</li>
-        <li><strong>Look at the phases below 'Brief, IP &amp; research'. They are mapped out for you.</strong> Read a few jobs to see how specific one should be.</li>
-        <li><strong>Then write the jobs for 'Brief, IP &amp; research' yourself</strong> with the <em>+ Add a job</em> button, at least three. That phase covers weeks 1 to 4, so you have already done it. Write down what you actually did.</li>
-        <li>For each job, click a week on the timeline to place its bar, then drag the bar to move it or drag its ends to make it longer or shorter. Double-click a bar to clear it and start again. The length of the bar is how long you think the job will run.</li>
-        <li>Add an hours estimate for each job. Your total feeds straight into your AT1c costings.</li>
+        <li><strong>Look at the phases below 'Brief, IP &amp; research'. They are mapped out for you.</strong> Read a few tasks to see how specific one should be.</li>
+        <li><strong>Then write the tasks for 'Brief, IP &amp; research' yourself</strong> with the <em>+ Add a task</em> button, at least three. That phase covers weeks 1 to 4, so you have already done it. Write down what you actually did.</li>
+        <li>For each task, click a week on the timeline to place its bar, then drag the bar to move it or drag its ends to make it longer or shorter. Double-click a bar to clear it and start again. The length of the bar is how long you think the task will run.</li>
+        <li>Add an hours estimate for each task. Your total feeds straight into your AT1c costings.</li>
         <li>The coloured ◆ diamonds along the top are the assessment deadlines. They're fixed, so use them to check your workload lands before each one.</li>
         <li>When the plan check at the bottom is clear, export to Word for your AT1b worksheet.</li>
       </ol>
-      <p>Your 3c answer describes what happens in each phase. This is where you turn that description into actual jobs.</p>
+      <p>Your 3c answer describes what happens in each phase. This is where you turn that description into actual tasks.</p>
       <p>You can plan this with others, so list who in the "Planned with" field. There's no single right answer: what's assessed is that you understand the sequence, place the work sensibly and estimate effort realistically.</p>
     </div>
   </details>
@@ -190,7 +190,7 @@
       </div>
       <div class="feedback" id="feedback"></div>
     </div>
-    <div class="foot-note">Bars show which week each job runs and for how long (semester weeks 1–16; the dashed line is the mid-semester break after week 7). Each ◆ marks a fixed assessment deadline. You place the bars and estimate the hours.</div>
+    <div class="foot-note">Bars show which week each task runs and for how long (semester weeks 1–16; the dashed line is the mid-semester break after week 7). Each ◆ marks a fixed assessment deadline. You place the bars and estimate the hours.</div>
   </div>
 
   <div class="modal-back" id="modalBack"><div class="modal" id="modal"></div></div>
@@ -199,7 +199,7 @@
 <script>
 "use strict";
 
-// Phases and jobs for the Sportsgirl packaging project, mapped to the GRAP6344C
+// Phases and tasks for the Sportsgirl packaging project, mapped to the GRAP6344C
 // 16-week syllabus. Bars (start/dur) and hours are left BLANK — the student
 // places the bars and estimates the hours.
 var BRIEF_PLAN = [
@@ -207,7 +207,7 @@ var BRIEF_PLAN = [
    hint:"This is the one you write. The phase covers weeks 1 to 4, so you have already done it. Look back at what you actually did: the brief, the safety task, licensing, working with a peer, gathering what you need to start. Match the level of detail in the phases below.",
    tasks:[]},
   {name:"Analysis & ideation", color:"#5a6e3a", min:0, worked:true,
-   note:"The remaining phases are mapped out for you. Use them as the model for how specific a job should be: something you sit down and do, not a whole stage of the project.",
+   note:"The remaining phases are mapped out for you. Use them as the model for how specific a task should be: something you sit down and do, not a whole stage of the project.",
    tasks:[
     "Analyse existing design, typography and branding",
     "Research and apply a formal creative thinking technique",
@@ -277,8 +277,8 @@ function loadPlan(){ state.phases=buildPhases(); state.milestones=buildMilestone
 function countNamed(ph){ var n=0; ph.tasks.forEach(function(t){ if((t.name||"").trim()) n++; }); return n; }
 function hintHTML(ph){
   var got=countNamed(ph), need=Math.max(0,ph.min-got);
-  var ask = need>0 ? ("Add at least "+need+" more job"+(need===1?"":"s")+" here.")
-                   : ("Done: "+got+" job"+(got===1?"":"s")+" in this phase.");
+  var ask = need>0 ? ("Add at least "+need+" more task"+(need===1?"":"s")+" here.")
+                   : ("Done: "+got+" task"+(got===1?"":"s")+" in this phase.");
   return "<span class='ph-ask'>"+ask+"</span> "+esc(ph.hint);
 }
 function refreshHint(pi){
@@ -351,7 +351,7 @@ function render(){
   var wkPct=(69/W).toFixed(3);  // 16 weeks share ~69% of the width
   var gl=gateLines();
   function wkHeads(withW){ var s=""; for(var w=1;w<=W;w++) s+="<th class='wk-head"+(w===BK?" brk":"")+"'"+(withW?" style='width:"+wkPct+"%'":"")+">"+w+"</th>"; return s; }
-  var html="<thead><tr><th class='h-task' style='width:26%'>Job</th><th style='width:6%'>Hrs</th>"+wkHeads(true)+"</tr></thead><tbody>";
+  var html="<thead><tr><th class='h-task' style='width:26%'>Task</th><th style='width:6%'>Hrs</th>"+wkHeads(true)+"</tr></thead><tbody>";
 
   // --- Assessment milestones, fixed at the top of the chart ---
   html+="<tr><td class='phasehd' colspan='"+(2+W)+"' style='background:"+MS_COLOR+"'>Assessment milestones — fixed deadlines (set for you)</td></tr>";
@@ -376,11 +376,11 @@ function render(){
     } else if(ph.hint){
       html+="<tr class='phasehint'><td colspan='"+(2+W)+"' id='hint-"+pi+"'>"+hintHTML(ph)+"</td></tr>";
     }
-    html+="<tr class='colhead'><th class='h-task'>Job</th><th>Hrs</th>"+wkHeads(false)+"</tr>";
+    html+="<tr class='colhead'><th class='h-task'>Task</th><th>Hrs</th>"+wkHeads(false)+"</tr>";
     ph.tasks.forEach(function(tk,ti){
       html+="<tr>";
-      html+="<td class='tk'><div class='tkwrap'><textarea class='tname' rows='1' placeholder='Describe a job…' oninput=\"onName("+pi+","+ti+",this.value);autoGrow(this)\">"+esc(tk.name)+"</textarea>"+
-            "<button class='del-btn no-export' title='Delete job' onclick='removeTask("+pi+","+ti+")'>&#10005;</button></div></td>";
+      html+="<td class='tk'><div class='tkwrap'><textarea class='tname' rows='1' placeholder='Describe a task…' oninput=\"onName("+pi+","+ti+",this.value);autoGrow(this)\">"+esc(tk.name)+"</textarea>"+
+            "<button class='del-btn no-export' title='Delete task' onclick='removeTask("+pi+","+ti+")'>&#10005;</button></div></td>";
       html+="<td class='hr'><input type='number' min='0' step='0.5' value='"+esc(tk.hours)+"' placeholder='—' oninput=\"onHours("+pi+","+ti+",this.value)\"></td>";
       html+="<td colspan='"+W+"'><div class='track' onpointerdown='placeBar(event,"+pi+","+ti+")'>";
       if(BK) html+="<div class='brkline'></div>";
@@ -392,12 +392,12 @@ function render(){
               "<span class='h r' onpointerdown=\"startDrag(event,"+pi+","+ti+",'r')\"></span>"+
               (tk.dur>=2?("wk "+tk.start+"–"+(tk.start+tk.dur-1)):"")+"</div>";
       } else {
-        html+="<div class='placehint'>click a week to place this job</div>";
+        html+="<div class='placehint'>click a week to place this task</div>";
       }
       html+="</div></td>";
       html+="</tr>";
     });
-    html+="<tr class='addtask no-export'><td colspan='"+(2+W)+"'><button onclick='addTask("+pi+")'>+ Add a job</button></td></tr>";
+    html+="<tr class='addtask no-export'><td colspan='"+(2+W)+"'><button onclick='addTask("+pi+")'>+ Add a task</button></td></tr>";
   });
   html+="</tbody>";
   tbl.innerHTML=html;
@@ -428,7 +428,7 @@ function updateFeedback(){
     });
   });
 
-  document.getElementById('total').innerHTML="Estimated total: <strong>"+round(grand)+" h</strong> across "+entered+" of "+totalTasks+" jobs &nbsp;·&nbsp; this total feeds your AT1c costings";
+  document.getElementById('total').innerHTML="Estimated total: <strong>"+round(grand)+" h</strong> across "+entered+" of "+totalTasks+" tasks &nbsp;·&nbsp; this total feeds your AT1c costings";
 
   var shortPhases=[];
   state.phases.forEach(function(ph){
@@ -437,11 +437,11 @@ function updateFeedback(){
 
   var fb="<h4>Plan check</h4>";
   if(shortPhases.length===0 && unscheduled===0 && missingHrs===0 && totalTasks>0){
-    fb+="<p class='fb-line'>Every phase has its jobs, and every job is placed on the timeline with an hours estimate. Check it lands sensibly against each deadline before you export.</p>";
+    fb+="<p class='fb-line'>Every phase has its tasks, and every task is placed on the timeline with an hours estimate. Check it lands sensibly against each deadline before you export.</p>";
   } else {
-    if(shortPhases.length>0) fb+="<p class='fb-line'>Jobs still needed in: "+esc(shortPhases.join("; "))+".</p>";
-    if(unscheduled>0) fb+="<p class='fb-line'>"+unscheduled+" job"+(unscheduled===1?"":"s")+" not yet placed on the timeline.</p>";
-    if(missingHrs>0) fb+="<p class='fb-line'>"+missingHrs+" job"+(missingHrs===1?"":"s")+" still need"+(missingHrs===1?"s":"")+" an hours estimate.</p>";
+    if(shortPhases.length>0) fb+="<p class='fb-line'>Tasks still needed in: "+esc(shortPhases.join("; "))+".</p>";
+    if(unscheduled>0) fb+="<p class='fb-line'>"+unscheduled+" task"+(unscheduled===1?"":"s")+" not yet placed on the timeline.</p>";
+    if(missingHrs>0) fb+="<p class='fb-line'>"+missingHrs+" task"+(missingHrs===1?"":"s")+" still need"+(missingHrs===1?"s":"")+" an hours estimate.</p>";
     if(unscheduled===totalTasks && missingHrs===totalTasks) fb+="<p class='fb-hint'>Place each bar on the week it runs and add its hours to build your plan.</p>";
   }
   document.getElementById('feedback').innerHTML=fb;
@@ -474,9 +474,9 @@ function download(kind){
 function showIncomplete(issues){
   var h="<h3>Your plan isn't finished</h3><p>Complete the following before you download:</p><ul class='miss'>";
   issues.forEach(function(it){
-    if(it.type==='phase') h+="<li>"+it.need+" more job"+(it.need===1?"":"s")+" in <strong>"+esc(it.name)+"</strong></li>";
-    else if(it.type==='hours') h+="<li>Hours estimate for <strong>"+esc(it.name||"an unnamed job")+"</strong></li>";
-    else h+="<li>A timeline bar for <strong>"+esc(it.name||"an unnamed job")+"</strong></li>";
+    if(it.type==='phase') h+="<li>"+it.need+" more task"+(it.need===1?"":"s")+" in <strong>"+esc(it.name)+"</strong></li>";
+    else if(it.type==='hours') h+="<li>Hours estimate for <strong>"+esc(it.name||"an unnamed task")+"</strong></li>";
+    else h+="<li>A timeline bar for <strong>"+esc(it.name||"an unnamed task")+"</strong></li>";
   });
   h+="</ul><div class='modal-actions'><button onclick='closeModal()'>Back to my plan</button></div>";
   document.getElementById('modal').innerHTML=h;
@@ -491,7 +491,7 @@ function fileName(){ var id=(document.getElementById('m-id').value||"AT1b").trim
 function exportDoc(){
   var W=state.weeks;
   var t="<table border='1' cellspacing='0' cellpadding='3' style='border-collapse:collapse;font-family:Arial;font-size:9pt'>";
-  t+="<tr><th align='left'>Job</th><th>Hrs</th>";
+  t+="<tr><th align='left'>Task</th><th>Hrs</th>";
   for(var w=1;w<=W;w++) t+="<th>"+w+"</th>";
   t+="</tr>";
   state.phases.forEach(function(ph){
