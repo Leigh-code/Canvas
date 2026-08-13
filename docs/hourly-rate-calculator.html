@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -46,10 +46,64 @@
             color: #aaa;
         }
 
+        /* ── Identity gate ─────────────────────────────────────────────── */
+        .identity-bar {
+            background: #fdf6e3;
+            border-bottom: 1px solid #e8dcae;
+            padding: 16px 28px;
+        }
+
+        .identity-bar.satisfied {
+            background: #f4f8f4;
+            border-bottom-color: #d8e6d8;
+        }
+
+        .identity-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.4fr;
+            gap: 16px;
+            align-items: end;
+        }
+
+        .identity-bar .required-note {
+            font-size: 12px;
+            color: #7a6a3a;
+            line-height: 1.45;
+        }
+
+        .identity-bar.satisfied .required-note {
+            color: #4a6a4a;
+        }
+
+        .req-star { color: #C8102E; font-weight: 700; }
+
+        input.invalid {
+            border-color: #C8102E !important;
+            background: #fffafa;
+        }
+
+        .locked-notice {
+            display: none;
+            padding: 14px 28px;
+            background: #1a1a1a;
+            color: #f0f0f0;
+            font-size: 13px;
+        }
+
+        body.locked .locked-notice { display: block; }
+
+        body.locked .main-grid {
+            opacity: 0.35;
+            pointer-events: none;
+            user-select: none;
+            filter: grayscale(0.6);
+        }
+
         .main-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 300px;
             min-height: 60vh;
+            transition: opacity 0.2s, filter 0.2s;
         }
 
         .panel {
@@ -104,12 +158,14 @@
             color: #222;
             background: white;
             transition: border-color 0.15s;
+            font-family: inherit;
         }
 
         input[type="number"]:focus,
         input[type="text"]:focus,
         select:focus {
-            outline: none;
+            outline: 2px solid #1a1a1a;
+            outline-offset: 1px;
             border-color: #888;
         }
 
@@ -137,11 +193,6 @@
             border-radius: 0;
         }
 
-        .input-prefix input:focus {
-            outline: none;
-            border: none;
-        }
-
         .hint {
             font-size: 11px;
             color: #888;
@@ -164,12 +215,12 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 16px;
-            height: 16px;
+            width: 18px;
+            height: 18px;
             border-radius: 50%;
             background: #d0d0d0;
-            color: #555;
-            font-size: 10px;
+            color: #444;
+            font-size: 11px;
             font-weight: 700;
             border: none;
             cursor: pointer;
@@ -179,12 +230,13 @@
             transition: background 0.15s;
         }
 
-        .help-btn:hover {
+        .help-btn:hover,
+        .help-btn:focus-visible {
             background: #1a1a1a;
             color: white;
         }
 
-        .help-btn.active {
+        .help-btn[aria-expanded="true"] {
             background: #1a1a1a;
             color: white;
         }
@@ -278,13 +330,19 @@
             background: white;
             transition: all 0.15s;
             user-select: none;
+            font-family: inherit;
         }
 
         .lifestyle-btn:hover {
             border-color: #888;
         }
 
-        .lifestyle-btn.active {
+        .lifestyle-btn:focus-visible {
+            outline: 2px solid #1a1a1a;
+            outline-offset: 1px;
+        }
+
+        .lifestyle-btn[aria-pressed="true"] {
             background: #1a1a1a;
             color: white;
             border-color: #1a1a1a;
@@ -329,105 +387,79 @@
             margin-top: 4px;
         }
 
-        .benchmark-box {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 3px;
-            padding: 12px 14px;
-            margin-bottom: 14px;
-            font-size: 12px;
-        }
-
-        .benchmark-box .bm-title {
-            font-weight: 700;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #888;
-            margin-bottom: 7px;
-        }
-
-        .benchmark-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 3px 0;
-            border-bottom: 1px solid #f0f0f0;
-            color: #444;
-        }
-
-        .benchmark-row:last-child {
-            border-bottom: none;
-        }
-
-        .benchmark-row.highlight-rate {
-            font-weight: 700;
-            color: #1a1a1a;
-        }
-
-        .tax-box {
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 3px;
-            padding: 12px 14px;
-            margin-bottom: 14px;
-            font-size: 12px;
-        }
-
-        .tax-box .bm-title {
-            font-weight: 700;
-            font-size: 11px;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            color: #888;
-            margin-bottom: 8px;
-        }
-
-        .tax-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            border-bottom: 1px solid #f0f0f0;
-            color: #444;
-        }
-
-        .tax-row:last-child {
-            border-bottom: none;
-        }
-
-        .tax-row.total {
-            font-weight: 700;
-            color: #1a1a1a;
-            margin-top: 4px;
-            padding-top: 8px;
-            border-top: 1px solid #ccc;
-            border-bottom: none;
-        }
-
-        .tax-note {
-            font-size: 10px;
-            color: #aaa;
-            margin-top: 8px;
-        }
-
+        .benchmark-box,
+        .tax-box,
         .summary-box {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 3px;
             padding: 12px 14px;
             margin-bottom: 14px;
+            font-size: 12px;
         }
 
+        .bm-title {
+            font-weight: 700;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            color: #888;
+            margin-bottom: 8px;
+            padding-bottom: 6px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .benchmark-row,
+        .tax-row,
         .summary-row {
             display: flex;
             justify-content: space-between;
             padding: 4px 0;
-            font-size: 12px;
             border-bottom: 1px solid #f0f0f0;
             color: #444;
         }
 
+        .benchmark-row:last-child,
+        .tax-row:last-child,
         .summary-row:last-child {
             border-bottom: none;
+        }
+
+        .benchmark-row.highlight-rate,
+        .tax-row.total {
+            font-weight: 700;
+            color: #1a1a1a;
+        }
+
+        .tax-row.total {
+            margin-top: 4px;
+            padding-top: 8px;
+            border-top: 1px solid #ccc;
+            border-bottom: none;
+        }
+
+        .benchmark-row.current-level {
+            background: #fdf6e3;
+            font-weight: 600;
+            color: #1a1a1a;
+        }
+
+        .verdict {
+            margin-top: 8px;
+            padding: 8px 10px;
+            border-radius: 3px;
+            font-size: 11px;
+            line-height: 1.45;
+        }
+
+        .verdict.in-range { background: #eef5ee; border-left: 3px solid #6a9e6a; color: #33502f; }
+        .verdict.below    { background: #fdf1ee; border-left: 3px solid #b8724a; color: #7a3f22; }
+        .verdict.above    { background: #eef2f8; border-left: 3px solid #5a8eb8; color: #2c4a68; }
+
+        .tax-note {
+            font-size: 10px;
+            color: #aaa;
+            margin-top: 8px;
         }
 
         .btn-print {
@@ -442,21 +474,26 @@
             cursor: pointer;
             margin-bottom: 14px;
             transition: background 0.15s;
+            font-family: inherit;
         }
 
-        .btn-print:hover {
-            background: #333;
+        .btn-print:hover { background: #333; }
+
+        .btn-print:disabled {
+            background: #c0c0c0;
+            cursor: not-allowed;
         }
 
         /* Expandable breakdown */
-        details {
+        details.breakdown {
             background: white;
             border: 1px solid #e0e0e0;
             border-radius: 3px;
             font-size: 12px;
+            margin-bottom: 14px;
         }
 
-        details summary {
+        details.breakdown summary {
             padding: 10px 14px;
             cursor: pointer;
             font-weight: 600;
@@ -469,17 +506,9 @@
             user-select: none;
         }
 
-        details summary::-webkit-details-marker { display: none; }
-
-        details summary::after {
-            content: '▾';
-            font-size: 11px;
-            color: #888;
-        }
-
-        details[open] summary::after {
-            content: '▴';
-        }
+        details.breakdown summary::-webkit-details-marker { display: none; }
+        details.breakdown summary::after { content: '▾'; font-size: 11px; color: #888; }
+        details.breakdown[open] summary::after { content: '▴'; }
 
         details .breakdown-inner {
             padding: 0 14px 12px;
@@ -506,17 +535,10 @@
             color: #aaa;
         }
 
-        /* Print */
-        .print-only { display: none; }
-
         @media (max-width: 900px) {
-            .main-grid {
-                grid-template-columns: 1fr;
-            }
-            .panel {
-                border-right: none;
-                border-bottom: 1px solid #e0e0e0;
-            }
+            .main-grid { grid-template-columns: 1fr; }
+            .panel { border-right: none; border-bottom: 1px solid #e0e0e0; }
+            .identity-grid { grid-template-columns: 1fr; }
         }
 
         /* Print sheet — hidden on screen, visible on print */
@@ -525,25 +547,21 @@
         @media print {
             body { background: white; padding: 0; font-size: 11px; color: #1a1a1a; }
             .container { box-shadow: none; border-radius: 0; }
-            /* Hide the entire interactive app */
             .main-grid { display: none; }
+            .identity-bar { display: none; }
+            .locked-notice { display: none !important; }
             .help-btn { display: none; }
             .help-panel { display: none !important; }
             .hint { display: none; }
             .header { padding: 14px 20px; }
             .header h1 { font-size: 16px; }
-            /* Show the print sheet */
             .print-sheet {
                 display: grid;
                 grid-template-columns: 1fr 1fr 1fr;
                 gap: 16px;
                 padding: 20px;
             }
-            .ps-col { }
-            .ps-section {
-                margin-bottom: 14px;
-                page-break-inside: avoid;
-            }
+            .ps-section { margin-bottom: 14px; page-break-inside: avoid; }
             .ps-heading {
                 font-size: 9px;
                 font-weight: 700;
@@ -557,6 +575,7 @@
             .ps-row {
                 display: flex;
                 justify-content: space-between;
+                gap: 10px;
                 padding: 3px 0;
                 border-bottom: 1px solid #f0f0f0;
                 font-size: 11px;
@@ -577,6 +596,8 @@
                 padding: 16px;
                 border-radius: 4px;
                 margin-bottom: 14px;
+                -webkit-print-color-adjust: exact;
+                print-color-adjust: exact;
             }
             .ps-rate-box .ps-rate-value {
                 font-size: 52px;
@@ -584,11 +605,7 @@
                 line-height: 1;
                 letter-spacing: -2px;
             }
-            .ps-rate-box .ps-rate-label {
-                font-size: 11px;
-                opacity: 0.85;
-                margin-top: 3px;
-            }
+            .ps-rate-box .ps-rate-label { font-size: 11px; opacity: 0.85; margin-top: 3px; }
             .ps-formula {
                 background: #f7f7f7;
                 border: 1px solid #e0e0e0;
@@ -596,9 +613,7 @@
                 padding: 10px 12px;
                 font-size: 11px;
             }
-            .ps-formula .ps-formula-line {
-                padding: 2px 0;
-            }
+            .ps-formula .ps-formula-line { padding: 2px 0; }
             .ps-formula .ps-formula-result {
                 font-weight: 700;
                 font-size: 13px;
@@ -606,39 +621,48 @@
                 padding-top: 6px;
                 border-top: 1px solid #d0d0d0;
             }
-            .ps-note {
-                font-size: 9px;
-                color: #999;
-                margin-top: 6px;
-                line-height: 1.4;
-            }
+            .ps-note { font-size: 9px; color: #999; margin-top: 6px; line-height: 1.4; }
         }
     </style>
 </head>
-<body>
+<body class="locked">
 <div class="container">
 
     <div class="header">
         <h1>Australian Freelance Rate Calculator</h1>
-        <p>Current as of 2026 – but this is not tax advice! Ask an accountant.</p>
+        <p>2026–27 ATO rates. Not tax advice: ask an accountant.</p>
     </div>
 
-    <div class="main-grid">
+    <!-- ── Identity gate ────────────────────────────────────────────── -->
+    <div class="identity-bar" id="identityBar">
+        <div class="identity-grid">
+            <div>
+                <label for="name">Your name <span class="req-star">*</span></label>
+                <input type="text" id="name" autocomplete="name" placeholder="First and last name" aria-required="true">
+            </div>
+            <div>
+                <label for="studentNumber">Student number <span class="req-star">*</span></label>
+                <input type="text" id="studentNumber" placeholder="s1234567" aria-required="true">
+            </div>
+            <div class="required-note" id="identityNote">
+                Both fields are required. The calculator unlocks once they're filled, and they appear on the printout you submit as page 1 of AT1c.
+            </div>
+        </div>
+    </div>
+
+    <div class="locked-notice" id="lockedNotice">Enter your name and student number above to unlock the calculator.</div>
+
+    <div class="main-grid" id="mainGrid">
 
         <!-- Panel 1: Personal + income -->
         <div class="panel">
 
-            <h2>Personal details</h2>
-
-            <div class="form-group">
-                <label for="name">Your name</label>
-                <input type="text" id="name" placeholder="Appears on print">
-            </div>
+            <h2>Your situation</h2>
 
             <div class="form-group">
                 <div class="label-row">
                     <label for="designerLevel">Experience level</label>
-                    <button class="help-btn" onclick="toggleHelp('help-level', this)">?</button>
+                    <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-level" onclick="toggleHelp('help-level', this)">?</button>
                 </div>
                 <select id="designerLevel">
                     <option value="emerging" selected>Emerging / student</option>
@@ -647,15 +671,15 @@
                     <option value="senior">Senior (10+ years)</option>
                     <option value="specialist">Specialist / studio manager</option>
                 </select>
-                <div class="help-panel" id="help-level">Sets the default salary target to a realistic starting point for that stage of career. You can override it with the slider. Use it as a sanity check — if your calculated rate is well below the benchmark for your level, your expenses or income goal may need revisiting.</div>
+                <div class="help-panel" id="help-level">Sets the default salary target to a realistic starting point for that stage of career. You can override it with the slider. Use it as a sanity check: if your calculated rate sits well below the benchmark for your level, your expenses or income goal need revisiting.</div>
             </div>
 
             <h2>Income goal</h2>
 
             <div class="form-group">
                 <div class="label-row">
-                    <label>Annual take-home salary <strong>(after tax)</strong></label>
-                    <button class="help-btn" onclick="toggleHelp('help-salary', this)">?</button>
+                    <label for="salarySlider">Annual take-home salary <strong>(after tax)</strong></label>
+                    <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-salary" onclick="toggleHelp('help-salary', this)">?</button>
                 </div>
                 <div class="slider-row">
                     <input type="range" id="salarySlider" min="35000" max="150000" step="5000" value="45000">
@@ -665,16 +689,16 @@
                     <span>$35k</span><span>$70k</span><span>$110k</span><span>$150k</span>
                 </div>
                 <div class="hint" id="salaryScaleHint" style="display:none;"></div>
-                <div class="help-panel" id="help-salary">This is what you actually want to see in your bank account each year, after tax. It's not what you invoice — that number (gross income) will be higher once tax, super, and expenses are added. For reference, a graduate designer in Melbourne might aim for $45–55k to start; a midweight designer $70–90k.</div>
+                <div class="help-panel" id="help-salary">This is what you actually want to see in your bank account each year, after tax. It is not what you invoice: that number, your gross income, is higher once tax, super and expenses are added. A graduate designer in Melbourne might aim for $45–55k to start; a midweight designer $70–90k.</div>
             </div>
 
             <div class="form-group">
                 <div class="label-row">
                     <label for="superannuation">Superannuation rate (%)</label>
-                    <button class="help-btn" onclick="toggleHelp('help-super', this)">?</button>
+                    <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-super" onclick="toggleHelp('help-super', this)">?</button>
                 </div>
                 <input type="number" id="superannuation" value="12" step="0.5" min="10" max="25">
-                <div class="help-panel" id="help-super">Superannuation is compulsory retirement savings. As a freelancer, no one pays it for you — you have to build it into your rate and set it aside yourself. The current legislated rate is 12% of your gross income. If you don't include it, you're effectively working for less than your headline rate every year and arriving at retirement with nothing saved.</div>
+                <div class="help-panel" id="help-super">Superannuation is compulsory retirement savings. As a freelancer nobody pays it for you, so you build it into your rate and set it aside yourself. The legislated rate is 12% of gross income. Leave it out and you are working for less than your headline rate every year, and arriving at retirement with nothing saved.</div>
             </div>
 
             <div class="form-group">
@@ -685,38 +709,38 @@
                 <div class="hint" id="hecsHint" style="display:none;"></div>
             </div>
 
-            <h2>Time & lifestyle</h2>
+            <h2>Time and lifestyle</h2>
 
             <div class="form-group">
                 <div class="label-row">
-                    <label>Leave and time off</label>
-                    <button class="help-btn" onclick="toggleHelp('help-leave', this)">?</button>
+                    <span class="label" id="leaveLabel" style="font-size:13px; font-weight:500; color:#444;">Leave and time off</span>
+                    <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-leave" onclick="toggleHelp('help-leave', this)">?</button>
                 </div>
-                <div class="lifestyle-grid">
-                    <div class="lifestyle-btn" data-style="standard">
+                <div class="lifestyle-grid" role="group" aria-labelledby="leaveLabel">
+                    <button type="button" class="lifestyle-btn" data-style="standard" aria-pressed="false">
                         <strong>Standard</strong>
                         <span>4 wks leave, 5 sick days</span>
-                    </div>
-                    <div class="lifestyle-btn active" data-style="balanced">
+                    </button>
+                    <button type="button" class="lifestyle-btn" data-style="balanced" aria-pressed="true">
                         <strong>Balanced</strong>
                         <span>6 wks leave, 5 sick days</span>
-                    </div>
-                    <div class="lifestyle-btn" data-style="traveller">
+                    </button>
+                    <button type="button" class="lifestyle-btn" data-style="traveller" aria-pressed="false">
                         <strong>Traveller</strong>
                         <span>8 wks leave, 10 sick days</span>
-                    </div>
-                    <div class="lifestyle-btn" data-style="flexible">
+                    </button>
+                    <button type="button" class="lifestyle-btn" data-style="flexible" aria-pressed="false">
                         <strong>Flexible</strong>
                         <span>12 wks leave, 10 sick days</span>
-                    </div>
+                    </button>
                 </div>
-                <div class="help-panel" id="help-leave">As a freelancer you don't get paid leave — every week you're not working is a week you're not earning. This setting reduces your available working hours accordingly, which pushes your hourly rate up to compensate. Standard (4 weeks) is the minimum most people need. Balanced (6 weeks) is realistic once you factor in public holidays and the odd sick day. Don't underestimate this — it's one of the most common mistakes new freelancers make when setting their rates.</div>
+                <div class="help-panel" id="help-leave">Freelancers get no paid leave. Every week you are not working is a week you are not earning, so this setting cuts your available hours and pushes your rate up to compensate. Standard (4 weeks) is the bare minimum. Balanced (6 weeks) is realistic once you count public holidays and the odd sick day. Underestimating this is one of the most common mistakes new freelancers make.</div>
             </div>
 
             <div class="form-group">
                 <div class="label-row">
-                    <label>Days per week</label>
-                    <button class="help-btn" onclick="toggleHelp('help-days', this)">?</button>
+                    <label for="daysPerWeek">Days per week</label>
+                    <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-days" onclick="toggleHelp('help-days', this)">?</button>
                 </div>
                 <div class="slider-row">
                     <input type="range" id="daysPerWeek" min="1" max="5" step="1" value="5">
@@ -725,23 +749,23 @@
                 <div class="slider-labels">
                     <span>1 day</span><span>2</span><span>3</span><span>4</span><span>5 days</span>
                 </div>
-                <div class="hint" id="daysHint">Full time — fixed costs spread across the most hours, so rate is lowest</div>
-                <div class="help-panel" id="help-days">Working part time doesn't reduce your fixed costs — software, insurance, and equipment cost the same whether you work 2 days or 5. So your hourly rate needs to be higher to cover those costs across fewer hours. Your income target also scales down proportionally — 3 days a week means roughly 60% of a full-time salary. The rate stays roughly the same because both income and hours reduce together, but your overheads push it up slightly.</div>
+                <div class="hint" id="daysHint">Full time: fixed costs spread across the most hours, so the rate is lowest</div>
+                <div class="help-panel" id="help-days">Working part time does not reduce your fixed costs. Software, insurance, your desk and your equipment cost the same whether you work two days or five, so those costs have to be recovered across fewer hours. Your income target scales down at the same time, which is why the rate moves less than you might expect.</div>
             </div>
 
             <div class="two-col">
                 <div class="form-group">
                     <div class="label-row">
                         <label for="adminTime">Time you can't charge for (%)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-admin', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-admin" onclick="toggleHelp('help-admin', this)">?</button>
                     </div>
                     <input type="number" id="adminTime" value="20" min="5" max="50">
-                    <div class="help-panel" id="help-admin">Not every hour at your desk earns money. Replying to emails, writing quotes, chasing invoices, updating your portfolio, and keeping your skills current all take real time. For a freelancer starting out, 20–25% is realistic. If you're also studying or working on personal projects, it could be higher. Underestimating this is a fast way to underprice your work.</div>
+                    <div class="help-panel" id="help-admin">Not every hour at your desk earns money. Replying to emails, writing quotes, chasing invoices, updating your portfolio and keeping your skills current all take real time. For a freelancer starting out, 20–25% is realistic. Underestimating this is a fast way to underprice your work.</div>
                 </div>
                 <div class="form-group">
-                    <label for="availableHours">Hours you could work / year</label>
-                    <input type="number" id="availableHours" value="1920" readonly style="background:#f5f5f5; color:#888; cursor:default;">
-                    <div class="hint" id="hoursHint">Calculated from your settings above</div>
+                    <label for="availableHours">Working hours after leave</label>
+                    <input type="number" id="availableHours" value="1752" readonly style="background:#f5f5f5; color:#888; cursor:default;">
+                    <div class="hint" id="hoursHint">Calculated from your settings</div>
                 </div>
             </div>
 
@@ -756,116 +780,118 @@
 
                 <div class="form-group">
                     <div class="label-row">
-                        <label for="workspaceType">Workspace type</label>
-                        <button class="help-btn" onclick="toggleHelp('help-workspace-type', this)">?</button>
+                        <label for="workspaceType">Workspace</label>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-workspace-type" onclick="toggleHelp('help-workspace-type', this)">?</button>
                     </div>
                     <select id="workspaceType">
-                        <option value="home" selected>Home office</option>
-                        <option value="part-time-2">Cowork — 2 days/wk</option>
-                        <option value="part-time-3">Cowork — 3 days/wk</option>
-                        <option value="full-time">Cowork — full time</option>
+                        <option value="part-time-2" selected>Coworking — 2 days/wk</option>
+                        <option value="part-time-3">Coworking — 3 days/wk</option>
+                        <option value="full-time">Coworking — full time</option>
+                        <option value="home">Home office only</option>
                     </select>
-                    <div class="help-panel" id="help-workspace-type">Where you work affects your costs. A home office is cheapest but you need a dedicated space — the ATO allows you to claim a portion of rent and utilities. A coworking space gives you a professional environment, fast internet, and separation between work and home life. Rates shown are based on T.O.M.S Place in Brunswick; prices vary by location.</div>
+                    <div class="help-panel" id="help-workspace-type">Assume you take a coworking desk at least two days a week. It is not an indulgence: it gives you somewhere credible to meet a client, it separates work from home so you can stop at the end of the day, and most early freelance work arrives through people you actually meet. Working alone from a bedroom is cheaper on paper and expensive in the ways that matter. Home office only is here as a comparison, and as a fallback. Rates are based on Melbourne coworking spaces such as T.O.M.S Place in Brunswick.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
                         <label for="workspace">Workspace cost ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-workspace-cost', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-workspace-cost" onclick="toggleHelp('help-workspace-cost', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="workspace" value="2000"></div>
-                    <div class="hint" id="workspaceHint">A rough share of your rent and internet if you work from home</div>
-                    <div class="help-panel" id="help-workspace-cost">For a home office, the ATO allows roughly 67 cents per hour worked as a deduction, or you can calculate a percentage of actual rent and utilities based on floor area. $2,000/yr is a conservative estimate. For a coworking desk, use the actual membership cost — the dropdown above sets a realistic figure based on current Melbourne coworking rates.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="workspace" value="3300" min="0"></div>
+                    <div class="hint" id="workspaceHint">Est. $250 + GST/month (2 days)</div>
+                    <div class="help-panel" id="help-workspace-cost">For a coworking desk, use the actual membership cost. Melbourne part-time memberships run roughly $250–350 + GST a month; a full-time desk is closer to $550. The whole amount is deductible. For a home office the ATO allows a fixed rate per hour worked, or a share of actual rent and utilities based on floor area, which lands around $2,000 a year for most people.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
                         <label for="software">Software subscriptions ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-software', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-software" onclick="toggleHelp('help-software', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="software" value="1191.60"></div>
-                    <div class="help-panel" id="help-software">The default is the current Adobe Creative Cloud All Apps annual subscription. You may also have other tools: Figma, font licences, stock image subscriptions, project management tools, or cloud storage. Add them up and enter the total. These are legitimate business expenses and reduce your taxable income.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="software" value="1191.60" min="0"></div>
+                    <div class="help-panel" id="help-software">The default is the Adobe Creative Cloud All Apps annual subscription. Add anything else you pay for: Figma, font licences, stock image subscriptions, project management tools, cloud storage. These are legitimate business expenses and reduce your taxable income.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
                         <label for="computer">Equipment — cost per year ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-computer', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-computer" onclick="toggleHelp('help-computer', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="computer" value="1000"></div>
-                    <div class="help-panel" id="help-computer">You can't expense a $3,000 laptop all in one year, but you can spread the cost. Divide the purchase price by how many years you expect to use it. For example: a $3,000 computer used for 3 years = $1,000/yr. Include other equipment too — external drives, monitors, drawing tablets, cameras. The ATO calls this depreciation.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="computer" value="1000" min="0"></div>
+                    <div class="help-panel" id="help-computer">You cannot expense a $3,000 laptop all in one year, but you can spread the cost. Divide the purchase price by how many years you expect to use it: a $3,000 computer over three years is $1,000 a year. Include external drives, monitors, drawing tablets and cameras. The ATO calls this depreciation.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
-                        <label for="marketing">Marketing ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-marketing', this)">?</button>
+                        <label for="marketing">Marketing and portfolio ($)</label>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-marketing" onclick="toggleHelp('help-marketing', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="marketing" value="300"></div>
-                    <div class="help-panel" id="help-marketing">Anything you spend getting work. This includes your portfolio website hosting and domain name (typically $100–200/yr), any paid advertising, or printed self-promotion materials. As you become more established this number grows — some designers spend significantly more on building their profile.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="marketing" value="400" min="0"></div>
+                    <div class="help-panel" id="help-marketing">Anything you spend getting work: portfolio hosting and a domain name ($100–200 a year), printed self-promotion, paid advertising. As you become established this number grows.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
-                        <label for="insurance">Insurance ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-insurance', this)">?</button>
+                        <label for="insurance">Professional indemnity insurance ($)</label>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-insurance" onclick="toggleHelp('help-insurance', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="insurance" value="0"></div>
-                    <div class="help-panel" id="help-insurance">Professional indemnity insurance covers you if a client claims your work caused them financial harm — for example, a typo in a printed run or a missed deadline that cost them money. It's typically $500–1,500/yr depending on your turnover. Most studios require contractors to hold it before they'll engage you. Set to $0 for now as a student, but factor it in once you start taking commercial work.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="insurance" value="700" min="0"></div>
+                    <div class="help-panel" id="help-insurance">Professional indemnity covers you when a client claims your work cost them money: a typo that went to print, a missed deadline, a file supplied in the wrong colour space. Expect $500–1,500 a year depending on turnover, and note that most studios and agencies will not engage a contractor who does not hold it. Coworking spaces often require public liability cover as well. Budget for this from your first paid job, not your fiftieth.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
-                        <label for="accountant">Accounting / bookkeeping ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-accountant', this)">?</button>
+                        <label for="accountant">Accounting and bookkeeping ($)</label>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-accountant" onclick="toggleHelp('help-accountant', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="accountant" value="0"></div>
-                    <div class="help-panel" id="help-accountant">A basic tax return lodged by an accountant costs $150–400/yr for a sole trader. Once you're earning regularly, it's worth it — an accountant will find deductions you'd miss, keep you on the right side of the ATO, and give you advice on whether to register for GST (required once you earn over $75,000/yr). Set to $0 for now, but include it once you start freelancing properly.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="accountant" value="400" min="0"></div>
+                    <div class="help-panel" id="help-accountant">A sole trader tax return lodged by an accountant costs $150–400. Add bookkeeping software such as Xero or MYOB and you are closer to $700. An accountant finds deductions you would miss, keeps you on the right side of the ATO, and tells you when you need to register for GST, which is compulsory once you turn over $75,000. The fee is itself deductible.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
                         <label for="internet">Internet ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-internet', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-internet" onclick="toggleHelp('help-internet', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="internet" value="1000"></div>
-                    <div class="help-panel" id="help-internet">A standard home NBN plan runs about $70–100/month ($840–1,200/yr). If you work from a coworking space that includes internet, set this to $0 — but you may still want to include a portion for home use outside work hours. Mobile data costs can also be included here.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="internet" value="500" min="0"></div>
+                    <div class="hint" id="internetHint">Reduced: your coworking desk fee includes internet</div>
+                    <div class="help-panel" id="help-internet">A home NBN plan runs $70–100 a month. Your coworking membership already includes internet, so only the business-use share of your home connection belongs here, plus mobile data. Working from home only, the full business-use portion applies.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
                         <label for="phone">Phone — cost per year ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-phone', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-phone" onclick="toggleHelp('help-phone', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="phone" value="1200"></div>
-                    <div class="help-panel" id="help-phone">Divide your handset purchase price by how many years you'll use it (e.g. $1,200 phone ÷ 3 years = $400/yr), then add your annual plan cost (e.g. $60/month = $720/yr). Total: $1,120/yr. You can only claim the business-use portion, but for a freelancer that's typically most of it.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="phone" value="1200" min="0"></div>
+                    <div class="help-panel" id="help-phone">Divide the handset price by how many years you will keep it ($1,200 over three years is $400), then add the plan ($60 a month is $720). You claim the business-use share, which for a freelancer is most of it.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
                         <label for="development">Professional development ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-development', this)">?</button>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-development" onclick="toggleHelp('help-development', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="development" value="200"></div>
-                    <div class="help-panel" id="help-development">Staying current is part of the job. This might include online courses (LinkedIn Learning, Skillshare, Domestika), books, industry publications, or workshops. These are legitimate business expenses. Even $200/yr is enough for a few courses — consider increasing this as your income grows.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="development" value="400" min="0"></div>
+                    <div class="help-panel" id="help-development">Staying current is part of the job: online courses, books, industry publications, workshops, conference tickets. All deductible. $400 covers a few courses and a conference day pass; increase it as your income grows.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
-                        <label for="stationery">Supplies / stationery ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-stationery', this)">?</button>
+                        <label for="stationery">Supplies and materials ($)</label>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-stationery" onclick="toggleHelp('help-stationery', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="stationery" value="300"></div>
-                    <div class="help-panel" id="help-stationery">Printer paper, ink cartridges, notebooks, pens, packaging for client deliverables. Small costs that add up over a year. $200–400 is typical for a designer working from home.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="stationery" value="300" min="0"></div>
+                    <div class="help-panel" id="help-stationery">Notebooks, pens, printing, packaging for client deliverables, and the coffee you buy because you are working out of somebody else's building. Small amounts that add up to $200–400 across a year.</div>
                 </div>
 
                 <div class="form-group">
                     <div class="label-row">
-                        <label for="otherExpenses">Other costs ($)</label>
-                        <button class="help-btn" onclick="toggleHelp('help-other', this)">?</button>
+                        <label for="otherExpenses">Memberships and industry costs ($)</label>
+                        <button type="button" class="help-btn" aria-expanded="false" aria-controls="help-other" onclick="toggleHelp('help-other', this)">?</button>
                     </div>
-                    <div class="input-prefix"><span>$</span><input type="number" id="otherExpenses" value="0"></div>
-                    <div class="help-panel" id="help-other">Anything else that's a regular cost of doing business. Examples: AGDA membership (~$200/yr for emerging designers), stock image subscriptions (Adobe Stock, Shutterstock), typeface licences, printing proofs for clients, or software not covered above. If you're not sure, leave this at $0 and add it later.</div>
+                    <div class="input-prefix"><span>$</span><input type="number" id="otherExpenses" value="295" min="0"></div>
+                    <div class="hint">AGDA membership $295/yr</div>
+                    <div class="help-panel" id="help-other">The default is AGDA membership at $295 a year, which is the standard industry body for Australian graphic designers and the usual entry point for events, awards and the published terms and conditions template. Add anything else in this category: awards entry fees, festival and conference tickets, typeface licences bought for the business rather than a single job. This is a real cost of being a designer rather than someone who owns Illustrator, so it belongs in your rate.</div>
                 </div>
 
             </div>
@@ -881,7 +907,7 @@
             </div>
 
             <div class="tax-box">
-                <div class="bm-title">Tax breakdown (2025–26)</div>
+                <div class="bm-title">Tax breakdown (2026–27)</div>
                 <div class="tax-row">
                     <span>Target take-home</span>
                     <span>$<span id="taxTakeHome">—</span></span>
@@ -906,11 +932,11 @@
                     <span>Gross income required</span>
                     <span>$<span id="taxGross">—</span></span>
                 </div>
-                <div class="tax-note">Based on ATO 2025–26 resident rates. Does not include HECS/HELP or Medicare levy surcharge. Verify with your accountant.</div>
+                <div class="tax-note">Based on ATO 2026–27 resident rates. Excludes the Medicare levy surcharge. Verify with your accountant.</div>
             </div>
 
             <div class="summary-box">
-                <div class="bm-title" style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.6px; color:#888; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid #e0e0e0;">Summary</div>
+                <div class="bm-title">Summary</div>
                 <div class="summary-row">
                     <span>Total business expenses</span>
                     <span>$<span id="totalExpenses">—</span></span>
@@ -925,10 +951,9 @@
                 </div>
             </div>
 
-            <details>
+            <details class="breakdown">
                 <summary>Calculation breakdown</summary>
                 <div class="breakdown-inner">
-                    <div style="font-weight:700; font-size:11px; text-transform:uppercase; letter-spacing:0.6px; color:#888; margin-bottom:8px; padding-bottom:6px; border-bottom:1px solid #e0e0e0;">Calculation breakdown</div>
                     <div class="breakdown-section">Formula</div>
                     <div class="breakdown-row">
                         <span>(Gross + Expenses + Super) ÷ Billable hrs</span>
@@ -961,34 +986,30 @@
                 </div>
             </details>
 
-            <button class="btn-print" onclick="window.print()">Print / save as PDF</button>
+            <button class="btn-print" id="printBtn" onclick="window.print()" disabled>Print / save as PDF</button>
 
             <div class="benchmark-box">
                 <div class="bm-title">Industry benchmarks</div>
-                <div class="benchmark-row">
-                    <span>Emerging / student</span>
-                    <span>$40–65</span>
+                <div class="benchmark-row" data-level="emerging">
+                    <span>Emerging / student</span><span>$40–65</span>
                 </div>
-                <div class="benchmark-row">
-                    <span>Junior (1–4 yrs)</span>
-                    <span>$55–80</span>
+                <div class="benchmark-row" data-level="junior">
+                    <span>Junior (1–4 yrs)</span><span>$55–80</span>
                 </div>
-                <div class="benchmark-row">
-                    <span>Midweight (5–10 yrs)</span>
-                    <span>$75–110</span>
+                <div class="benchmark-row" data-level="mid">
+                    <span>Midweight (5–10 yrs)</span><span>$75–110</span>
                 </div>
-                <div class="benchmark-row">
-                    <span>Senior (10+ yrs)</span>
-                    <span>$110–160</span>
+                <div class="benchmark-row" data-level="senior">
+                    <span>Senior (10+ yrs)</span><span>$110–160</span>
                 </div>
-                <div class="benchmark-row">
-                    <span>Specialist / manager</span>
-                    <span>$160+</span>
+                <div class="benchmark-row" data-level="specialist">
+                    <span>Specialist / manager</span><span>$160+</span>
                 </div>
                 <div class="benchmark-row highlight-rate" style="margin-top:6px; padding-top:6px; border-top:1px solid #e0e0e0;">
                     <span>Your calculated rate</span>
                     <span>$<span id="benchmarkRate">—</span></span>
                 </div>
+                <div class="verdict in-range" id="benchmarkVerdict">—</div>
             </div>
 
         </div>
@@ -997,12 +1018,13 @@
     <!-- Print-only summary sheet -->
     <div class="print-sheet">
 
-        <!-- Column 1: Income & legal obligations -->
         <div class="ps-col">
             <div class="ps-section">
                 <div class="ps-heading">About</div>
                 <div class="ps-row"><span>Name</span><span id="ps-name">—</span></div>
+                <div class="ps-row"><span>Student number</span><span id="ps-studentnumber">—</span></div>
                 <div class="ps-row"><span>Experience level</span><span id="ps-level">—</span></div>
+                <div class="ps-row"><span>Date prepared</span><span id="ps-date">—</span></div>
             </div>
 
             <div class="ps-section">
@@ -1014,7 +1036,7 @@
 
             <div class="ps-section">
                 <div class="ps-heading">Legal obligations</div>
-                <div class="ps-row"><span>Income tax (2025–26 ATO rates)</span><span>$<span id="ps-tax">—</span></span></div>
+                <div class="ps-row"><span>Income tax (2026–27 ATO rates)</span><span>$<span id="ps-tax">—</span></span></div>
                 <div class="ps-row"><span>Medicare levy (2%)</span><span>$<span id="ps-medicare">—</span></span></div>
                 <div class="ps-row"><span>Effective tax rate</span><span><span id="ps-taxrate">—</span>%</span></div>
                 <div class="ps-row"><span>Superannuation (<span id="ps-superrate">—</span>%)</span><span>$<span id="ps-super">—</span></span></div>
@@ -1023,26 +1045,24 @@
             </div>
         </div>
 
-        <!-- Column 2: Overheads -->
         <div class="ps-col">
             <div class="ps-section">
                 <div class="ps-heading">Business overheads (annual)</div>
-                <div class="ps-row"><span>Workspace</span><span>$<span id="ps-workspace">—</span></span></div>
+                <div class="ps-row"><span>Workspace (<span id="ps-workspacetype">—</span>)</span><span>$<span id="ps-workspace">—</span></span></div>
                 <div class="ps-row"><span>Software subscriptions</span><span>$<span id="ps-software">—</span></span></div>
                 <div class="ps-row"><span>Equipment (cost per year)</span><span>$<span id="ps-computer">—</span></span></div>
                 <div class="ps-row"><span>Phone (cost per year)</span><span>$<span id="ps-phone">—</span></span></div>
                 <div class="ps-row"><span>Internet</span><span>$<span id="ps-internet">—</span></span></div>
-                <div class="ps-row"><span>Marketing</span><span>$<span id="ps-marketing">—</span></span></div>
-                <div class="ps-row"><span>Insurance</span><span>$<span id="ps-insurance">—</span></span></div>
-                <div class="ps-row"><span>Accounting</span><span>$<span id="ps-accountant">—</span></span></div>
+                <div class="ps-row"><span>Marketing and portfolio</span><span>$<span id="ps-marketing">—</span></span></div>
+                <div class="ps-row"><span>Professional indemnity insurance</span><span>$<span id="ps-insurance">—</span></span></div>
+                <div class="ps-row"><span>Accounting and bookkeeping</span><span>$<span id="ps-accountant">—</span></span></div>
                 <div class="ps-row"><span>Professional development</span><span>$<span id="ps-development">—</span></span></div>
-                <div class="ps-row"><span>Supplies / stationery</span><span>$<span id="ps-stationery">—</span></span></div>
-                <div class="ps-row"><span>Other</span><span>$<span id="ps-other">—</span></span></div>
+                <div class="ps-row"><span>Supplies and materials</span><span>$<span id="ps-stationery">—</span></span></div>
+                <div class="ps-row"><span>Memberships and industry costs</span><span>$<span id="ps-other">—</span></span></div>
                 <div class="ps-row total"><span>Total overheads</span><span>$<span id="ps-totalexpenses">—</span></span></div>
             </div>
         </div>
 
-        <!-- Column 3: Hours, formula, rate -->
         <div class="ps-col">
             <div class="ps-section">
                 <div class="ps-heading">Working hours</div>
@@ -1063,7 +1083,7 @@
                     <div class="ps-formula-line">= ($<span id="ps-f-gross">—</span> + $<span id="ps-f-expenses">—</span> + $<span id="ps-f-super">—</span>) ÷ <span id="ps-f-hours">—</span></div>
                     <div class="ps-formula-result">= $<span id="ps-f-result">—</span> per hour</div>
                 </div>
-                <div class="ps-note">Based on ATO 2025–26 resident tax rates. Does not include HECS/HELP or Medicare levy surcharge.</div>
+                <div class="ps-note">Based on ATO 2026–27 resident tax rates. Excludes the Medicare levy surcharge.</div>
             </div>
         </div>
 
@@ -1076,58 +1096,43 @@
         const panel = document.getElementById(id);
         const isOpen = panel.classList.contains('open');
         panel.classList.toggle('open', !isOpen);
-        btn.classList.toggle('active', !isOpen);
+        btn.setAttribute('aria-expanded', String(!isOpen));
     }
 
-    // ── 2025–26 ATO tax brackets (cumulative method) ──────────────────────
+    // ── 2026–27 ATO resident tax brackets ─────────────────────────────────
     function calcIncomeTax(gross) {
         if (gross <= 18200)  return 0;
-        if (gross <= 45000)  return (gross - 18200) * 0.16;
-        if (gross <= 135000) return 4288 + (gross - 45000) * 0.30;
-        if (gross <= 190000) return 31288 + (gross - 135000) * 0.37;
-        return 51638 + (gross - 190000) * 0.45;
+        if (gross <= 45000)  return (gross - 18200) * 0.15;
+        if (gross <= 135000) return 4020 + (gross - 45000) * 0.30;
+        if (gross <= 190000) return 31020 + (gross - 135000) * 0.37;
+        return 51370 + (gross - 190000) * 0.45;
     }
 
+    // ── Medicare levy 2026–27: single low-income threshold $28,011 ────────
     function calcMedicare(gross) {
-        // Basic Medicare levy — 2% above low-income threshold
-        const threshold = 26000; // approximate 2025–26 shade-in threshold
+        const threshold = 28011;
         if (gross <= threshold) return 0;
-        // Shade-in zone: 10% of excess until full 2% applies
-        const shadeInEnd = threshold / (1 - 0.02 / 0.10); // ~28,889
+        const shadeInEnd = threshold / (1 - 0.02 / 0.10); // ≈ $35,014
         if (gross <= shadeInEnd) return (gross - threshold) * 0.10;
         return gross * 0.02;
     }
 
-    // ── 2025–26 HECS/HELP compulsory repayment rates ─────────────────────
-    // Source: ATO study and training loan repayment thresholds 2025–26
-    const hecsRates = [
-        { min: 0,       max: 54435,  rate: 0.000 },
-        { min: 54435,   max: 62849,  rate: 0.010 },
-        { min: 62849,   max: 66053,  rate: 0.020 },
-        { min: 66053,   max: 69399,  rate: 0.025 },
-        { min: 69399,   max: 72869,  rate: 0.030 },
-        { min: 72869,   max: 76512,  rate: 0.035 },
-        { min: 76512,   max: 80338,  rate: 0.040 },
-        { min: 80338,   max: 84354,  rate: 0.045 },
-        { min: 84354,   max: 88572,  rate: 0.050 },
-        { min: 88572,   max: 93000,  rate: 0.055 },
-        { min: 93000,   max: 97651,  rate: 0.060 },
-        { min: 97651,   max: 102533, rate: 0.065 },
-        { min: 102533,  max: 107660, rate: 0.070 },
-        { min: 107660,  max: 113043, rate: 0.075 },
-        { min: 113043,  max: 118695, rate: 0.080 },
-        { min: 118695,  max: 124629, rate: 0.085 },
-        { min: 124629,  max: 130861, rate: 0.090 },
-        { min: 130861,  max: 137405, rate: 0.095 },
-        { min: 137405,  max: Infinity, rate: 0.100 },
-    ];
-
+    // ── 2026–27 study and training loan repayments ────────────────────────
+    // Marginal system: you repay only on income above $69,528.
     function calcHecs(gross) {
-        for (const bracket of hecsRates) {
-            if (gross < bracket.max) return gross * bracket.rate;
-        }
+        if (gross <= 69528) return 0;
+        if (gross <= 129717) return (gross - 69528) * 0.15;
+        if (gross <= 186050) return 9028 + (gross - 129717) * 0.17;
         return gross * 0.10;
     }
+
+    function hecsMarginalLabel(gross) {
+        if (gross <= 69528) return '0%';
+        if (gross <= 129717) return '15% of income above $69,528';
+        if (gross <= 186050) return '17% of income above $129,717';
+        return '10% of total repayment income';
+    }
+
     function grossForNet(targetNet) {
         let lo = targetNet, hi = targetNet * 2.5, iter = 0;
         while (iter++ < 60 && hi - lo > 0.5) {
@@ -1146,18 +1151,26 @@
     };
 
     const workspaceData = {
-        'home':         { cost: 2000,  hint: 'Est. ~15% of home rent/utilities' },
-        'part-time-2':  { cost: 3300,  hint: 'Est. $250+GST/month (2 days)' },
-        'part-time-3':  { cost: 4620,  hint: 'Est. $350+GST/month (3 days)' },
-        'full-time':    { cost: 7260,  hint: 'Est. $550+GST/month (5 days)' },
+        'part-time-2': { cost: 3300, internet: 500,  label: 'Coworking, 2 days/wk',
+                         hint: 'Est. $250 + GST/month (2 days)',
+                         netHint: 'Reduced: your coworking desk fee includes internet' },
+        'part-time-3': { cost: 4620, internet: 400,  label: 'Coworking, 3 days/wk',
+                         hint: 'Est. $350 + GST/month (3 days)',
+                         netHint: 'Reduced: your coworking desk fee includes internet' },
+        'full-time':   { cost: 7260, internet: 300,  label: 'Coworking, full time',
+                         hint: 'Est. $550 + GST/month (5 days)',
+                         netHint: 'Minimal: internet is included in your desk fee' },
+        'home':        { cost: 2000, internet: 1000, label: 'Home office only',
+                         hint: 'Est. ~15% of home rent and utilities',
+                         netHint: 'Full home NBN plan, business-use portion' },
     };
 
     const experienceDefaults = {
-        emerging:   { salary: 45000 },
-        junior:     { salary: 55000 },
-        mid:        { salary: 70000 },
-        senior:     { salary: 90000 },
-        specialist: { salary: 120000 },
+        emerging:   { salary: 45000, low: 40,  high: 65 },
+        junior:     { salary: 55000, low: 55,  high: 80 },
+        mid:        { salary: 70000, low: 75,  high: 110 },
+        senior:     { salary: 90000, low: 110, high: 160 },
+        specialist: { salary: 120000, low: 160, high: Infinity },
     };
 
     let currentLifestyle = 'balanced';
@@ -1166,68 +1179,111 @@
         return Math.round(n).toLocaleString('en-AU');
     }
 
+    // ── Identity gate ─────────────────────────────────────────────────────
+    function checkIdentity() {
+        const nameEl = document.getElementById('name');
+        const numEl  = document.getElementById('studentNumber');
+        const ok = nameEl.value.trim().length >= 2 && numEl.value.trim().length >= 2;
+
+        document.body.classList.toggle('locked', !ok);
+        document.getElementById('identityBar').classList.toggle('satisfied', ok);
+        document.getElementById('printBtn').disabled = !ok;
+
+        // Only flag a field as invalid once it has been touched and left empty
+        [nameEl, numEl].forEach(el => {
+            const touched = el.dataset.touched === 'true';
+            el.classList.toggle('invalid', touched && el.value.trim().length < 2);
+        });
+
+        document.getElementById('identityNote').textContent = ok
+            ? 'Thanks. Your details will appear on the printout you submit as page 1 of AT1c.'
+            : "Both fields are required. The calculator unlocks once they're filled, and they appear on the printout you submit as page 1 of AT1c.";
+
+        return ok;
+    }
+
     function calculate() {
         const fullTimeSalary = parseFloat(document.getElementById('salarySlider').value);
         const superRate    = parseFloat(document.getElementById('superannuation').value) || 12;
         const adminPct     = parseFloat(document.getElementById('adminTime').value) || 20;
         const daysPerWeek  = parseFloat(document.getElementById('daysPerWeek').value) || 5;
+        const levelKey     = document.getElementById('designerLevel').value;
 
         // Scale income and hours proportionally by days/week
-        const daysFraction  = daysPerWeek / 5;
-        const targetNet     = fullTimeSalary * daysFraction;
+        const daysFraction = daysPerWeek / 5;
+        const targetNet    = fullTimeSalary * daysFraction;
 
-        // Scale available hours by days/week fraction of full time (5 days)
-        const ls           = lifestyleData[currentLifestyle];
-        const leaveHrs     = ls.leaveHrs + ls.sickHrs;
-        const publicHols   = 88;
-        // Full-time base then scale proportionally
+        const ls            = lifestyleData[currentLifestyle];
+        const leaveHrs      = ls.leaveHrs + ls.sickHrs;
+        const publicHols    = 88;
         const fullTimeAvail = 2080 - leaveHrs - publicHols;
-        const scaledAvail   = fullTimeAvail * (daysPerWeek / 5);
-        const billableHrs  = Math.max(scaledAvail * (1 - adminPct / 100), 100);
+        const scaledAvail   = fullTimeAvail * daysFraction;
+        const adminHrs      = scaledAvail * adminPct / 100;
+        const billableHrs   = Math.max(scaledAvail - adminHrs, 100);
 
-        // Update the available hours field to reflect scaling (read-only display)
-        document.getElementById('availableHours').value = Math.round(scaledAvail + leaveHrs + publicHols);
+        document.getElementById('availableHours').value = Math.round(scaledAvail);
 
         const expenses = ['workspace','software','computer','marketing','insurance',
                           'accountant','internet','phone','development','stationery','otherExpenses']
             .reduce((s, id) => s + (parseFloat(document.getElementById(id).value) || 0), 0);
 
-        const gross        = grossForNet(targetNet);
-        const incomeTax    = calcIncomeTax(gross);
-        const medicare     = calcMedicare(gross);
-        const totalTax     = incomeTax + medicare;
+        const gross         = grossForNet(targetNet);
+        const incomeTax     = calcIncomeTax(gross);
+        const medicare      = calcMedicare(gross);
+        const totalTax      = incomeTax + medicare;
         const effectiveRate = (totalTax / gross * 100).toFixed(1);
 
-        const superAmount  = gross * superRate / 100;
-        const hasHecs      = document.getElementById('hecsToggle').checked;
-        const hecsAmount   = hasHecs ? calcHecs(gross) : 0;
-        const hecsRate     = hasHecs ? (hecsRates.find(b => gross < b.max) || hecsRates[hecsRates.length-1]).rate * 100 : 0;
-        const totalNeeded  = gross + expenses + superAmount + hecsAmount;
-        const hourlyRate   = totalNeeded / billableHrs;
+        const superAmount = gross * superRate / 100;
+        const hasHecs     = document.getElementById('hecsToggle').checked;
+        const hecsAmount  = hasHecs ? calcHecs(gross) : 0;
+        const totalNeeded = gross + expenses + superAmount + hecsAmount;
+        const hourlyRate  = totalNeeded / billableHrs;
 
-        // ── Update UI ──────────────────────────────────────────────────────
-        document.getElementById('hourlyRateDisplay').textContent  = Math.round(hourlyRate);
-        document.getElementById('benchmarkRate').textContent      = Math.round(hourlyRate);
+        // ── Results ────────────────────────────────────────────────────────
+        document.getElementById('hourlyRateDisplay').textContent = Math.round(hourlyRate);
+        document.getElementById('benchmarkRate').textContent     = Math.round(hourlyRate);
 
-        document.getElementById('taxTakeHome').textContent        = fmt(targetNet);
-        document.getElementById('taxIncomeTax').textContent       = fmt(incomeTax);
-        document.getElementById('taxMedicare').textContent        = fmt(medicare);
-        document.getElementById('taxEffectiveRate').textContent   = effectiveRate;
-        document.getElementById('taxGross').textContent           = fmt(gross);
-        document.getElementById('hecsRow').style.display          = hasHecs ? '' : 'none';
-        document.getElementById('taxHecs').textContent            = fmt(hecsAmount);
-        document.getElementById('hecsHint').style.display         = hasHecs ? '' : 'none';
-        document.getElementById('hecsHint').textContent           = hasHecs
-            ? `Compulsory repayment rate at this income: ${hecsRate.toFixed(1)}% = $${fmt(hecsAmount)}/yr. This is added to your rate so you're not out of pocket.`
+        document.getElementById('taxTakeHome').textContent      = fmt(targetNet);
+        document.getElementById('taxIncomeTax').textContent     = fmt(incomeTax);
+        document.getElementById('taxMedicare').textContent      = fmt(medicare);
+        document.getElementById('taxEffectiveRate').textContent = effectiveRate;
+        document.getElementById('taxGross').textContent         = fmt(gross);
+        document.getElementById('hecsRow').style.display        = hasHecs ? '' : 'none';
+        document.getElementById('taxHecs').textContent          = fmt(hecsAmount);
+
+        const hecsHint = document.getElementById('hecsHint');
+        hecsHint.style.display = hasHecs ? '' : 'none';
+        hecsHint.textContent = hasHecs
+            ? (hecsAmount > 0
+                ? `Repayment: ${hecsMarginalLabel(gross)} = $${fmt(hecsAmount)}/yr. Added to your rate so you aren't out of pocket.`
+                : `No compulsory repayment below $69,528. Your gross income is $${fmt(gross)}.`)
             : '';
 
-        document.getElementById('totalExpenses').textContent      = fmt(expenses);
-        document.getElementById('totalSuper').textContent         = fmt(superAmount);
-        document.getElementById('billableHours').textContent      = Math.round(billableHrs);
+        document.getElementById('totalExpenses').textContent = fmt(expenses);
+        document.getElementById('totalSuper').textContent    = fmt(superAmount);
+        document.getElementById('billableHours').textContent = Math.round(billableHrs);
+        document.getElementById('salaryDisplay').textContent = fmt(fullTimeSalary);
 
-        document.getElementById('salaryDisplay').textContent      = fmt(fullTimeSalary);
+        // Benchmark verdict
+        const band = experienceDefaults[levelKey];
+        document.querySelectorAll('.benchmark-row[data-level]').forEach(r => {
+            r.classList.toggle('current-level', r.dataset.level === levelKey);
+        });
+        const v = document.getElementById('benchmarkVerdict');
+        const r = Math.round(hourlyRate);
+        v.classList.remove('in-range', 'below', 'above');
+        if (r < band.low) {
+            v.classList.add('below');
+            v.textContent = `$${r} sits below the $${band.low}–${band.high === Infinity ? '' : band.high} benchmark for your level. Check whether you have left costs out, or set the income goal too low.`;
+        } else if (band.high !== Infinity && r > band.high) {
+            v.classList.add('above');
+            v.textContent = `$${r} sits above the $${band.low}–${band.high} benchmark. That can be justified, but be ready to explain what the client is getting for it.`;
+        } else {
+            v.classList.add('in-range');
+            v.textContent = `$${r} sits inside the benchmark range for your level. That is a defensible rate to quote.`;
+        }
 
-        // Show scaled take-home if part time
+        // Part-time salary hint
         const salaryHint = document.getElementById('salaryScaleHint');
         if (daysPerWeek < 5) {
             salaryHint.textContent = `At ${daysPerWeek} days/week: actual take-home $${fmt(targetNet)}/yr`;
@@ -1237,35 +1293,37 @@
         }
 
         // Breakdown
-        document.getElementById('calcGross').textContent          = fmt(gross);
-        document.getElementById('calcExpenses').textContent       = fmt(expenses);
-        document.getElementById('calcSuper').textContent          = fmt(superAmount);
-        document.getElementById('calcHours').textContent          = Math.round(billableHrs);
-        document.getElementById('calcResult').textContent         = Math.round(hourlyRate);
-
-        document.getElementById('detailLeave').textContent        = leaveHrs;
-        document.getElementById('detailDays').textContent         = daysPerWeek;
-        document.getElementById('detailAdmin').textContent        = Math.round(scaledAvail * adminPct / 100);
-        document.getElementById('detailBillable').textContent     = Math.round(billableHrs);
+        document.getElementById('calcGross').textContent    = fmt(gross);
+        document.getElementById('calcExpenses').textContent = fmt(expenses);
+        document.getElementById('calcSuper').textContent    = fmt(superAmount);
+        document.getElementById('calcHours').textContent    = Math.round(billableHrs);
+        document.getElementById('calcResult').textContent   = Math.round(hourlyRate);
+        document.getElementById('detailLeave').textContent  = leaveHrs;
+        document.getElementById('detailDays').textContent   = daysPerWeek;
+        document.getElementById('detailAdmin').textContent  = Math.round(adminHrs);
+        document.getElementById('detailBillable').textContent = Math.round(billableHrs);
 
         // ── Print sheet ────────────────────────────────────────────────────
-        const nameVal  = document.getElementById('name').value.trim();
         const levelEl  = document.getElementById('designerLevel');
         const levelTxt = levelEl.options[levelEl.selectedIndex].text;
+        const wsKey    = document.getElementById('workspaceType').value;
 
-        document.getElementById('ps-name').textContent        = nameVal || '—';
-        document.getElementById('ps-level').textContent       = levelTxt;
-        document.getElementById('ps-ftesalary').textContent   = fmt(fullTimeSalary);
-        document.getElementById('ps-dayslabel').textContent   = daysPerWeek === 5 ? '5 days/week' : `${daysPerWeek} days/week`;
-        document.getElementById('ps-takehome').textContent    = fmt(targetNet);
-        document.getElementById('ps-gross').textContent       = fmt(gross);
-        document.getElementById('ps-tax').textContent         = fmt(incomeTax);
-        document.getElementById('ps-medicare').textContent    = fmt(medicare);
-        document.getElementById('ps-taxrate').textContent     = effectiveRate;
-        document.getElementById('ps-superrate').textContent   = superRate;
-        document.getElementById('ps-super').textContent       = fmt(superAmount);
-        document.getElementById('ps-hecsRow').style.display   = hasHecs ? '' : 'none';
-        document.getElementById('ps-hecs').textContent        = fmt(hecsAmount);
+        document.getElementById('ps-name').textContent          = document.getElementById('name').value.trim() || '—';
+        document.getElementById('ps-studentnumber').textContent = document.getElementById('studentNumber').value.trim() || '—';
+        document.getElementById('ps-level').textContent         = levelTxt;
+        document.getElementById('ps-date').textContent          = new Date().toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+        document.getElementById('ps-workspacetype').textContent = workspaceData[wsKey].label;
+        document.getElementById('ps-ftesalary').textContent     = fmt(fullTimeSalary);
+        document.getElementById('ps-dayslabel').textContent     = `${daysPerWeek} days/week`;
+        document.getElementById('ps-takehome').textContent      = fmt(targetNet);
+        document.getElementById('ps-gross').textContent         = fmt(gross);
+        document.getElementById('ps-tax').textContent           = fmt(incomeTax);
+        document.getElementById('ps-medicare').textContent      = fmt(medicare);
+        document.getElementById('ps-taxrate').textContent       = effectiveRate;
+        document.getElementById('ps-superrate').textContent     = superRate;
+        document.getElementById('ps-super').textContent         = fmt(superAmount);
+        document.getElementById('ps-hecsRow').style.display     = hasHecs ? '' : 'none';
+        document.getElementById('ps-hecs').textContent          = fmt(hecsAmount);
 
         const expenseMap = {
             'ps-workspace':   'workspace',
@@ -1281,70 +1339,77 @@
             'ps-other':       'otherExpenses',
         };
         for (const [psId, inputId] of Object.entries(expenseMap)) {
-            const val = parseFloat(document.getElementById(inputId).value) || 0;
-            document.getElementById(psId).textContent = fmt(val);
+            document.getElementById(psId).textContent = fmt(parseFloat(document.getElementById(inputId).value) || 0);
         }
-        document.getElementById('ps-totalexpenses').textContent  = fmt(expenses);
+        document.getElementById('ps-totalexpenses').textContent = fmt(expenses);
 
-        document.getElementById('ps-days').textContent           = daysPerWeek;
-        document.getElementById('ps-leave').textContent          = leaveHrs;
-        document.getElementById('ps-admin').textContent          = Math.round(scaledAvail * adminPct / 100);
-        document.getElementById('ps-billable').textContent       = Math.round(billableHrs);
-        document.getElementById('ps-rate').textContent           = Math.round(hourlyRate);
-        document.getElementById('ps-f-gross').textContent        = fmt(gross);
-        document.getElementById('ps-f-expenses').textContent     = fmt(expenses);
-        document.getElementById('ps-f-super').textContent        = fmt(superAmount);
-        document.getElementById('ps-f-hours').textContent        = Math.round(billableHrs);
-        document.getElementById('ps-f-result').textContent       = Math.round(hourlyRate);
+        document.getElementById('ps-days').textContent      = daysPerWeek;
+        document.getElementById('ps-leave').textContent     = leaveHrs;
+        document.getElementById('ps-admin').textContent     = Math.round(adminHrs);
+        document.getElementById('ps-billable').textContent  = Math.round(billableHrs);
+        document.getElementById('ps-rate').textContent      = Math.round(hourlyRate);
+        document.getElementById('ps-f-gross').textContent   = fmt(gross);
+        document.getElementById('ps-f-expenses').textContent = fmt(expenses);
+        document.getElementById('ps-f-super').textContent   = fmt(superAmount);
+        document.getElementById('ps-f-hours').textContent   = Math.round(billableHrs);
+        document.getElementById('ps-f-result').textContent  = Math.round(hourlyRate);
 
-        // Hours hint
+        // Hints
         const workWeeks = (scaledAvail / (8 * daysPerWeek)).toFixed(1);
         const daysLabel = daysPerWeek === 5 ? 'Full time' : `${daysPerWeek} day${daysPerWeek > 1 ? 's' : ''}/week`;
         document.getElementById('hoursHint').textContent = `${daysLabel} — ≈ ${workWeeks} working weeks`;
 
-        // Days slider hint
         const daysHints = {
-            1: '1 day/week — fixed costs spread across very few hours, so rate is much higher',
-            2: '2 days/week — part time; rate rises significantly to cover fixed costs',
-            3: '3 days/week — part time; rate still higher than full time',
-            4: '4 days/week — near full time',
-            5: 'Full time — fixed costs spread across the most hours, so rate is lowest',
+            1: '1 day/week: fixed costs spread across very few hours, so the rate is much higher',
+            2: '2 days/week: part time; the rate rises significantly to cover fixed costs',
+            3: '3 days/week: part time; the rate is still higher than full time',
+            4: '4 days/week: near full time',
+            5: 'Full time: fixed costs spread across the most hours, so the rate is lowest',
         };
-        document.getElementById('daysDisplay').textContent  = daysPerWeek;
-        document.getElementById('daysHint').textContent     = daysHints[daysPerWeek];
+        document.getElementById('daysDisplay').textContent = daysPerWeek;
+        document.getElementById('daysHint').textContent    = daysHints[daysPerWeek];
     }
 
     function setLifestyle(style) {
         currentLifestyle = style;
-        document.querySelectorAll('.lifestyle-btn').forEach(b => b.classList.remove('active'));
-        document.querySelector(`[data-style="${style}"]`).classList.add('active');
+        document.querySelectorAll('.lifestyle-btn').forEach(b => {
+            b.setAttribute('aria-pressed', String(b.dataset.style === style));
+        });
         calculate();
     }
 
     // ── Event listeners ────────────────────────────────────────────────────
-    document.getElementById('salarySlider').addEventListener('input', calculate);
-    document.getElementById('hecsToggle').addEventListener('change', calculate);
-    document.getElementById('daysPerWeek').addEventListener('input', calculate);
+    ['name', 'studentNumber'].forEach(id => {
+        const el = document.getElementById(id);
+        el.addEventListener('input', () => { checkIdentity(); calculate(); });
+        el.addEventListener('blur', () => { el.dataset.touched = 'true'; checkIdentity(); });
+    });
+
     document.getElementById('designerLevel').addEventListener('change', function () {
-        const d = experienceDefaults[this.value];
-        document.getElementById('salarySlider').value = d.salary;
+        document.getElementById('salarySlider').value = experienceDefaults[this.value].salary;
         calculate();
     });
+
     document.getElementById('workspaceType').addEventListener('change', function () {
         const d = workspaceData[this.value];
         document.getElementById('workspace').value = d.cost;
         document.getElementById('workspaceHint').textContent = d.hint;
+        document.getElementById('internet').value = d.internet;
+        document.getElementById('internetHint').textContent = d.netHint;
         calculate();
     });
+
     document.querySelectorAll('.lifestyle-btn').forEach(btn => {
         btn.addEventListener('click', () => setLifestyle(btn.dataset.style));
     });
+
     document.querySelectorAll('input, select').forEach(el => {
         el.addEventListener('input', calculate);
+        el.addEventListener('change', calculate);
     });
 
-    // Init — emerging defaults
-    document.getElementById('salarySlider').value = 45000;
+    // Init
+    checkIdentity();
     calculate();
 </script>
 </body>
