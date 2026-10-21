@@ -196,8 +196,8 @@
   <details>
     <summary>Can I use AI?</summary>
     <div class="inner">
-      <p><strong>Yes:</strong> Photoshop's built-in AI (Firefly) to help finish your composite. For example, Generative Fill to make a shadow, Generative Expand to extend a background, Harmonize, or Remove.</p>
-      <p><strong>No:</strong> AI that makes the whole image. AI-made images from Adobe Stock. Your own photos must be the main parts.</p>
+      <p><strong>Yes:</strong> any generative AI tool to help finish your composite. This includes Photoshop's built-in tools (Generative Fill, Generative Expand, Harmonize, Lens Blur) and other tools like Nano Banana in Gemini, if you have access.</p>
+      <p><strong>No:</strong> replacing everything with AI. Your AT3 must still be a composite of photos. Use AI to help join, light or finish the photos, not to make the picture for you.</p>
       <p>AI gives you a guess, not an answer. You decide if it worked. Zoom to 100% and check:</p>
       <div class="starter">
         <p>Does the light come from the same side as the rest?</p>
@@ -229,15 +229,15 @@ var ideas = [
     cat: 'change', time: 'medium',
     name: 'Swap one of your photos',
     tryThis: 'Replace one image with a different one from Adobe Stock.',
-    why: 'Often the photo is the problem, not your skills. A photo with matching light is easier to use than a wrong one you have to fix.',
+    why: 'Often the photo is the problem, not your skills. A photo with matching light and angle is easier to use than a wrong one you have to fix.',
     steps: [
       'Pick the part of your composite that looks least right.',
-      'Find two other options on Adobe Stock. Look for light coming from the same side.',
+      'Find two other options on Adobe Stock. Look for light coming from the same side, and a similar camera height.',
       'Place each one and mask it in.',
       'Save a version of each. Compare them side by side.'
     ],
     watch: 'Check the camera angle matches before you spend time masking.',
-    link: ['Phlearn: choose photos for compositing', 'https://phlearn.com/tutorial/choose-photos-for-compositing/']
+    link: ['tutvid: 10 steps to blend images and build a composite (2022)', 'https://www.youtube.com/watch?v=g3qe4rDw1XU']
   },
   {
     cat: 'change', time: 'medium',
@@ -247,25 +247,27 @@ var ideas = [
     steps: [
       'Hide your old background layer.',
       'Place the new background at the bottom of your layers.',
-      'Check the shadows on your subject fall the same way as the new background.',
+      'Check the light on your subject comes from the same side as the new background.',
+      'Warm up or cool down your subject to match.',
       'Save both versions. Compare them.'
     ],
-    watch: 'You may need to warm up or cool down your subject to match the new light.',
-    link: ['Phlearn: compositing with stock images', 'https://phlearn.com/tutorial/advanced-compositing-stock-images/']
+    watch: 'Shadows falling the wrong way give the game away faster than anything.',
+    link: ['Layer Life: change background and match lighting (2022)', 'https://www.youtube.com/watch?v=FLD0MtlM4qA']
   },
   {
-    cat: 'change', time: 'quick',
-    name: 'Flip something',
-    tryThis: 'Mirror one element from left to right.',
-    why: 'It changes where the eye goes. A subject that faces into the picture pulls the viewer in.',
+    cat: 'change', time: 'medium',
+    name: 'Make something giant or tiny',
+    tryThis: 'Make a person or object huge, or shrink it down to toy size.',
+    why: 'Odd scale turns an everyday picture into a story. The viewer has to ask what is going on.',
     steps: [
-      'Select the layer.',
-      'Go to <strong>Edit &gt; Transform &gt; Flip Horizontal</strong>.',
-      'Toggle the layer to compare with the original.',
-      'Keep the one that works better.'
+      'Right-click the layer. Choose <strong>Convert to Smart Object</strong>.',
+      'Press <strong>Cmd+T</strong> and drag a corner to resize.',
+      'Put it next to something we all know the size of, like a door, a car or a cup. That is what sells the scale.',
+      'Give it a shadow that matches its new size.',
+      'Zoom to 100% to check it is still sharp.'
     ],
-    watch: 'The light on that element now comes from the other side. Any text will read backwards.',
-    link: ['Adobe Help: transform layers', 'https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/apply-transformations.html']
+    watch: 'Tiny things sit close to the camera, so the background behind them is often blurry. Giant things fade a little into the haze.',
+    link: ['This Guy Does Photoshop: giant object composite (2021)', 'https://www.youtube.com/watch?v=-uNZIw0Nh7o']
   },
   {
     cat: 'change', time: 'medium',
@@ -279,21 +281,28 @@ var ideas = [
       'Compare it with your original.'
     ],
     watch: 'If it goes too far, that is fine. Now you know where the limit is.',
-    link: ['Phlearn: compositing for beginners', 'https://phlearn.com/tutorial/beginners-guide-compositing/']
+    link: ['Ashley Creates: surreal composite for beginners (2025)', 'https://www.youtube.com/watch?v=V1C3HaNp3PQ']
   },
   {
-    cat: 'change', time: 'quick',
-    name: 'Change the size of something',
-    tryThis: 'Make something small very big. Or make something big very small.',
-    why: 'Odd sizes are a fast way to turn an everyday picture into something surprising.',
+    cat: 'change', time: 'quick', ai: true,
+    name: 'Make your background bigger with Generative Expand',
+    tryThis: 'Let Photoshop AI add more background around the edges.',
+    why: 'Sometimes your background is too tight or the wrong shape. Expanding it gives your subject room to breathe.',
     steps: [
-      'Right-click the layer. Choose <strong>Convert to Smart Object</strong>.',
-      'Press <strong>Cmd+T</strong> and drag a corner.',
-      'Change the shadow to match the new size.',
-      'Zoom to 100% to check it is still sharp.'
+      'Choose the <strong>Crop Tool (C)</strong>.',
+      'Drag the edges out past the image.',
+      'Set Fill to <strong>Generative Expand</strong> in the options bar.',
+      'Leave the prompt empty, or describe what you want. Click <strong>Generate</strong>.',
+      'Look at all three options. Pick the best one.'
     ],
-    watch: 'Small photos go blurry when you make them big.',
-    link: ['Phlearn: compositing with stock images, part 2', 'https://phlearn.com/tutorial/advanced-compositing-stock-images-two/']
+    check: [
+      'lines like the horizon, walls and roads join up with no step.',
+      'the new area has the same light, colour and blur as the original.',
+      'nothing strange has appeared, like extra people, melted shapes or fake text.',
+      'the new part has the same grain as the photo.'
+    ],
+    watch: 'Make sure your image is still at least 2048 px square at the end.',
+    link: ['Graphician: Generative Expand (2023)', 'https://www.youtube.com/watch?v=ffvYYwsMTYA']
   },
   {
     cat: 'real', time: 'medium',
@@ -308,22 +317,7 @@ var ideas = [
       'Output to <strong>Layer Mask</strong>.'
     ],
     watch: 'Use a small brush. Take a close-up screenshot for your report.',
-    link: ['Phlearn: Select and Mask', 'https://phlearn.com/tutorial/select-and-mask-photoshop/']
-  },
-  {
-    cat: 'real', time: 'quick',
-    name: 'Remove a coloured halo',
-    tryThis: 'Get rid of the thin line of old background colour around a cut-out.',
-    why: 'A green or blue line around a subject shows it was cut out. Removing it helps everything look like one photo.',
-    steps: [
-      'Zoom to 200% on the edge.',
-      'Double-click the layer mask to open Select and Mask.',
-      'Tick <strong>Decontaminate Colors</strong>. Move the Amount slider.',
-      'Output to a new layer with layer mask.',
-      'Take a before and after screenshot.'
-    ],
-    watch: 'Look at the edge on a light and a dark background. Halos hide on one and show on the other.',
-    link: ['PiXimperfect: remove colour fringing', 'https://www.youtube.com/watch?v=67paSOVpiHM']
+    link: ['PiXimperfect: secret setting for hair masks (2024)', 'https://www.youtube.com/watch?v=5L9GCf7BXmY']
   },
   {
     cat: 'real', time: 'medium',
@@ -338,7 +332,7 @@ var ideas = [
       'Lower the layer opacity until it looks natural.'
     ],
     watch: 'The shadow is darkest where the subject touches the ground.',
-    link: ['PhotoshopCAFE: cast shadows', 'https://photoshopcafe.com/create-cast-shadow-photoshop-tutorial/']
+    link: ['PiXimperfect: master shadows and lighting in compositing (2021)', 'https://www.youtube.com/watch?v=Da4axkDKzxQ']
   },
   {
     cat: 'real', time: 'quick', ai: true,
@@ -360,33 +354,12 @@ var ideas = [
       'the ground texture still looks like the rest of the ground.'
     ],
     watch: 'Compare it with a shadow you paint yourself. Write about which one worked better.',
-    link: ['Adobe Help: Generative Fill', 'https://helpx.adobe.com/au/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html']
-  },
-  {
-    cat: 'change', time: 'quick', ai: true,
-    name: 'Make your background bigger with Generative Expand',
-    tryThis: 'Let Photoshop AI add more background around the edges.',
-    why: 'Sometimes your background is too tight or the wrong shape. Expanding it gives your subject more room.',
-    steps: [
-      'Choose the <strong>Crop Tool (C)</strong>.',
-      'Drag the edges out past the image.',
-      'Set Fill to <strong>Generative Expand</strong> in the options bar.',
-      'Leave the prompt empty, or describe what you want. Click <strong>Generate</strong>.',
-      'Look at all three options. Pick the best one.'
-    ],
-    check: [
-      'lines like the horizon, walls and roads join up with no step.',
-      'the new area has the same light, colour and blur as the original.',
-      'nothing strange has appeared, like extra people, melted shapes or fake text.',
-      'the new part has the same grain as the photo.'
-    ],
-    watch: 'Make sure your image is still at least 2048 px square at the end.',
-    link: ['Adobe Help: Generative Expand', 'https://helpx.adobe.com/au/photoshop/desktop/create-open-import-images/create-images/explore-beyond-the-canvas-with-generative-expand.html']
+    link: ['steeletraining: the Generative Fill shadow trick (2025)', 'https://www.youtube.com/watch?v=OEhqPVlsFhA']
   },
   {
     cat: 'real', time: 'quick', ai: true,
     name: 'Try Harmonize',
-    tryThis: 'Let Photoshop match the colour of one element to your background.',
+    tryThis: 'Let Photoshop match the colour and light of one element to your background.',
     why: 'Matching colour by hand takes time. Harmonize does a first try in seconds. Your job is to decide if it looks right.',
     steps: [
       'Select the layer.',
@@ -400,105 +373,137 @@ var ideas = [
       'fine detail and texture have not been smoothed away.'
     ],
     watch: 'It can overdo it. Undo, or lower the layer opacity, if it looks worse.',
-    link: ['Adobe: Harmonize', 'https://www.adobe.com/au/learn/photoshop/web/harmonize-blend-layers-photoshop-mobile']
+    link: ['Adobe Photoshop: Harmonize (2025)', 'https://www.youtube.com/watch?v=J8kO0KLtxI0']
   },
   {
-    cat: 'real', time: 'quick',
-    name: 'Fix the colour of one thing',
-    tryThis: 'Fix one element that is too bright, too colourful, or the wrong colour.',
-    why: 'Changing only one layer fixes the problem without messing up the rest.',
+    cat: 'real', time: 'medium', ai: true,
+    name: 'Ask another AI tool for one change',
+    tryThis: 'Use an AI image tool outside Photoshop, like Nano Banana in Gemini, to make one small change to your composite.',
+    why: 'Different AI tools are good at different things. Asking for one change, not a new picture, keeps your photos in charge.',
     steps: [
-      'Add a <strong>Hue/Saturation</strong> adjustment layer above the element.',
-      'Hold <strong>Option</strong> and click the line between the two layers. Now it only changes that one layer.',
-      'Move Saturation and Lightness until it sits in.',
-      'Toggle to compare.'
+      'Save a JPEG of your composite.',
+      'Upload it to the AI tool.',
+      'Ask for one change and say to keep everything else the same. For example: "Add a soft shadow under the dog. Keep everything else exactly the same."',
+      'Download the result. Place it on top of your layers in Photoshop.',
+      'Add a black mask. Paint white only where you want the AI change to show.'
     ],
-    watch: 'Use the dropdown (for example, Reds) to change one colour only.',
-    link: ['Phlearn: Hue/Saturation', 'https://phlearn.com/tutorial/how-to-use-huesaturation-in-photoshop/']
-  },
-  {
-    cat: 'real', time: 'challenge',
-    name: 'Match dark and light tones with Curves',
-    tryThis: 'Give the shadows and highlights of one element the same colour tint as the background.',
-    why: 'When all the shadows share one tint, it looks like one light lit everything.',
-    steps: [
-      'Add a <strong>Curves</strong> layer. Option-click to clip it to the element.',
-      'Look at the shadows in your background. Are they warm or cool?',
-      'Change the dropdown from RGB to Red, Green or Blue.',
-      'Nudge the bottom of the curve to match the shadows. Nudge the top to match the highlights.'
+    check: [
+      'only the part you asked for has changed.',
+      'faces, hands and text have not been changed or warped.',
+      'the AI part is as sharp as the photos around it.',
+      'the light and colour still match the rest of your composite.'
     ],
-    watch: 'Make tiny moves. A little goes a long way.',
-    link: ['Fstoppers: colour match with Curves', 'https://fstoppers.com/education/how-color-match-curves-photoshop-552571']
-  },
-  {
-    cat: 'real', time: 'quick',
-    name: 'Remove something you do not want',
-    tryThis: 'Remove a sign, logo, stray person or messy join.',
-    why: 'Small distractions pull the eye away and break the illusion.',
-    steps: [
-      'Make a merged copy on top: <strong>Shift+Option+Cmd+E</strong>.',
-      'Draw around the thing with the <strong>Lasso (L)</strong>.',
-      'Go to <strong>Edit &gt; Content-Aware Fill</strong>. Click OK.',
-      'Tidy any marks with the <strong>Healing Brush</strong>.'
-    ],
-    watch: 'It works best on sky, grass and walls. It struggles with faces and patterns.',
-    link: ['Adobe Help: Content-Aware Fill', 'https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/remove-objects-with-content-aware-fill.html']
+    watch: 'Many AI tools give back a smaller image than you gave them. Check the size. Your final file must be at least 2048 px square.',
+    link: ['Google: Nano Banana image editing in Gemini', 'https://gemini.google/overview/image-generation/']
   },
   {
     cat: 'real', time: 'challenge',
-    name: 'Bend something to fit a surface',
-    tryThis: 'Bend a flat image so it wraps around something curved.',
-    why: 'A flat image on a round surface looks stuck on. Bending it makes it sit in the scene.',
+    name: 'Add a reflection',
+    tryThis: 'Make your subject reflect in water, a shiny floor or a window.',
+    why: 'A reflection ties the subject to the surface it stands on. It also adds a second, quieter version of your story.',
     steps: [
-      'Right-click the layer. Choose <strong>Convert to Smart Object</strong>.',
-      'Go to <strong>Edit &gt; Transform &gt; Warp</strong>.',
-      'Drag the grid to follow the shape of the surface.',
-      'Double-click the layer thumbnail later if you want to change it.'
+      'Duplicate your subject layer (<strong>Cmd+J</strong>).',
+      'Go to <strong>Edit &gt; Transform &gt; Flip Vertical</strong>. Move it down so the two meet at the base.',
+      'Lower its opacity to 30 to 50%.',
+      'For water, add <strong>Filter &gt; Distort &gt; Ripple</strong>. For a floor, add a little <strong>Motion Blur</strong> straight down.',
+      'Add a mask. Use a black to white gradient so the reflection fades away.'
     ],
-    watch: 'Check the light on the bent part still matches the surface.',
-    link: ['Adobe Help: Warp', 'https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/reshape-and-distort-images-with-transform-warp.html']
+    watch: 'Reflections are usually a bit darker than the real thing.',
+    link: ['Charles Cabrera: water reflection with ripples (2022)', 'https://www.youtube.com/watch?v=RnJm5YWBsi0']
+  },
+  {
+    cat: 'mood', time: 'quick',
+    name: 'Add fog or mist',
+    tryThis: 'Roll some fog through your scene.',
+    why: 'Fog adds mystery and depth. It also hides joins between photos, which is handy.',
+    steps: [
+      'Make a new layer. Press <strong>D</strong> to set black and white colours.',
+      'Go to <strong>Filter &gt; Render &gt; Clouds</strong>.',
+      'Set the blend mode to <strong>Screen</strong>. Lower the opacity to 20 to 40%.',
+      'Add a mask. Paint black with a soft brush to clear fog from your subject.'
+    ],
+    watch: 'Fog is thicker in the distance and near the ground. Things behind fog lose contrast.',
+    link: ['Glyn Dewis: add smoke, fog and mist with Photoshop (2022)', 'https://www.youtube.com/watch?v=3Ty3q1RpC7Q']
   },
   {
     cat: 'mood', time: 'medium',
-    name: 'Blur the background',
-    tryThis: 'Keep your subject sharp. Blur what is around it.',
-    why: 'This copies how a camera lens works. It points the viewer straight at your subject.',
+    name: 'Add light rays',
+    tryThis: 'Add beams of light coming through a window, trees or clouds.',
+    why: 'Light rays point the eye where you want it. They make a scene feel warm, holy or dramatic.',
     steps: [
-      'Make a merged copy: <strong>Shift+Option+Cmd+E</strong>. Convert it to a Smart Object.',
-      'Go to <strong>Filter &gt; Blur Gallery &gt; Iris Blur</strong>.',
-      'Drag the centre pin onto your subject.',
-      'Set the blur to 10 to 20 px.'
+      'Make a new layer.',
+      'Use the <strong>Polygonal Lasso (L)</strong> to draw a few long, thin beams from the light source.',
+      'Fill them with white or a warm yellow.',
+      'Go to <strong>Filter &gt; Blur &gt; Gaussian Blur</strong>. Try 20 to 40 px.',
+      'Set the blend mode to <strong>Screen</strong>. Lower the opacity until they look soft.'
+    ],
+    watch: 'The rays must come from where the light really is in your picture.',
+    link: ['yk design: light rays and shadows (2023)', 'https://www.youtube.com/watch?v=nBKDXbfL9LM']
+  },
+  {
+    cat: 'mood', time: 'quick',
+    name: 'Make a light glow',
+    tryThis: 'Turn on a lamp, a street light, a screen or a window.',
+    why: 'A glowing light gives a scene life and a clear focus. It works well at dusk or night.',
+    steps: [
+      'Make a new layer. Set the blend mode to <strong>Color Dodge</strong> or <strong>Screen</strong>.',
+      'Pick a warm colour from the light itself.',
+      'Use a big, soft brush at 20% opacity. Tap a few times over the light.',
+      'Make a second layer with an even bigger, fainter glow.',
+      'Paint a faint glow on nearby surfaces too. Light spills onto things around it.'
+    ],
+    watch: 'A glow only reads if the area around it is darker. Try darkening the scene a little first.',
+    link: ['VerticDesigns: turn on any light (2023)', 'https://www.youtube.com/live/xONJ6N3i7iE']
+  },
+  {
+    cat: 'mood', time: 'quick',
+    name: 'Colour grade with a gradient map',
+    tryThis: 'Give the whole image a film-style colour look.',
+    why: 'A shared colour grade pulls photos from different places into one world. It also sets the mood.',
+    steps: [
+      'Add a <strong>Gradient Map</strong> adjustment layer at the top.',
+      'Click the gradient and try a few presets.',
+      'Set the blend mode to <strong>Soft Light</strong> or <strong>Color</strong>.',
+      'Lower the opacity to 20 to 40%.',
+      'Try three different gradients. Keep the one that suits your story.'
+    ],
+    watch: 'Check skin still looks like skin.',
+    link: ['Resource Boy: gradient maps for colour grading (2025)', 'https://www.youtube.com/watch?v=3OPKgkMY1AY']
+  },
+  {
+    cat: 'mood', time: 'medium',
+    name: 'Add rain',
+    tryThis: 'Make it rain in your scene.',
+    why: 'Weather changes the whole story. A sunny scene feels very different in the rain.',
+    steps: [
+      'Make a new layer and fill it with black.',
+      'Go to <strong>Filter &gt; Noise &gt; Add Noise</strong>. Set it high and tick Monochromatic.',
+      'Go to <strong>Filter &gt; Blur &gt; Motion Blur</strong>. Tilt the angle a little. Set the distance to 30 to 50 px.',
+      'Set the blend mode to <strong>Screen</strong>.',
+      'Add <strong>Levels</strong> (Cmd+L) to thin out the drops.'
+    ],
+    watch: 'Rain makes everything darker, cooler and wetter. A bright blue sky with rain looks wrong.',
+    link: ['Kingy AI: realistic rain in Photoshop (2022)', 'https://www.youtube.com/watch?v=bCX2DfQuYFc']
+  },
+  {
+    cat: 'mood', time: 'quick', ai: true,
+    name: 'Blur the background with Lens Blur',
+    tryThis: 'Keep your subject sharp. Blur what is behind it, like a real camera lens.',
+    why: 'It points the viewer straight at your subject. It also hides small flaws in the background.',
+    steps: [
+      'Make a merged copy: <strong>Shift+Option+Cmd+E</strong>. Right-click and convert it to a Smart Object.',
+      'Go to <strong>Filter &gt; Camera Raw Filter</strong>.',
+      'Open the <strong>Lens Blur</strong> panel and tick Apply.',
+      'Move the Blur Amount slider. Click on your subject to set the focus.'
+    ],
+    check: [
+      'your subject is fully sharp, including hair and edges.',
+      'things at the same distance have the same amount of blur.',
+      'there are no sharp patches left in the background.',
+      'the blur grows smoothly as things get further away.'
     ],
     watch: 'Too much blur looks like a filter, not a lens. Start low.',
-    link: ['PiXimperfect: depth of field', 'https://www.youtube.com/watch?v=9ToI3OMXuVw']
-  },
-  {
-    cat: 'mood', time: 'quick',
-    name: 'Take the colour out',
-    tryThis: 'Make everything black and white except your subject. Or try the reverse.',
-    why: 'Colour pulls the eye. This is a strong way to show what matters most.',
-    steps: [
-      'Add a <strong>Hue/Saturation</strong> layer at the top.',
-      'Drag Saturation to -100.',
-      'Paint black on its mask over the parts you want to keep in colour.',
-      'Lower the layer opacity to 70 to 80% if it feels too heavy.'
-    ],
-    watch: 'This works best when your subject has a clear outline.',
-    link: ['Adobe Help: Hue/Saturation', 'https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-a-hue-or-saturation-adjustment.html']
-  },
-  {
-    cat: 'mood', time: 'quick',
-    name: 'Add contrast with a curve',
-    tryThis: 'Give the whole image a gentle boost of contrast.',
-    why: 'A last contrast tweak helps all the parts feel like one picture.',
-    steps: [
-      'Add a <strong>Curves</strong> layer at the top. Do not clip it.',
-      'Lift a point near the top right a little.',
-      'Drop a point near the bottom left a little. The line now looks like a soft S.',
-      'Toggle to compare. Lower the opacity if it is too strong.'
-    ],
-    watch: 'Too steep and you lose detail in the dark areas.',
-    link: ['Phlearn: Curves', 'https://phlearn.com/tutorial/photoshop-basics-curves/']
+    link: ['Doodle Royalty: AI Lens Blur in Photoshop (2025)', 'https://www.youtube.com/watch?v=8-W2VFcZH5E']
   },
   {
     cat: 'mood', time: 'quick',
@@ -506,13 +511,13 @@ var ideas = [
     tryThis: 'Lay a light grain over the whole image.',
     why: 'Photos from different cameras have different textures. Grain gives them all the same one.',
     steps: [
-      'Search Adobe Stock for "film grain texture".',
-      'Place it as the top layer.',
-      'Set the blend mode to <strong>Soft Light</strong>.',
-      'Set opacity to 15 to 25%.'
+      'Make a merged copy: <strong>Shift+Option+Cmd+E</strong>. Convert it to a Smart Object.',
+      'Go to <strong>Filter &gt; Camera Raw Filter</strong>.',
+      'Open the <strong>Effects</strong> panel.',
+      'Set Grain to 15 to 30. Try changing Size and Roughness.'
     ],
     watch: 'You should only just see it. If it is obvious, it is too strong.',
-    link: ['Phlearn: compositing essentials', 'https://phlearn.com/tutorial/compositing-101-master-the-essentials/']
+    link: ['Layer Life: film grain effect (2021)', 'https://www.youtube.com/watch?v=AdXDcriMnqg']
   }
 ];
 
@@ -546,7 +551,7 @@ function show(i) {
   document.getElementById('why').textContent = d.why;
   document.getElementById('steps').innerHTML = d.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('');
   document.getElementById('watch').innerHTML = '<strong>Watch out:</strong> ' + d.watch;
-  document.getElementById('link').innerHTML = 'Show me: <a href="' + d.link[1] + '" target="_blank" rel="noopener">' + d.link[0] + '</a>';
+  document.getElementById('link').innerHTML = 'Watch: <a href="' + d.link[1] + '" target="_blank" rel="noopener">' + d.link[0] + '</a>';
   var card = document.getElementById('card');
   card.classList.remove('hidden');
   document.getElementById('go').textContent = 'Give me another idea';
