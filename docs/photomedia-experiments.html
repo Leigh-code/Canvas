@@ -1,431 +1,595 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Photomedia Experiments Generator</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experiment Ideas</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
-            line-height: 1.6;
-            color: #e8e8e8;
-            background: #2c2c2c;
-            padding: 1.5rem;
-            min-height: 100vh;
-        }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    line-height: 1.55;
+    color: #e8e8e8;
+    background: #2c2c2c;
+    padding: 1.5rem 16px;
+    min-height: 100vh;
+  }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
+  .wrap { max-width: 720px; margin: 0 auto; }
 
-        .page-header {
-            background: #1f1f1f;
-            color: #e8e8e8;
-            padding: 2rem;
-            margin-bottom: 1.5rem;
-            border: 1px solid #3a3a3a;
-            border-radius: 4px;
-        }
+  h1 { font-size: 1.6rem; font-weight: 500; margin-bottom: 0.25rem; }
+  .lead { color: #b8b8b8; margin-bottom: 1.5rem; }
 
-        .page-header h1 {
-            font-size: 1.75rem;
-            margin-bottom: 0.5rem;
-            font-weight: 400;
-            letter-spacing: 0;
-            color: #e8e8e8;
-        }
+  .label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #9a9a9a;
+    margin-bottom: 0.5rem;
+  }
 
-        .page-header p {
-            opacity: 0.7;
-            margin: 0;
-            font-weight: 400;
-            font-size: 0.95rem;
-        }
+  .chips { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
 
-        .info-block {
-            background: #262626;
-            border: 1px solid #3a3a3a;
-            padding: 1.25rem;
-            margin-bottom: 1.5rem;
-            font-size: 0.9rem;
-            border-radius: 4px;
-            color: #b8b8b8;
-        }
+  .chip {
+    background: #262626;
+    border: 1px solid #444;
+    color: #d0d0d0;
+    border-radius: 999px;
+    padding: 8px 16px;
+    font-size: 0.9rem;
+    cursor: pointer;
+  }
+  .chip:hover { border-color: #666; }
+  .chip[aria-pressed="true"] { background: #1473e6; border-color: #1473e6; color: #fff; }
 
-        .info-block strong {
-            color: #e8e8e8;
-        }
+  .go {
+    width: 100%;
+    background: #1473e6;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 14px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+  }
+  .go:hover { background: #0d66d0; }
 
-        .generate-btn {
-            background: #1473e6;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 14px;
-            font-weight: 400;
-            padding: 12px 24px;
-            width: 100%;
-            text-align: center;
-            transition: background 0.2s ease;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0;
-            border-radius: 4px;
-        }
+  .card {
+    background: #1f1f1f;
+    border: 1px solid #3a3a3a;
+    border-left: 4px solid #1473e6;
+    border-radius: 6px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .hidden { display: none; }
 
-        .generate-btn:hover {
-            background: #0d66d0;
-        }
+  .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+  .tag {
+    font-size: 0.75rem;
+    padding: 3px 10px;
+    border-radius: 999px;
+    background: #333;
+    color: #ccc;
+  }
+  .tag.quick { background: #1e3a2a; color: #8fd4a8; }
+  .tag.medium { background: #3a321e; color: #e6c27a; }
+  .tag.challenge { background: #3a1e2a; color: #e6a0bd; }
 
-        .generate-btn:active {
-            background: #095aba;
-        }
+  .card h2 { font-size: 1.4rem; font-weight: 500; margin-bottom: 1rem; color: #fff; }
 
-        .content-block {
-            background: #262626;
-            border: 1px solid #3a3a3a;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-            position: relative;
-        }
+  .row { margin-bottom: 1rem; }
+  .row h3 { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.5px; color: #44a1ff; margin-bottom: 0.25rem; font-weight: 500; }
+  .row p { font-size: 1rem; }
 
-        .content-block h4 {
-            margin-bottom: 1rem;
-            color: #b8b8b8;
-            font-weight: 400;
-            font-size: 0.85rem;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            border-bottom: 1px solid #3a3a3a;
-            padding-bottom: 0.5rem;
-        }
+  .checks { list-style: none; }
+  .checks li { padding-left: 1.6rem; position: relative; margin-bottom: 0.4rem; }
+  .checks li::before { content: "\2610"; position: absolute; left: 0; color: #8fd4a8; }
+  .tag.ai { background: #2a1e3a; color: #c4a8f0; }
 
-        .content-block p {
-            margin-bottom: 0.75rem;
-            color: #e8e8e8;
-            font-size: 0.95rem;
-            line-height: 1.6;
-        }
+  ol { padding-left: 1.4rem; }
+  ol li { margin-bottom: 0.4rem; }
+  strong { color: #fff; font-weight: 500; }
 
-        .content-block p:last-child {
-            margin-bottom: 0;
-        }
+  .watch {
+    background: #2a2618;
+    border-left: 3px solid #d4900a;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    font-size: 0.95rem;
+    color: #e8dcc0;
+    margin-bottom: 1rem;
+  }
 
-        .content-block ul {
-            margin-left: 1.5rem;
-            color: #e8e8e8;
-            margin-bottom: 0.75rem;
-        }
+  .card a { color: #44a1ff; text-decoration: none; }
+  .card a:hover { text-decoration: underline; }
 
-        .content-block li {
-            margin-bottom: 0.5rem;
-            line-height: 1.6;
-            font-size: 0.95rem;
-        }
+  .again {
+    background: transparent;
+    border: 1px solid #555;
+    color: #d0d0d0;
+    border-radius: 6px;
+    padding: 10px 18px;
+    font-size: 0.95rem;
+    cursor: pointer;
+    margin-top: 0.5rem;
+  }
+  .again:hover { border-color: #888; color: #fff; }
 
-        .content-block strong {
-            color: #e8e8e8;
-            font-weight: 500;
-        }
+  details {
+    background: #262626;
+    border: 1px solid #3a3a3a;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+  }
+  summary { cursor: pointer; padding: 1rem 1.25rem; font-weight: 500; }
+  .inner { padding: 0 1.25rem 1.25rem; color: #d0d0d0; }
+  .inner p { margin-bottom: 0.6rem; }
 
-        .content-block a {
-            color: #44a1ff;
-            text-decoration: none;
-        }
+  .browse-group { margin-bottom: 1rem; }
+  .browse-group h4 { font-size: 0.85rem; color: #9a9a9a; font-weight: 500; margin-bottom: 0.4rem; }
+  .browse-group button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    color: #44a1ff;
+    padding: 5px 0;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  .browse-group button:hover { text-decoration: underline; }
 
-        .content-block a:hover {
-            text-decoration: underline;
-        }
-
-        .experiment-type {
-            border-left: 3px solid #1473e6;
-        }
-
-        .rubric-block {
-            border-left: 3px solid #d4900a;
-            background: #252218;
-        }
-
-        .rubric-block h4 {
-            color: #c49a3a;
-            border-bottom-color: #3a3220;
-        }
-
-        .rubric-block p {
-            color: #e0d4b8;
-            font-size: 0.95rem;
-        }
-
-        .rubric-block strong {
-            color: #f0c060;
-        }
-
-        .technique-block {
-            border-left: 3px solid #44a1ff;
-        }
-
-        .why-block {
-            border-left: 3px solid #2d9da8;
-        }
-
-        .documentation-block {
-            border-left: 3px solid #00b67a;
-            background: #242424;
-        }
-
-        .reset-btn {
-            background: transparent;
-            border: 1px solid #3a3a3a;
-            color: #b8b8b8;
-            cursor: pointer;
-            font-size: 14px;
-            padding: 10px 20px;
-            display: block;
-            margin: 1.5rem auto 0;
-            transition: all 0.2s ease;
-            font-weight: 400;
-            border-radius: 4px;
-        }
-
-        .reset-btn:hover {
-            background: #2c2c2c;
-            border-color: #4a4a4a;
-            color: #e8e8e8;
-        }
-
-        .hidden {
-            display: none;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .text-muted {
-            color: #888;
-            font-size: 0.85rem;
-        }
-
-        .emphasis {
-            font-weight: 500;
-            color: #44a1ff;
-        }
-
-        @media (max-width: 500px) {
-            body {
-                padding: 1rem;
-            }
-
-            .page-header {
-                padding: 1.5rem;
-            }
-
-            .page-header h1 {
-                font-size: 1.5rem;
-            }
-
-            .content-block {
-                padding: 1.25rem;
-            }
-        }
-    </style>
+  .starter { background: #1f1f1f; border-radius: 4px; padding: 0.75rem 1rem; margin: 0.5rem 0; }
+  .starter p { margin: 0.2rem 0; }
+</style>
 </head>
 <body>
-    <div class="container">
-        <div class="page-header">
-            <h1>Experiments generator</h1>
-            <p>Try something new with your AT3 composite</p>
-        </div>
-        <div class="info-block">
-            <strong>Use this once your composition is roughly in place and you want to push the work further.</strong> Experiments fall into two categories: <strong>compositional</strong> (trying different images or arrangements) and <strong>technique</strong> (applying Photoshop skills to enhance what you have). Both count — the aim is to document what you tried and what you learned. Work <i>non-destructively</i>: use adjustment layers clipped to individual layers, or work on a stamped copy of your composite (⇧⌥⌘E).
-            <br><br><strong>On AI tools:</strong> Using built-in Photoshop AI to <em>enhance</em> existing photos is fine — adding a shadow, adjusting colour, cleaning up a background area. What is not OK is using AI to generate a whole new image, or sourcing AI-generated images from Adobe Stock. Watch what AI does to your photos: it can distort textures, smooth away detail, or produce patches that look inconsistent with the surrounding image. The actual photos need to show through.
-            <br><br><span class="text-muted">You need to document two experiments for your AT3d Report. Save each experiment as a screenshot or JPEG. Write three sentences: what you tried, what you hoped to achieve, and why it did or did not work.</span>
-        </div>
-        <button class="generate-btn" onclick="generateExperiment()" id="generateBtn">
-            Generate experiment idea
-        </button>
-        <div id="results" class="hidden">
+<div class="wrap">
 
-            <div class="content-block experiment-type">
-                <h4>Your experiment</h4>
-                <p class="emphasis" id="experimentName"></p>
-            </div>
-            <div class="content-block rubric-block">
-                <h4>AT3 connection</h4>
-                <div id="rubric"></div>
-            </div>
-            <div class="content-block technique-block">
-                <h4>How to do it</h4>
-                <div id="technique"></div>
-            </div>
-            <div class="content-block why-block">
-                <h4>Why try this</h4>
-                <p id="rationale"></p>
-            </div>
-            <div class="content-block documentation-block">
-                <h4>What to write in your report</h4>
-                <p id="documentation"></p>
-            </div>
-        </div>
-        <div id="resetSection" class="hidden text-center">
-            <button class="reset-btn" onclick="resetGenerator()">
-                Generate another experiment
-            </button>
-        </div>
+  <h1>Experiment ideas</h1>
+  <p class="lead">Not sure what to try on your AT3 composite? Pick one. Give it a go. It does not have to work.</p>
+
+  <p class="label">What do you want to do?</p>
+  <div class="chips" role="group" aria-label="Filter ideas">
+    <button class="chip" data-cat="any" aria-pressed="true">Anything</button>
+    <button class="chip" data-cat="change" aria-pressed="false">Change the picture</button>
+    <button class="chip" data-cat="real" aria-pressed="false">Make it look real</button>
+    <button class="chip" data-cat="mood" aria-pressed="false">Add mood</button>
+  </div>
+
+  <button class="go" id="go">Give me an idea</button>
+
+  <div class="card hidden" id="card" aria-live="polite">
+    <div class="tags" id="tags"></div>
+    <h2 id="name"></h2>
+    <div class="row"><h3>Try this</h3><p id="try"></p></div>
+    <div class="row"><h3>Why</h3><p id="why"></p></div>
+    <div class="row"><h3>How</h3><ol id="steps"></ol></div>
+    <div class="row hidden" id="checkRow"><h3>Did it work? Check that</h3><ul id="check" class="checks"></ul></div>
+    <div class="watch" id="watch"></div>
+    <p id="link"></p>
+    <button class="again" id="again">Show me a different idea</button>
+  </div>
+
+  <details>
+    <summary>See all ideas</summary>
+    <div class="inner" id="browse"></div>
+  </details>
+
+  <details>
+    <summary>What to write in your AT3d report</summary>
+    <div class="inner">
+      <p>Do <strong>two</strong> experiments. For each one, save a screenshot. Then write three sentences.</p>
+      <div class="starter">
+        <p>1. I tried ...</p>
+        <p>2. I hoped it would ...</p>
+        <p>3. It worked / did not work because ...</p>
+      </div>
+      <p>An experiment that did not work still counts. Say what you learned.</p>
     </div>
-    <script>
-        var data = {
-            experiments: [
-                {
-                    name: "Swap one of your stock images",
-                    rubric: "<p>AT3 assesses <strong>believable integration</strong> — the different images must look like they belong together. Image selection is the foundation of believability: a subject shot in similar lighting to your background will always be more convincing than one that needs heavy correction. If you are struggling to make an element look right, swapping the image is often faster than trying to fix the wrong one.</p>",
-                    technique: "<p>Go back to Adobe Stock and find a different version of one of your elements — a different subject on the same background, or a completely different supporting image. Place it in the same position in your composite and rebuild the mask. Try at least two alternatives before settling on the best.</p><ul><li>Filter by similar composition, not just similar subject — the right light direction matters more than the subject itself</li><li>Check perspective matches your background before spending time masking</li><li>Save a separate version for each alternative you try, so you can compare later</li></ul><p class='text-muted'>Remember: AT3 explicitly allows you to swap or change images from Adobe Stock at any stage.</p><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/choose-photos-for-compositing/' target='_blank'>Phlearn — How to choose the best images for compositing</a></p>",
-                    rationale: "Sometimes technically solid execution still falls flat because the source image was not the right choice. Swapping an image forces you to question whether your original selection was serving the concept, or just what you found first. It is very common to discover the third or fourth image you try is the one that makes the composite click into place.",
-                    documentation: "Describe which image you replaced and what motivated the swap — was it a lighting mismatch, perspective problem, or the image just not fitting the concept? Explain how the new image changed the feel of the composite. If you tried more than one alternative, note which worked best and what made the difference."
-                },
-                {
-                    name: "Try a completely different background",
-                    rubric: "<p>Two of AT3's three core qualities are directly driven by the background: <strong>believable integration</strong> (consistent light direction and atmosphere) and <strong>communicates a story, idea or feeling</strong>. Your AT3d report asks you to reflect on concept consistency — testing an alternative background gives you concrete material to write about and a genuine basis for comparison.</p>",
-                    technique: "<p>Keep your subject elements but replace the background with something dramatically different — indoor vs outdoor, day vs night, urban vs natural, abstract vs photographic. Place the new background, rebuild any masks that overlap it, and check whether your subjects still feel grounded.</p><ul><li>When you swap the background, check that the light direction matches your subjects — shadows falling the wrong way are the most common giveaway</li><li>You will likely need to adjust colour temperature to match the new environment</li><li>Save both versions to compare side by side before committing</li></ul><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/advanced-compositing-stock-images/' target='_blank'>Phlearn — Advanced compositing with stock images</a></p>",
-                    rationale: "The background sets the atmosphere, context, and lighting logic for the entire composite. Students often commit to their first background without testing alternatives. Swapping it is the fastest way to discover whether your concept depends on a specific environment or whether a completely different setting tells a stronger story.",
-                    documentation: "Describe the original and new background and how the change affected mood, light, and storytelling. Did your subjects feel believable in the new environment, or did lighting mismatches create new problems? What adjustments would be needed to make the new background work convincingly?"
-                },
-                {
-                    name: "Flip an element to test compositional flow",
-                    rubric: "<p>AT3 assesses <strong>composition</strong> — how effectively you arrange and adjust images for balance, colour, and tone. Your AT3d report's <em>technical resolution</em> reflection is the right place to discuss this. Flipping is the fastest low-risk test of whether your compositional balance is actually working, or just familiar.</p>",
-                    technique: "<p>Select one of your key elements. Go to <strong>Edit > Transform > Flip Horizontal</strong>. Notice how the eye moves through the composition differently — does the subject now face into the frame or out of it? Is visual balance improved or disrupted?</p><ul><li>Save a version with the flip applied</li><li>Compare against the original side by side</li><li>Check for lighting inconsistencies — if your element was lit from the left, flipping creates a light source from the right while the background stays the same</li><li>Watch for any readable text in the image — it will be mirrored</li></ul><p class='text-muted'>Resource: <a href='https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/apply-transformations.html' target='_blank'>Adobe Help — Apply transformations in Photoshop</a></p>",
-                    rationale: "Flipping is the fastest composition experiment in Photoshop and often reveals directional bias you were not aware of. A subject facing into the frame creates more visual tension than one facing out. Flipping also exposes problems — if the lighting now looks wrong, it means your original light direction consistency was weaker than it appeared.",
-                    documentation: "Describe which element you flipped and what changed in the composition. Did the flip improve visual balance, or did it create lighting or logic problems? Did you keep the flipped version or return to the original — and what made that decision?"
-                },
-                {
-                    name: "Push your theme further",
-                    rubric: "<p>AT3 requires your composite to <strong>communicate a story, idea or feeling</strong> — not just demonstrate technical skill. Your AT3d report asks you to reflect on <em>consistency with the project concept</em> and <em>suitability for the intended purpose</em>. This experiment gives you direct material to write about: what you tried, where the concept boundary is, and what you chose.</p>",
-                    technique: "<p>Look at your composite and ask: is this as strong a statement as it could be? Try adding, removing, or swapping one element that intensifies the concept.</p><ul><li>If it is playful, try making it stranger or more surreal</li><li>If it is serious, try heightening the tension with a more dramatic element</li><li>If it feels too expected, source one new image from Adobe Stock that you would not have originally considered</li></ul><p>Place the new element, mask it in, and save a version to compare against the original. AT3 explicitly gives you permission to re-interpret the idea at any stage.</p><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/beginners-guide-compositing/' target='_blank'>Phlearn — Intro to Photoshop compositing for beginners</a></p>",
-                    rationale: "Most composites stay in comfortable territory. This experiment identifies that threshold and tests what happens when you push past it. Even if the result is too extreme for the final submission, you will understand your concept's range better and make a more confident choice about where to land.",
-                    documentation: "Describe what you added, removed, or changed and what aspect of the concept you were trying to intensify. Did pushing the theme improve the work or make it feel overwrought? What did this tell you about where your concept's boundaries are, and how will that affect your final approach?"
-                },
-                {
-                    name: "Scale shift — make something unexpectedly large or small",
-                    rubric: "<p>AT3 asks your composite to <strong>communicate a story, idea or feeling</strong> through the arrangement and adjustment of images. Unusual scale is one of the most direct creative tools for doing this — it lets the composite say something that a straight photograph could not. It also demonstrates <strong>composition</strong> skill through deliberate manipulation of visual hierarchy.</p>",
-                    technique: "<p>Pick one element and dramatically resize it — make something that should be small, large (or vice versa). Use <strong>Edit > Free Transform</strong> (⌘T) and drag a corner handle to scale.</p><ul><li>Adjust the shadow and perspective to match the new scale — a tiny person needs a tiny shadow</li><li>Zoom to 100% to check the element's resolution holds up at the larger size</li><li>Convert to Smart Object first (right-click > Convert to Smart Object) so the transform stays non-destructive</li><li>Save a version to compare with your original scale</li></ul><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/advanced-compositing-stock-images-two/' target='_blank'>Phlearn — Advanced compositing with stock images (part 2)</a></p>",
-                    rationale: "Unusual scale relationships are one of the most effective tools in surreal or conceptual compositing — they force you to think about perspective, shadow logic, and visual hierarchy in a very direct way. This often reveals interesting things about your theme that realistic scale does not.",
-                    documentation: "Describe what you scaled and by how much. Did the unusual scale relationship add meaning or create a visual confusion that undermined the concept? What technical adjustments (shadow, perspective, resolution check) were needed to support the new scale?"
-                },
-                {
-                    name: "Refine a mask with Select and Mask",
-                    rubric: "<p>The AT3d Report has a dedicated <strong>'Complex masking detail'</strong> section — you need to provide a close-up screenshot showing a complex mask edge. Complex edges mean <strong>hair, fur, foliage, or fine fabric</strong>. If your composite does not yet have one of these, this is the highest-priority technique to attempt. Without it, that section of the report cannot be completed.</p>",
-                    technique: "<p>Double-click a layer mask to open it in the <strong>Select and Mask</strong> workspace. Use the <strong>Refine Edge Brush (R)</strong> to paint along edges where the cutout looks rough, shows background colour, or loses fine detail.</p><ul><li>Set View Mode to <em>On Black</em> or <em>On White</em> to see edge problems clearly</li><li>Use a small brush (10–20px) for precision along fine edges</li><li>Try <strong>Smart Radius</strong> for hair and fur — it detects the edge automatically</li><li>Enable <strong>Decontaminate Colors</strong> if there is colour fringing from the original background</li><li>Output back to a Layer Mask when satisfied</li></ul><p class='text-muted'>Tutorial: <a href='https://phlearn.com/tutorial/select-and-mask-photoshop/' target='_blank'>Phlearn — How to Use Select and Mask</a> &nbsp;|&nbsp; <a href='https://photoshoptrainingchannel.com/select-and-mask-workspace-in-photoshop/' target='_blank'>Photoshop Training Channel — Select and Mask crash course</a></p>",
-                    rationale: "By Week 13 you have masked several images, but most first-pass masks still have visible problems — colour fringing, hard jagged edges, or lost detail in hair and fur. Going back to refine one mask is one of the highest-impact improvements you can make. The Select and Mask workspace was covered earlier in the course; this is a chance to apply it more deliberately than you did in AT2.",
-                    documentation: "Describe which mask you refined and what the original problem was — colour fringing, hard edges, loss of fine detail. Explain what settings helped most (Refine Edge Brush radius, Smart Radius, Decontaminate Colors) and whether the edge is noticeably improved. Take a close-up screenshot for the 'Complex masking detail' section of your AT3d Report."
-                },
-                {
-                    name: "Remove colour fringing from a masked edge",
-                    rubric: "<p>The AT3d Report's <strong>'Complex masking detail'</strong> screenshot needs to show a convincingly resolved edge. Colour fringing — the halo of background colour that clings to a masked edge — is one of the most visible masking problems and directly undermines <strong>believable integration</strong>. Cleaning it is part of demonstrating that your masking is genuinely finished, not just roughly cut out.</p>",
-                    technique: "<p>Find an element where the mask shows colour bleed from the original background — a green tinge around hair, or a blue outline on a subject shot against a blue sky. Try one of these approaches:</p><ul><li><strong>Quick fix:</strong> go to <strong>Layer > Matting > Defringe</strong> and try 1–2 pixels</li><li><strong>More control:</strong> create a new layer clipped to the element (Alt-click between layers), set it to <strong>Color</strong> blend mode, sample the correct edge colour from inside the element, and paint carefully along the fringe</li><li><strong>Most control:</strong> open in Select and Mask, enable <strong>Decontaminate Colors</strong>, and adjust the Amount slider</li></ul><p class='text-muted'>Colour decontamination was covered in the course — this is a direct application of that knowledge.</p><p class='text-muted'>Resource: <a href='https://www.youtube.com/watch?v=67paSOVpiHM' target='_blank'>PiXimperfect — A fast way to remove colour fringing on hair and fur</a></p>",
-                    rationale: "Colour fringing — the subtle halo that clings to a masked edge — is one of the most common technical problems in student composites and one of the most visible to viewers. The right technique depends on the type of fringing: Defringe for mild cases, colour painting for stubborn ones, Decontaminate Colors for complex edges.",
-                    documentation: "Describe which element had fringing and what colour it was. Explain which method you used and how effective it was. Note any side effects — did the correction affect edge quality, create a halo, or shift colours in areas you did not intend? Take a close-up before-and-after screenshot."
-                },
-                {
-                    name: "Paint a cast shadow",
-                    rubric: "<p>AT3 explicitly lists <strong>'Shadows, consistent lighting'</strong> as a key skill, and your AT3d Report has a dedicated <strong>'Lighting'</strong> screenshot section. A subject with no shadow appears to float. Painting a convincing cast shadow and documenting it gives you strong, specific material for the lighting section of the report.</p>",
-                    technique: "<p>Create a new empty layer directly beneath your subject. Set its blend mode to <strong>Multiply</strong>. Use a soft round brush with black at 30% opacity to paint a shadow falling away from the subject in the direction of the light source.</p><ul><li>After painting, apply <strong>Filter > Blur > Gaussian Blur</strong> at 15–30px to soften the shadow</li><li>Reduce the layer's overall opacity to 40–60% until it looks natural</li><li>Add a layer mask if the shadow spills into wrong areas</li><li>For a ground shadow, use <strong>Edit > Transform > Distort</strong> to flatten it so it lies on the surface</li></ul><p class='text-muted'>Tutorial: <a href='https://photoshopcafe.com/create-cast-shadow-photoshop-tutorial/' target='_blank'>PhotoshopCAFE — How to create a cast shadow</a> &nbsp;|&nbsp; <a href='https://phlearn.com/tutorial/compositing-highlights-shadows-and-reflections/' target='_blank'>Phlearn — Compositing highlights, shadows and reflections</a> &nbsp;|&nbsp; <a href='https://www.adobe.com/au/learn/photoshop/web/organize-layers-with-layer-groups' target='_blank'>Adobe Learn — Organise layers with layer groups</a></p>",
-                    rationale: "Shadows are the single most important factor in composite believability — this was a central theme throughout the course. Multiply blend mode is the right tool because it automatically integrates with whatever is beneath it, darkening the surface without hiding it. Painting a shadow gives you full control over direction, softness, and intensity.",
-                    documentation: "Describe the light direction you used and how you decided where the shadow should fall. Explain whether the shadow successfully grounded the subject or still looked painted. Note the Gaussian Blur radius and opacity that worked best, and any masking you needed. Take a screenshot of the lighting section for your AT3d Report."
-                },
-                {
-                    name: "Harmonize — automatic colour matching",
-                    rubric: "<p>AT3 explicitly lists <strong>'Colour matching'</strong> as a key skill. Harmonize is a newer Photoshop tool that automatically adjusts an element's colour, saturation, and tone to match the background. It works on your existing pixels — it does not generate new image content. Using it to enhance your composite is fine; it is a different thing to using AI to generate whole images or sourcing AI-generated images from Adobe Stock.</p>",
-                    technique: "<p>Select the layer you want to match to the background. Look for the <strong>Harmonize</strong> button in the Contextual Task Bar (the floating bar near the bottom of the screen when a layer is selected), or go to <strong>Edit > Harmonize</strong>.</p><ul><li>Photoshop analyses the background and adjusts the colour, saturation, and tone of your selected element to match</li><li>Apply it, then compare before and after by toggling layer visibility on/off</li><li>You can apply it more than once for a stronger effect — or undo if it overcorrects</li><li>Check the result carefully at 100%: Harmonize can sometimes distort colours in ways that look fine at a glance but are noticeable in specific areas — skin tones, hair, and strongly coloured objects are most at risk</li><li>Also check that fine detail in the photo has not been smoothed away — the actual texture of the image should still be visible</li></ul><p class='text-muted'>Tutorial: <a href='https://youtube.com/shorts/_HLoUX4ZvC4' target='_blank'>YouTube — Photoshop Harmonize in action</a> &nbsp;|&nbsp; <a href='https://www.adobe.com/au/learn/photoshop/web/harmonize-blend-layers-photoshop-mobile' target='_blank'>Adobe Learn — Use Harmonize to blend layers</a></p>",
-                    rationale: "Colour matching is one of the most time-consuming parts of compositing, and Harmonize can get you most of the way there in seconds. The skill being tested here is evaluation, not just application — does it actually look right? Harmonize can overcorrect colour, and occasionally it shifts the photo in ways that look artificial. Checking the result carefully and knowing when to fall back on a manual Curves or Hue/Saturation adjustment is exactly the kind of critical judgement AT3 is developing.",
-                    documentation: "Describe which element you applied Harmonize to and what the colour problem was before applying it. Explain whether the automatic adjustment improved the match or introduced new problems — overcorrection, strange colour cast, or inconsistency in specific areas. Note whether you combined it with manual adjustments, or whether Harmonize alone was enough."
-                },
-                {
-                    name: "Colour match with a clipped Hue/Saturation layer",
-                    rubric: "<p>AT3 explicitly lists <strong>'Colour matching'</strong> and <strong>'Non-destructive editing'</strong> as key skills. Your AT3d report asks you to summarise the tools and techniques used — a clipped Hue/Saturation layer is a clear, nameable technique that demonstrates both. It is also a correct, industry-standard approach that shows you understand layer management.</p>",
-                    technique: "<p>Find an element that looks out of place — its colour, saturation, or brightness doesn't match the rest of the composite. Add a <strong>Hue/Saturation</strong> adjustment layer above it. Create a clipping mask by <strong>Alt-clicking (Option-clicking)</strong> the dividing line between the adjustment layer and the element — the adjustment now only affects that one layer.</p><ul><li>Adjust Hue, Saturation, and Lightness until the element sits better in the scene</li><li>Use the <strong>targeted colour dropdown</strong> to adjust specific ranges (e.g., just the reds, just the blues) rather than shifting everything at once</li><li>Toggle the layer on and off to compare before and after</li></ul><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/how-to-use-huesaturation-in-photoshop/' target='_blank'>Phlearn — How to use Hue/Saturation in Photoshop</a></p>",
-                    rationale: "A common beginner mistake is adjusting the whole composite to fix one element, which creates new problems everywhere else. Clipping an adjustment layer to a single element is the correct non-destructive approach. This builds directly on what you learned about adjustment layers in the course and applies it to colour matching — its most practical use in compositing.",
-                    documentation: "Describe which element looked out of place and what the colour problem was — too warm, too saturated, wrong white balance, too bright. Explain what adjustments you made and whether the element now sits more convincingly in the scene. Note whether you adjusted a specific colour range or the whole layer, and why."
-                },
-                {
-                    name: "Colour match highlights and shadows with Curves",
-                    rubric: "<p>AT3 lists both <strong>'Colour matching'</strong> and <strong>'Non-destructive editing'</strong> as key skills. Curves-based colour matching at the channel level shows a more advanced understanding of colour than a simple hue shift — it is the kind of technique worth naming specifically in your AT3d report under <em>Key techniques</em>, where you are asked to summarise three aspects of your work.</p>",
-                    technique: "<p>Add a <strong>Curves</strong> adjustment layer clipped to one element (Alt-click between layers). In the Curves panel, click the <strong>individual colour channels</strong> — Red, Green, Blue — rather than the Master channel.</p><ul><li>Sample the colour of shadows in your background — notice if they have a warm, cool, or neutral cast</li><li>In the shadow region of your element's Curves (bottom-left), shift the channel to match that same cast</li><li>Do the same for the highlights (top-right)</li><li>Start with small moves — 5–10 units is often enough</li></ul><p class='text-muted'>Tutorial: <a href='https://fstoppers.com/education/how-color-match-curves-photoshop-552571' target='_blank'>Fstoppers — Colour match with Curves</a> &nbsp;|&nbsp; <a href='https://photoshoptrainingchannel.com/match-colors-photoshop/' target='_blank'>Photoshop Training Channel — Match colors in Photoshop</a></p>",
-                    rationale: "When shadows across all elements share the same colour cast, the eye accepts that they were all lit by the same light source — this is what makes a composite feel unified. Adjusting individual RGB channels is a step beyond simple hue shifts; most beginners only touch the Master Curves channel. Experimenting with RGB channels separately is a meaningful progression in skill.",
-                    documentation: "Describe what colour difference you noticed before adjusting — were the shadows too warm, the highlights too blue? Explain which Curves channels you adjusted and whether the result made the element look more convincingly lit by the same source. Note if the change was subtle or whether you overcorrected."
-                },
-                {
-                    name: "Content-aware fill to remove an unwanted element",
-                    rubric: "<p>AT3 assesses <strong>overall believable integration</strong> — and distracting background elements undermine this directly. Your AT3d report's <em>technical resolution</em> reflection is a good place to discuss this technique: it shows you actively refined the work rather than just assembling the images and stopping.</p>",
-                    technique: "<p>Find a distracting or unwanted element in your background — a logo, a sign, a person you don't want, or a messy join between images. Work on a stamped copy of your layers (⇧⌥⌘E) so the original is preserved.</p><ul><li>Use the <strong>Lasso Tool (L)</strong> to draw a loose selection around the unwanted area</li><li>Go to <strong>Edit > Content-Aware Fill</strong></li><li>In the workspace, adjust the green sampling area if Photoshop is pulling from the wrong region</li><li>Click OK, then use the <strong>Clone Stamp</strong> or <strong>Healing Brush</strong> to clean up any remaining imperfections</li></ul><p class='text-muted'>Content-aware tools were covered in the course — this is a direct application in the context of compositing.</p><p class='text-muted'>Resource: <a href='https://www.youtube.com/watch?v=VvIF0eOg25k' target='_blank'>PiXimperfect — Remove anything with Content-Aware Fill</a> &nbsp;|&nbsp; <a href='https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/remove-objects-with-content-aware-fill.html' target='_blank'>Adobe Help — Remove objects with Content-Aware Fill</a></p>",
-                    rationale: "Real composite work often involves removing unwanted elements from source images, not just adding elements. Content-aware works well on regular textures like sky, grass, and pavement, but struggles with complex details, faces, and repeating patterns. Learning where it succeeds and where it fails is a valuable practical skill.",
-                    documentation: "Describe what you were trying to remove and whether Content-Aware Fill handled it convincingly. What type of area did it work on — sky, ground, simple texture? Where did it fail or produce obvious artefacts? If it didn't work, note what you tried instead (Clone Stamp, manual patch, choosing a different source image)."
-                },
-                {
-                    name: "Warp an element to fit a surface",
-                    rubric: "<p>AT3 key skills include <strong>'Non-destructive editing'</strong> — converting to a Smart Object before warping is a direct demonstration of this. Warping an element to follow a surface also contributes to <strong>believable integration</strong>: a flat texture placed on a curved surface without warping immediately breaks the illusion. It is a specific, nameable technique for your AT3d <em>Key techniques</em> section.</p>",
-                    technique: "<p>Convert one of your elements to a <strong>Smart Object</strong> first (right-click > Convert to Smart Object — this keeps the warp non-destructive and editable). Then go to <strong>Edit > Transform > Warp</strong>.</p><ul><li>Drag the grid handles to bend and curve the element to follow a surface — wrapping an element around a cylinder, or making a flat shape follow a hillside</li><li>Try <strong>Puppet Warp</strong> (Edit > Puppet Warp) for more control over specific anchor points</li><li>After warping, check that the lighting on the warped element still matches the surface it is sitting on</li><li>The Smart Object means you can double-click the layer thumbnail to go back and revise the warp later</li></ul><p class='text-muted'>Resource: <a href='https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/reshape-and-distort-images-with-transform-warp.html' target='_blank'>Adobe Help — Transform Warp</a> &nbsp;|&nbsp; <a href='https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/distort-specific-image-areas-with-puppet-warp.html' target='_blank'>Adobe Help — Puppet Warp</a></p>",
-                    rationale: "Warp and Puppet Warp are underused by beginners but essential for making flat elements feel physically integrated into three-dimensional space. This experiment often reveals whether an element was ever going to look right in a given position — perspective mismatches become very obvious once you try to warp.",
-                    documentation: "Describe what you were trying to warp and what surface or shape you were following. Did the warp make the element feel more integrated, or did the distortion look artificial? Note what the Smart Object conversion allowed you to do that a regular rasterised layer would not have."
-                },
-                {
-                    name: "Selective blur for depth of field",
-                    rubric: "<p>AT3 assesses <strong>composition</strong> — how effectively you arrange and adjust images for visual impact. Selective blur is a compositional tool as much as a technical one: it directs the viewer's eye. Your AT3d report's <em>suitability for the intended purpose</em> section is a good place to reflect on whether it helped or hurt the storytelling.</p>",
-                    technique: "<p>Create a stamped Smart Object of your composite (⇧⌥⌘E, then right-click > Convert to Smart Object). Go to <strong>Filter > Blur Gallery > Iris Blur</strong>.</p><ul><li>Drag the centre point over your main subject to define the focus area</li><li>Adjust the ellipse handles to expand or shrink the sharp area</li><li>Set blur to 10–20px — start low, as this effect is easy to overdo</li><li>The outer ring controls the sharp-to-blurred transition — drag outward to make the falloff more gradual</li><li>Since it is applied to a Smart Object, the filter is non-destructive and fully editable later</li></ul><p class='text-muted'>Resource: <a href='https://www.youtube.com/watch?v=9ToI3OMXuVw' target='_blank'>PiXimperfect — Shallow depth of field in Photoshop</a> &nbsp;|&nbsp; <a href='https://www.youtube.com/watch?v=YqQ6yxclfWA' target='_blank'>PiXimperfect — 3 ways to add depth to your composite</a></p>",
-                    rationale: "Shallow depth of field mimics how cameras physically work — the lens naturally blurs what is not in the focal plane. When it works, it draws the viewer directly to the subject. When it fails, it reads as a filter rather than real optics: the transition is too abrupt, or the wrong elements are blurred. Experimenting at different strengths helps you find the threshold.",
-                    documentation: "Describe the size of your focus area and the blur amount you used. Did the blur feel like genuine depth of field, or did it look like an applied effect? Note whether the transition between sharp and blurred areas was convincing or abrupt — and whether you kept it or decided it was not right for the concept."
-                },
-                {
-                    name: "Selective desaturation",
-                    rubric: "<p>AT3 requires your composite to <strong>communicate a story, idea or feeling</strong>. Selective colour is a strong compositional statement about where attention should go. If you decide against using it in the final work, documenting why is exactly the kind of critical reflection AT3d's <em>area of success</em> and <em>concept consistency</em> sections are looking for.</p>",
-                    technique: "<p>Add a <strong>Hue/Saturation</strong> adjustment layer above all your layers (no clipping mask). Reduce Saturation to -100 to make the entire image greyscale. Now use a soft black brush to paint on the layer mask over areas you want to keep in colour.</p><ul><li>Try keeping just your main subject in colour while the rest is grey</li><li>Or try the reverse — desaturate only the subject and leave the background in colour</li><li>A soft brush at 60–80% opacity creates a more gradual transition at the edges</li><li>Reduce the adjustment layer's opacity to 70–80% if full desaturation looks too heavy</li></ul><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/how-to-use-huesaturation-in-photoshop/' target='_blank'>Phlearn — How to use Hue/Saturation in Photoshop</a> &nbsp;|&nbsp; <a href='https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-a-hue-or-saturation-adjustment.html' target='_blank'>Adobe Help — Adjust hue and saturation</a></p>",
-                    rationale: "Selective colour teaches you a practical masking skill — painting on a mask to selectively show or hide an adjustment — while also forcing a decision about what matters most in the frame. It tends to work best when your subject has a strong, readable silhouette, and often fails when edges are complex or when the colour contrast is weak.",
-                    documentation: "Explain which areas you kept in colour and what you hoped to achieve. Did selective desaturation successfully direct attention, or did it feel too heavy-handed? Is it something you would use in the final composite — if not, why not? Use your answer as the basis for your AT3d concept consistency reflection."
-                },
-                {
-                    name: "S-curve contrast",
-                    rubric: "<p>AT3 key skills include <strong>'Non-destructive editing'</strong> — a Curves adjustment layer is a direct and nameable demonstration of this. It is also a clean, specific technique to describe in your AT3d report under <em>Key techniques</em>, where you are asked to summarise three aspects of your work in around 100 words.</p>",
-                    technique: "<p>Add a <strong>Curves</strong> adjustment layer above all your other layers (no clipping mask — let it affect the whole composite). Create an S-shape in the curve:</p><ul><li>Click a point in the upper-right area (highlights) and drag it slightly upward</li><li>Click a point in the lower-left area (shadows) and drag it slightly downward</li><li>Keep moves small — a 5–15 unit shift on the output scale is usually enough for a composite</li><li>Reduce the adjustment layer's opacity to 50–70% to control overall strength</li><li>Toggle the layer on and off to compare before and after</li></ul><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/photoshop-basics-curves/' target='_blank'>Phlearn — How to use Curves in Photoshop</a></p>",
-                    rationale: "A gentle S-curve is often one of the last adjustments applied to a composite — it adds contrast and gives the image a more cohesive, resolved quality. The danger is overcorrecting: too steep an S-curve crushes shadow detail and blows out highlights. Experimenting at different strengths builds your understanding of how far is too far.",
-                    documentation: "Describe how strong your S-curve was and whether you found yourself pulling it back. Did the contrast improvement make the composite feel more resolved, or did it introduce problems — crushed shadows, clipped highlights, or unexpected colour shifts? Note what opacity you reduced the layer to, and why that amount felt right."
-                },
-                {
-                    name: "Film grain texture overlay",
-                    rubric: "<p>AT3 assesses <strong>overall believable integration</strong> — the sense that all elements belong together. Film grain is a unity technique that works at the surface level, giving elements photographed in different conditions a shared texture. If it works, it is worth mentioning in your AT3d <em>Key techniques</em> section. If you decide it does not fit the concept, documenting why that is the case is useful process material.</p>",
-                    technique: "<p>Find a greyscale film grain or noise texture — Adobe Stock has free options (search 'film grain texture'). Place it as the top layer of your composite. Set blend mode to <strong>Soft Light</strong> and reduce opacity to 15–25%.</p><ul><li>The grain should be barely visible — if you can clearly see it, it is too strong</li><li>Try <strong>Overlay</strong> blend mode for a slightly more intense effect</li><li>Scale the texture up if the grain pattern is too fine for your image size (remember AT3 is 2048px square minimum)</li><li>Add a mask if you want to preserve fine detail in specific areas, like faces</li></ul><p class='text-muted'>Resource: <a href='https://phlearn.com/tutorial/compositing-101-master-the-essentials/' target='_blank'>Phlearn — Compositing 101: master the essentials</a></p>",
-                    rationale: "A very subtle film grain can help unify elements from different sources, particularly when some were shot indoors and others outdoors. It works by giving everything a shared surface quality. Used at low opacity this is a finishing touch that viewers will not consciously notice. Used too heavily it just adds noise and reduces clarity — finding the right threshold is the point of this experiment.",
-                    documentation: "Describe the blend mode and opacity you used. Did the grain add a subtle unifying quality, or did it just make the image look noisier? Note where the threshold was between 'barely there' and 'too much' — and where you settled."
-                }
-            ]
-        };
+  </details>
 
-        function getRandom(array) {
-            return array[Math.floor(Math.random() * array.length)];
-        }
+  <details>
+    <summary>Can I use AI?</summary>
+    <div class="inner">
+      <p><strong>Yes:</strong> Photoshop's built-in AI (Firefly) to help finish your composite. For example, Generative Fill to make a shadow, Generative Expand to extend a background, Harmonize, or Remove.</p>
+      <p><strong>No:</strong> AI that makes the whole image. AI-made images from Adobe Stock. Your own photos must be the main parts.</p>
+      <p>AI gives you a guess, not an answer. You decide if it worked. Zoom to 100% and check:</p>
+      <div class="starter">
+        <p>Does the light come from the same side as the rest?</p>
+        <p>Does the texture and grain match the photo around it?</p>
+        <p>Are there smudges, odd shapes or extra objects?</p>
+        <p>Can you see where the AI part starts and stops?</p>
+      </div>
+      <p>If it fails, that is a good experiment to write about. Say what went wrong.</p>
+    </div>
+  </details>
 
-        function generateExperiment() {
-            var experiment = getRandom(data.experiments);
-            document.getElementById('experimentName').textContent = experiment.name;
-            document.getElementById('rubric').innerHTML = experiment.rubric;
-            document.getElementById('technique').innerHTML = experiment.technique;
-            document.getElementById('rationale').textContent = experiment.rationale;
-            document.getElementById('documentation').textContent = experiment.documentation;
-            document.getElementById('results').classList.remove('hidden');
-            document.getElementById('resetSection').classList.remove('hidden');
-            document.getElementById('generateBtn').textContent = 'Generate another experiment';
-        }
+  <details>
+    <summary>Before you start</summary>
+    <div class="inner">
+      <p>Save a copy of your file first. Then you can always go back.</p>
+      <p>Use adjustment layers where you can. They do not change your pixels.</p>
+      <p>Toggle the eye icon on and off to compare before and after.</p>
+    </div>
+  </details>
 
-        function resetGenerator() {
-            document.getElementById('results').classList.add('hidden');
-            document.getElementById('resetSection').classList.add('hidden');
-            document.getElementById('generateBtn').textContent = 'Generate experiment idea';
-        }
-    </script>
+</div>
+
+<script>
+var cats = { change: 'Change the picture', real: 'Make it look real', mood: 'Add mood' };
+var times = { quick: 'Quick', medium: 'About 20 mins', challenge: 'Challenge' };
+
+var ideas = [
+  {
+    cat: 'change', time: 'medium',
+    name: 'Swap one of your photos',
+    tryThis: 'Replace one image with a different one from Adobe Stock.',
+    why: 'Often the photo is the problem, not your skills. A photo with matching light is easier to use than a wrong one you have to fix.',
+    steps: [
+      'Pick the part of your composite that looks least right.',
+      'Find two other options on Adobe Stock. Look for light coming from the same side.',
+      'Place each one and mask it in.',
+      'Save a version of each. Compare them side by side.'
+    ],
+    watch: 'Check the camera angle matches before you spend time masking.',
+    link: ['Phlearn: choose photos for compositing', 'https://phlearn.com/tutorial/choose-photos-for-compositing/']
+  },
+  {
+    cat: 'change', time: 'medium',
+    name: 'Try a different background',
+    tryThis: 'Keep your subject. Put it somewhere very different. Day to night, inside to outside, city to bush.',
+    why: 'The background sets the mood and the light. A new place might tell your story better.',
+    steps: [
+      'Hide your old background layer.',
+      'Place the new background at the bottom of your layers.',
+      'Check the shadows on your subject fall the same way as the new background.',
+      'Save both versions. Compare them.'
+    ],
+    watch: 'You may need to warm up or cool down your subject to match the new light.',
+    link: ['Phlearn: compositing with stock images', 'https://phlearn.com/tutorial/advanced-compositing-stock-images/']
+  },
+  {
+    cat: 'change', time: 'quick',
+    name: 'Flip something',
+    tryThis: 'Mirror one element from left to right.',
+    why: 'It changes where the eye goes. A subject that faces into the picture pulls the viewer in.',
+    steps: [
+      'Select the layer.',
+      'Go to <strong>Edit &gt; Transform &gt; Flip Horizontal</strong>.',
+      'Toggle the layer to compare with the original.',
+      'Keep the one that works better.'
+    ],
+    watch: 'The light on that element now comes from the other side. Any text will read backwards.',
+    link: ['Adobe Help: transform layers', 'https://helpx.adobe.com/photoshop/desktop/crop-resize-transform/transform-manipulate-reshape/apply-transformations.html']
+  },
+  {
+    cat: 'change', time: 'medium',
+    name: 'Push your idea further',
+    tryThis: 'Add, remove or swap one thing to make your idea stronger or stranger.',
+    why: 'First versions often play it safe. Pushing shows you how far your idea can go.',
+    steps: [
+      'Ask: what one change would make this funnier, scarier or stranger?',
+      'Find one image on Adobe Stock you would not normally pick.',
+      'Place it, mask it, and save a version.',
+      'Compare it with your original.'
+    ],
+    watch: 'If it goes too far, that is fine. Now you know where the limit is.',
+    link: ['Phlearn: compositing for beginners', 'https://phlearn.com/tutorial/beginners-guide-compositing/']
+  },
+  {
+    cat: 'change', time: 'quick',
+    name: 'Change the size of something',
+    tryThis: 'Make something small very big. Or make something big very small.',
+    why: 'Odd sizes are a fast way to turn an everyday picture into something surprising.',
+    steps: [
+      'Right-click the layer. Choose <strong>Convert to Smart Object</strong>.',
+      'Press <strong>Cmd+T</strong> and drag a corner.',
+      'Change the shadow to match the new size.',
+      'Zoom to 100% to check it is still sharp.'
+    ],
+    watch: 'Small photos go blurry when you make them big.',
+    link: ['Phlearn: compositing with stock images, part 2', 'https://phlearn.com/tutorial/advanced-compositing-stock-images-two/']
+  },
+  {
+    cat: 'real', time: 'medium',
+    name: 'Clean up a hair or fur edge',
+    tryThis: 'Go back to a rough mask and make the edge cleaner with Select and Mask.',
+    why: 'Your AT3d report needs a close-up of a tricky mask edge, like hair, fur or leaves. This gives you one.',
+    steps: [
+      'Double-click the layer mask. Select and Mask opens.',
+      'Set <strong>View</strong> to <strong>On Black</strong> so you can see the edge.',
+      'Paint along the edge with the <strong>Refine Edge Brush (R)</strong>.',
+      'Tick <strong>Decontaminate Colors</strong> if you see a coloured halo.',
+      'Output to <strong>Layer Mask</strong>.'
+    ],
+    watch: 'Use a small brush. Take a close-up screenshot for your report.',
+    link: ['Phlearn: Select and Mask', 'https://phlearn.com/tutorial/select-and-mask-photoshop/']
+  },
+  {
+    cat: 'real', time: 'quick',
+    name: 'Remove a coloured halo',
+    tryThis: 'Get rid of the thin line of old background colour around a cut-out.',
+    why: 'A green or blue line around a subject shows it was cut out. Removing it helps everything look like one photo.',
+    steps: [
+      'Zoom to 200% on the edge.',
+      'Double-click the layer mask to open Select and Mask.',
+      'Tick <strong>Decontaminate Colors</strong>. Move the Amount slider.',
+      'Output to a new layer with layer mask.',
+      'Take a before and after screenshot.'
+    ],
+    watch: 'Look at the edge on a light and a dark background. Halos hide on one and show on the other.',
+    link: ['PiXimperfect: remove colour fringing', 'https://www.youtube.com/watch?v=67paSOVpiHM']
+  },
+  {
+    cat: 'real', time: 'medium',
+    name: 'Paint a shadow',
+    tryThis: 'Paint a soft shadow under your subject.',
+    why: 'Without a shadow, a subject looks like it is floating. Your AT3d report also has a lighting section.',
+    steps: [
+      'Make a new layer under your subject. Set the blend mode to <strong>Multiply</strong>.',
+      'Use a soft black brush at 30% opacity.',
+      'Paint the shadow on the side away from the light.',
+      'Go to <strong>Filter &gt; Blur &gt; Gaussian Blur</strong>. Try 15 to 30 px.',
+      'Lower the layer opacity until it looks natural.'
+    ],
+    watch: 'The shadow is darkest where the subject touches the ground.',
+    link: ['PhotoshopCAFE: cast shadows', 'https://photoshopcafe.com/create-cast-shadow-photoshop-tutorial/']
+  },
+  {
+    cat: 'real', time: 'quick', ai: true,
+    name: 'Make a shadow with Generative Fill',
+    tryThis: 'Ask Photoshop AI to make a shadow under your subject.',
+    why: 'Shadows are hard to paint well. AI can give you a good start fast. Your job is to judge if it is believable.',
+    steps: [
+      'Make a merged copy on top: <strong>Shift+Option+Cmd+E</strong>.',
+      'Draw a loose selection with the <strong>Lasso (L)</strong> where the shadow should fall. Include the bottom of your subject.',
+      'Click <strong>Generative Fill</strong> in the Contextual Task Bar.',
+      'Type a short prompt, like "soft shadow on the ground". Click <strong>Generate</strong>.',
+      'Look at all three options in the Properties panel. Pick the best one, or generate again.'
+    ],
+    check: [
+      'the shadow falls away from the light, like the other shadows in the picture.',
+      'it is darkest where the subject touches the ground.',
+      'the edge is as soft or hard as other shadows in the scene.',
+      'the AI did not change your subject\'s feet or add new objects.',
+      'the ground texture still looks like the rest of the ground.'
+    ],
+    watch: 'Compare it with a shadow you paint yourself. Write about which one worked better.',
+    link: ['Adobe Help: Generative Fill', 'https://helpx.adobe.com/au/photoshop/desktop/create-open-import-images/create-images/edit-images-with-generative-fill.html']
+  },
+  {
+    cat: 'change', time: 'quick', ai: true,
+    name: 'Make your background bigger with Generative Expand',
+    tryThis: 'Let Photoshop AI add more background around the edges.',
+    why: 'Sometimes your background is too tight or the wrong shape. Expanding it gives your subject more room.',
+    steps: [
+      'Choose the <strong>Crop Tool (C)</strong>.',
+      'Drag the edges out past the image.',
+      'Set Fill to <strong>Generative Expand</strong> in the options bar.',
+      'Leave the prompt empty, or describe what you want. Click <strong>Generate</strong>.',
+      'Look at all three options. Pick the best one.'
+    ],
+    check: [
+      'lines like the horizon, walls and roads join up with no step.',
+      'the new area has the same light, colour and blur as the original.',
+      'nothing strange has appeared, like extra people, melted shapes or fake text.',
+      'the new part has the same grain as the photo.'
+    ],
+    watch: 'Make sure your image is still at least 2048 px square at the end.',
+    link: ['Adobe Help: Generative Expand', 'https://helpx.adobe.com/au/photoshop/desktop/create-open-import-images/create-images/explore-beyond-the-canvas-with-generative-expand.html']
+  },
+  {
+    cat: 'real', time: 'quick', ai: true,
+    name: 'Try Harmonize',
+    tryThis: 'Let Photoshop match the colour of one element to your background.',
+    why: 'Matching colour by hand takes time. Harmonize does a first try in seconds. Your job is to decide if it looks right.',
+    steps: [
+      'Select the layer.',
+      'Click <strong>Harmonize</strong> in the Contextual Task Bar. This is the floating bar near the bottom of the screen.',
+      'Toggle the layer to compare before and after.',
+      'Zoom to 100%.'
+    ],
+    check: [
+      'the element now has the same warmth or coolness as the background.',
+      'skin and hair still look natural.',
+      'fine detail and texture have not been smoothed away.'
+    ],
+    watch: 'It can overdo it. Undo, or lower the layer opacity, if it looks worse.',
+    link: ['Adobe: Harmonize', 'https://www.adobe.com/au/learn/photoshop/web/harmonize-blend-layers-photoshop-mobile']
+  },
+  {
+    cat: 'real', time: 'quick',
+    name: 'Fix the colour of one thing',
+    tryThis: 'Fix one element that is too bright, too colourful, or the wrong colour.',
+    why: 'Changing only one layer fixes the problem without messing up the rest.',
+    steps: [
+      'Add a <strong>Hue/Saturation</strong> adjustment layer above the element.',
+      'Hold <strong>Option</strong> and click the line between the two layers. Now it only changes that one layer.',
+      'Move Saturation and Lightness until it sits in.',
+      'Toggle to compare.'
+    ],
+    watch: 'Use the dropdown (for example, Reds) to change one colour only.',
+    link: ['Phlearn: Hue/Saturation', 'https://phlearn.com/tutorial/how-to-use-huesaturation-in-photoshop/']
+  },
+  {
+    cat: 'real', time: 'challenge',
+    name: 'Match dark and light tones with Curves',
+    tryThis: 'Give the shadows and highlights of one element the same colour tint as the background.',
+    why: 'When all the shadows share one tint, it looks like one light lit everything.',
+    steps: [
+      'Add a <strong>Curves</strong> layer. Option-click to clip it to the element.',
+      'Look at the shadows in your background. Are they warm or cool?',
+      'Change the dropdown from RGB to Red, Green or Blue.',
+      'Nudge the bottom of the curve to match the shadows. Nudge the top to match the highlights.'
+    ],
+    watch: 'Make tiny moves. A little goes a long way.',
+    link: ['Fstoppers: colour match with Curves', 'https://fstoppers.com/education/how-color-match-curves-photoshop-552571']
+  },
+  {
+    cat: 'real', time: 'quick',
+    name: 'Remove something you do not want',
+    tryThis: 'Remove a sign, logo, stray person or messy join.',
+    why: 'Small distractions pull the eye away and break the illusion.',
+    steps: [
+      'Make a merged copy on top: <strong>Shift+Option+Cmd+E</strong>.',
+      'Draw around the thing with the <strong>Lasso (L)</strong>.',
+      'Go to <strong>Edit &gt; Content-Aware Fill</strong>. Click OK.',
+      'Tidy any marks with the <strong>Healing Brush</strong>.'
+    ],
+    watch: 'It works best on sky, grass and walls. It struggles with faces and patterns.',
+    link: ['Adobe Help: Content-Aware Fill', 'https://helpx.adobe.com/photoshop/desktop/repair-retouch/remove-objects-fill-space/remove-objects-with-content-aware-fill.html']
+  },
+  {
+    cat: 'real', time: 'challenge',
+    name: 'Bend something to fit a surface',
+    tryThis: 'Bend a flat image so it wraps around something curved.',
+    why: 'A flat image on a round surface looks stuck on. Bending it makes it sit in the scene.',
+    steps: [
+      'Right-click the layer. Choose <strong>Convert to Smart Object</strong>.',
+      'Go to <strong>Edit &gt; Transform &gt; Warp</strong>.',
+      'Drag the grid to follow the shape of the surface.',
+      'Double-click the layer thumbnail later if you want to change it.'
+    ],
+    watch: 'Check the light on the bent part still matches the surface.',
+    link: ['Adobe Help: Warp', 'https://helpx.adobe.com/photoshop/desktop/effects-filters/artistic-stylize-filters/reshape-and-distort-images-with-transform-warp.html']
+  },
+  {
+    cat: 'mood', time: 'medium',
+    name: 'Blur the background',
+    tryThis: 'Keep your subject sharp. Blur what is around it.',
+    why: 'This copies how a camera lens works. It points the viewer straight at your subject.',
+    steps: [
+      'Make a merged copy: <strong>Shift+Option+Cmd+E</strong>. Convert it to a Smart Object.',
+      'Go to <strong>Filter &gt; Blur Gallery &gt; Iris Blur</strong>.',
+      'Drag the centre pin onto your subject.',
+      'Set the blur to 10 to 20 px.'
+    ],
+    watch: 'Too much blur looks like a filter, not a lens. Start low.',
+    link: ['PiXimperfect: depth of field', 'https://www.youtube.com/watch?v=9ToI3OMXuVw']
+  },
+  {
+    cat: 'mood', time: 'quick',
+    name: 'Take the colour out',
+    tryThis: 'Make everything black and white except your subject. Or try the reverse.',
+    why: 'Colour pulls the eye. This is a strong way to show what matters most.',
+    steps: [
+      'Add a <strong>Hue/Saturation</strong> layer at the top.',
+      'Drag Saturation to -100.',
+      'Paint black on its mask over the parts you want to keep in colour.',
+      'Lower the layer opacity to 70 to 80% if it feels too heavy.'
+    ],
+    watch: 'This works best when your subject has a clear outline.',
+    link: ['Adobe Help: Hue/Saturation', 'https://helpx.adobe.com/photoshop/desktop/adjust-color/color-corrections/apply-a-hue-or-saturation-adjustment.html']
+  },
+  {
+    cat: 'mood', time: 'quick',
+    name: 'Add contrast with a curve',
+    tryThis: 'Give the whole image a gentle boost of contrast.',
+    why: 'A last contrast tweak helps all the parts feel like one picture.',
+    steps: [
+      'Add a <strong>Curves</strong> layer at the top. Do not clip it.',
+      'Lift a point near the top right a little.',
+      'Drop a point near the bottom left a little. The line now looks like a soft S.',
+      'Toggle to compare. Lower the opacity if it is too strong.'
+    ],
+    watch: 'Too steep and you lose detail in the dark areas.',
+    link: ['Phlearn: Curves', 'https://phlearn.com/tutorial/photoshop-basics-curves/']
+  },
+  {
+    cat: 'mood', time: 'quick',
+    name: 'Add film grain',
+    tryThis: 'Lay a light grain over the whole image.',
+    why: 'Photos from different cameras have different textures. Grain gives them all the same one.',
+    steps: [
+      'Search Adobe Stock for "film grain texture".',
+      'Place it as the top layer.',
+      'Set the blend mode to <strong>Soft Light</strong>.',
+      'Set opacity to 15 to 25%.'
+    ],
+    watch: 'You should only just see it. If it is obvious, it is too strong.',
+    link: ['Phlearn: compositing essentials', 'https://phlearn.com/tutorial/compositing-101-master-the-essentials/']
+  }
+];
+
+var current = 'any';
+var lastIndex = -1;
+
+function pool() {
+  var list = [];
+  for (var i = 0; i < ideas.length; i++) {
+    if (current === 'any' || ideas[i].cat === current) list.push(i);
+  }
+  return list;
+}
+
+function show(i) {
+  var d = ideas[i];
+  lastIndex = i;
+  document.getElementById('tags').innerHTML =
+    '<span class="tag">' + cats[d.cat] + '</span>' +
+    '<span class="tag ' + d.time + '">' + times[d.time] + '</span>' +
+    (d.ai ? '<span class="tag ai">Uses AI</span>' : '');
+  var checkRow = document.getElementById('checkRow');
+  if (d.check) {
+    document.getElementById('check').innerHTML = d.check.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+    checkRow.classList.remove('hidden');
+  } else {
+    checkRow.classList.add('hidden');
+  }
+  document.getElementById('name').textContent = d.name;
+  document.getElementById('try').textContent = d.tryThis;
+  document.getElementById('why').textContent = d.why;
+  document.getElementById('steps').innerHTML = d.steps.map(function (s) { return '<li>' + s + '</li>'; }).join('');
+  document.getElementById('watch').innerHTML = '<strong>Watch out:</strong> ' + d.watch;
+  document.getElementById('link').innerHTML = 'Show me: <a href="' + d.link[1] + '" target="_blank" rel="noopener">' + d.link[0] + '</a>';
+  var card = document.getElementById('card');
+  card.classList.remove('hidden');
+  document.getElementById('go').textContent = 'Give me another idea';
+}
+
+function random() {
+  var list = pool();
+  if (list.length > 1) list = list.filter(function (i) { return i !== lastIndex; });
+  show(list[Math.floor(Math.random() * list.length)]);
+}
+
+document.getElementById('go').addEventListener('click', random);
+document.getElementById('again').addEventListener('click', function () {
+  random();
+  document.getElementById('card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+var chips = document.querySelectorAll('.chip');
+for (var c = 0; c < chips.length; c++) {
+  chips[c].addEventListener('click', function () {
+    for (var k = 0; k < chips.length; k++) chips[k].setAttribute('aria-pressed', 'false');
+    this.setAttribute('aria-pressed', 'true');
+    current = this.getAttribute('data-cat');
+  });
+}
+
+var browse = document.getElementById('browse');
+Object.keys(cats).forEach(function (key) {
+  var group = document.createElement('div');
+  group.className = 'browse-group';
+  group.innerHTML = '<h4>' + cats[key] + '</h4>';
+  ideas.forEach(function (d, i) {
+    if (d.cat !== key) return;
+    var b = document.createElement('button');
+    b.textContent = d.name + ' (' + times[d.time].toLowerCase() + (d.ai ? ', uses AI' : '') + ')';
+    b.addEventListener('click', function () {
+      show(i);
+      document.getElementById('card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    group.appendChild(b);
+  });
+  browse.appendChild(group);
+});
+</script>
 </body>
 </html>
